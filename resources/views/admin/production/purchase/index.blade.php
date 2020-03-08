@@ -34,6 +34,7 @@
                                 <th>{{_lang('Purchase Date')}}</th>
                                 <th>{{_lang('Grand Total')}}</th>
                                 <th>{{_lang('Purchase Status')}}</th>
+                                <th>{{_lang('Payment Status')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>
