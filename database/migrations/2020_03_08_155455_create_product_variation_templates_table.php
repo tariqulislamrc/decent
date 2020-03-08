@@ -17,7 +17,7 @@ class CreateProductVariationTemplatesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->on('products')->references('id')->onDelete('Cascade');
-            
+
             $table->float('stock', 20,4)->default(0);
             $table->timestamps();
         });

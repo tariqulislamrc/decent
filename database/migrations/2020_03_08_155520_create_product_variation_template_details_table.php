@@ -15,6 +15,10 @@ class CreateProductVariationTemplateDetailsTable extends Migration
     {
         Schema::create('product_variation_template_details', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('product_variation_template_id')->nullable();
+            $table->foreign('product_variation_template_id', 'pvt_id')->on('product_variation_templates')->references('id')->onDelete('Cascade');
+            $table->unsignedBigInteger('variation_template_id')->nullable();
+            $table->foreign('variation_template_id', 'vt_id')->on('variation_templates')->references('id')->onDelete('Cascade');
             $table->timestamps();
         });
     }
