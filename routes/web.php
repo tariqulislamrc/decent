@@ -365,6 +365,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
 		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
@@ -378,6 +379,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('request/datatable', 'StoreRequestController@datatable')->name('request.datatable');
 		Route::get('request/get_prev_request','StoreRequestController@get_prev_request')->name('request.get_reques_prev');
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
+		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
 		Route::resource('request', 'StoreRequestController');
 
 

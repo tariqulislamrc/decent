@@ -5,9 +5,9 @@ namespace App\models\depertment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StoreRequest extends Model
+class ApproveStoreItem extends Model
 {
-   use SoftDeletes;
+    use SoftDeletes;
     public function material(){
         return $this->belongsTo('App\models\production\RawMaterial','raw_material_id','id');
    }
@@ -20,11 +20,5 @@ class StoreRequest extends Model
         return $this->belongsTo('App\models\depertment\Depertment');
    }
 
-  public function send_by(){
-        return $this->belongsTo('App\User','created_by','id');
-   }
-
-  public function approve_store_item(){
-      return $this->hasMany(ApproveStoreItem::class);
-    }
+    
 }
