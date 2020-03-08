@@ -4467,16 +4467,16 @@
         },
         {
             "name": "yajra/laravel-datatables-html",
-            "version": "v4.23.0",
+            "version": "v4.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables-html.git",
-                "reference": "de1426ecfda184ea143073c08ba9cab6a9a04444"
+                "reference": "00195f383f4ecf4257c761712eda2f6510f3102d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/de1426ecfda184ea143073c08ba9cab6a9a04444",
-                "reference": "de1426ecfda184ea143073c08ba9cab6a9a04444",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables-html/zipball/00195f383f4ecf4257c761712eda2f6510f3102d",
+                "reference": "00195f383f4ecf4257c761712eda2f6510f3102d",
                 "shasum": ""
             },
             "require": {
@@ -4523,7 +4523,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2020-03-03T16:34:31+00:00"
+            "time": "2020-03-07T02:47:38+00:00"
         },
         {
             "name": "yajra/laravel-datatables-oracle",
@@ -5306,16 +5306,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.10.2",
+            "version": "v1.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
+                "reference": "451c3cd1418cf640de218914901e51b064abb093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/451c3cd1418cf640de218914901e51b064abb093",
+                "reference": "451c3cd1418cf640de218914901e51b064abb093",
                 "shasum": ""
             },
             "require": {
@@ -5365,7 +5365,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-01-20T15:57:02+00:00"
+            "time": "2020-03-05T15:02:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
