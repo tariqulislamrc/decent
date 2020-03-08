@@ -15,9 +15,30 @@
 @section('content')
 <!-- Basic initialization -->
 <div class="card">
-    <div class="card-header">
-        <h6>{{_lang('Purchase Details')}}(Reference No: #{{$model->reference_no}})</h6>
+    <div class="card-header row">
+        <div class="col-md-4">
+            <h6>{{_lang('Purchase Details')}}(Reference No: #{{$model->reference_no}})</h6>
+        </div>
+        <div class="col-md-8" align="right">
+            @can('production_purchase.update')
+        <a class="btn btn-warning btn-sm has-tooltip" data-original-title="null"
+            href="{{route('admin.production-purchase.edit',$model->id)}}"><i class="fa fa-edit"></i> {{_lang('Edit')}}</a>
+        @endcan
+        @can('production_purchase.delete')
+        <button id="delete_item" data-id="{{$model->id}}"
+            data-url="{{route('admin.production-purchase.destroy',$model->id)  }}"
+            class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i
+                class="fa fa-trash"></i> {{_lang('Delete')}}</button>
+        @endcan
 
+        @if ($model->due > 0)
+        @can('production_purchase.payment')
+        <button class="btn btn-info btn-sm has-tooltip"
+            id="content_managment" data-url="{{route('admin.production-purchase.payment',$model->id)}}"><i
+                class="fa fa-credit-card"></i> {{_lang('Add Payment')}}</button>
+        @endcan
+        @endif
+        </div>
     </div>
     <div class="card-body">
         <div class="row">
@@ -125,6 +146,18 @@
                             <th>Purchase Total:</th>
                             <td></td>
                             <td><span class="display_currency pull-right" data-currency_symbol="true">{{$model->net_total}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total Pay:</th>
+                            <td></td>
+                            <td><span class="display_currency pull-right" data-currency_symbol="true">{{$model->paid}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total Due:</th>
+                            <td></td>
+                            <td><span class="display_currency pull-right" data-currency_symbol="true">{{$model->due}}</span>
                             </td>
                         </tr>
                     </tbody>

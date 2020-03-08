@@ -275,8 +275,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="transaction_no_1_0">Transaction No.</label>
-                        <input class="form-control" placeholder="Transaction No." id="transaction_no_1_0"
+                        <label for="transaction">Transaction No.</label>
+                        <input class="form-control" placeholder="Transaction No." id="transaction"
                             name="transaction_no" type="text" value="">
                     </div>
                 </div>
