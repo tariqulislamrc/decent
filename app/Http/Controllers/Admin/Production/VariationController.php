@@ -14,7 +14,7 @@ class VariationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class VariationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -41,7 +41,7 @@ class VariationController extends Controller
                     return $variation->name;
                 })
                 ->editColumn('values', function ($variation) {
-                    $output = ''; 
+                    $output = '';
                     foreach ($variation as $attr) {
                         $id = $variation->id;
                         $models = VariationTemplateDetails::where('variation_template_id', $id)->get();
@@ -105,7 +105,7 @@ class VariationController extends Controller
 
         // Activity Log
         activity()->log('Created a Variation Template - ' . $name );
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Variaion Created') , 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Variaion Created') , 'load' => false]);
     }
 
     /**
@@ -128,10 +128,10 @@ class VariationController extends Controller
     public function edit($id)
     {
         $model = VariationTemplate::findOrFail($id);
-        
+
         // all variation template values
         $models = VariationTemplateDetails::where('variation_template_id', $id)->get();
-        
+
         return view('admin.production.variation.edit', compact('model', 'models'));
     }
 
@@ -157,7 +157,7 @@ class VariationController extends Controller
 
         $values = $request->value;
         foreach($values as $key => $item) {
-            
+
             $variation_details_id = $key;
             $variation_details_value = $item;
 

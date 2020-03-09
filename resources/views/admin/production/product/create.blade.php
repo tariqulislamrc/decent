@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-4"><input type="text" name="prefix" id="prefix" class="form-control"
                     placeholder="Prefix" value="{{$code_prefix}}" required></div>
-                    <div class="col-md-8"> <input type="text" name="code" id="code" class="form-control"placeholder="Code Here" required value="{{$uniqu_id}}"></div>
+                    <div class="col-md-8"> <input type="text" name="code" id="code" class="form-control"placeholder="Code Here" value="{{$uniqu_id}}"></div>
                 </div>
             </div>
             {{-- Articel --}}
@@ -57,7 +57,7 @@
                     @foreach ($categorys as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach
-                    
+
                 </select>
                 <div class="input-group-append">
                     <span class="btn btn-info btn-modal" id="btn-modal" data-url="{{ route('admin.remort_production_category') }}" data-container=".category_modal">+</span>

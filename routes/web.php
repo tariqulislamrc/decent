@@ -107,7 +107,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('/employee-qua/edit/{id}', 'Employee\QualificationController@edit')->name('employee-qua.edit');
 			Route::patch('/employee-qua/update/{id}', 'Employee\QualificationController@update')->name('employee-qua.update');
 			Route::delete('/employee-qua/destroy/{id}', 'Employee\QualificationController@destroy')->name('employee-qua.destroy');
-			
+
 		// Route for Employee Account Info
 			Route::get('/ajax/account_info', 'Employee\AccountController@account_info')->name('ajax.account_info');
 			Route::get('/ajax/account/info/{id}', 'Employee\AccountController@create')->name('account.create');
@@ -119,7 +119,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		// Route for Employee Designation Info
 			Route::get('/ajax/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
-			
+
 			// Route for Employee Designation add for
 				Route::get('/designation_history/add', 'Employee\DesignationController@add_desig')->name('designation.add');
 			Route::get('/designation_history/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
@@ -224,8 +224,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('get-unit-of-product/{id}', 'Production\ProductController@get_product');
 			Route::get('production-product/product-add', 'Production\ProductController@product_add')->name('production-product.product_add');
 			Route::get('production-product-datatable', 'Production\ProductController@datatable')->name('product.datatable');
-			Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+    Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+    Route::get('production-product/variations/{id}', 'Production\ProductController@show_variation_form')->name('production-product.variation');
+
 			Route::resource('production-product', 'Production\ProductController');
+
 
 
 		// Production wop-materials Route
@@ -292,7 +295,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('member-list', 'Configuration\Member\MemberController');
 
 
-		
+
 		// Employee Section End
 
 
@@ -405,6 +408,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	});
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Tariqul Islam
+
+
 });
 
 
@@ -416,4 +423,4 @@ Route::post('install/process_install', 'Install\InstallController@process_instal
 Route::get('install/create_user', 'Install\InstallController@create_user');
 Route::post('install/store_user', 'Install\InstallController@store_user');
 Route::get('install/system_settings', 'Install\InstallController@system_settings');
-Route::post('install/finish', 'Install\InstallController@final_touch');	
+Route::post('install/finish', 'Install\InstallController@final_touch');
