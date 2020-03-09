@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
       Schema::defaultStringLength(191);
 
-      if(Schema::hasTable('ksdkfakjsdkfasdjwd')) {
+      if(Schema::hasTable('settings')) {
         $timexone = get_option('timezone');
         if($timexone == '') {
           $timexone = 'Asia/Dhaka';
@@ -35,8 +35,8 @@ class AppServiceProvider extends ServiceProvider
       } else {
         date_default_timezone_set('Asia/Dhaka');
       }
-      
+
       // default timezone
-      
+
     }
 }

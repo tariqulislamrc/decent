@@ -24,4 +24,8 @@ class Depertment extends Model
     function store_request(){
         return $this->hasMany(StoreRequest::class);
     }
+
+   function depertment_request(){
+        return $this->hasMany(DepertmentStore::class);
+    }
 }

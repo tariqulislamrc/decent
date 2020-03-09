@@ -12,7 +12,7 @@
                         <div class="input-group">
                         <select name="unit_id" id="unit_id" data-placeholder="Select One" class="form-control select unit_append" required>
                             <option value="">Select One</option>
-                            @foreach ($models as $item)     
+                            @foreach ($models as $item)
                             <option value="{{$item->id}}">{{$item->unit}}</option>
                             @endforeach
                         </select>
@@ -25,7 +25,7 @@
                     <div class="col-md-6 form-group">
                         <label for="name">{{_lang('Raw Metrials Name')}} <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Enter Raw Metrials name" required>
-                        
+
                     </div>
 
                      {{-- Production Raw Metrials price --}}
@@ -36,7 +36,7 @@
                     {{-- Production Raw Metrials description --}}
                     <div class="col-md-6 form-group">
                         <label for="description">{{_lang('Description')}}</label>
-                        <textarea name="description" class="form-control" id="" placeholder="Enter Description"></textarea>    
+                        <textarea name="description" class="form-control" id="" placeholder="Enter Description"></textarea>
                     </div>
                     {{-- Production Ingredients Status --}}
                     <div class="col-md-12 form-group">
@@ -58,5 +58,7 @@
     </div>
 </div>
 <script>
-    $('.select').select2();
+    $('.select').select2({
+        width: '90%'
+    });
 </script>

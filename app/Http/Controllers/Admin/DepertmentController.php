@@ -7,6 +7,7 @@ use App\models\Production\IngredientsCategory;
 use App\models\depertment\Depertment;
 use App\models\depertment\DepertmentEmployee;
 use App\models\depertment\DepertmentIgCategory;
+use App\models\depertment\DepertmentStore;
 use App\models\employee\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -207,5 +208,11 @@ class DepertmentController extends Controller
         $ing_category =DepertmentIgCategory::find($id);
         $ing_category->forceDelete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
+    }
+
+    public function approve_request($id)
+    {
+        $model =DepertmentStore::find($id);
+        return view('admin.depertment.approve_request',compact('model'));
     }
 }

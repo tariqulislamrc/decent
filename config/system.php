@@ -5,6 +5,8 @@ return [
 		'admin' => 'Super Admin',
 	],
 
+    'site_title' => env('APP_NAME'),
+
 	'default_permission' => [
 		'user' => [
 			'user.view' => [],

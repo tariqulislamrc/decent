@@ -37,7 +37,7 @@ class PurchaseController extends Controller
                     return $document->employee->name;
                 })
                 ->editColumn('brand_id', function ($document) {
-                    return $document->brand->name;
+                    return $document->brand? $document->brand->name:'';
                 })
                 ->editColumn('status', function ($document) {
                     if ($document->status == 'Received') {
@@ -48,9 +48,18 @@ class PurchaseController extends Controller
                         return '<span class="badge badge-info">' . 'Ordered' . '</span>';
                     }
                 })
+                ->editColumn('payment_status', function ($document) {
+                    if ($document->payment_status == 'Paid') {
+                        return '<span class="badge badge-success">' . 'Paid' . '</span>';
+                    } else if($document->payment_status == 'Partial') {
+                        return '<span class="badge badge-info">' . 'Partial' . '</span>';
+                    } else if($document->payment_status == 'Due') {
+                        return '<span class="badge badge-info">' . 'Due' . '</span>';
+                    }
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.purchase.action', compact('model'));
-                })->rawColumns(['action','status'])->make(true);
+                })->rawColumns(['action','status', 'payment_status'])->make(true);
         }
     }
 
@@ -70,6 +79,7 @@ class PurchaseController extends Controller
         $type = $request->type;
         $models = Employee::all();
         $workorders = WorkOrder::where('status', '=', 'requisition')->get();
+        $uniqu_id = generate_id('purchase', false);
         return view('admin.production.purchase.create', compact('models', 'workorders','type'));
     }
 
@@ -83,9 +93,21 @@ class PurchaseController extends Controller
     {
         $request->validate([
             'purchase_by' => 'required',
+            'status' => 'required',
+            'invoice_no' => 'unique:transactions',
         ]);
 
-        $invoice_no = $request->invoice_no;
+        $code_prefix = get_option('invoice_code_prefix');
+        $code_digits = get_option('digits_invoice_code');
+        $uniqu_id = generate_id('purchase', false);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+        
+        if($request->invoice_no){
+            $invoice_no = $request->invoice_no;
+        }else{
+            $invoice_no = $code_prefix . $uniqu_id;
+        }
+        
         $wo_id = $request->wo_id;
 
         $brand_id = '';
@@ -94,12 +116,22 @@ class PurchaseController extends Controller
             $brand_id = $brand->brand_id;
         }
 
+        if ($request->payment == 0) {
+            $type = 'Due';
+        } else if($request->payment_due_hidden > 0){
+            $type = 'Partial';
+        }else{
+            $type = 'Paid';
+        }
+
         $model = new Transaction;
+        
         $model->purchase_by = $request->purchase_by;
         $model->reference_no = $request->reference_no;
         $model->invoice_no = $invoice_no;
         $model->date = $request->purchase_date;
-        $model->type = 'Purchase';
+        $model->type = 'debit';
+        $model->transaction_type = 'Purchase';
         $model->work_order_id = $wo_id;
         $model->brand_id = $brand_id;
         $model->status = $request->status;
@@ -110,7 +142,7 @@ class PurchaseController extends Controller
         $model->net_total = $request->final_total;
         $model->paid = $request->payment;
         $model->due = $request->payment_due_hidden;
-        $model->payment_status = 'debit';
+        $model->payment_status = $type;
         $model->stuff_note = $request->stuff_notes;
         $model->sell_note = $request->sell_notes;
         $model->transaction_note = $request->transaction_notes;
@@ -118,24 +150,35 @@ class PurchaseController extends Controller
         $model->created_by = Auth::user()->id;
         $model->save();
         $id = $model->id;
-
-        if ($request->wo_id) {
-           $workorders = WorkOrder::findOrFail($request->wo_id);
-           $workorders->transaction_status = 'transaction';
-           $workorders->save();
+        
+        
+        if ($wo_id) {
+            $workorders = WorkOrder::findOrFail($wo_id);
+            $workorders->transaction_status = 'transaction';
+            $workorders->save();
         }
 
         for ($i = 0; $i < count($request->raw_material); $i++) {
+            
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
             $purchase->raw_material_id = $request->raw_material[$i];
+            $purchase->product_id = $request->product_id[$i];
             $purchase->qty = $request->qty[$i];
             $purchase->return_qty = '';
             $purchase->price = $request->unit_price[$i];
             $purchase->unit_id = $request->unit_id[$i];
             $purchase->line_total = $request->price[$i];
+            $purchase->waste = $request->waste[$i];
+            $purchase->uses = $request->uses[$i];
             $purchase->created_by = auth()->user()->id;
             $purchase->save();
+
+            $raw = RawMaterial::findOrFail($request->raw_material[$i]);
+            
+            $stock = $raw->stock + $request->qty[$i];
+            $raw->stock = $stock;
+            $raw->save();
         }
 
 
@@ -147,10 +190,12 @@ class PurchaseController extends Controller
             $payment->transaction_no = $request->transaction_no;
             $payment->amount = $request->payment;
             $payment->note = $request->payment_note;
-            $payment->type = 'debit';
+            $payment->type = $type;
             $payment->created_by = auth()->user()->id;
             $payment->save();
         }
+
+        generate_id('purchase', true);
 
         // Activity Log
         activity()->log('Created a Purchase - ' . Auth::user()->id);
@@ -177,7 +222,39 @@ class PurchaseController extends Controller
     public function payment($id)
     {
         $model = Transaction::findOrFail($id);
-        return view('admin.production.purchase.details', compact('model'));
+        return view('admin.production.purchase.payment', compact('model'));
+    }
+
+    public function add_payment(Request $request, $id)
+    {
+        if ($request->due_amount > 0) {
+            $type = 'Partial';
+        }else if($request->due_amount == 0){
+            $type = 'Paid';
+        }
+
+        $payment = new TransactionPayment;
+        $payment->transaction_id = $id;
+        $payment->method = $request->method;
+        $payment->payment_date = $request->payment_date;
+        $payment->transaction_no = $request->transaction_no;
+        $payment->amount = $request->paid_amount;
+        $payment->note = $request->payment_note;
+        $payment->type = $type;
+        $payment->created_by = auth()->user()->id;
+        $payment->save();
+
+        $transaction = Transaction::findOrFail($id);
+        $new_paid = $transaction->paid + $request->paid_amount;
+        $transaction->paid = $new_paid;
+        $transaction->payment_status = $type;
+        $transaction->due = $request->due_amount;
+        $transaction->save();
+
+        // Activity Log
+        activity()->log('Add Payment - ' . Auth::user()->id);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update Successfuly')]);
+
     }
 
     /**
@@ -188,7 +265,8 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
-        //
+        $model = Transaction::findOrFail($id);
+        return view('admin.production.purchase.edit', compact('model'));
     }
 
     /**
@@ -200,7 +278,52 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $model = Transaction::findOrFail($id);
+        $model->reference_no = $request->reference_no;
+        $model->date = $request->purchase_date;
+        $model->status = $request->status;
+        $model->sub_total = $request->total_before_tax;
+        $model->discount = $request->discount_amount;
+        $model->discount_type = $request->discount_type;
+        $model->discount_amount = $request->total_discount_amount;
+        $model->net_total = $request->final_total;
+        $model->paid = $request->payment;
+        $model->due = $request->payment_due_hidden;
+        $model->stuff_note = $request->stuff_notes;
+        $model->sell_note = $request->sell_notes;
+        $model->transaction_note = $request->transaction_notes;
+        $model->tek_marks = 0;
+        $model->updated_by = Auth::user()->id;
+        $model->save();
+
+        $type = Purchase::where('transaction_id', $id)->delete();
+
+        for ($i = 0; $i < count($request->raw_material); $i++) {
+            $purchase = new Purchase;
+            $purchase->transaction_id = $id;
+            $purchase->raw_material_id = $request->raw_material[$i];
+            $purchase->product_id = $request->product_id[$i];
+            $purchase->qty = $request->qty[$i];
+            $purchase->return_qty = '';
+            $purchase->price = $request->unit_price[$i];
+            $purchase->unit_id = $request->unit_id[$i];
+            $purchase->line_total = $request->price[$i];
+            $purchase->waste = $request->waste[$i];
+            $purchase->uses = $request->uses[$i];
+            $purchase->created_by = auth()->user()->id;
+            $purchase->save();
+
+            $raw = RawMaterial::findOrFail($request->raw_material[$i]);
+            $stock = $raw->stock + $request->qty[$i];
+            $raw->stock = $stock;
+            $raw->save();
+        }
+
+
+        // Activity Log
+        activity()->log('Updated a Purchase - ' . Auth::user()->id);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfuly')]);
     }
 
     /**
@@ -211,7 +334,9 @@ class PurchaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $type = Transaction::where('wo_id', $id)->delete();
+        $type = TransactionPayment::where('transaction_id', $id)->delete();
+        $type = Purchase::where('transaction_id', $id)->delete();
     }
 
 

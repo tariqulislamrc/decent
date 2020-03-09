@@ -107,7 +107,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('/employee-qua/edit/{id}', 'Employee\QualificationController@edit')->name('employee-qua.edit');
 			Route::patch('/employee-qua/update/{id}', 'Employee\QualificationController@update')->name('employee-qua.update');
 			Route::delete('/employee-qua/destroy/{id}', 'Employee\QualificationController@destroy')->name('employee-qua.destroy');
-			
+
 		// Route for Employee Account Info
 			Route::get('/ajax/account_info', 'Employee\AccountController@account_info')->name('ajax.account_info');
 			Route::get('/ajax/account/info/{id}', 'Employee\AccountController@create')->name('account.create');
@@ -119,7 +119,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		// Route for Employee Designation Info
 			Route::get('/ajax/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
-			
+
 			// Route for Employee Designation add for
 				Route::get('/designation_history/add', 'Employee\DesignationController@add_desig')->name('designation.add');
 			Route::get('/designation_history/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
@@ -224,8 +224,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('get-unit-of-product/{id}', 'Production\ProductController@get_product');
 			Route::get('production-product/product-add', 'Production\ProductController@product_add')->name('production-product.product_add');
 			Route::get('production-product-datatable', 'Production\ProductController@datatable')->name('product.datatable');
-			Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+    Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+    Route::get('production-product/variations/{id}', 'Production\ProductController@show_variation_form')->name('production-product.variation');
+
 			Route::resource('production-product', 'Production\ProductController');
+
 
 
 		// Production wop-materials Route
@@ -233,7 +236,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-wop-materials/product', 'Production\WopMaterialController@product')->name('wop-materials.product');
 			Route::resource('production-wop-materials', 'Production\WopMaterialController');
 
-		// Production wop-materials Route
+		// Production Purchase Route
 			Route::get('production-purchase/datatable', 'Production\PurchaseController@datatable')->name('purchase.datatable');
 			Route::get('production-purchase/product', 'Production\PurchaseController@product')->name('purchase.product');
 			Route::get('production-purchase/material', 'Production\PurchaseController@material')->name('purchase.material');
@@ -245,6 +248,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-purchase/request', 'Production\PurchaseController@request')->name('production-purchase.request');
 			Route::get('production-purchase/details/{id}', 'Production\PurchaseController@details')->name('production-purchase.details');
 			Route::get('production-purchase/payment/{id}', 'Production\PurchaseController@payment')->name('production-purchase.payment');
+			Route::patch('production-purchase/add_payment/{id}', 'Production\PurchaseController@add_payment')->name('production-purchase.add_payment');
 			Route::resource('production-purchase', 'Production\PurchaseController');
 			// Client:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
@@ -291,7 +295,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('member-list', 'Configuration\Member\MemberController');
 
 
-		
+
 		// Employee Section End
 
 
@@ -365,6 +369,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
 		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
@@ -378,6 +383,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('request/datatable', 'StoreRequestController@datatable')->name('request.datatable');
 		Route::get('request/get_prev_request','StoreRequestController@get_prev_request')->name('request.get_reques_prev');
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
+		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
 		Route::resource('request', 'StoreRequestController');
 
 
@@ -402,6 +408,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	});
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Tariqul Islam
+
+
 });
 
 
@@ -413,4 +423,4 @@ Route::post('install/process_install', 'Install\InstallController@process_instal
 Route::get('install/create_user', 'Install\InstallController@create_user');
 Route::post('install/store_user', 'Install\InstallController@store_user');
 Route::get('install/system_settings', 'Install\InstallController@system_settings');
-Route::post('install/finish', 'Install\InstallController@final_touch');	
+Route::post('install/finish', 'Install\InstallController@final_touch');

@@ -92,31 +92,30 @@
 
                   <h3 class="bg-info text-center py-2">Store Request</h3>
                   <div class="row">
-                      <table class="table table-bordered">
+                      <table class="table table-bordered example">
                           <thead>
                               <tr>
                                   <th>{{ _lang('Date') }}</th>
-                                  <th>{{ _lang('Material') }}</th>
                                   <th>{{ _lang('Status') }}</th>
+                                  <th>{{ _lang('Total Materials Qty') }}</th>
                                   <th>{{ _lang('Action') }}</th>
                               </tr>
                           </thead>
                           <thead>
-                              @foreach ($model->store_request as $store)
+                              @foreach ($model->depertment_request as $store)
                              {{--  {{ dd($category) }} --}}
                                 <tr>
                                     <td>{{ formatDate($store->request_date) }}</td>
                                      <td>
-                                      {{$store->material?$store->material->name:''}}
-                                     </td>
-                                     <td>
                                        {{ $store->status }}
                                      </td>
                                      <td>
-                                      @if ($store->status=='Approve')
-                                        <a href="{{ route('admin.department.flow',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('Flow') }}</a>
-                                      @endif
-                                       <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
+                                       {{ $store->store_request->sum('qty') }}
+                                     </td>
+                                     <td>
+                                        <a href="{{ route('admin.department.approve_request',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('View') }}
+                                        </a>
+                                       <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.mainrequest.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
                                        </a>
                                      </td>
 
@@ -138,6 +137,8 @@
     <script type="text/javascript" src="{{asset('backend/js/plugins/dataTables.bootstrap.min.js')}}"></script>
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     <script src="{{ asset('js/department/department_details.js') }}"></script>
-
+    <script>
+      $('.example').DataTable();
+    </script>
 @endpush
 

@@ -80,12 +80,15 @@ function gbv($params, $keys) {
 }
 
 if (!function_exists('get_option')) {
-	function get_option($name) {
+	function get_option($name, $default = null) {
+	    if(!\Illuminate\Support\Facades\Schema::hasTable('settings')){
+	        return config('system.'.$name);
+        }
 		$setting = DB::table('settings')->where('name', $name)->get();
 		if (!$setting->isEmpty()) {
 			return $setting[0]->value;
 		}
-		return "";
+		return $default;
 
 	}
 }
@@ -138,7 +141,7 @@ function tz_list() {
 	return $zones_array;
 }
 
-// currency list 
+// currency list
 function curency() {
 	return $currency = [
 		'AED' => '&#1583;.&#1573;', // ?
@@ -303,13 +306,13 @@ function curency() {
 	];
 }
 
-// format date 
+// format date
 function carbonDate($date){
 	$dtobj = Carbon\Carbon::parse($date);
 		return $dtformat = $dtobj->format(get_option('date_format'));
 }
 
-// format time 
+// format time
 function carbonTime($date){
 	$dtobj = Carbon\Carbon::parse($date);
 	return $dtformat = $dtobj->format(get_option('time_format'));
@@ -322,9 +325,9 @@ function generate_id($id_type, $update = false){
 	if ($update) {
 	  $last_id = IdGenerator::updateOrCreate(['id_type' => $id_type], ['id_no' => $id]);
 	  $id = $last_id->id_no;
-	} 
+	}
       return $id;
-	
+
 }
 
 function numer_padding($id, $code_digits=3){
@@ -347,7 +350,7 @@ function numer_padding($id, $code_digits=3){
     	$dept = App\models\employee\Department::where('id',$dept_id)->first();
     	return  $dept ? $dept->name: "";
 	}
-	
+
 
     function to_date($start_date , $end_date){
 		$datetime1 = new DateTime($start_date);
