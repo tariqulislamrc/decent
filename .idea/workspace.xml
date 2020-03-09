@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="" />
+    <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/production/product/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/production/product/create.blade.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -142,6 +146,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -175,6 +180,7 @@
       <workItem from="1583644669528" duration="9707000" />
       <workItem from="1583730469097" duration="5229000" />
       <workItem from="1583739182424" duration="863000" />
+      <workItem from="1583746346513" duration="542000" />
     </task>
     <servers />
   </component>
@@ -189,9 +195,9 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="688" y="303" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1583689882325" />
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1583663171139">
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1583746852409">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583663171139" />
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583746852409" />
   </component>
 </project>

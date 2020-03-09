@@ -57,7 +57,7 @@
                     @foreach ($categorys as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach
-                    
+
                 </select>
                 <div class="input-group-append">
                     <span class="btn btn-info btn-modal" id="btn-modal" data-url="{{ route('admin.remort_production_category') }}" data-container=".category_modal">+</span>
