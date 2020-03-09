@@ -12,6 +12,7 @@ use App\models\depertment\Depertment;
 use App\models\depertment\DepertmentStore;
 use App\models\depertment\StoreRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\DataTables;
 
@@ -113,7 +114,7 @@ class StoreRequestController extends Controller
      */
     public function show($id)
     {
-        $model =DepertmentStore::find($id);
+        $model =DepertmentStore::findOrFail($id);
         return view('admin.depertment.request.show',compact('model'));
 
     }
@@ -126,7 +127,7 @@ class StoreRequestController extends Controller
      */
     public function edit($id)
     {
-        $model =StoreRequest::find($id);
+        $model =StoreRequest::findOrFail($id);
         $approve_item =$model->approve_store_item->sum('qty');
         return view('admin.depertment.request.edit',compact('model','approve_item'));
     }
@@ -140,7 +141,7 @@ class StoreRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $model =StoreRequest::find($id);
+        $model =StoreRequest::findOrFail($id);
         $approve_item =$model->approve_store_item->sum('qty');
         if ($request->qty ==0) {
             throw ValidationException::withMessages(['message' => _lang('You can not approve zero qty')]);
@@ -164,6 +165,10 @@ class StoreRequestController extends Controller
         $approve->updated_by=auth()->user()->id;
         $approve->approve_date=date('Y-m-d');
         $approve->save();
+        //row material stock update
+        $material=$approve->material;
+        $material->stock =$material->stock-$request->qty;
+        $material->save();
         $this->status_change($model->depertment_store_id);
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'goto'=>route('admin.request.index')]);
@@ -190,7 +195,7 @@ class StoreRequestController extends Controller
 
     private function status_change($id)
     {
-        $dept_store =DepertmentStore::find($id);
+        $dept_store =DepertmentStore::findOrFail($id);
         $request_count =$dept_store->store_request->count();
         $approve_count =$dept_store->store_request()->where('status','Approve')->count();
         if ($request_count==$approve_count) {
@@ -212,7 +217,7 @@ class StoreRequestController extends Controller
 
     public function request_form($type,$id)
     {
-       $depert =Depertment::find($id);
+       $depert =Depertment::findOrFail($id);
 
         return view('admin.depertment.request.request',compact('depert','type'));  
     }
@@ -325,8 +330,15 @@ class StoreRequestController extends Controller
 
     public function depertmentflow($id)
     {
-        $model =ApproveStoreItem::find($id);
+        $model =ApproveStoreItem::findOrFail($id);
         $depertment =Depertment::select('id','name')->get()->except($model->depertment_id);
+
+        $products = ApproveStoreItem::
+              join('work_order_products', 'approve_store_items.work_order_id', '=', 'work_order_products.workorder_id')
+            ->join('products', 'work_order_products.product_id', '=', 'products.id')
+            ->select('products.*')
+            ->first();
+            dd($products);
         return view('admin.depertment.request.flow.depertmentflow',compact('model','depertment'));
     }
 }

@@ -11,6 +11,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+     <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <form action="{{route('admin.request.store')}}" method="post" class="ajax_form"
     enctype="multipart/form-data">
     @csrf

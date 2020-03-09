@@ -11,6 +11,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+<a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <div class="card">
     <div class="card-header">
         <h6>{{_lang('Send Store Request ')}}</h6>

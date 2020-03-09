@@ -14,6 +14,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
+           <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
                 <div class="tile-body">
                   <div class="row">
                       <div class="col-md-5">
@@ -34,7 +35,9 @@
                                   <tr>
                                       <th>{{ _lang('Store Request') }}</th>
                                       <th>
-                                          <a href="{{ route('admin.request.department',$model->id) }}" class="btn btn-success" target="_blank">{{ _lang('Request') }}
+                                          <a href="{{ route('admin.request.department',$model->id) }}" class="btn btn-success" target="_blank">
+                                            <i class="fa fa-share-square" aria-hidden="true"></i>
+                                            {{ _lang('Send Request') }}
                                           </a>
                                       </th>
                                   </tr>
@@ -63,7 +66,7 @@
                           </table>
                       </div>
                   </div>
-                  <h3 class="bg-info text-center py-2">Production ingredients category</h3>
+                  <h3 class="bg-success text-center py-2">Production ingredients category</h3>
                   <div class="row">
                       <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.depertment_new_category',$model->id) }}">
                         <i class="fa fa-plus-square mr-2" aria-hidden="true"></i>
@@ -90,7 +93,7 @@
                       </table>
                   </div>
 
-                  <h3 class="bg-info text-center py-2">Store Request</h3>
+                  <h3 class="bg-success text-center py-2">Store Request</h3>
                   <div class="row">
                       <table class="table table-bordered example">
                           <thead>
@@ -113,7 +116,7 @@
                                        {{ $store->store_request->sum('qty') }}
                                      </td>
                                      <td>
-                                        <a href="{{ route('admin.department.approve_request',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('View') }}
+                                        <a href="{{ route('admin.department.approve_request',$store->id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('View') }}
                                         </a>
                                        <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.mainrequest.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
                                        </a>

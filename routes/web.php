@@ -360,13 +360,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		/*::::::::::::::Depertment:::::::::*/
 		Route::get('department/datatable', 'DepertmentController@datatable')->name('department.datatable');
-		Route::get('depertment/employee/{id}','DepertmentController@new_employee')->name('depertment_new_employee');
-		Route::post('depertment/newemployee','DepertmentController@new_employee_add')->name('depertment_new_employee_add');
-		Route::delete('depertment/employee/delete/{id}', 'DepertmentController@employee_destroy')->name('depertment.employee.delete');
-		Route::get('depertment/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
+		Route::get('department/employee/{id}','DepertmentController@new_employee')->name('depertment_new_employee');
+		Route::post('department/newemployee','DepertmentController@new_employee_add')->name('depertment_new_employee_add');
+		Route::delete('department/employee/delete/{id}', 'DepertmentController@employee_destroy')->name('depertment.employee.delete');
+		Route::get('department/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
-		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
-		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
+		Route::delete('department/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+		Route::get('department/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
