@@ -50,7 +50,7 @@ class WorkOrderController extends Controller
         $models = Product::all();
         $code_prefix = get_option('work_order_code_prefix');
         $code_digits = get_option('digits_work_order_code');
-        $uniqu_id = generate_id('employee', false);
+        $uniqu_id = generate_id('workorder', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
 
         return view('admin.production.work_order.create',compact('brand','models','code_prefix','code_digits','uniqu_id'));
@@ -101,6 +101,7 @@ class WorkOrderController extends Controller
                 $line_purchase->save();
             }
         }
+        generate_id("workorder", true);
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'),'load'=>true]);

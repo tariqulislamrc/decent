@@ -1,6 +1,6 @@
-    <tr>
+   <tr>
 	<td>
-		<input type="hidden" name="raw_material[]" value="" class="pid">
+    <input type="hidden" name="raw_material[]" value="{{$item->id}}" class="pid">
 	</td>
 	<td>
         <input type="text" class="form-control qty qty" id="qty" name="qty[]"

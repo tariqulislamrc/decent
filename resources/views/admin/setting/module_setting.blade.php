@@ -87,6 +87,20 @@
                                 </div>
 
 
+                               <hr> <h3 class="text-center">Purchase Invoice Configaration</h3><hr>
+                                <div class="row">
+                                    {{-- Production Invoice Code Prefix --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('invoice_code_prefix', _lang('Invoice Code Prefix') , ['class' => 'col-form-label ']) }}
+                                        {{ Form::text('invoice_code_prefix', get_option('invoice_code_prefix'), ['class' => 'form-control', 'placeholder' => _lang('Type Invoice Code Prefix')]) }}
+                                    </div>
+                                    {{-- Digits Production Code --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('digits_invoice_code', _lang('Digits Invoice Code') , ['class' => 'col-form-label ']) }}
+                                        {{ Form::text('digits_invoice_code', get_option('digits_invoice_code'), ['class' => 'form-control', 'placeholder' => _lang('Type Digits Invoice Code')]) }}
+                                    </div>
+                                </div>
+
                                <hr> <h3 class="text-center">Leave Configaration</h3><hr>
                                 <div class="row">
                                     {{--Leave Holiday Calculation Mode --}}

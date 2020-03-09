@@ -1,7 +1,8 @@
 @foreach ($models as $item)
     <tr>
 	<td>
-		<input type="hidden" name="raw_material[]" value="{{ $item->id }}" class="pid">
+		<input type="hidden" name="raw_material[]" value="{{ $item->material_id }}" class="pid">
+		<input type="hidden" name="product_id[]" value="{{ $item->product->id }}">
 		{{ $item->product->name }}({{ $item->product->articel }})
 	</td>
 	<td>

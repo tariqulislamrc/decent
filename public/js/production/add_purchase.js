@@ -239,12 +239,19 @@ $(document).on('change', '#raw_material', function () {
 
 
     // invoice calculation 
-    $("#data").delegate('#unit_price, #qty', 'keyup blur', function () {
+    $("#data").delegate('#unit_price, #qty,#waste', 'keyup blur', function () {
         var tr = $(this).parent().parent();
         var quantity = tr.find("#qty").val();
         var price = tr.find("#unit_price").val();
+        var waste = tr.find("#waste").val();
+        if (waste >= 100) {
+            alert("Waste Can't Getter then 100%");
+            tr.find(".waste").val('');
+        }
         var amt = quantity * price;
+        var uses = 100 - waste;
         tr.find(".price").val(amt);
+        tr.find(".uses").val(uses);
 
         $("#discount_calculated_amount").html('');
         $("#total_discount_amount").val('');

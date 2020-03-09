@@ -1,7 +1,8 @@
 @foreach ($models->wop_material as $item)
     <tr>
 	<td>
-		<input type="hidden" name="raw_material[]" value="{{ $item->raw_material_id }}" class="pid">
+        <input type="hidden" name="raw_material[]" value="{{ $item->raw_material_id }}" class="pid">
+        <input type="hidden" name="product_id[]" value="{{ $item->work_order_product->product->id }}">
 		{{ $item->work_order_product->product->name }}({{ $item->work_order_product->product->articel }})
 	</td>
 	<td>
