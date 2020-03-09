@@ -60,7 +60,7 @@ class ProductController extends Controller
         $models = RawMaterial::all();
         $code_prefix = get_option('production_code_prefix');
         $code_digits = get_option('digits_production_code');
-        $uniqu_id = generate_id('employee', false);
+        $uniqu_id = generate_id('product', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
 
         // retrurn the employee create page
@@ -85,8 +85,6 @@ class ProductController extends Controller
             'status' => 'required',
             'photo' => 'mimes:jpeg,jpg,png | max:2000',
         ]);
-
-        
 
 
             $uuid =  Str::uuid()->toString();
@@ -137,6 +135,8 @@ class ProductController extends Controller
                 $purchase->save();
             }
 
+        generate_id("product", true);
+
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.production-product.index')]);
 
     }
@@ -171,7 +171,7 @@ class ProductController extends Controller
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
 
         // retrurn the employee create page
-        return view('admin.production.product.edit', compact('product','models', "categorys", "code_prefix", "uniqu_id"));
+        return view('admin.production.product.edit', compact('product','models', "categorys"));
     }
 
     /**
