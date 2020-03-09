@@ -75,7 +75,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'prefix' => 'required',
             'code' => 'required',
