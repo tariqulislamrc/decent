@@ -288,8 +288,6 @@ class PurchaseController extends Controller
         $model->discount_type = $request->discount_type;
         $model->discount_amount = $request->total_discount_amount;
         $model->net_total = $request->final_total;
-        $model->paid = $request->payment;
-        $model->due = $request->payment_due_hidden;
         $model->stuff_note = $request->stuff_notes;
         $model->sell_note = $request->sell_notes;
         $model->transaction_note = $request->transaction_notes;
@@ -315,8 +313,10 @@ class PurchaseController extends Controller
             $purchase->save();
 
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
-            $stock = $raw->stock + $request->qty[$i];
-            $raw->stock = $stock;
+            $stock = $raw->stock;
+            $old_qty = $request->old_qty[$i];
+            $new_stock = ($stock - $old_qty) + $request->qty[$i];
+            $raw->stock = $new_stock;
             $raw->save();
         }
 
