@@ -13,44 +13,46 @@
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
+      <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
       <div class="tile-body">
-        <h3 class="bg-info text-center py-2">Store Request</h3>
-                  <div class="row">
-                      <table class="table table-bordered">
-                          <thead>
-                              <tr>
-                                  <th>{{ _lang('Date') }}</th>
-                                  <th>{{ _lang('Material') }}</th>
-                                  <th>{{ _lang('Approved Qty') }}</th>
-                                  <th>{{ _lang('Action') }}</th>
-                              </tr>
-                          </thead>
-                          <thead>
-                              @foreach ($model->store_request as $element)
-                                @foreach ($element->approve_store_item as $store)
-                                <tr>
-                                    <td>{{ formatDate($store->request_date) }}</td>
-                                     <td>
-                                      {{$store->material?$store->material->name:''}}
-                                     </td>
-                                     <td>
-                                       {{ $store->qty }}
-                                     </td>
-                                     <td>
-                                        <a href="{{ route('admin.department.flow',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('Flow') }}
-                                        </a>
-                                       <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
-                                       </a>
-                                     </td>
 
-                                </tr>
-                                   @endforeach
-                              @endforeach
-                          </thead>
-                      </table>
-                  </div>
+        <h3 class="bg-info text-center py-2">Store Request</h3>
+        <div class="row">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>{{ _lang('Date') }}</th>
+                <th>{{ _lang('Material') }}</th>
+                <th>{{ _lang('Approved Qty') }}</th>
+                <th>{{ _lang('Action') }}</th>
+              </tr>
+            </thead>
+            <thead>
+              @foreach ($model->store_request as $element)
+              @foreach ($element->approve_store_item as $store)
+              <tr>
+                <td>{{ formatDate($store->request_date) }}</td>
+                <td>
+                  {{$store->material?$store->material->name:''}}
+                </td>
+                <td>
+                  {{ $store->qty }}
+                </td>
+                <td>
+                  <a href="{{ route('admin.department.flow',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('Flow') }}
+                  </a>
+                  <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
+                  </a>
+                </td>
+              </tr>
+              @endforeach
+              @endforeach
+            </thead>
+          </table>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 <!-- /basic initialization -->
