@@ -203,30 +203,24 @@
                 
 
                     <tr>
-                        <td colspan="4">
+                        <td colspan="">
                             <div class="form-group">
                                 <label for="stuff_notes">Stuff Notes</label>
-                                <textarea class="form-control" rows="3" name="stuff_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="stuff_notes" cols="50"
                                     id="stuff_notes"></textarea>
                             </div>
                         </td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
+                        <td colspan="">
                             <div class="form-group">
                                 <label for="sell_notes">Sell Notes</label>
-                                <textarea class="form-control" rows="3" name="sell_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="sell_notes" cols="50"
                                     id="sell_notes"></textarea>
                             </div>
                         </td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
+                        <td colspan="2">
                             <div class="form-group">
                                 <label for="transaction_notes">Transaction Notes</label>
-                                <textarea class="form-control" rows="3" name="transaction_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="transaction_notes" cols="50"
                                     id="transaction_notes"></textarea>
                             </div>
                         </td>

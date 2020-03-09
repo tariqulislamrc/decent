@@ -16,6 +16,7 @@
 <!-- Basic initialization -->
 <form action="{{route('admin.production-purchase.update', $model->id)}}" method="post" id="content_form">
     @csrf
+    @method('PATCH')
     <div class="card">
         <div class="card-header">
             <h6>{{_lang('Edit Purchase ')}}</h6>
@@ -145,10 +146,13 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="raw_material[]" value="{{ $item->raw_material_id }}" class="pid">
+                                <input type="hidden" name="product_id[]" value="{{ $item->product?$item->product->id:'' }}">
                                  {{ $item->product?$item->product->name:'' }}({{  $item->product?$item->product->articel:'' }})
                             </td>
                             <td>
-                                <input type="text" class="form-control qty qty" id="qty" name="qty[]"
+                                <input type="text" class="form-control qty" id="qty" name="qty[]"
+                                    value="{{ $item->qty }}">
+                                    <input type="hidden" class="form-control qty" name="old_qty[]"
                                     value="{{ $item->qty }}">
                             </td>
                             <td>
@@ -244,35 +248,28 @@
 
 
                     <tr>
-                        <td colspan="4">
+                        <td colspan="">
                             <div class="form-group">
                                 <label for="stuff_notes">Stuff Notes</label>
-                                <textarea class="form-control" rows="3" name="stuff_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="stuff_notes" cols="50"
                                     id="stuff_notes">{{$model->stuff_note}}</textarea>
                             </div>
                         </td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
+                        <td colspan="">
                             <div class="form-group">
                                 <label for="sell_notes">Sell Notes</label>
-                                <textarea class="form-control" rows="3" name="sell_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="sell_notes" cols="50"
                                     id="sell_notes">{{$model->sell_note}}</textarea>
                             </div>
                         </td>
-                    </tr>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
+                        <td colspan="2">
                             <div class="form-group">
                                 <label for="transaction_notes">Transaction Notes</label>
-                                <textarea class="form-control" rows="3" name="transaction_notes" cols="50"
+                                <textarea style="resize: none;" class="form-control" rows="3" name="transaction_notes" cols="50"
                                     id="transaction_notes">{{$model->transaction_note}}</textarea>
                             </div>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         
@@ -294,7 +291,6 @@
 @push('scripts')
 <script>
     $('.select').select2();
-
 </script>
 <script src="{{ asset('js/production/add_purchase.js') }}"></script>
 <script src="{{ asset('js/production/purchase.js') }}"></script>
