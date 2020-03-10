@@ -224,8 +224,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('get-unit-of-product/{id}', 'Production\ProductController@get_product');
 			Route::get('production-product/product-add', 'Production\ProductController@product_add')->name('production-product.product_add');
 			Route::get('production-product-datatable', 'Production\ProductController@datatable')->name('product.datatable');
-    Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
-    Route::get('production-product/variations/{id}', 'Production\ProductController@show_variation_form')->name('production-product.variation');
+			Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+			Route::get('production-product/variations/{id}', 'Production\ProductController@show_variation_form')->name('production-product.variation');
+			Route::get('production-product/variations/add/{id}', 'Production\ProductController@variation_add')->name('production-product.variation_add');
+			Route::post('production-product/variations/store', 'Production\ProductController@variation_store')->name('production-product.variation-store');
+			Route::get('production-product/variations/show/{id}', 'Production\ProductController@variation_show')->name('production-product.variation-show');
+			Route::get('production-product/variations/add-more/{id}', 'Production\ProductController@variation_add_more')->name('production-product.variation-add-more');
+		Route::post('production-product/variations/store-more', 'Production\ProductController@variation_store_more')->name('production-product.variation-store-more');
 
 			Route::resource('production-product', 'Production\ProductController');
 

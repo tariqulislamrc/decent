@@ -7,6 +7,10 @@ use App\models\Production\Category;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\RawMaterial;
+use App\models\Production\VariationTemplate;
+use App\models\Production\ProductVariation;
+use App\models\Production\Variation;
+use App\models\Production\VariationTemplateDetails;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -298,6 +302,105 @@ class ProductController extends Controller
     public function show_variation_form(Request $request)
     {
         return view('admin.production.product.variation');
+    }
+
+    public function variation_show($id)
+    {
+        $product = product::with('product_variation')->findOrFail($id);
+        // dd($product);
+        return view('admin.production.product.variation-show',compact('product'));
+    }
+
+    public function variation_add_more($id)
+    {
+        $product = product::with('product_variation')->findOrFail($id);
+        return view('admin.production.product.add-variation',compact('product'));
+    }
+
+    public function variation_add($id)
+    {
+        $row = request()->row;
+        $model = Product::findOrFail($id);
+        $variations = VariationTemplate::all();
+        return view('admin.production.product.include.add_variation', compact('model', 'variations', 'row'));
+    }
+
+    public function variation_store(Request $request)
+    {
+        $request->validate([
+            // 'variation_value_id' => 'required',
+        ]);
+        $product_id = $request->product_id;
+        $variations = $request->variation;
+        $pv = $variations['varitaion_template_id'];
+        $sub_sku = $variations['sub_sku'];
+        $variation_value = $variations['variation_value_id'];
+
+        // ProductVariation Insert 
+        $product_variations = new ProductVariation;
+        $product_variations->variation_template_id = $pv[0];
+        $product_variations->variation_template_id_2 = $pv[1];
+        $product_variations->product_id = $product_id;
+        $product_variations->is_dummy = '0';
+        $product_variations->save();
+        $id = $product_variations->id;
+
+        // dd($pv[0]);
+
+
+        for ($i = 0; $i < count($sub_sku); $i++) {
+            $variation = new Variation();
+            $variation->product_variation_id = $id;
+            $variation->product_id = $product_id;
+            $variation->sub_sku = $sub_sku[$i];
+
+            $variation->variation_value_id =  $variation_value[$i][0];
+            $variation->variation_value_id_2 =  $variation_value[$i][1];
+
+            $name1 = VariationTemplateDetails::where('id', $variation_value[$i][0])->where('variation_template_id', $pv[0])->first();
+            $name2 = VariationTemplateDetails::where('id', $variation_value[$i][1])->where('variation_template_id', $pv[1])->first();
+
+            $name = $name1->name.'-'. $name2->name;
+            $variation->name = $name;
+
+            $variation->save();
+        }
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+    }
+
+
+    public function variation_store_more(Request $request)
+    {
+        $product_id = $request->product_id;
+        $variations = $request->variation;
+        $pv = $variations['varitaion_template_id'];
+        $sub_sku = $variations['sub_sku'];
+        $variation_value = $variations['variation_value_id'];
+        $id = $request->product_variation_id;
+
+        // dd($pv[0]);
+
+
+        for ($i = 0; $i < count($sub_sku); $i++) {
+            $variation = new Variation();
+            $variation->product_variation_id = $id;
+            $variation->product_id = $product_id;
+            $variation->sub_sku = $sub_sku[$i];
+
+            $variation->variation_value_id =  $variation_value[$i][0];
+            $variation->variation_value_id_2 =  $variation_value[$i][1];
+
+            $name1 = VariationTemplateDetails::where('id', $variation_value[$i][0])->where('variation_template_id', $pv[0])->first();
+            $name2 = VariationTemplateDetails::where('id', $variation_value[$i][1])->where('variation_template_id', $pv[1])->first();
+
+            $name = $name1->name.'-'. $name2->name;
+            $variation->name = $name;
+
+            $variation->save();
+        }
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
 }

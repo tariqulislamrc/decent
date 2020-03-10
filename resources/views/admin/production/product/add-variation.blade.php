@@ -16,14 +16,47 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-<form action="{{route('admin.production-product.variation-store')}}" method="post" id="content_form"
+<form action="{{route('admin.production-product.variation-store-more')}}" method="post" id="content_form"
     enctype="multipart/form-data">
     @csrf
 
     @php
-    $model = App\models\Production\Product::findOrFail($id);
+    $model = App\models\Production\Product::findOrFail($product->id);
     $variations = App\models\Production\VariationTemplate::all();
     @endphp
+
+    <div class="card py-4">
+    <div class="card-header">
+        <h6>{{_lang('Product Variation Details')}}</h6>
+    </div>
+
+    <div class="col-md-12">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ _lang('SL') }}</th>
+                    <th>{{_lang('Name')}}</th>
+                    <th>{{_lang('Sub Sku')}}</th>
+                    <th>{{$product->product_variation->variation1->name}}</th>
+                    <th>{{$product->product_variation->variation2->name}}</th>
+                    <input type="hidden" name="product_variation_id" value="{{$product->product_variation->id}}">
+                </tr>
+            </thead>
+            <tbody>
+                            @foreach ($product->product_variation->variation as $item)
+                            <tr>
+                                <td>{{ $loop->index+1 }} </td>
+                                <td>{{ $item->name }} </td>
+                                <td> {{ $item->sub_sku }}</td>
+                                <td> {{ $item->value1->name }}</td>
+                                <td> {{ $item->value2->name }}</td>
+                            </tr>
+                            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
     <div class="card">
         <div class="card-header">
             <h6>{{_lang('Add Variation For Product')}}</h6>
@@ -74,7 +107,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> 
 
                 <div class="form-group col-md-12 pt-3" align="right">
                     <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i

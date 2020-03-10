@@ -286,3 +286,23 @@ var _remortUnitModal =function(){
             },
         });
     });
+
+
+    $(document).on('click', '#addVariation', function () {
+        var url = $(this).data('url');
+        var row = parseInt($('#row').val());
+        row = row + 1;
+            $.ajax({
+                    url: url+'?row='+row,
+                    type: 'Get',
+                    dataType: 'html'
+                })
+                .done(function (data) {
+                     $('#row').val(row);
+                    $("#data").append(data);
+        })
+    });
+
+    $("#data").on('click', '.remmove', function () {
+        $(this).closest('tr').remove();
+    })
