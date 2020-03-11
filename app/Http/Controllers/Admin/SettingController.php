@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Production\Brand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,8 @@ class SettingController extends Controller
     public function index(Request $request)
     {
         if ($request->isMethod('get')) {
-            return view('admin.setting.index');
+            $brand = Brand::all();
+            return view('admin.setting.index',compact('brand'));
         } else {
   	   	 	$validator = Validator::make($request->all(), [
 			'logo' => 'mimes:jpeg,bmp,png,jpg|max:2000',
