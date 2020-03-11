@@ -11,12 +11,52 @@
 |
 */
 
+/* ====================================================
+		Frontend Route
+==========================================================*/
+Route::get('f',function(){
+	return view('eCommerce.index');
+})->name('f');
+
+Route::get('contact',function(){
+	return view('eCommerce.contact');
+})->name('contact');
+
+Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
+
+Route::get('blog',function(){
+	return view('eCommerce.blog');
+})->name('blog');
+
+Route::get('wishlist',function(){
+	return view('eCommerce.wishlist');
+})->name('wishlist');
+
+Route::get('product',function(){
+	return view('eCommerce.product_grid_view');
+})->name('product');
+
+Route::get('account',function(){
+	return view('eCommerce.account');
+})->name('account');
+
+Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
+
+Route::get('product-list',function(){
+	return view('eCommerce.product_list_view');
+})->name('product-list');
+
+Route::get('product-detalis',function(){
+	return view('eCommerce.product_detalis');
+})->name('product-detalis');
+/* ====================================================
+		End Frontend Route
+==========================================================*/
 Route::group(['middleware' => ['install']], function () {
 Route::get('/', function () {
     // return redirect()->route('login');
 	return view('welcome');
 });
-
 Auth::routes();
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 	//ui:::::::::::::::::::
@@ -344,6 +384,21 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('email-history/{id}','SendMailController@history_view')->name('email_history_view');
     	Route::post('client-send-mail','SendMailController@client_send_mail')->name('client_send_mail');
     	Route::resource('sendmail', 'SendMailController');
+	});
+
+
+	//eCommerce Marketing::::::::::::::::
+	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
+		//Privacy and Policy route
+    	Route::get('privacy-policy/index','PrivacyPolicyController@index')->name('privacy-policy.index');
+		Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
+		//about us route
+		Route::get('about-us/index','AboutUsController@index')->name('about-us.index');
+		Route::post('about-us/store','AboutUsController@store')->name('about-us.store');
+		//Our Team route
+		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
+		Route::resource('our-team','OurTeamController');
+		
 	});
 
 	//Sms Marketing:::::::::::::::::::
