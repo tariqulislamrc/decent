@@ -127,6 +127,17 @@
                                         {{ Form::text('website_url', get_option('website_url'), ['class' => 'form-control', 'placeholder' => _lang('Institute Website URL')]) }}
                                     </div>
 
+                                    {{-- Website URL --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('default_brand', _lang('Default Brand') , ['class' => 'col-form-label ']) }}
+                                        <select name="default_brand" id="default_brand" class="form-control select" data-placeholder="Select Brand">
+                                            <option value="">{{_lang('Select Brand')}}</option>
+                                            @foreach ($brand as $item)
+                                            <option {{get_option('default_brand') == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     {{-- Company Description--}}
                                     <div class="col-md-12">
                                         {{ Form::label('description', _lang('Company Description') , ['class' => 'col-form-label ']) }}
