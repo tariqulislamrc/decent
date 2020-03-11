@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class SettingController extends Controller
 {
-   
+
     public function index(Request $request)
     {
         if ($request->isMethod('get')) {
@@ -27,25 +27,28 @@ class SettingController extends Controller
                 return response()->json(['success' => false, 'status' => 'danger', 'message' => $validator->errors()]);
             }
 
+	        /*$input = $request->all();
+	        dd($input);*/
+
             foreach($_POST as $key => $value){
                 if($key == "_token"){
                     continue;
-                }	
+                }
 
                 $data = array();
-                $data['value'] = $value; 
-                
+                $data['value'] = $value;
+
                 $data['updated_at'] = Carbon::now();
-                if(Setting::where('name', $key)->exists()){				
-                    Setting::where('name','=',$key)->update($data);	
-                    
+                if(Setting::where('name', $key)->exists()){
+                    Setting::where('name','=',$key)->update($data);
+
                     // Activity Log
                     activity()->log('Look mum, I logged something');
                 }else{
-                    $data['name'] = $key; 
+                    $data['name'] = $key;
                     $data['created_at'] = Carbon::now();
 
-                    Setting::insert($data); 
+                    Setting::insert($data);
                 }
 		    }
 
@@ -86,23 +89,23 @@ class SettingController extends Controller
             // check enable_http
             // $enable_http = get_option('enable_https');
             // dd($enable_http);
-            
-            
+
+
 
             // dd($request->enable_https);
 
-            if(Setting::where('name', "logo")->exists()){				
-				Setting::where('name','=',"logo")->update($logo);			
+            if(Setting::where('name', "logo")->exists()){
+				Setting::where('name','=',"logo")->update($logo);
 			} else {
 				$logo['created_at'] = Carbon::now();
-				Setting::insert($logo); 
+				Setting::insert($logo);
 			}
 
-			if(Setting::where('name', "favicon")->exists()){				
-				Setting::where('name','=',"favicon")->update($data1);			
-			} else { 
+			if(Setting::where('name', "favicon")->exists()){
+				Setting::where('name','=',"favicon")->update($data1);
+			} else {
 				$data1['created_at'] = Carbon::now();
-				Setting::insert($data1); 
+				Setting::insert($data1);
 			}
 			return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Configuration Updated'), 'load' => true]);
   	    }
@@ -132,22 +135,22 @@ class SettingController extends Controller
         $username = config('database.connections.mysql.username');
         $password = config('database.connections.mysql.password');
         $database = config('database.connections.mysql.database');
-        
-        $mysqli = new \mysqli($host, $username, $password, $database); 
-        $mysqli->select_db($database); 
+
+        $mysqli = new \mysqli($host, $username, $password, $database);
+        $mysqli->select_db($database);
         $mysqli->query("SET NAMES 'utf8'");
 
         $queryTables = $mysqli->query('SHOW TABLES');
 
-        while($row = $queryTables->fetch_row()) { 
-            $target_tables[] = $row[0]; 
+        while($row = $queryTables->fetch_row()) {
+            $target_tables[] = $row[0];
         }
 
         foreach ($target_tables as $table) {
-            $result         =   $mysqli->query('SELECT * FROM '.$table);  
-            $fields_amount  =   $result->field_count;  
-            $rows_num=$mysqli->affected_rows;     
-            $res            =   $mysqli->query('SHOW CREATE TABLE '.$table); 
+            $result         =   $mysqli->query('SELECT * FROM '.$table);
+            $fields_amount  =   $result->field_count;
+            $rows_num=$mysqli->affected_rows;
+            $res            =   $mysqli->query('SHOW CREATE TABLE '.$table);
             $TableMLine     =   $res->fetch_row();
             $content        = (!isset($content) ?  '' : $content) . "\n\n".$TableMLine[1].";\n\n";
 
@@ -161,21 +164,21 @@ class SettingController extends Controller
 
                     for($j=0; $j<$fields_amount; $j++) {
 
-                        $row[$j] = str_replace("\n","\\n", addslashes($row[$j])); 
-                        
+                        $row[$j] = str_replace("\n","\\n", addslashes($row[$j]));
+
                         if (isset($row[$j])) {
-                            $content .= '"'.$row[$j].'"' ; 
-                        } else {   
+                            $content .= '"'.$row[$j].'"' ;
+                        } else {
                             $content .= '""';
-                        }     
-                        
+                        }
+
                         if ($j<($fields_amount-1)) {
                             $content.= ',';
-                        }      
+                        }
                     }
                     $content .=")";
 
-                    if ( (($st_counter+1)%100==0 && $st_counter!=0) || $st_counter+1==$rows_num) {   
+                    if ( (($st_counter+1)%100==0 && $st_counter!=0) || $st_counter+1==$rows_num) {
                         $content .= ";";
                     } else {
                         $content .= ",";
@@ -186,9 +189,9 @@ class SettingController extends Controller
             } $content .="\n\n\n";
         }
         $backup_name = $database."_".date('H-i-s')."_".date('d-m-Y')."_".str_random(5).".sql";
-        header('Content-Type: application/octet-stream');   
-        header("Content-Transfer-Encoding: Binary"); 
-        header("Content-disposition: attachment; filename=\"".$backup_name."\"");  
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"".$backup_name."\"");
         echo $content; exit;
     }
 
