@@ -378,3 +378,15 @@ Breadcrumbs::for('purchase-details', function ($trail) {
     $trail->parent('purchase');
     $trail->push('Create', route('admin.production-purchase.index'));
 });
+
+// Home > eCommerce Our Team
+Breadcrumbs::for('eCommerce.our-team', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Our Team', route('admin.eCommerce.our-team.index'));
+});
+
+// Home > eCommerce Our Team
+Breadcrumbs::for('our-team-create', function ($trail) {
+    $trail->parent('eCommerce.our-team');
+    $trail->push('Create', route('admin.eCommerce.our-team.index'));
+});

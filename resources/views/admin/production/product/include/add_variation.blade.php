@@ -1,0 +1,19 @@
+<tr>
+    <td>
+    <input type="text" name="variation[sub_sku][{{$row}}]" class="form-control" value="{{ $model->articel }}-{{$row}}"
+            >
+    </td>
+    @foreach ($variations as $item)
+    <td>
+        <select data-placeholder="Variation Value" name="variation[variation_value_id][{{$row}}][{{$loop->index}}]" id="raw_status" class="form-control">
+            <option value="">Select Variation</option>
+            @foreach ($item->variation as $value)
+            <option value="{{$value->id}}">{{$value->name}}</option>
+            @endforeach
+        </select>
+    </td>
+    @endforeach
+    <td>
+        <button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
+    </td>
+</tr>
