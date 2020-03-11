@@ -193,6 +193,13 @@ if ($('.ajax_form').length > 0) {
                             window.location.href = data.goto;
                         }, 2500);
                     }
+
+                    if (data.load) {
+                        setTimeout(function() {
+
+                            window.location.href ="";
+                        }, 2500);
+                    }
                     if (data.window) {
                         window.open(data.window, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
                         setTimeout(function() {

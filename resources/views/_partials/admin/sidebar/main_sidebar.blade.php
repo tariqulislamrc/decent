@@ -148,9 +148,44 @@
         </li>
         @endcan
 
-        {{-- Employee Payroll --}}
-        @can('employee_payroll.view')
-                <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/department*') ? ' active' : '' }}" href="{{ route('admin.department.index') }}"><i class="app-menu__icon fa fa-pie-chart" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Department')}}</span></a></li>
+
+        @can('expense.view')
+        {{-- Expense Section--}}
+        <li class="treeview {{ Request::is('admin/department*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Department')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                @can('expenseCategory.view')
+                {{-- Expense Category--}}
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/department') ? 'active':''}}" href="{{ route('admin.department.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Department')}}
+                    </a>
+                </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                {{-- Expense --}}
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/department/report/create') ? 'active':''}}" href="{{ route('admin.report.create') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Product Report')}}
+                    </a>
+                </li>
+                @endcan
+                @can('expenseCategory.view')
+                {{-- Expense --}}
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/department/report/material*') ? 'active':''}}" href="{{ route('admin.department.material.report') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Material Report')}}
+                    </a>
+                </li>
+                @endcan
+            </ul>
+        </li>
         @endcan
 
         @can('expense.view')

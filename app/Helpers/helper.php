@@ -1,5 +1,8 @@
 <?php
 use App\User;
+use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\MaterialReport;
+use App\models\depertment\ProductFlow;
 use App\models\employee\IdGenerator;
 
 if (!function_exists('_lang')) {
@@ -399,5 +402,23 @@ function formatDate($date){
         unset($validEmail[$position]);
     }
     return $validEmail;
+}
+
+function variation_value($id){
+
+	$value =VariationTemplateDetails::find($id);
+	return $value->name;
+}
+
+function report_product_flow($dept_id,$wrk_id,$v_id,$id)
+{
+  $value =ProductFlow::where('depertment_id',$dept_id)->where('variation_id',$v_id)->where('work_order_id',$wrk_id)->where('done_depertment_id',$id)->sum('qty');
+  return $value;
+}
+
+function rawMaterialUseQty($id){
+	$value =MaterialReport::where('done_material_report_id',$id)->sum('qty');
+
+	return $value;
 }
 ?>

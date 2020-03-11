@@ -10,6 +10,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+<a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <div class="tile">
     <div class="row">
         <div class="col-md-12">
@@ -40,19 +41,21 @@
 $('.select').select2();
 $(document).on('change', '#depertment', function () {
 // it will get action url
-var url = $(this).data('url');
-var id = $(this).val();
-$.ajax({
-url: url,
-data: {
-id: id
-},
-type: 'Get',
-dataType: 'html'
-})
-.done(function (data) {
-$('#data').html(data);
-})
+$('.pageloader').show();
+    var url = $(this).data('url');
+    var id = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+            id: id
+            },
+            type: 'Get',
+            dataType: 'html'
+        })
+    .done(function (data) {
+        $('.pageloader').hide();
+          $('#data').html(data);
+    })
 });
 </script>
 @endpush
