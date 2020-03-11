@@ -33,6 +33,16 @@ $route = 'admin.department.';
 					{!! Form::textarea('description',null, ['id' => 'description', 'class' =>'form-control ','placeholder'=>'Description']) !!}
 				</div>
 			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					{{ Form::label('flow', _lang('Order Sequence') , ['class' => 'col-form-label']) }}
+					<select name="flow" class="form-control select">
+						<option value="">Select Order</option>
+						<option {{ isset($model)?$model->flow=='First'?'selected':'':'' }} value="First">First Order</option>
+						<option {{ isset($model)?$model->flow=='last'?'selected':'':'' }} value="last">Last Order</option>
+					</select>
+				</div>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6 mx-auto text-center">

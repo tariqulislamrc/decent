@@ -28,10 +28,24 @@
         <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
         <link rel="stylesheet" href="{{asset('backend/css/bootstrap-datetimepicker.css')}}">
+        <style>
+            .pageloader {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url('{{asset('pageloader.gif')}}') 50% 50% no-repeat rgb(249,249,249);
+                background-size: 8%;;
+                opacity: .7;
+            }
+        </style>
         <!-- /global stylesheets -->
         @stack('admin.css')
     </head>
     <body class="app sidebar-mini rtl {{get_option('default_sidebar') == '0' ? 'sidenav-toggled':''}}" >
+        <div class="pageloader" style="display: none"></div>
         <!-- Navbar-->
         @include('_partials.admin.navbar')
         <!-- Sidebar menu-->

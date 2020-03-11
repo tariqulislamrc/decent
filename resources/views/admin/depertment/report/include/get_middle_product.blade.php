@@ -45,8 +45,7 @@
             </td>
             <td>
                 @if ($products->count()>0)
-                <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
-                class="icon-arrow-right14 position-right"></i></button>
+                <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Report')}}<i class="fa fa-share-square-o" aria-hidden="true"></i></button>
                 <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
                 @endif

@@ -70,8 +70,17 @@ class DepertmentController extends Controller
         $model->description=$request->description;
         $model->hidden = 0;
         $model->tek_marks = 0;
+        $model->flow=$request->flow;
         $model->created_by = auth()->user()->id;
         $model->save();
+
+            $first_order =Depertment::where('flow',$request->flow)->get()->except($model->id);
+            foreach ($first_order as $key => $value) {
+               $first_order_change =Depertment::find($value->id);
+               $first_order_change->flow=null;
+               $first_order_change->save();
+            }
+    
         //depertment employee
         $d_emp =new DepertmentEmployee;
         $d_emp->depertment_id=$model->id;
@@ -123,8 +132,15 @@ class DepertmentController extends Controller
         $model->description=$request->description;
         $model->hidden = 0;
         $model->tek_marks = 0;
+        $model->flow=$request->flow;
         $model->created_by = auth()->user()->id;
         $model->save();
+            $first_order =Depertment::where('flow',$request->flow)->get()->except($model->id);
+            foreach ($first_order as $key => $value) {
+               $first_order_change =Depertment::find($value->id);
+               $first_order_change->flow=null;
+               $first_order_change->save();
+            }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
     }
 

@@ -41,6 +41,7 @@
 $('.select').select2();
 $(document).on('change', '#depertment', function () {
 // it will get action url
+$('.pageloader').show();
     var url = $(this).data('url');
     var id = $(this).val();
         $.ajax({
@@ -52,6 +53,7 @@ $(document).on('change', '#depertment', function () {
             dataType: 'html'
         })
     .done(function (data) {
+        $('.pageloader').hide();
           $('#data').html(data);
     })
 });

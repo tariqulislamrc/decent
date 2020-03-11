@@ -329,18 +329,18 @@ class StoreRequestController extends Controller
         return view('admin.depertment.request.appendrow_mat', compact('models'));
     }
 
-    public function depertmentflow($id)
-    {
-        $model =ApproveStoreItem::findOrFail($id);
-        $depertment =Depertment::select('id','name')->get()->except($model->depertment_id);
-        $variations =VariationTemplate::all();
+    // public function depertmentflow($id)
+    // {
+    //     $model =ApproveStoreItem::findOrFail($id);
+    //     $depertment =Depertment::select('id','name')->get()->except($model->depertment_id);
+    //     $variations =VariationTemplate::all();
 
-        $products = ApproveStoreItem::
-              join('work_order_products', 'approve_store_items.work_order_id', '=', 'work_order_products.workorder_id')
-            ->join('variations', 'work_order_products.variation_id', '=', 'variations.id')
-            ->select('variations.*')
-            ->distinct('product_id')
-            ->get();
-        return view('admin.depertment.request.flow.depertmentflow',compact('model','depertment','products','variations'));
-    }
+    //     $products = ApproveStoreItem::
+    //           join('work_order_products', 'approve_store_items.work_order_id', '=', 'work_order_products.workorder_id')
+    //         ->join('variations', 'work_order_products.variation_id', '=', 'variations.id')
+    //         ->select('variations.*')
+    //         ->distinct('product_id')
+    //         ->get();
+    //     return view('admin.depertment.request.flow.depertmentflow',compact('model','depertment','products','variations'));
+    // }
 }

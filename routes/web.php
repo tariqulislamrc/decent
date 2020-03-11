@@ -381,11 +381,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
 		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
 		Route::resource('request', 'StoreRequestController');
+		//depertment report
 		Route::get('report/get-product','DepertmentReportController@get_variation_product')->name('report.get_variation_product');
 		Route::get('department/report/material','DepertmentReportController@material')->name('department.material.report');
 		Route::get('department/report/get-material','DepertmentReportController@get_depertment_material')->name('report.get_depertment_material');
 		Route::get('depertment/report/material/approve/{id}','DepertmentReportController@approve_request')->name('report.approve_request');
-		Route::resource('depertment/report', 'DepertmentReportController');
+		Route::post('report/store-material','DepertmentReportController@material_store')->name('report.material_store');
+		Route::resource('department/report', 'DepertmentReportController');
 
 
 

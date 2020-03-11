@@ -10,6 +10,7 @@ use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
 use App\models\depertment\Depertment;
 use App\models\depertment\DepertmentStore;
+use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -229,13 +230,37 @@ class DepertmentReportController extends Controller
 
     public function get_depertment_material(Request $request)
     {
-        $materials =DepertmentStore::where('depertment_id',$request->depertment)->get();
+        $materials =DepertmentStore::orderBy('id','DESC')->where('depertment_id',$request->depertment)->get();
        return view('admin.depertment.report.include.get_material',compact('materials'));
     }
 
-  public function approve_request($id)
+   public function approve_request($id)
     {
         $model =DepertmentStore::findOrFail($id);
         return view('admin.depertment.report.approve_request',compact('model'));
+    }
+
+    public function material_store(Request $request)
+    {
+        $total_rqt_quantity = 0;
+        for ($i=0; $i <count($request->qty) ; $i++) { 
+           if ($request->qty[$i]>0) {
+               $total_rqt_quantity += $request->qty[$i];
+               $model =new MaterialReport;
+               $model->store_request_id =$request->store_request_id[$i];
+               $model->depertment_id=$request->depertment_id[$i];
+               $model->raw_material_id =$request->raw_material_id[$i];
+               $model->qty =$request->qty[$i];
+               $model->date=date('Y-m-d');
+               $model->done_material_report_id =$request->store_request_id[$i];
+               $model->created_by =auth()->user()->id;
+               $model->save();
+           }
+        }
+      if($total_rqt_quantity <= 0){
+         throw ValidationException::withMessages(['message' => _lang('You Cant Send Zero Quantity')]);
+        }
+
+    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Reported Generated'),'load'=>true]);
     }
 }

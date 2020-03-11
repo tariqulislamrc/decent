@@ -1,6 +1,7 @@
 <?php
 use App\User;
 use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\IdGenerator;
 
@@ -413,5 +414,11 @@ function report_product_flow($dept_id,$wrk_id,$v_id,$id)
 {
   $value =ProductFlow::where('depertment_id',$dept_id)->where('variation_id',$v_id)->where('work_order_id',$wrk_id)->where('done_depertment_id',$id)->sum('qty');
   return $value;
+}
+
+function rawMaterialUseQty($id){
+	$value =MaterialReport::where('done_material_report_id',$id)->sum('qty');
+
+	return $value;
 }
 ?>

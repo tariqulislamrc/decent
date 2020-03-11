@@ -11,13 +11,12 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-     <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <form action="{{route('admin.report.store')}}" method="post" class="ajax_form"
     enctype="multipart/form-data">
     @csrf
     <div class="card">
         <div class="card-header">
-            <h6>{{_lang('Send Store Request ')}}</h6>
+            <h6>{{_lang('Depertment Product Report')}}</h6>
         </div>
         <div class="card-body">
             <div class="row">
@@ -64,6 +63,7 @@
 $('.select').select2();
 $(document).on('change', '#work_order_id,#department_id', function () {
 // it will get action url
+$('.pageloader').show();
     var url = "{{ route('admin.report.get_variation_product') }}";
     var id = $("#work_order_id").val();
     var depertment = $("#department_id").val();
@@ -77,6 +77,7 @@ $(document).on('change', '#work_order_id,#department_id', function () {
             dataType: 'html'
         })
     .done(function (data) {
+        $('.pageloader').hide();
           $('#data').html(data);
           $("#data").find('.select_custom').select2();
     })
