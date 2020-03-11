@@ -366,7 +366,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('department/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
 		Route::delete('department/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
-		Route::get('department/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
@@ -382,6 +381,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
 		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
 		Route::resource('request', 'StoreRequestController');
+		Route::get('report/get-product','DepertmentReportController@get_variation_product')->name('report.get_variation_product');
+		Route::get('department/report/material','DepertmentReportController@material')->name('department.material.report');
+		Route::get('department/report/get-material','DepertmentReportController@get_depertment_material')->name('report.get_depertment_material');
+		Route::get('depertment/report/material/approve/{id}','DepertmentReportController@approve_request')->name('report.approve_request');
+		Route::resource('depertment/report', 'DepertmentReportController');
+
 
 
 	 		/*::::::::::::::user role Permission:::::::::*/

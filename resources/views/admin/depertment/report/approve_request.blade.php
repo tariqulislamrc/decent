@@ -18,6 +18,35 @@
 
         <h3 class="bg-info text-center py-2">Store Request</h3>
         <div class="row">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ _lang('Material Name') }}</th>
+                <th>{{ _lang('Request Qty') }}</th>
+                <th>{{ _lang('Approve Qty') }}</th>
+                <th>{{ _lang('Total Use') }}</th>
+                <th>{{ _lang('Send Qty') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($model->store_request as $element)
+                <tr>
+                  <td>
+                    {{ $element->material->name }}
+                  </td>
+                  <td>
+                    {{ $element->qty }}
+                  </td>
+                  <td>
+                    {{ $element->approve_store_item->sum('qty') }}
+                  </td>
+                  <td>
+                    
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
           <table class="table table-bordered">
             <thead>
               <tr>

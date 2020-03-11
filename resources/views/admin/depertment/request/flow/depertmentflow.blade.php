@@ -28,6 +28,25 @@
                 </tr>
             </thead>
         </table>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>{{ _lang('Name') }}</td>
+                    @foreach ($variations as $variation)
+                        <td>{{ $variation->name }}</td>
+                    @endforeach
+                    <td>{{ _lang('Qty') }}</td>
+                </tr>
+                <tr>
+                    @foreach ($products as $product)
+                    <td>{{ $product->name }}</td>
+                       <td>{{ variation_value($product->variation_value_id)}}</td>
+                       <td>{{ variation_value($product->variation_value_id_2)}}</td>
+
+                    @endforeach
+                </tr>
+            </thead>
+        </table>
         <div class="table-responsive">
             <table class="table table-condensed table-bordered table-th-green text-center table-striped"
                 id="purchase_entry_table">
