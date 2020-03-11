@@ -472,6 +472,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::delete('/delete/{id}', 'UserController@destroy')->name('delete');
 		});
 
+	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
+       
+          Route::get('/',function(){
+          	return view('admin.report.index');
+          })->name('index');
+        Route::group(['as' => 'depertment.', 'prefix' => 'depertment','namespace' => 'Report',], function () {
+           
+           Route::get('product/report','DepertmentReportController@product_report')->name('product_report');
+           Route::post('product/report','DepertmentReportController@get_product_report')->name('get_product_report');
+        });  
+	 });
+
 	});
 
 Route::get('/home', 'HomeController@index')->name('home');

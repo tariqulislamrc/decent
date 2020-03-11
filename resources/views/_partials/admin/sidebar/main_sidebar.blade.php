@@ -1,5 +1,6 @@
         {{-- Dashboard --}}
         <li data-placement="bottom" title="Go to home"><a class="app-menu__item {{ Request::is('home') ? ' active' : '' }}" href="{{ route('home') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">{{_lang('dashboard')}}</span></a></li>
+        @if (!Request::is('admin/report*'))
 
         @can('employee.view')
         {{-- Employee --}}
@@ -458,3 +459,28 @@
         @endcan
 
         <li><a target="_blank" class="app-menu__item {{ Request::is('admin/backup') ? ' active' : '' }}" href="https://fontawesome.com/v4.7.0/icons/"><i class="app-menu__icon fa fa-font-awesome"></i><span class="app-menu__label">{{_lang('Font Awosome')}}</span></a></li>
+
+    @endif
+    <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}" href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span class="app-menu__label">{{_lang('Report')}}</span></a></li>
+    @if (Request::is('admin/report*'))
+            <li class="treeview {{ Request::is('admin/report/depertment*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-desc" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Department Report')}}</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/report/depertment/product/report') ? 'active':''}}" href="{{ route('admin.report.depertment.product_report') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Product Report')}}
+                    </a>
+                </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}" href="{{ route('admin.expense.ex.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Material Report')}}
+                    </a>
+                </li>
+            </ul>
+        </li>
+    @endif

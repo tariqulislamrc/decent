@@ -57,13 +57,11 @@ class DepertmentReportController extends Controller
         }
         elseif ($depert_name->flow=='last') {
               $products =ProductFlow::where('send_depertment_id',$request->depertment)->where('work_order_id',$request->id)->distinct('variation_id')->get();
-              // dd($products);
-
               return view('admin.depertment.report.include.get_final_product',compact('depertments','variations','products','depert_name')); 
         }
         else{
           $products =ProductFlow::where('send_depertment_id',$request->depertment)->where('work_order_id',$request->id)->distinct('variation_id')->get();
- 
+        
            return view('admin.depertment.report.include.get_middle_product',compact('depertments','variations','products','depert_name')); 
         }
     }
