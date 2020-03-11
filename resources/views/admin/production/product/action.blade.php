@@ -17,7 +17,7 @@
     <a class="dropdown-item cursourp" data-original-title="null"  href="{{route('admin.production-product.variation-show',$model->id)}}" ><i class="fa fa-eye"></i>{{_lang('Variation View')}}</a>
 @endcan
 @can('production_product.view')
-    <a class="dropdown-item cursourp" data-original-title="null"  href="{{route('admin.production-product.variation-add-more',$model->id)}}" ><i class="fa fa-eye"></i>{{_lang('Variation Add')}}</a>
+    <a class="dropdown-item cursourp" data-original-title="null"  href="{{route('admin.production-product.variation-add-more',$model->id)}}" ><i class="fa fa-plus"></i>{{_lang('Variation Add')}}</a>
 @endcan
 @can('production_product.delete')
     <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.production-product.destroy',$model->id)  }}" class="dropdown-item cursourp" data-original-title="null"

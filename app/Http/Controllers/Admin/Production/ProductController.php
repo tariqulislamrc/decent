@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -379,25 +380,34 @@ class ProductController extends Controller
         $variation_value = $variations['variation_value_id'];
         $id = $request->product_variation_id;
 
-        // dd($pv[0]);
-
-
         for ($i = 0; $i < count($sub_sku); $i++) {
             $variation = new Variation();
             $variation->product_variation_id = $id;
             $variation->product_id = $product_id;
             $variation->sub_sku = $sub_sku[$i];
 
-            $variation->variation_value_id =  $variation_value[$i][0];
-            $variation->variation_value_id_2 =  $variation_value[$i][1];
+            if ($variation_value[$i][0] == Null) {
+                throw ValidationException::withMessages(['message' => 'Color Field Is Required']);
+            }elseif($variation_value[$i][1] == Null){
+                throw ValidationException::withMessages(['message' => 'Size Field Is Required']);
+            }else{
+                $variation->variation_value_id =  $variation_value[$i][0];
+                $variation->variation_value_id_2 =  $variation_value[$i][1];
+            }
 
             $name1 = VariationTemplateDetails::where('id', $variation_value[$i][0])->where('variation_template_id', $pv[0])->first();
             $name2 = VariationTemplateDetails::where('id', $variation_value[$i][1])->where('variation_template_id', $pv[1])->first();
 
             $name = $name1->name.'-'. $name2->name;
             $variation->name = $name;
+            
+            $valid =  Variation::where('name', $name)->where('product_id', $product_id)->where('product_variation_id', $id)->first();
 
-            $variation->save();
+            if($valid){
+                throw ValidationException::withMessages(['message' => '('.$name.') '. ' Variation Already Exist']);
+            }else{
+                $variation->save();
+            }
         }
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);

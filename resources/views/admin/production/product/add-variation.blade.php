@@ -25,10 +25,12 @@
     $variations = App\models\Production\VariationTemplate::all();
     @endphp
 
+@if ($product->product_variation)
     <div class="card py-4">
     <div class="card-header">
         <h6>{{_lang('Product Variation Details')}}</h6>
     </div>
+    
 
     <div class="col-md-12">
         <table class="table table-hover table-bordered">
@@ -56,6 +58,7 @@
         </table>
     </div>
 </div>
+@endif
 
     <div class="card">
         <div class="card-header">
