@@ -11,12 +11,52 @@
 |
 */
 
+/* ====================================================
+		Frontend Route
+==========================================================*/
+Route::get('f',function(){
+	return view('eCommerce.index');
+})->name('f');
+
+Route::get('contact',function(){
+	return view('eCommerce.contact');
+})->name('contact');
+
+Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
+
+Route::get('blog',function(){
+	return view('eCommerce.blog');
+})->name('blog');
+
+Route::get('wishlist',function(){
+	return view('eCommerce.wishlist');
+})->name('wishlist');
+
+Route::get('product',function(){
+	return view('eCommerce.product_grid_view');
+})->name('product');
+
+Route::get('account',function(){
+	return view('eCommerce.account');
+})->name('account');
+
+Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
+
+Route::get('product-list',function(){
+	return view('eCommerce.product_list_view');
+})->name('product-list');
+
+Route::get('product-detalis',function(){
+	return view('eCommerce.product_detalis');
+})->name('product-detalis');
+/* ====================================================
+		End Frontend Route
+==========================================================*/
 Route::group(['middleware' => ['install']], function () {
 Route::get('/', function () {
     // return redirect()->route('login');
 	return view('welcome');
 });
-
 Auth::routes();
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 	//ui:::::::::::::::::::
@@ -107,7 +147,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('/employee-qua/edit/{id}', 'Employee\QualificationController@edit')->name('employee-qua.edit');
 			Route::patch('/employee-qua/update/{id}', 'Employee\QualificationController@update')->name('employee-qua.update');
 			Route::delete('/employee-qua/destroy/{id}', 'Employee\QualificationController@destroy')->name('employee-qua.destroy');
-			
+
 		// Route for Employee Account Info
 			Route::get('/ajax/account_info', 'Employee\AccountController@account_info')->name('ajax.account_info');
 			Route::get('/ajax/account/info/{id}', 'Employee\AccountController@create')->name('account.create');
@@ -119,7 +159,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		// Route for Employee Designation Info
 			Route::get('/ajax/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
-			
+
 			// Route for Employee Designation add for
 				Route::get('/designation_history/add', 'Employee\DesignationController@add_desig')->name('designation.add');
 			Route::get('/designation_history/desig_info', 'Employee\DesignationController@desig_info')->name('ajax.desig_info');
@@ -225,7 +265,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-product/product-add', 'Production\ProductController@product_add')->name('production-product.product_add');
 			Route::get('production-product-datatable', 'Production\ProductController@datatable')->name('product.datatable');
 			Route::get('production-product/category', 'Production\ProductController@category')->name('production-product.category');
+			Route::get('production-product/variations/{id}', 'Production\ProductController@show_variation_form')->name('production-product.variation');
+			Route::get('production-product/variations/add/{id}', 'Production\ProductController@variation_add')->name('production-product.variation_add');
+			Route::post('production-product/variations/store', 'Production\ProductController@variation_store')->name('production-product.variation-store');
+			Route::get('production-product/variations/show/{id}', 'Production\ProductController@variation_show')->name('production-product.variation-show');
+			Route::get('production-product/variations/add-more/{id}', 'Production\ProductController@variation_add_more')->name('production-product.variation-add-more');
+		Route::post('production-product/variations/store-more', 'Production\ProductController@variation_store_more')->name('production-product.variation-store-more');
+
 			Route::resource('production-product', 'Production\ProductController');
+
 
 
 		// Production wop-materials Route
@@ -292,7 +340,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('member-list', 'Configuration\Member\MemberController');
 
 
-		
+
 		// Employee Section End
 
 
@@ -345,6 +393,21 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('email-history/{id}','SendMailController@history_view')->name('email_history_view');
     	Route::post('client-send-mail','SendMailController@client_send_mail')->name('client_send_mail');
     	Route::resource('sendmail', 'SendMailController');
+	});
+
+
+	//eCommerce Marketing::::::::::::::::
+	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
+		//Privacy and Policy route
+    	Route::get('privacy-policy/index','PrivacyPolicyController@index')->name('privacy-policy.index');
+		Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
+		//about us route
+		Route::get('about-us/index','AboutUsController@index')->name('about-us.index');
+		Route::post('about-us/store','AboutUsController@store')->name('about-us.store');
+		//Our Team route
+		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
+		Route::resource('our-team','OurTeamController');
+		
 	});
 
 	//Sms Marketing:::::::::::::::::::
@@ -412,6 +475,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	});
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Tariqul Islam
+
+
 });
 
 
@@ -423,4 +490,4 @@ Route::post('install/process_install', 'Install\InstallController@process_instal
 Route::get('install/create_user', 'Install\InstallController@create_user');
 Route::post('install/store_user', 'Install\InstallController@store_user');
 Route::get('install/system_settings', 'Install\InstallController@system_settings');
-Route::post('install/finish', 'Install\InstallController@final_touch');	
+Route::post('install/finish', 'Install\InstallController@final_touch');

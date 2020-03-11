@@ -1,5 +1,4 @@
 @foreach ($models->work_order as $work_order_product)
-
 <div class="row">
     <div class="col-md-12">
         <p class="h4 pt-4">{{_lang('Product')}} : <span class="">{{$work_order_product->product->name}} ({{$work_order_product->product->articel}})</span></p>

@@ -358,6 +358,40 @@
         @endcan
 
 
+        @can('eCommerce.view')
+        {{-- eCommerce Section--}}
+        <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
+                data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span
+                    class="app-menu__label">{{_lang('E-Commerce')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+
+                @can('role.view')
+                {{--Privacy Policy--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
+                        href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Privacy Policy')}}</a></li>
+                @endcan
+
+                @can('role.view')
+                {{--Privacy Policy--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
+                        href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('About Us')}}</a></li>
+                @endcan
+
+                @can('role.view')
+                {{--Privacy Policy--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
+                        href="{{ route('admin.eCommerce.our-team.index') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Our Team')}}</a></li>
+                @endcan
+
+            </ul>
+        </li>
+        @endcan
+
+
        @can('expense.view')
         {{-- Expense Section--}}
         <li class="treeview {{ Request::is('admin/smsmerketing*') ? ' is-expanded' : '' }}">
