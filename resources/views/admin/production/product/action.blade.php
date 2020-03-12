@@ -1,7 +1,3 @@
-
-
-
-
 <div class="dropdown">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         {{ _lang('Action') }}
@@ -18,6 +14,9 @@
 @endcan
 @can('production_product.view')
     <a class="dropdown-item cursourp" data-original-title="null"  href="{{route('admin.production-product.variation-add-more',$model->id)}}" ><i class="fa fa-plus"></i>{{_lang('Variation Add')}}</a>
+@endcan
+@can('production_product.view')
+    <a class="dropdown-item cursourp btn " data-original-title="null"   href="{{route('admin.production-product.details-add',$model->id)}}" ><i class="fa fa-plus"></i>{{_lang('Add Details For Ecommerce')}}</a>
 @endcan
 @can('production_product.delete')
     <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.production-product.destroy',$model->id)  }}" class="dropdown-item cursourp" data-original-title="null"

@@ -32,9 +32,7 @@ Route::get('wishlist',function(){
 	return view('eCommerce.wishlist');
 })->name('wishlist');
 
-Route::get('product',function(){
-	return view('eCommerce.product_grid_view');
-})->name('product');
+Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 
 Route::get('account',function(){
 	return view('eCommerce.account');
@@ -46,9 +44,9 @@ Route::get('product-list',function(){
 	return view('eCommerce.product_list_view');
 })->name('product-list');
 
-Route::get('product-detalis',function(){
+Route::get('product-details',function(){
 	return view('eCommerce.product_detalis');
-})->name('product-detalis');
+})->name('product-details');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/
@@ -270,7 +268,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('production-product/variations/store', 'Production\ProductController@variation_store')->name('production-product.variation-store');
 			Route::get('production-product/variations/show/{id}', 'Production\ProductController@variation_show')->name('production-product.variation-show');
 			Route::get('production-product/variations/add-more/{id}', 'Production\ProductController@variation_add_more')->name('production-product.variation-add-more');
-		Route::post('production-product/variations/store-more', 'Production\ProductController@variation_store_more')->name('production-product.variation-store-more');
+			Route::post('production-product/variations/store-more', 'Production\ProductController@variation_store_more')->name('production-product.variation-store-more');
+
+			Route::get('production-product/details/add/{id}', 'Production\ProductController@details_add')->name('production-product.details-add');
+
+			Route::post('production-product/details/store', 'Production\ProductController@details_store')->name('production-product.details-store');
 
 			Route::resource('production-product', 'Production\ProductController');
 

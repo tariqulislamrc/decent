@@ -293,6 +293,12 @@ Breadcrumbs::for('product-edit', function ($trail) {
 });
 
 // Home > Product
+Breadcrumbs::for('product-details', function ($trail) {
+    $trail->parent('production-product');
+    $trail->push('Details', route('admin.production-product.index'));
+});
+
+// Home > Product
 Breadcrumbs::for('product-view', function ($trail) {
     $trail->parent('production-product');
     $trail->push('View', route('admin.production-product.index'));

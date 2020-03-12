@@ -129,8 +129,6 @@
             });
         });
 
-
-
 /**
  * Quantity on value change
  */
