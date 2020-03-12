@@ -18,7 +18,9 @@ class CreateOurTeamsTable extends Migration
             $table->string('team_name')->nullable;
             $table->string('team_designation')->nullable;
             $table->string('image_one')->nullable;
+            $table->string('image_one_alt')->nullable;
             $table->string('image_two')->nullable;
+            $table->string('image_two_alt')->nullable;
             $table->text('description')->nullable;
             $table->timestamps();
         });

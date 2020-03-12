@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\eCommerce;
+namespace App\Http\Controllers\admin\eCommerce;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\eCommerce\OurTeam;
-use Yajra\DataTables\DataTables;
-use Illuminate\Validation\Rule;
+use App\models\eCommerce\OurWorkspace;
 
-class OurTeamController extends Controller
+class OurWorkspaceControler extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +14,17 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('admin.eCommerce.our_team.index');
+        return view('admin.eCommerce.our_workspace.index');
     }
 
 
      public function datatable(Request $request){
        if ($request->ajax()) {
-            $document = OurTeam::where('team_name', '!=', config('system.default_role.admin'))->get();
+            $document = OurWorkspace::where('team_name', '!=', config('system.default_role.admin'))->get();
             return DataTables::of($document)
                 ->addIndexColumn()
                 
-                ->editColumn('image_one',function($model){
+                 ->editColumn('image_one',function($model){
                 $url= asset('storage/eCommerce/about/'.$model->image_one);
                 return '<img src="'.$url.'" border="0" width="120" height="50" class="img-rounded" align="center" />';
                    })
@@ -39,15 +37,13 @@ class OurTeamController extends Controller
                 })->rawColumns(['action','image_one','image_two'])->make(true);
         }
     }
-
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        return view('admin.eCommerce.our_team.create');
+        return view('admin.eCommerce.our_workspace.create');
     }
 
     /**
@@ -58,13 +54,14 @@ class OurTeamController extends Controller
      */
     public function store(Request $request){
         $data = $request->validate([
-            'team_name' => 'required|unique:our_teams|max:255',
-            'team_designation' => 'required|unique:our_teams|max:255',
             'image_one' => 'required',
             'image_one_alt' => '',
             'image_two' => 'required',
             'image_two_alt' => '',
-            'description' => 'required',
+            'image_three' => 'required',
+            'image_three_alt' => '',
+            'image_four' => 'required',
+            'image_four_alt' => '',
         ]);
 
          if ($request->hasFile('image_one')) {
@@ -72,7 +69,7 @@ class OurTeamController extends Controller
             $fileName = basename($storagepath);
             $data['image_one'] = $fileName;
         }else{
-            $data['image_one'] ='';
+            $data['image_one'] = '';
         }
 
          if ($request->hasFile('image_two')) {
@@ -82,9 +79,26 @@ class OurTeamController extends Controller
         }else{
             $data['image_two'] = '';
         }
-        $model = new OurTeam;
+
+        if ($request->hasFile('image_three')) {
+            $storagepath = $request->file('image_three')->store('public/eCommerce/about');
+            $fileName = basename($storagepath);
+            $data['image_three'] = $fileName;
+        }else{
+            $data['image_three'] = '';
+        }
+
+        if ($request->hasFile('image_four')) {
+            $storagepath = $request->file('image_four')->store('public/eCommerce/about');
+            $fileName = basename($storagepath);
+            $data['image_four'] = $fileName;
+        }else{
+            $data['image_four'] = '';
+        }
+
+        $model = new OurWorkspace;
         $model->create($data);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.our-team.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.our-workspace.index')]);
     }
 
     /**
@@ -104,9 +118,9 @@ class OurTeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){
-        $model = OurTeam::findOrFail($id);
-        return view('admin.eCommerce.our_team.edit',compact('model'));
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -116,36 +130,9 @@ class OurTeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
-         $model = OurTeam::findOrFail($id);
-         $data = $request->validate([
-            'team_name' => ['required',Rule::unique('our_teams')->ignore($model->id)],
-            'team_designation' => ['required',Rule::unique('our_teams')->ignore($model->id)],
-            'image_one' => '',
-            'image_one_alt' => '',
-            'image_two' => '',
-            'image_two_alt' => '',
-            'description' => 'required',
-        ]);
-
-         if ($request->hasFile('image_one')) {
-            $storagepath = $request->file('image_one')->store('public/eCommerce/about');
-            $fileName = basename($storagepath);
-            $data['image_one'] = $fileName;
-        }else{
-            $data['image_one'] =$model->image_one;
-        }
-
-         if ($request->hasFile('image_two')) {
-            $storagepath = $request->file('image_two')->store('public/eCommerce/about');
-            $fileName = basename($storagepath);
-            $data['image_two'] = $fileName;
-        }else{
-            $data['image_one'] =$model->image_two;
-        }
-       
-        $model->update($data);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.our-team.index')]);
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**
@@ -156,8 +143,6 @@ class OurTeamController extends Controller
      */
     public function destroy($id)
     {
-        $model = OurTeam::findOrFail($id);
-        $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted'),'goto' => route('admin.eCommerce.our-team.index')]);
+        //
     }
 }

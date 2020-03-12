@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<!-- set the viewport width and initial-scale on mobile devices -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	@stack('seo_section')
 	<title>Schön. | eCommerce HTML5 Template</title>
 	<!-- include the site stylesheet -->
 	<link rel="icon" type="image/png" sizes="16x16" href="{{asset(get_option('favicon')?'storage/logo/'.get_option('favicon'):'favicon.png')}}">
@@ -19,6 +20,7 @@
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/main.css">
 	<!-- include the site stylesheet -->
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/responsive.css">
+	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
 </head>
 <body>
 	<!-- main container of all the page elements -->
@@ -68,6 +70,8 @@
 	<script src="{{asset('frontend')}}/js/plugins.js"></script>
 	<!-- include jQuery -->
 	<script src="{{asset('frontend')}}/js/jquery.main.js"></script>
+	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+	<script src="{{asset('frontend')}}/js/main.js"></script>
 </body>
 </html>
