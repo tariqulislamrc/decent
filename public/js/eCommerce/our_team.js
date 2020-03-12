@@ -98,7 +98,7 @@ var DatatableSelect = function () {
                 }, {
                     data: 'image_two',
                     name: 'image_two'
-                }, {
+                },{
                     data: 'action',
                     name: 'action'
                 }

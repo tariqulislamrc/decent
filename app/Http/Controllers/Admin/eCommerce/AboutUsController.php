@@ -13,10 +13,14 @@ class AboutUsController extends Controller{
     }
 
      public function store(Request $request){
-       //dd($request->all());
+    //    dd($request->all());
        $data = $request->validate([
             'name' => 'required',
             'header_image' => '',
+            'header_image_alt' => '',
+            'seo_title' => '',
+            'meta_keyword' => '',
+            'meta_description' => '',
             'description' => 'required',
         ]);
 

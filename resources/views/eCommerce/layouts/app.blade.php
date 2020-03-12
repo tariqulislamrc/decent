@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<!-- set the viewport width and initial-scale on mobile devices -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	@stack('seo_section')
 	<title>Schön. | eCommerce HTML5 Template</title>
 	<!-- include the site stylesheet -->
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic%7cMontserrat:400,700%7cOxygen:400,300,700' rel='stylesheet' type='text/css'>
@@ -18,6 +19,7 @@
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/main.css">
 	<!-- include the site stylesheet -->
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/responsive.css">
+	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
 </head>
 <body>
 	<!-- main container of all the page elements -->
@@ -67,6 +69,8 @@
 	<script src="{{asset('frontend')}}/js/plugins.js"></script>
 	<!-- include jQuery -->
 	<script src="{{asset('frontend')}}/js/jquery.main.js"></script>
+	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+	<script src="{{asset('frontend')}}/js/main.js"></script>
 </body>
 </html>

@@ -339,17 +339,17 @@
                 @endcan
 
                 @can('role.view')
-                {{--Privacy Policy--}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
-                        href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i>
-                        {{_lang('About Us')}}</a></li>
+                {{--about us --}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('About Us')}}</a></li>
                 @endcan
 
                 @can('role.view')
-                {{--Privacy Policy--}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
-                        href="{{ route('admin.eCommerce.our-team.index') }}"><i class="icon fa fa-circle-o"></i>
-                        {{_lang('Our Team')}}</a></li>
+                {{--Our Team--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-team.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Our Team')}}</a></li>
+                @endcan
+                @can('role.view')
+                {{--Our Team--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-workspace.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('OUR WORKSPACE')}}</a></li>
                 @endcan
 
             </ul>
