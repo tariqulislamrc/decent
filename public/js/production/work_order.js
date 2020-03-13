@@ -252,7 +252,7 @@ $(function () {
     }
 
     function get_purchase_entry_row(product_id, variation_id) {
-        
+
 
         if (product_id) {
             var row_count = $('#row').val();
@@ -263,6 +263,15 @@ $(function () {
                 data: { product_id: product_id, row_count: row_count, variation_id: variation_id },
                 success: function(result) {
                     $('#item').append(result.html);
+                    var item = $('#item').find('.product_id');
+                    $.each(item, function (i, v) {
+                        console.log($(this).data('variation'));
+                    })
+                    if ($(result.html).find('.qty').length) {
+                        $('#row').val(
+                            $(result.html).find('.qty').length + parseInt(row_count)
+                        );
+                    }
                 },
             });
         }

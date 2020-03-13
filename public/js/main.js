@@ -17,7 +17,7 @@ $('.date').datepicker({
 var _componentDatefPicker = function() {
     $('.date').attr('readonly', true);
     $('.date').datepicker({
-        format: "yyyy-mm-dd",
+        dateFormat: "yy-mm-dd",
         autoclose: true,
         todayHighlight: true
     });

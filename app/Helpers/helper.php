@@ -91,16 +91,17 @@ function gbv($params, $keys) {
 }
 
 if (!function_exists('get_option')) {
-    function get_option($name)
+    function get_option($name, $default = null)
     {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+        if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
             $setting = DB::table('settings')->where('name', $name)->get();
             if (!$setting->isEmpty()) {
                 return $setting[0]->value;
             }
-            return $default;
+
 
         }
+        return $default;
     }
 }
 function toWord($word) {
