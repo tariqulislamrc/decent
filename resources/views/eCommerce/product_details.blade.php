@@ -18,27 +18,18 @@
 									<!-- Comment List of the Page end -->
 									<!-- Product Slider of the Page -->
 									<div class="product-slider">
+										@foreach ($model->photo_details as $item)
 										<div class="slide">
-											<img src="http://placehold.it/610x490" alt="image descrption">
+											<img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/610x490'}}" alt="image descrption">
 										</div>
-										<div class="slide">
-											<img src="http://placehold.it/610x490" alt="image descrption">
-										</div>
-										<div class="slide">
-											<img src="http://placehold.it/610x490" alt="image descrption">
-										</div>
-										<div class="slide">
-											<img src="http://placehold.it/610x490" alt="image descrption">
-										</div>
+										@endforeach
 									</div>
 									<!-- Product Slider of the Page end -->
 									<!-- Pagg Slider of the Page -->
 									<ul class="list-unstyled slick-slider pagg-slider">
-										<li><div class="img"><img src="http://placehold.it/105x105" alt="image description"></div></li>
-										<li><div class="img"><img src="http://placehold.it/105x105" alt="image description"></div></li>
-										<li><div class="img"><img src="http://placehold.it/105x105" alt="image description"></div></li>
-										<li><div class="img"><img src="http://placehold.it/105x105" alt="image description"></div></li>
-										<li><div class="img"><img src="http://placehold.it/105x105" alt="image description"></div></li>
+										@foreach ($model->photo_details as $item)
+											<li><div class="img"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/105x105'}}" alt="image description"></div></li>
+										@endforeach
 									</ul>
 									<!-- Pagg Slider of the Page end -->
 								</div>
@@ -51,7 +42,7 @@
 										<li>Products</li>
 									</ul>
 									<!-- Breadcrumbs of the Page end -->
-									<h2>KAILA FABRIC CHAIR</h2>
+									<h2 class="text-uppercase">{{$model->name}}</h2>
 									<!-- Rank Rating of the Page -->
 									<div class="rank-rating">
 										<ul class="list-unstyled rating-list">
@@ -69,8 +60,14 @@
 										<li><a href="#"><i class="fa fa-heart"></i>ADD TO WISHLIST</a></li>
 									</ul>
 									<div class="txt-wrap">
-										<p>Koila is a chair designed for restaurants and food lovers in general. Designed in collaboration with restaurant professionals, it ensures comfort and an ideal posture, as there are armrests on both sides of the chair.</p>
-										<p>Koila is a seat designed for restaurants and gastronomic places in general. Designed in collaboration with professional of restaurants and hotels field, this armchair is composed of a curved shell with a base in oak who has pinched the back upholstered in fabric or leather. It provides comfort and holds for ideal sitting position,the arms may rest on the sides ofthe armchair.</p>
+										{{$model->short_description}}
+									</div>
+									<div class="row">
+										@foreach ($model->variation as $item)
+											<div class="col-md-2">
+											<span style="margin-bottom: 5px;" class="btn btn-info">{{$item->name}}</span>
+										</div>
+										@endforeach
 									</div>
 									<div class="text-holder">
 										<span class="price">$ 79.00 <del>399,00</del></span>
@@ -105,12 +102,10 @@
 								</ul>
 								<div class="tab-content">
 									<div id="tab1">
-										<p>Koila is a chair designed for restaurants and food lovers in general. Designed in collaboration with restaurant professionals, it ensures comfort and an ideal posture, as there are armrests on both sides of the chair. </p>
-										<p>Koila is a seat designed for restaurants and gastronomic places in general. Designed in collaboration with professional of restaurants and hotels field, this armchair is composed of a curved shell with a base in oak who has pinched the back upholstered in fabric or leather. It provides comfort and holds for ideal sitting position,the arms may rest on the sides ofthe armchair. <br>Solid oak construction.<br> Back in plywood (2  faces oak veneer) or upholstered in fabric, leather or eco-leather.<br> Seat upholstered in fabric, leather or eco-leather. <br> H 830 x L 585 x P 540 mm.</p>
+										{!!$model->product_description!!}
 									</div>
 									<div id="tab2">
-										<p>Koila is a chair designed for restaurants and food lovers in general. Designed in collaboration with restaurant professionals, it ensures comfort and an ideal posture, as there are armrests on both sides of the chair. </p>
-										<p>Koila is a seat designed for restaurants and gastronomic places in general. Designed in collaboration with professional of restaurants and hotels field, this armchair is composed of a curved shell with a base in oak who has pinched the back upholstered in fabric or leather. It provides comfort and holds for ideal sitting position,the arms may rest on the sides ofthe armchair. <br>Solid oak construction.<br> Back in plywood (2  faces oak veneer) or upholstered in fabric, leather or eco-leather.<br> Seat upholstered in fabric, leather or eco-leather. <br> H 830 x L 585 x P 540 mm.</p>
+										{{$model->information}}
 									</div>
 									<div id="tab3">
 										<div class="product-comment">

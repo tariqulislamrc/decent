@@ -21,6 +21,7 @@
 	<!-- include the site stylesheet -->
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/responsive.css">
 	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
+	@stack('admin.css')
 </head>
 <body>
 	<!-- main container of all the page elements -->

@@ -20,3 +20,4 @@ class ProductVariation extends Model
         return $this->hasMany(Variation::class, 'product_variation_id', 'id');
     }
 }
+
