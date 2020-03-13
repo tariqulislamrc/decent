@@ -25,10 +25,9 @@
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{asset('backend/css/dropify.min.css')}}">
         <link href="{{asset('backend/css/summernote-bs4.css')}}" rel="stylesheet" />
-        <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
-        <link rel="stylesheet" href="{{asset('backend/css/bootstrap-datetimepicker.css')}}">
         <link rel="stylesheet" href="{{ asset('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}">
+        <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
         <style>
             .pageloader {
                 position: fixed;
@@ -87,7 +86,6 @@
         <!-- The javascript plugin to display page loading on top-->
         <script src="{{asset('backend/js/plugins/pace.min.js')}}"></script>
         <script src="{{ asset('backend/js/parsley.min.js') }}"></script>
-        <script type="text/javascript" src="{{asset('backend/js/plugins/bootstrap-datepicker.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('backend/js/plugins/select2.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('backend/js/plugins/sweetalert.min.js')}}"></script>
         <script src="{{asset('backend/js/dropify.min.js')}}"></script>

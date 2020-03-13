@@ -3,7 +3,7 @@
     <td>
         {{ $product->name }} {{ $variation->name }} ({{$variation->sub_sku}})
 
-        <input type="hidden" name="product_id[]" class="product_id" value="{{$product->id}}">
+        <input type="hidden" name="product_id[]" class="product_id" value="{{$product->id}}" data-variation="{{$variation->id}}">
     	<input type="hidden" name="variation_id[]" class="variation_id" value="{{$variation->id}}">
     	<input type="hidden" class="form-control code" id="code_{{$row}}" data-id="{{$row}}" value="{{$product->id}}">
     </td>

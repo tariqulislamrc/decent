@@ -1,4 +1,5 @@
 @extends('layouts.app', ['title' => _lang('Production Work Order Create'), 'modal' => 'lg'])
+
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
