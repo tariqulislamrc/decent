@@ -1,4 +1,7 @@
 @extends('layouts.app', ['title' => _lang('About Us'),'modal' => 'lg'])
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/tagsinput.css')}}">
+@endpush
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
@@ -25,10 +28,34 @@
             <input type="text" name="name" id="name" class="form-control" value="{{isset($model)?$model->name:''}}">
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-3">
         <div class="form-group">
             <label for="header_image">{{_lang('Header Image')}}</label>
             <input type="file" name="header_image" id="header_image" class="form-control">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+            <label for="header_image_alt">{{_lang('Header Image Alt')}}</label>
+            <input type="text" name="header_image_alt" id="header_image_alt" class="form-control" value="{{isset($model)?$model->header_image_alt:''}}">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="seo_title">{{_lang('SEO Title')}}</label>
+            <input type="text" name="seo_title" id="seo_title" class="form-control" value="{{isset($model)?$model->seo_title:''}}">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="meta_keyword">{{_lang('Meta Keyword')}}</label>
+            <input type="text" name="meta_keyword" data-role="tagsinput" id="meta_keyword" class="form-control" value="{{isset($model)?$model->meta_keyword:''}}">
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+            <label for="meta_description">{{_lang('Meta Desscription')}}</label>
+           <textarea class="form-control" cols="3" id="meta_description" name="meta_description" rows="2">{{isset($model)?$model->meta_description:''}}</textarea>
         </div>
       </div>
       <div class="col-md-12">
@@ -52,6 +79,7 @@
 @stop
 {{-- Script Section --}}
 @push('scripts')
+<script src="{{asset('backend/js/tagsinput.js')}}"></script>
 <script>
    $(document).ready(function() {
        $('#summernote').summernote({

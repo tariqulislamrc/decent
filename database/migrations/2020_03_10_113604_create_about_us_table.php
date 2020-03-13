@@ -16,6 +16,10 @@ class CreateAboutUsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable;
             $table->string('header_image')->nullable;
+            $table->string('header_image_alt')->nullable;
+            $table->string('seo_title')->nullable;
+            $table->string('meta_keyword')->nullable;
+            $table->text('meta_description')->nullable;
             $table->text('description')->nullable;
             $table->timestamps();
         });

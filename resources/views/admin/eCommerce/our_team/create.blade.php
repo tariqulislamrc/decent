@@ -40,15 +40,25 @@
 
                 
                 {{-- Image One --}}
-                <div class="col-md-6 form-group">
+                <div class="col-md-3 form-group">
                     <label for="image_one">{{_lang('Image One')}}</label>
                     <input type="file"  name="image_one" id="image_one" required class="form-control" />
                 </div>
 
+                <div class="col-md-3 form-group">
+                    <label for="image_one_alt">{{_lang('Image One Alt')}}</label>
+                    <input type="text"  name="image_one_alt" id="image_one_alt" class="form-control" />
+                </div>
+
                 {{-- Image Two --}}
-                <div class="col-md-6 form-group">
+                <div class="col-md-3 form-group">
                     <label for="image_two">{{_lang('Image Two')}}</label>
                     <input type="file"  name="image_two" id="image_two" required class="form-control" />
+                </div>
+
+                <div class="col-md-3 form-group">
+                    <label for="image_two_alt">{{_lang('Image Two Alt')}}</label>
+                    <input type="text"  name="image_two_alt" id="image_two_alt" class="form-control" />
                 </div>
 
                 {{-- Team Description --}}
@@ -76,7 +86,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-<script src="{{ asset('js/eCommerce/work_order.js') }}"></script>
+<script src="{{ asset('js/eCommerce/our_team.js') }}"></script>
 <script>
 $(document).ready(function() {
        $('#summernote').summernote({

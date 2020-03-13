@@ -1,13 +1,13 @@
-@extends('layouts.app', ['title' => _lang('Production Raw Materials'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Our Workspace'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-placement="bottom" title="Raw Materials for Production."><i class="fa fa-universal-access mr-4"></i> {{_lang('Raw Materials')}}</h1>
-            <p>{{_lang('Create Raw Materials for Production. Here you can Add, Edit & Delete The production Raw Materials')}}</p>
+            <h1 data-placement="bottom" title="Our worksapce"><i class="fa fa-universal-access mr-4"></i> {{_lang('Our worksapce')}}</h1>
+            <p>{{_lang('Here you can Add, Edit & Delete worksapce')}}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            {{ Breadcrumbs::render('production-raw-materials') }}
+            {{ Breadcrumbs::render('eCommerce.our-worksapce') }}
         </ul>
     </div>
 @stop
@@ -19,19 +19,19 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('production_raw_materials.create')
-                        <button data-placement="bottom" title="Create raw materials for production" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-raw-materials.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                    @can('our_workspace.create')
+                        <a data-placement="bottom" title="Create New workspace" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.our-workspace.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
                     @endcan
                 </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{route('admin.raw-materials.datatable')}}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.our-team.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
-                                <th>{{_lang('Unit Name')}}</th>
-                                <th>{{_lang('Material name')}}</th>
-                                <th>{{_lang('price')}}</th>
-                                <th>{{_lang('Description')}}</th>
+                                <th>{{_lang('Image One')}}</th>
+                                <th>{{_lang('Image Two')}}</th>
+                                <th>{{_lang('Image Three')}}</th>
+                                <th>{{_lang('Image Four')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>
@@ -46,9 +46,6 @@
 <!-- /basic initialization -->
 @stop
 
-<div class="modal fade border-top-success rounded-top-0 unit_modal" role="dialog" >
-</div>
-
 {{-- Script Section --}}
 @push('scripts')
     <script type="text/javascript" src="{{asset('backend/js/plugins/jquery.dataTables.min.js')}}"></script>
@@ -56,6 +53,6 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/production/raw_materials.js') }}"></script>
+    <script src="{{ asset('js/eCommerce/our_team.js') }}"></script>
 @endpush
 

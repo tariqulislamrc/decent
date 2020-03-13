@@ -24,33 +24,34 @@
             <div class="row">
               <div class="col-xs-12 col-sm-8">
                 <div class="txt-wrap">
-                  <h1>schön. chair maker</h1>
-                  <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut <br>enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut <br>aliquip ex ea commodo consequat. </p>
+                  <h1>{{get_option('institute_name')?get_option('institute_name'):''}}</h1>
+                  <p>{{get_option('description')?get_option('description'):''}}</p>
                 </div>
                 <ul class="list-unstyled contact-txt">
                   <li>
                     <strong>Address</strong>
-                    <address>Suite 18B, 148 Connaught Road <br>Central <br>New Yankee</address>
+                    <address>{{get_option('address')?get_option('address'):''}}</address>
                   </li>
                   <li>
                     <strong>Phone</strong>
-                    <a href="#">+1 (555) 333 22 11</a>
+                    <p>{{get_option('phone')?get_option('phone'):''}}</p>
                   </li>
                   <li>
                     <strong>E_mail</strong>
-                    <a href="#">info@schon.chair</a>
+                    <p>{{get_option('email')?get_option('email'):''}}</p>
                   </li>
                 </ul>
               </div>
               <div class="col-xs-12 col-sm-4">
                 <h2>Have a question?</h2>
                 <!-- Contact Form of the Page -->
-                <form action="#" class="contact-form">
+                <form action="{{route('contactus')}}" class="contact-form" id="myfrom" method="post">
+                  @csrf
                   <fieldset>
-                    <input type="text" class="form-control" placeholder="Name">
-                    <input type="email" class="form-control" placeholder="E-Mail">
-                    <input type="text" class="form-control" placeholder="Subject">
-                    <textarea class="form-control" placeholder="Message"></textarea>
+                    <input type="text" name="name" class="form-control" placeholder="Name">
+                    <input type="email" name="email" class="form-control" placeholder="E-Mail">
+                    <input type="text" name="subject" class="form-control" placeholder="Subject">
+                    <textarea class="form-control" name="descsription" placeholder="Message"></textarea>
                     <button class="btn-type3" type="submit">Send</button>
                   </fieldset>
                 </form>

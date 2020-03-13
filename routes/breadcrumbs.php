@@ -293,6 +293,12 @@ Breadcrumbs::for('product-edit', function ($trail) {
 });
 
 // Home > Product
+Breadcrumbs::for('product-details', function ($trail) {
+    $trail->parent('production-product');
+    $trail->push('Details', route('admin.production-product.index'));
+});
+
+// Home > Product
 Breadcrumbs::for('product-view', function ($trail) {
     $trail->parent('production-product');
     $trail->push('View', route('admin.production-product.index'));
@@ -389,4 +395,20 @@ Breadcrumbs::for('eCommerce.our-team', function ($trail) {
 Breadcrumbs::for('our-team-create', function ($trail) {
     $trail->parent('eCommerce.our-team');
     $trail->push('Create', route('admin.eCommerce.our-team.index'));
+});
+// Home > eCommerce Our Team
+Breadcrumbs::for('our-team-edit', function ($trail) {
+    $trail->parent('eCommerce.our-team');
+    $trail->push('Our Team Edit', route('admin.eCommerce.our-team.index'));
+});
+// Home > eCommerce Our workspace
+Breadcrumbs::for('eCommerce.our-worksapce', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Our Workspace', route('admin.eCommerce.our-workspace.index'));
+});
+
+// Home > eCommerce Our workspace
+Breadcrumbs::for('our-workspace-create', function ($trail) {
+    $trail->parent('eCommerce.our-worksapce');
+    $trail->push('Workspace Create', route('admin.eCommerce.our-workspace.create'));
 });

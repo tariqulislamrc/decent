@@ -1,9 +1,14 @@
-@extends('eCommerce.layouts.app')         
+@extends('eCommerce.layouts.app')
+@push('seo_section')
+    <meta name="description" content="{{$model->meta_description}}">
+    <meta name="keywords" content="{{$model->meta_keyword}}">
+    <meta name="title" content="{{$model->seo_title}}">
+@endpush      
 	@push('main')
 	  <!-- Main of the Page -->
       <main id="mt-main">
         <!-- Mt Content Banner of the Page -->
-        <section class="mt-contact-banner wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{$model->header_image?asset('storage/eCommerce/about/'.$model->header_image):'http://placehold.it/1920x205'}});">
+        <section class="mt-contact-banner wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($model->header_image)?asset('storage/eCommerce/about/'.$model->header_image):'http://placehold.it/1920x205'}});">
           <div class="container">
             <div class="row">
               <div class="col-xs-12 text-center">
@@ -51,69 +56,28 @@
               <div class="col-xs-12">
                 <h3>OUR TEAM</h3>
                 <div class="holder">
+                  @if (isset($our_team))
+                  @foreach ($our_team as $our_team_item)
                   <!-- col of the Page -->
                   <div class="col wow fadeInLeft" data-wow-delay="0.4s">
                     <div class="img-holder">
                       <a href="#">
-                        <img src="http://placehold.it/280x290" alt="CLARA WOODEN">
+                        <img src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
                         <ul class="list-unstyled social-icon">
                           <li><i class="fa fa-twitter"></i></li>
-                          <li><i class="fa fa-facebook"></i></li>
+                          <li> <i class="fa fa-facebook"></i></li>
                           <li><i class="fa fa-linkedin"></i></li>
                         </ul>
                       </a>
                     </div>
                     <div class="mt-txt">
-                      <h4><a href="#">CLARA WOODEN</a></h4>
-                      <span class="sub-title">DESIGNER</span>
+                      <h4><a href="#">{{$our_team_item->team_name}}</a></h4>
+                      <span class="sub-title">{{$our_team_item->team_designation}}</span>
                     </div>
                   </div>
                   <!-- col of the Page end -->
-                  <!-- col of the Page -->
-                  <div class="col wow fadeInLeft" data-wow-delay="0.4s">
-                    <div class="img-holder">
-                      <a href="#">
-                        <img src="http://placehold.it/280x290" alt="JOHN WICK">
-                        <ul class="list-unstyled social-icon">
-                          <li><i class="fa fa-twitter"></i></li>
-                          <li><i class="fa fa-facebook"></i></li>
-                          <li><i class="fa fa-linkedin"></i></li>
-                        </ul>
-                      </a>
-                    </div>
-                    <div class="mt-txt">
-                      <h4><a href="#">JOHN WICK</a></h4>
-                      <span class="sub-title">FOUNDER</span>
-                    </div>
-                  </div>
-                  <!-- col of the Page end -->
-                  <!-- col of the Page -->
-                  <div class="col wow fadeInRight" data-wow-delay="0.4s">
-                    <div class="img-holder">
-                      <a href="#">
-                        <img src="http://placehold.it/280x290" alt="HARRY KANE">
-                        <ul class="list-unstyled social-icon">
-                          <li><i class="fa fa-twitter"></i></li>
-                          <li><i class="fa fa-facebook"></i></li>
-                          <li><i class="fa fa-linkedin"></i></li>
-                        </ul>
-                      </a>
-                    </div>
-                    <div class="mt-txt">
-                      <h4><a href="#">HARRY KANE</a></h4>
-                      <span class="sub-title">DESIGNER</span>
-                    </div>
-                  </div>
-                  <!-- col of the Page end -->
-                  <!-- col of the Page -->
-                  <div class="col wow fadeInLeft" data-wow-delay="0.4s">
-                    <div class="img-holder">
-                      <a href="#">
-                        <img src="http://placehold.it/280x290" alt="CLARA WOODEN">
-                      </a>
-                    </div>
-                  </div>
-                  <!-- col of the Page end -->
+                   @endforeach
+                @endif
                 </div>
               </div>
             </div>
@@ -131,54 +95,26 @@
           </div>
           <!-- Work Slider of the Page -->
           <ul class="list-unstyled work-slider">
+           @if (isset($our_workspace))
+            @foreach ($our_workspace as $our_workspace_item)
             <li>
               <div class="img-holder">
-                <img src="http://placehold.it/545x545" alt="image description">
+                <img src="{{$our_workspace_item->image_one?asset('storage/eCommerce/about/'.$our_workspace_item->image_one):'http://placehold.it/545x545'}}" alt="image description">
               </div>
               <div class="img-holder">
                 <div class="coll1">
-                  <img src="http://placehold.it/245x310" alt="image description">
+                  <img src="{{$our_workspace_item->image_two?asset('storage/eCommerce/about/'.$our_workspace_item->image_two):'http://placehold.it/545x545'}}" alt="image description">
                 </div>
                 <div class="coll2">
-                  <img src="http://placehold.it/385x310" alt="image description">
+                   <img src="{{$our_workspace_item->image_three?asset('storage/eCommerce/about/'.$our_workspace_item->image_three):'http://placehold.it/545x545'}}" alt="image description">
                 </div>
                 <div class="coll3">
-                  <img src="http://placehold.it/640x220" alt="image description">
+                   <img src="{{$our_workspace_item->image_four?asset('storage/eCommerce/about/'.$our_workspace_item->image_four):'http://placehold.it/545x545'}}" alt="image description">
                 </div>
               </div>
-            </li>
-            <li>
-              <div class="img-holder">
-                <img src="http://placehold.it/545x545" alt="image description">
-              </div>
-              <div class="img-holder">
-                <div class="coll1">
-                  <img src="http://placehold.it/245x310" alt="image description">
-                </div>
-                <div class="coll2">
-                  <img src="http://placehold.it/385x310" alt="image description">
-                </div>
-                <div class="coll3">
-                  <img src="http://placehold.it/640x220" alt="image description">
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="img-holder">
-                <img src="http://placehold.it/545x545" alt="image description">
-              </div>
-              <div class="img-holder">
-                <div class="coll1">
-                  <img src="http://placehold.it/245x310" alt="image description">
-                </div>
-                <div class="coll2">
-                  <img src="http://placehold.it/385x310" alt="image description">
-                </div>
-                <div class="coll3">
-                  <img src="http://placehold.it/640x220" alt="image description">
-                </div>
-              </div>
-            </li>
+            </li>            
+            @endforeach
+          @endif
           </ul>
           <!-- Work Slider of the Page end -->
         </section>

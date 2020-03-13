@@ -40,7 +40,7 @@
                 <div class="nav-widget-1">
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled f-widget-nav">
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="{{route('about')}}">About Us</a></li>
                         <li><a href="#">Contact Us</a></li>
                         <li><a href="#">Terms &amp; Conditions</a></li>
                         <li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>

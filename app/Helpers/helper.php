@@ -404,6 +404,7 @@ function formatDate($date){
     return $validEmail;
 }
 
+<<<<<<< HEAD
 function variation_value($id){
 
 	$value =VariationTemplateDetails::find($id);
@@ -420,5 +421,13 @@ function rawMaterialUseQty($id){
 	$value =MaterialReport::where('done_material_report_id',$id)->sum('qty');
 
 	return $value;
+=======
+  function textShorten($text, $limit = 400){
+	$text = $text. " ";
+	$text = substr($text, 0, $limit);
+	$text = substr($text, 0, strrpos($text, ' '));
+	$text = $text.".....";
+	return $text;
+>>>>>>> c0147b304c80fc3c4a5d1ec8bdcec1697da06a9a
 }
 ?>
