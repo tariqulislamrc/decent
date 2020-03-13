@@ -48,8 +48,8 @@ Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_detail
 		End Frontend Route
 ==========================================================*/
 Route::group(['middleware' => ['install']], function () {
-Route::get('/', function () {
-    // return redirect()->route('login');
+
+Route::get('/', function() {
 	return view('welcome');
 });
 Auth::routes();
@@ -102,13 +102,31 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('employee-s-structure.ajax', 'Configuration\Employee\EmployeeSalaryStructureController@ajaxcall')->name('employee-s-structure.ajax');
 			Route::get('employee-s-structure-datatable', 'Configuration\Employee\EmployeeSalaryStructureController@datatable')->name('employee-s-structure.datatable');
 
-		//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
+		// ::::::::::::::::::::::::::::::::::::::::::::::::::   Payroll ::::::::::::::::::::::::::::::::::::::::::::;;;;
+		Route::get('payroll-initialize-datatable', 'Employee\PayrollController@datatable')->name('payroll-initialize.datatable');
+		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
+		Route::resource('payroll-initialize', 'Employee\PayrollController');
+		
+			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
 
-		//:::::::::::::::::::::::::::::Employee Attendance Type:::::::::::::::::::::::::::::::::
-		Route::get('employee-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
-		Route::resource('employee-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// holiday section
+	    Route::get('datable', 'Calender\HolidayController@datatable')->name('holiday.datatable');
+		Route::resource('holiday', 'Calender\HolidayController');
+
+
+		//::::::::::::::::::::::::::::: Attendance Type:::::::::::::::::::::::::::::::::
+		Route::post('/date_check_for_holiday', 'Configuration\Employee\EmployeeAttendanceController@checkholiday')->name('date_check_for_holiday');
+		
+		Route::get('attendance-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
+		Route::resource('attendance-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// ::::::::::::::::::::::::::::::: Attendance:::::::::::::::::::::::::::::::::::::::
+		Route::any('attendance-attendance-department', 'Configuration\Employee\EmployeeAttendanceController@department')->name('attendance-attendance.department');
+		Route::any('attendance-attendance-designation', 'Configuration\Employee\EmployeeAttendanceController@designation')->name('attendance-attendance.designation');
+		Route::any('attendance-attendance-date', 'Configuration\Employee\EmployeeAttendanceController@date')->name('attendance-attendance.date');
+		Route::any('attendance-attendance-fetch', 'Configuration\Employee\EmployeeAttendanceController@fetch')->name('attendance-attendance.fetch');
+		Route::resource('attendance-employee-attendance', 'Configuration\Employee\EmployeeAttendanceController');
 
 		//:::::::::::::::::::::::::::::Employee List::::::::::::::::::::::::::::::::::::
 		Route::get('employee-list-datatable', 'Configuration\Employee\EmployeeListController@datatable')->name('list.datatable');
@@ -435,7 +453,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::delete('department/employee/delete/{id}', 'DepertmentController@employee_destroy')->name('depertment.employee.delete');
 		Route::get('department/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
+<<<<<<< HEAD
 		Route::delete('department/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+=======
+		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');

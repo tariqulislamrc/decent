@@ -9,13 +9,20 @@
 @stop
 {{-- Main Section --}}
 @section('content')
+<<<<<<< HEAD
 <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
+=======
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
 <!-- Basic initialization -->
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
       <div class="tile-body">
+<<<<<<< HEAD
         <h3 class="border border-primary text-center py-2">Store Request</h3>
+=======
+        <h3 class="bg-info text-center py-2">Store Request</h3>
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
         <div class="row">
           <table class="table table-bordered">
             <thead>

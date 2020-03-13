@@ -3,7 +3,7 @@
         <h6>{{_lang('Edit Employee Attendance Type - ')}} <span class="badge badge-primary">{{$model->name}}</span></h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.employee-attendance-type.update', $model->id)}}" method="post" id="content_form">
+        <form action="{{route('admin.attendance-attendance-type.update', $model->id)}}" method="post" id="content_form">
             @csrf
             @method('PATCH')
             <div class="row">

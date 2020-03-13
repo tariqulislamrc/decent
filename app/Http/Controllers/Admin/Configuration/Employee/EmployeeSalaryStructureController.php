@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\models\employee\Employee;
 use App\models\employee\EmployeeSalary;
 use App\models\employee\EmployeeSalaryDetail;
+use App\models\employee\PayHead;
 use App\models\employee\PayrollTemplate;
 use App\models\employee\PayrollTemplateDetail;
 use Illuminate\Support\Str;
@@ -22,7 +23,6 @@ class EmployeeSalaryStructureController extends Controller
      */
     public function index()
     {
-        // return to the index page
         return view('admin.employee.payroll.structure.index');
     }
 
@@ -41,11 +41,18 @@ class EmployeeSalaryStructureController extends Controller
                 ->editColumn('date_effective', function ($document) {
                     return carbonDate($document->date_effective);
                 })
+                ->editColumn('net_salary', function ($document) {
+                    $usd = get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT';
+                    $salary = $document->net_salary;
+                    return $usd . ' ' . $salary;
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.payroll.structure.action', compact('model'));
-                })->rawColumns(['action', 'employee', 'payroll_template'])->make(true);
+                })->rawColumns(['action', 'employee', 'payroll_template', 'net_salary'])->make(true);
         }
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -88,32 +95,42 @@ class EmployeeSalaryStructureController extends Controller
 
         $payroll_template_id = $request->payroll_template_id;
 
-
         $uuid =  Str::uuid()->toString();
 
         $count_template_details_id = count($request->template_details_id);
+
         $count_amount = count($request->amount);
+
         $net_salary = 0;
         
         if($count_amount == $count_template_details_id) {
 
             $total_earning = 0;
+
             $total_deduction = 0;
 
             for($i = 0; $i < $count_template_details_id; $i++) {
 
                 $template_id = $request->template_details_id[$i];
+
                 $amount = $request->amount[$i];
-                
-                // 
 
                 $template_model = PayrollTemplateDetail::where('id', $template_id)->first();
+
+                $template_alias_id = $request->template_details_id[0];
+
+                $alias_template = PayrollTemplateDetail::where('id', $template_alias_id)->first();
+
+                $pay_head_alias = $alias_template->payhead->alias;
+
+                
+
 
                 if($template_model) {
 
                     $category = $template_model->category;
+                    
                     $cat_id = $template_model->id;
-
 
                     if($category == 'computation') {
 
@@ -130,7 +147,17 @@ class EmployeeSalaryStructureController extends Controller
                         
                         // find the computation login
                         $computation = $cat_info->computation;
-                        dd($computation);
+
+                        $explode_computation = explode('*', $computation);
+
+                        $alias = $explode_computation[0];
+                        
+                        dd($pay_head_alias);
+                        if($pay_head_alias == $alias) {
+                            dd('ok');
+                        } else {
+                            dd('problem');
+                        }
 
 
 
@@ -154,43 +181,48 @@ class EmployeeSalaryStructureController extends Controller
                     return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Wrong Template Deails')]);
 
                 }
-                
+
             }
 
-            // $net_salary = $total_earning - $total_deduction;
+            $total_salary = $total_earning - $total_deduction ; 
 
-            // // Create Employee salary
-            // $model = new EmployeeSalary;
-            // $model->uuid = $uuid;
-            // $model->employee_id = $request->employee_id;
-            // $model->payroll_template_id = $request->payroll_template_id;
-            // $model->date_effective = $request->date_effective;
-            // $model->net_salary = $net_salary;
-            // $model->description = $request->description;
-            // $model->save();
+            $model = new EmployeeSalary;
+            $model->uuid = $uuid;
+            $model->employee_id = $request->employee_id;
+            $model->payroll_template_id = $request->payroll_template_id;
+            $model->date_effective = $request->date_effective;
+            $model->total_earning = $total_earning;
+            $model->total_deduction = $total_deduction;
+            $model->net_salary = $total_salary;
+            $model->description = $request->description;
+            $model->save();
 
-            // // create salary details
-            // $employee_salary_id = $model->id;
+            $employee_salary_id = $model->id;
+
+            for($i = 0; $i < $count_template_details_id; $i++) {
+
+                $template_id = $request->template_details_id[$i];
+
+                $amount = $request->amount[$i];
+
+                $template_model = PayrollTemplateDetail::where('id', $template_id)->first();
+
+                $template_details_id = $template_model->id;
+
+                $item = new EmployeeSalaryDetail;
+                $item->employee_salary_id = $employee_salary_id;
+                $item->payroll_template_detail_id = $template_details_id;
+                $item->amount = $amount;
+                $item->save();
+            }
             
-            // for($i = 0; $i < $count_template_details_id; $i++) {
-
-            //     $template_id = $request->template_details_id[$i];
-            //     $amount = $request->amount[$i];
-
-            //     $item = new EmployeeSalaryDetail;
-            //     $item->employee_salary_id = $employee_salary_id;
-            //     $item->payroll_template_detail_id = $template_id;
-            //     $item->amount = $amount;
-            //     $item->save();
-
-            // }
         } else {
 
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Amount Not Matched')]);
 
         }
 
-        // return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Salary Structure Created'), 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Salary Structure Created')]);
 
     }
 
@@ -202,7 +234,9 @@ class EmployeeSalaryStructureController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = EmployeeSalary::where('uuid', $id)->firstOrFail();
+
+        return view('admin.employee.payroll.structure.show', compact('model'));
     }
 
     /**
@@ -236,6 +270,9 @@ class EmployeeSalaryStructureController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = EmployeeSalary::where('uuid', $id)->firstOrFail();
+        $model->delete();
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Salary Structure Deleted')]);
+        
     }
 }

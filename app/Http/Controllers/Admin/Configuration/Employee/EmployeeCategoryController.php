@@ -23,12 +23,12 @@ class EmployeeCategoryController extends Controller
     {
         if ($request->ajax()) {
             $document = EmployeeCategory::where('name', '!=', config('system.default_role.admin'))->get();
-            // dd($document);
+
             return Datatables::of($document)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.category.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+            })->rawColumns(['action'])->make(true);
         }
     }
 
@@ -56,12 +56,17 @@ class EmployeeCategoryController extends Controller
         ]);
 
         $model = new EmployeeCategory;
+
         $model->name = $request->name;
+
         $model->description = $request->description;
+
         $model->save();
+
         // Activity Log
         activity()->log('Created a Employee Category - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-category.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -85,6 +90,7 @@ class EmployeeCategoryController extends Controller
     {
         // find the data
         $model = EmployeeCategory::where('id', $id)->firstOrFail();
+
         // return
         return view('admin.employee.category.edit', compact('model'));
     }
@@ -101,14 +107,19 @@ class EmployeeCategoryController extends Controller
         $validator = $request->validate([
             'name' => 'required|max:255|unique:employee_categories,name,'.$id,
         ]);
+
         $model = EmployeeCategory::findOrFail($id);
+
         $model->name = $request->name;
+
         $model->description = $request->description;
+
         $model->save();
 
         // Activity Log
         activity()->log('Update a Employee Category - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-category.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
     }
 
     /**
@@ -119,12 +130,14 @@ class EmployeeCategoryController extends Controller
      */
     public function destroy($id){
         $type = EmployeeCategory::findOrFail($id);
+
         $name = $type->name;
+        
         $type->delete();
 
         // Activity Log
         activity()->log('Delete a Employee Category - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.employee-category.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }

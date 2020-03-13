@@ -13,4 +13,8 @@ class EmployeeSalary extends Model
     public function payroll_template() {
         return $this->belongsTo(PayrollTemplate::class);
     }
+
+    public function employee_designation() {
+        return $this->belongsTo(EmployeeDesignation::class, 'employee_id', 'employee_id');
+    }
 }

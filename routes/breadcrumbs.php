@@ -68,7 +68,7 @@ Breadcrumbs::for('employee-category', function ($trail) {
 // Home > Employee Category
 Breadcrumbs::for('employee-attendance-type', function ($trail) {
     $trail->parent('home');
-    $trail->push('Employee Attendance Type', route('admin.employee-attendance-type.index'));
+    $trail->push('Employee Attendance Type', route('admin.attendance-attendance-type.index'));
 });
 
 // Home > Employee leave
@@ -87,6 +87,18 @@ Breadcrumbs::for('employee-payroll', function ($trail) {
 Breadcrumbs::for('employee-payroll-template', function ($trail) {
     $trail->parent('employee-payroll');
     $trail->push('Template', route('admin.payroll-template.index'));
+});
+
+// Home > Employee payroll Iniatitalization
+Breadcrumbs::for('employee-payroll-init', function ($trail) {
+    $trail->parent('employee-payroll');
+    $trail->push('Init', route('admin.payroll-initialize.index'));
+});
+
+// Home > Calender > Holiday
+Breadcrumbs::for('holiday', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Holiday Information', route('admin.holiday.index'));
 });
 
 // Home > Employee payroll Salary Structure
@@ -385,6 +397,7 @@ Breadcrumbs::for('purchase-details', function ($trail) {
     $trail->push('Create', route('admin.production-purchase.index'));
 });
 
+<<<<<<< HEAD
 // Home > eCommerce Our Team
 Breadcrumbs::for('eCommerce.our-team', function ($trail) {
     $trail->parent('home');
@@ -417,4 +430,16 @@ Breadcrumbs::for('our-workspace-create', function ($trail) {
 Breadcrumbs::for('eCommerce.contact-msg', function ($trail) {
     $trail->parent('home');
     $trail->push('Contact Message', route('admin.eCommerce.contact-msg.index'));
+=======
+// Home > Employee Attendance
+Breadcrumbs::for('employee-attendance', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Employee Attendance', route('admin.attendance-employee-attendance.index'));
+});
+
+// Home > Employee Attendance Create
+Breadcrumbs::for('employee-attendance-create', function ($trail) {
+    $trail->parent('employee-attendance');
+    $trail->push('Create', route('admin.attendance-employee-attendance.create'));
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
 });

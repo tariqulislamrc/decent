@@ -28,6 +28,7 @@
                 </tr>
             </thead>
         </table>
+<<<<<<< HEAD
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -47,6 +48,8 @@
                 </tr>
             </thead>
         </table>
+=======
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
         <div class="table-responsive">
             <table class="table table-condensed table-bordered table-th-green text-center table-striped"
                 id="purchase_entry_table">

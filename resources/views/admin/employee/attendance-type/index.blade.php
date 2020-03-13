@@ -21,7 +21,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('employee_attendance_type.create')
-                        <button data-placement="bottom" title="Create New Employee Attendance Type" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee-attendance-type.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Employee Attendance Type" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.attendance-attendance-type.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">

@@ -29,90 +29,85 @@
                         {{ Form::hidden('config_type', 'system_setting') }}
                         <div class="tab-content">
                             {{-- This is for Home Section --}}
-                            <div class="row">
-                                {{-- Default Sidebar --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('default_sidebar', _lang('Default Sidebar') , ['class' => 'col-form-label ']) }}
-                                    <select name="default_sidebar" id="default_sidebar" class="form-control select"
-                                            data-placeholder="Select Default Sidebar">
-                                        <option value="">{{_lang('Select Default Sidebar')}}</option>
-                                        <option
-                                            {{get_option('default_sidebar') == '0' ? 'selected' : ''}} value="0">{{_lang('Mini')}}</option>
-                                        <option
-                                            {{get_option('default_sidebar') == '1' ? 'selected' : ''}} value="1">{{_lang('Normal')}}</option>
-                                    </select>
-                                </div>
-                                {{-- TimeZone --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('timezone', _lang('TimeZone') , ['class' => 'col-form-label ']) }}
-                                    <select name="timezone" class="form-control select">
-                                        @foreach (tz_list() as $key=> $time)
-                                            <option
-                                                {{$time['zone'] == get_option('timezone') ? 'selected' : ''}}  value="{{$time['zone']}}">{{ $time['diff_from_GMT'] . ' - ' . $time['zone']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                {{-- Date Foramt --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('date_format', _lang('Date Format') , ['class' => 'col-form-label ']) }}
-                                    <select name="date_format" id="date_format" class="form-control select"
-                                            data-placeholder="Select Default Date Format">
-                                        <option value="">{{_lang('Select Default Date Format')}}</option>
-                                        <option
-                                            {{get_option('date_format') == 'd-m-Y' ? 'selected' : ''}} value="d-m-Y">{{_lang('DD-MM-YYYY')}}</option>
-                                        <option
-                                            {{get_option('date_format') == 'm-d-Y' ? 'selected' : ''}} value="m-d-Y">{{_lang('MM-DD-YYYY')}}</option>
-                                        <option
-                                            {{get_option('date_format') == 'D-F-Y' ? 'selected' : ''}} value="d-F-Y">{{_lang('DD-MMM-YYYY')}}</option>
-                                        <option
-                                            {{get_option('date_format') == 'F-d-Y' ? 'selected' : ''}} value="F-d-Y">{{_lang('MMM-DD-YYYY')}}</option>
-                                    </select>
-                                </div>
-                                {{-- Time Format --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('time_format', _lang('Time Format') , ['class' => 'col-form-label ']) }}
-                                    <select name="time_format" id="time_format" class="form-control select"
-                                            data-placeholder="Select Default Time Format">
-                                        <option value="">{{_lang('Select Default Time Format')}}</option>
-                                        <option
-                                            {{get_option('time_format') == 'H::i' ? 'selected' : ''}} value="H::i">{{_lang('24 Hour')}}</option>
-                                        <option
-                                            {{get_option('time_format') == 'h:i' ? 'selected' : ''}}  value="h:i">{{_lang('12 Hour')}}</option>
-                                        <option
-                                            {{get_option('time_format') == 'h:i A' ? 'selected' : ''}} value="h:i A">{{_lang('12 Hour Meridiem')}}</option>
-                                    </select>
-                                </div>
-                                {{-- Notification Position --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('notification_format', _lang('Notification Position') , ['class' => 'col-form-label ']) }}
-                                    <select name="notification_format" id="notification_format"
-                                            class="form-control select"
-                                            data-placeholder="Select Default Notification Position ">
-                                        <option value="">{{_lang('Select Default Notification Position')}}</option>
-                                        <option selected
-                                                {{get_option('notification_format') == 'toast-top-right' ? 'selected' : ''}} value="toast-top-right">{{_lang('Top Right')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-top-left' ? 'selected' : ''}} value="toast-top-left">{{_lang('Top Left')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-top-full-width' ? 'selected' : ''}} value="toast-top-full-width">{{_lang('Top Full Width')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-top-center' ? 'selected' : ''}} value="toast-top-cente">{{_lang('Top Center')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-bottom-right' ? 'selected' : ''}} value="toast-bottom-right">{{_lang('Bottom Right')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-bottom-left' ? 'selected' : ''}} value="toast-bottom-left">{{_lang('Bottom Left')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-bottom-full-width' ? 'selected' : ''}} value="toast-bottom-full-width">{{_lang('Bottom Full Width')}}</option>
-                                        <option
-                                            {{get_option('notification_format') == 'toast-bottom-center' ? 'selected' : ''}} value="toast-bottom-center">{{_lang('Bottom Center')}}</option>
-                                    </select>
-                                </div>
 
-                                {{-- Language --}}
-                                <div class="col-md-6">
-                                    {{ Form::label('language', _lang('language') , ['class' => 'col-form-label', 'data-placeholder' => 'Select System Language']) }}
-                                    <select name="language" class="form-control select">
-                                        <option value="default">{{_lang('Default')}}</option>
+                                <div class="row">
+                                    {{-- Default Sidebar --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('default_sidebar', _lang('Default Sidebar') , ['class' => 'col-form-label ']) }}
+                                        <select name="default_sidebar" id="default_sidebar" class="form-control select" data-placeholder="Select Default Sidebar">
+                                            <option value="">{{_lang('Select Default Sidebar')}}</option>
+                                            <option {{get_option('default_sidebar') == '0' ? 'selected' : ''}} value="0">{{_lang('Mini')}}</option>
+                                            <option {{get_option('default_sidebar') == '1' ? 'selected' : ''}} value="1">{{_lang('Normal')}}</option>
+                                        </select>
+                                    </div>
+
+                                    {{-- Default Holiday In a Week --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('holiday', _lang('Default Holiday') , ['class' => 'col-form-label ']) }}
+                                        <select name="holiday" class="form-control select" required data-placeholder="Select A Day">
+                                            <option value="">Select A Day</option>
+                                            <option {{get_option('holiday') == 'Friday' ? 'selected' : ''}}  value="Friday">Friday</option>
+                                            <option {{get_option('holiday') == 'Saturday' ? 'selected' : ''}}  value="Saturday">Saturday</option>
+                                            <option {{get_option('holiday') == 'Sunday' ? 'selected' : ''}}  value="Sunday">Sunday</option>
+                                            <option {{get_option('holiday') == 'Monday' ? 'selected' : ''}}  value="Monday">Monday</option>
+                                            <option  {{get_option('holiday') == 'Tuesday' ? 'selected' : ''}} value="Tuesday">Tuesday</option>
+                                            <option {{get_option('holiday') == 'Wednesday' ? 'selected' : ''}}  value="Wednesday">Wednesday</option>
+                                            <option {{get_option('holiday') == 'Thursday' ? 'selected' : ''}}  value="Thursday">Thursday</option>
+                                        </select>
+                                    </div>
+
+                                    {{-- TimeZone --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('timezone', _lang('TimeZone') , ['class' => 'col-form-label ']) }}
+                                        <select name="timezone" class="form-control select">
+                                            @foreach (tz_list() as $key=> $time)
+                                                <option {{$time['zone'] == get_option('timezone') ? 'selected' : ''}}  value="{{$time['zone']}}">{{ $time['diff_from_GMT'] . ' - ' . $time['zone']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    {{-- Date Foramt --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('date_format', _lang('Date Format') , ['class' => 'col-form-label ']) }}
+                                        <select name="date_format" id="date_format" class="form-control select" data-placeholder="Select Default Date Format">
+                                            <option value="">{{_lang('Select Default Date Format')}}</option>
+                                            <option {{get_option('date_format') == 'd-m-Y' ? 'selected' : ''}} value="d-m-Y">{{_lang('DD-MM-YYYY')}}</option>
+                                            <option {{get_option('date_format') == 'm-d-Y' ? 'selected' : ''}} value="m-d-Y">{{_lang('MM-DD-YYYY')}}</option>
+                                            <option {{get_option('date_format') == 'D-F-Y' ? 'selected' : ''}} value="d-F-Y">{{_lang('DD-MMM-YYYY')}}</option>
+                                            <option {{get_option('date_format') == 'F-d-Y' ? 'selected' : ''}} value="F-d-Y">{{_lang('MMM-DD-YYYY')}}</option>
+                                        </select>
+                                    </div>
+                                    {{-- Time Format --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('time_format', _lang('Time Format') , ['class' => 'col-form-label ']) }}
+                                        <select name="time_format" id="time_format" class="form-control select" data-placeholder="Select Default Time Format">
+                                            <option value="">{{_lang('Select Default Time Format')}}</option>
+                                            <option {{get_option('time_format') == 'H::i' ? 'selected' : ''}} value="H::i">{{_lang('24 Hour')}}</option>
+                                            <option {{get_option('time_format') == 'h:i' ? 'selected' : ''}}  value="h:i">{{_lang('12 Hour')}}</option>
+                                            <option {{get_option('time_format') == 'h:i A' ? 'selected' : ''}} value="h:i A">{{_lang('12 Hour Meridiem')}}</option>
+                                        </select>
+                                    </div>
+                                    {{-- Notification Position --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('notification_format', _lang('Notification Position') , ['class' => 'col-form-label ']) }}
+                                        <select name="notification_format" id="notification_format" class="form-control select" data-placeholder="Select Default Notification Position ">
+                                            <option value="">{{_lang('Select Default Notification Position')}}</option>
+                                            <option selected {{get_option('notification_format') == 'toast-top-right' ? 'selected' : ''}} value="toast-top-right">{{_lang('Top Right')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-top-left' ? 'selected' : ''}} value="toast-top-left">{{_lang('Top Left')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-top-full-width' ? 'selected' : ''}} value="toast-top-full-width">{{_lang('Top Full Width')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-top-center' ? 'selected' : ''}} value="toast-top-cente">{{_lang('Top Center')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-bottom-right' ? 'selected' : ''}} value="toast-bottom-right">{{_lang('Bottom Right')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-bottom-left' ? 'selected' : ''}} value="toast-bottom-left">{{_lang('Bottom Left')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-bottom-full-width' ? 'selected' : ''}} value="toast-bottom-full-width">{{_lang('Bottom Full Width')}}</option>
+                                            <option {{get_option('notification_format') == 'toast-bottom-center' ? 'selected' : ''}} value="toast-bottom-center">{{_lang('Bottom Center')}}</option>
+                                        </select>
+                                    </div>
+
+                                    {{-- Language --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('language', _lang('language') , ['class' => 'col-form-label', 'data-placeholder' => 'Select System Language']) }}
+                                        <select name="language" class="form-control select">
+                                            <option value="default">{{_lang('Default')}}</option>
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
                                         {!! load_language( get_option('language') ) !!}
                                     </select>
                                 </div>

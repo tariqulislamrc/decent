@@ -225,5 +225,9 @@ class DepertmentController extends Controller
         $ing_category->forceDelete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
     }
-
+    public function approve_request($id)
+    {
+        $model =DepertmentStore::find($id);
+        return view('admin.depertment.approve_request',compact('model'));
+    }
 }

@@ -21,6 +21,8 @@ class CreateEmployeeSalariesTable extends Migration
             $table->unsignedBigInteger('payroll_template_id')->nullable();
             $table->foreign('payroll_template_id')->references('id')->on('payroll_templates')->onDelete('cascade');
             $table->timestamp('date_effective')->nullable();
+            $table->double('total_earning')->nullable();
+            $table->double('total_deduction')->nullable();
             $table->double('net_salary',25,5)->nullable();
             $table->text('description')->nullable();
             $table->timestamp('deleted_at')->nullable();

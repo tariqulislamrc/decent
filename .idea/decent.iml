@@ -113,7 +113,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-fractal" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-html" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-oracle" />
-
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

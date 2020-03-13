@@ -30,11 +30,11 @@ class EmployeeLeaveTypeController extends Controller
             return Datatables::of($document)
                 ->addIndexColumn()
                 ->editColumn('is_active',function($model){
-                    return $model->is_active == 1?'Active':'Inactive';
+                    return $model->is_active == 1? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.leave-type.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+                })->rawColumns(['action', 'is_active'])->make(true);
         }
     }
 
@@ -64,14 +64,21 @@ class EmployeeLeaveTypeController extends Controller
         ]);
 
         $model = new EmployeeLeaveType;
+
         $model->name = $request->name;
+
         $model->alias = $request->alias;
+
         $model->is_active = $request->is_active;
+
         $model->description = $request->description;
+
         $model->save();
+
         // Activity Log
         activity()->log('Created a Employee Leave Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-leave-type.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -95,6 +102,7 @@ class EmployeeLeaveTypeController extends Controller
     {
         // find the data
         $model = EmployeeLeaveType::where('id', $id)->firstOrFail();
+
         // return
         return view('admin.employee.leave-type.edit', compact('model'));
     }
@@ -110,14 +118,15 @@ class EmployeeLeaveTypeController extends Controller
     {
         $model = EmployeeLeaveType::findOrFail($id);
         $model->name = $request->name;
-         $model->alias = $request->alias;
+        $model->alias = $request->alias;
         $model->is_active = $request->is_active;
         $model->description = $request->description;
         $model->save();
 
         // Activity Log
         activity()->log('Update a Employee Leave Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-leave-type.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
     }
 
     /**
@@ -135,6 +144,6 @@ class EmployeeLeaveTypeController extends Controller
         // Activity Log
         activity()->log('Delete a Employee Leave Type - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.employee-leave-type.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }

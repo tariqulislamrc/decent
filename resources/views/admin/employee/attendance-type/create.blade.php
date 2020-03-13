@@ -3,7 +3,7 @@
         <h6>{{_lang('Create New Employee Attendance Type')}}</h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.employee-attendance-type.store')}}" method="post" id="content_form">
+        <form action="{{route('admin.attendance-attendance-type.store')}}" method="post" id="content_form">
             @csrf
             <div class="row">
                 {{-- Employee Attendance Type Name --}}
@@ -51,9 +51,7 @@
                 <div class="col-md-12 form-group">
                     <label for="name">{{_lang('Attendance Type Description')}}
                     </label>
-                    <textarea name="description" class="form-control" id=""
-                        placeholder="Enter Employee Attendance Type Description"></textarea>
-        
+                    <textarea name="description" class="form-control" id="" placeholder="Enter Employee Attendance Type Description"></textarea>
                 </div>
         
                 @can('employee_attendance_type.create')

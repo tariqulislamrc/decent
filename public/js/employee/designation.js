@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran = '';
 var DatatableSelect = function () {
 
 
@@ -18,7 +18,6 @@ var DatatableSelect = function () {
     //
 
     // Basic Datatable examples
-    var emran = "";
     var _componentDatatableSelect = function () {
         if (!$().DataTable) {
             console.warn('Warning - datatables.min.js is not loaded.');
@@ -77,7 +76,7 @@ var DatatableSelect = function () {
                 targets: [5]
             }],
 
-            order: [0, 'asc'],
+            order: [0, 'desc'],
             processing: true,
             serverSide: true,
 
