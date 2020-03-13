@@ -413,4 +413,15 @@ class ProductController extends Controller
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
+
+
+    public function details_add($id)
+    {
+        return view('admin.production.product.details-add');
+    }
+    public function details_store(Request $request, $id)
+    {
+        return view('admin.production.product.details-add');
+    }
+
 }

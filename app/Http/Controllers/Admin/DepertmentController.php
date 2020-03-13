@@ -70,8 +70,17 @@ class DepertmentController extends Controller
         $model->description=$request->description;
         $model->hidden = 0;
         $model->tek_marks = 0;
+        $model->flow=$request->flow;
         $model->created_by = auth()->user()->id;
         $model->save();
+
+            $first_order =Depertment::where('flow',$request->flow)->get()->except($model->id);
+            foreach ($first_order as $key => $value) {
+               $first_order_change =Depertment::find($value->id);
+               $first_order_change->flow=null;
+               $first_order_change->save();
+            }
+    
         //depertment employee
         $d_emp =new DepertmentEmployee;
         $d_emp->depertment_id=$model->id;
@@ -89,7 +98,7 @@ class DepertmentController extends Controller
      */
     public function show($id)
     {
-      $model =Depertment::find($id);
+      $model =Depertment::findOrFail($id);
       return view('admin.depertment.show',compact('model'));
     }
 
@@ -101,7 +110,7 @@ class DepertmentController extends Controller
      */
     public function edit($id)
     {
-        $model =Depertment::find($id);
+        $model =Depertment::findOrFail($id);
         return view('admin.depertment.form',compact('model'));
     }
 
@@ -118,13 +127,20 @@ class DepertmentController extends Controller
             'name'=>'required',
         ]);
 
-        $model =Depertment::find($id);
+        $model =Depertment::findOrFail($id);
         $model->name =$request->name;
         $model->description=$request->description;
         $model->hidden = 0;
         $model->tek_marks = 0;
+        $model->flow=$request->flow;
         $model->created_by = auth()->user()->id;
         $model->save();
+            $first_order =Depertment::where('flow',$request->flow)->get()->except($model->id);
+            foreach ($first_order as $key => $value) {
+               $first_order_change =Depertment::find($value->id);
+               $first_order_change->flow=null;
+               $first_order_change->save();
+            }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
     }
 
@@ -143,7 +159,7 @@ class DepertmentController extends Controller
 
     public function new_employee($id)
     {
-       $depert =Depertment::find($id);
+       $depert =Depertment::findOrFail($id);
        $employee_id=[];
        foreach ($depert->depertment_employee as  $value) {
            $employee_id[]=$value->employee_id;
@@ -169,7 +185,7 @@ class DepertmentController extends Controller
 
     public function employee_destroy($id)
     {
-        $d_emp =DepertmentEmployee::find($id);
+        $d_emp =DepertmentEmployee::findOrFail($id);
         if ($d_emp->designation=='Head') {
            throw ValidationException::withMessages(['message' => _lang('You Can not Remove Department Head')]);
         }
@@ -180,7 +196,7 @@ class DepertmentController extends Controller
 
     public function new_category($id)
     {
-       $depert =Depertment::find($id);
+       $depert =Depertment::findOrFail($id);
        $category_id=[];
        foreach ($depert->igcategory as  $value) {
            $category_id[]=$value->ingredients_category_id;
@@ -205,14 +221,9 @@ class DepertmentController extends Controller
 
     public function category_destroy($id)
     {
-        $ing_category =DepertmentIgCategory::find($id);
+        $ing_category =DepertmentIgCategory::findOrFail($id);
         $ing_category->forceDelete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
     }
 
-    public function approve_request($id)
-    {
-        $model =DepertmentStore::find($id);
-        return view('admin.depertment.approve_request',compact('model'));
-    }
 }

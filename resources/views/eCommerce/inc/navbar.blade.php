@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <!-- mt logo start here -->
+                {{-- <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset(get_option('logo')?'storage/logo/'.get_option('logo'):'favicon.png')}}"></a></div> --}}
                 <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
                 <span class="tel"> +1 (555) 333 22 11</span>
                 <div class="mt-sh-cart2">

@@ -25,125 +25,18 @@
 						<!-- sidebar of the Page start here -->
 						<aside id="sidebar" class="col-xs-12 col-sm-4 col-md-3 wow fadeInLeft" data-wow-delay="0.4s">
 							<!-- shop-widget filter-widget of the Page start here -->
-							<section class="shop-widget filter-widget bg-grey">
-								<h2>FILTER</h2>
-								<span class="sub-title">Filter by Brands</span>
-								<!-- nice-form start here -->
-								<ul class="list-unstyled nice-form">
-									<li>
-										<label for="check-1">
-											<input id="check-1" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Casali</span>
-										</label>
-										<span class="num">2</span>
-									</li>
-									<li>
-										<label for="check-2">
-											<input id="check-2" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Decar</span>
-										</label>
-										<span class="num">12</span>
-									</li>
-									<li>
-										<label for="check-3">
-											<input id="check-3" checked="checked" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Fantini</span>
-										</label>
-										<span class="num">4</span>
-									</li>
-									<li>
-										<label for="check-4">
-											<input id="check-4" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Flamentstyle</span>
-										</label>
-										<span class="num">4</span>
-									</li>
-									<li>
-										<label for="check-5">
-											<input id="check-5" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Heerenhuis</span>
-										</label>
-										<span class="num">6</span>
-									</li>
-									<li>
-										<label for="check-6">
-											<input id="check-6" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Hoffmann</span>
-										</label>
-										<span class="num">10</span>
-									</li>
-									<li>
-										<label for="check-7">
-											<input id="check-7" type="checkbox">
-											<span class="fake-input"></span>
-											<span class="fake-label">Italfloor</span>
-										</label>
-										<span class="num">3</span>
-									</li>
-								</ul><!-- nice-form end here -->
-								<span class="sub-title">Filter by Price</span>
-								<div class="price-range">
-									<div class="range-slider">
-										<span class="dot"></span>
-										<span class="dot dot2"></span>
-									</div>
-									<span class="price">Price &nbsp;   $ 10  &nbsp;  -  &nbsp;   $ 599</span>
-									<a href="#" class="filter-btn">Filter</a>
-								</div>
-							</section><!-- shop-widget filter-widget of the Page end here -->
-							<!-- shop-widget of the Page start here -->
 							<section class="shop-widget">
 								<h2>CATEGORIES</h2>
 								<!-- category list start here -->
 								<ul class="list-unstyled category-list">
+									@foreach ($category as $item)
 									<li>
 										<a href="#">
-											<span class="name">CHAIRS</span>
-											<span class="num">12</span>
+											<span class="name">{{$item->name}}</span>
+										<span class="num">{{count($item->product)}}</span>
 										</a>
 									</li>
-									<li>
-										<a href="#">
-											<span class="name">SOFAS</span>
-											<span class="num">24</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="name">ARMCHAIRS</span>
-											<span class="num">9</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="name">BEDROOM</span>
-											<span class="num">2</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="name">LIGHTING</span>
-											<span class="num">17</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="name">KITCHEN</span>
-											<span class="num">10</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span class="name">ACCESSORIES</span>
-											<span class="num">23</span>
-										</a>
-									</li>
+									@endforeach
 								</ul><!-- category list end here -->
 							</section><!-- shop-widget of the Page end here -->
 							<!-- shop-widget of the Page start here -->
@@ -246,13 +139,15 @@
 							</header><!-- mt shoplist header end here -->
 							<!-- mt productlisthold start here -->
 							<ul class="mt-productlisthold list-inline">
+
+								@foreach ($products as $item)
 								<li>
 									<!-- mt product1 large start here -->
 									<div class="mt-product1 large">
 										<div class="box">
 											<div class="b1">
 												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
+													<a href="product-detail.html"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/275x290'}}" alt="image description"></a>
 													<ul class="mt-stars">
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star"></i></li>
@@ -268,218 +163,12 @@
 											</div>
 										</div>
 										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Bombi Chair</a></strong>
+											<strong class="title"><a href="product-detail.html">{{$item->name}}</a></strong>
 											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
 										</div>
 									</div><!-- mt product1 center end here -->
 								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Marvelous Modern 3 Seater</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>599,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<span class="caption">
-														<span class="off">15% Off</span>
-													</span>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Chair with armrests</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>200,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Pouf Chair</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Jalis Counter stool</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>269,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Bombi Chair</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Lucky Chair</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Cut Chair with 4  Spoke Base</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>269,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
-								<li>
-									<!-- mt product1 large start here -->
-									<div class="mt-product1 large">
-										<div class="box">
-											<div class="b1">
-												<div class="b2">
-													<a href="product-detail.html"><img src="http://placehold.it/275x290" alt="image description"></a>
-													<ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul>
-													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="txt">
-											<strong class="title"><a href="product-detail.html">Yard SeChair</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>139,00</span></span>
-										</div>
-									</div><!-- mt product1 center end here -->
-								</li>
+								@endforeach
 							</ul><!-- mt productlisthold end here -->
 							<!-- mt pagination start here -->
 							<nav class="mt-pagination">

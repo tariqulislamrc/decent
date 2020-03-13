@@ -10,6 +10,7 @@
 @stop
 {{-- Main Section --}}
 @section('content')
+<a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <!-- Basic initialization -->
 <form action="{{route('admin.request.update',$model->id)}}" method="post" class="ajax_form"
     enctype="multipart/form-data">

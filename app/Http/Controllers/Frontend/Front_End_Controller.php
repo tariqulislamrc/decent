@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
+use App\models\Production\Category;
+use App\models\Production\Product;
 use App\models\eCommerce\OurTeam;
 use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
@@ -39,6 +41,13 @@ class Front_End_Controller extends Controller{
         $model = new ContactUs;
         $model->create($data);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Message Seed Successfuly'), 'goto' => route('contact')]);
+    }
+
+    public function product(){
+        $brand_id = get_option('default_brand');
+        $products = Product::get();
+        $category = Category::with('product')->get();
+        return view('eCommerce.product_grid_view', compact('category', 'products'));
     }
 
 }

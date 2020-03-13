@@ -18,6 +18,7 @@ class CreateDepertmentsTable extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->unsignedBigInteger('employee_id')->nullable();
+            $table->string('flow')->nullable();
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
             $table->integer('created_by')->nullable();
