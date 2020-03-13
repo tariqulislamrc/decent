@@ -459,5 +459,59 @@ class ProductController extends Controller
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.production-product.index')]);
 
     }
+   
 
+   public function product_list(Request $request)
+   {
+        if ($request->ajax()) {
+            $brand_id = $request->get('brand_id')?:1;
+            $term = $request->get('term');
+
+            $check_qty = false;
+
+        $products = Product::leftJoin(
+            'variations',
+            'products.id',
+            '=',
+            'variations.product_id'
+        )
+        ->leftjoin('variation_brand_details AS VBD',
+             function ($join) use ($brand_id) {
+                $join->on('variations.id', '=', 'VBD.variation_id');
+                     //Include Location
+                                if (!empty($brand_id)) {
+                                    $join->where(function ($query) use ($brand_id) {
+                                        $query->where('VBD.brand_id', '=', $brand_id);
+                                        //Check null to show products even if no quantity is available in a location.
+                                        //TODO: Maybe add a settings to show product not available at a location or not.
+                                        $query->orWhereNull('VBD.brand_id');
+                                    });
+                                    ;
+                                }
+          });
+        if (!empty($term)) {
+        $products->where(function ($query) use ($term) {
+            $query->where('products.name', 'like', '%' . $term . '%');
+            $query->orWhere('articel', 'like', '%' . $term . '%');
+            $query->orWhere('prefix', 'like', '%' . $term . '%');
+            $query->orWhere('sub_sku', 'like', '%' . $term . '%');
+           
+        });
+        }
+           $products = $products->select(
+                'products.id as product_id',
+                'products.name',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'VBD.qty_available as qty',
+                'variations.default_sell_price as selling_price',
+                'variations.sub_sku as sku',
+                'products.photo as image'
+            );
+            $result = $products->orderBy('VBD.qty_available', 'desc')
+                        ->get();
+            return json_encode($result);
+
+   }
+}
 }
