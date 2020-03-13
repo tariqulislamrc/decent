@@ -243,7 +243,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-work-order/datatable', 'Production\WorkOrderController@datatable')->name('work-order.datatable');
 			Route::get('production-work-order/item', 'Production\WorkOrderController@item')->name('production-work-order.item');
 			Route::get('product/get_product', 'Production\WorkOrderController@getProduct');
-			Route::get('production-work-order/append', 'Production\WorkOrderController@append');
+			Route::post('production-work-order/append', 'Production\WorkOrderController@append');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
 
 			// Production Variation Route
@@ -407,7 +407,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		//Our Team route
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
 		Route::resource('our-team','OurTeamController');
-		
+
 	});
 
 	//Sms Marketing:::::::::::::::::::

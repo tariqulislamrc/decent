@@ -40,10 +40,10 @@ class ProductController extends Controller
                     return $document->prefix . numer_padding($document->code, get_option('digits_production_code'));
                 })
                 ->editColumn('category_id', function ($document) {
-                    return $document->category->name;
+                    return $document->category? $document->category->name : null;
                 })
                 ->editColumn('sub_category_id', function ($document) {
-                    return $document->sub_category->name;
+                    return $document->sub_category ? $document->sub_category->name : '';
                 })
                 ->editColumn('status', function ($document) {
                     if ($document->status == 'Active') {
@@ -337,7 +337,7 @@ class ProductController extends Controller
         $sub_sku = $variations['sub_sku'];
         $variation_value = $variations['variation_value_id'];
 
-        // ProductVariation Insert 
+        // ProductVariation Insert
         $product_variations = new ProductVariation;
         $product_variations->variation_template_id = $pv[0];
         $product_variations->variation_template_id_2 = $pv[1];
@@ -400,7 +400,7 @@ class ProductController extends Controller
 
             $name = $name1->name.'-'. $name2->name;
             $variation->name = $name;
-            
+
             $valid =  Variation::where('name', $name)->where('product_id', $product_id)->where('product_variation_id', $id)->first();
 
             if($valid){

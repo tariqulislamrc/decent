@@ -28,6 +28,7 @@
         <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
         <link rel="stylesheet" href="{{asset('backend/css/bootstrap-datetimepicker.css')}}">
+        <link rel="stylesheet" href="{{ asset('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}">
         <style>
             .pageloader {
                 position: fixed;
@@ -92,6 +93,7 @@
         <script src="{{asset('backend/js/dropify.min.js')}}"></script>
         <script src="{{asset('backend/js/summernote-bs4.js')}}"></script>
         <script src="{{asset('backend/js/toastr.min.js')}}"></script>
+        <script src="{{asset('backend/js/jquery-ui.js')}}"></script>
         <script src="{{asset('backend/js/plugins/clock.min.js')}}"></script>
         <script>
         $.ajaxSetup({
@@ -100,13 +102,13 @@
         }
         });
         toastr.options = {"positionClass": "{{get_option('notification_format')}} "};
-        
-            $(document).ready(function(){ 
+
+            $(document).ready(function(){
                 var customtimestamp = parseInt($("#jqclock").data("time"));
-                $("#jqclock").clock({"langSet":"en"}); 
-                $("#jqclock-local").clock({"langSet":"en"}); 
-            }); 
-          </script> 
+                $("#jqclock").clock({"langSet":"en"});
+                $("#jqclock-local").clock({"langSet":"en"});
+            });
+          </script>
         <script src="{{asset('js/main.js')}}"></script>
         <!-- /core JS files -->
         @stack('scripts')

@@ -18,7 +18,6 @@ class RedirectSecureIfRequired
     {
         if (\App::environment('production') && get_option('enable_https')) {
             \Request::setTrustedProxies([$request->getClientIp()], Request::HEADER_X_FORWARDED_ALL);
-
             if (!$request->isSecure()) {
                 return redirect()->secure($request->getRequestUri());
             }

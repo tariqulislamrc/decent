@@ -1,25 +1,25 @@
+@foreach( $variations as $variation)
 <tr>
     <td>
-        {{$model->name}}
-    	<input type="hidden" name="product_id[]" class="form-controll product_id" value="{{$model->id}}">
-    	<input type="hidden" class="form-controll code" id="code_{{$row}}" data-id="{{$row}}" value="{{$model->id}}">
+        {{ $product->name }} {{ $variation->name }} ({{$variation->sub_sku}})
+
+        <input type="hidden" name="product_id[]" class="product_id" value="{{$product->id}}">
+    	<input type="hidden" name="variation_id[]" class="variation_id" value="{{$variation->id}}">
+    	<input type="hidden" class="form-control code" id="code_{{$row}}" data-id="{{$row}}" value="{{$product->id}}">
     </td>
-    
+
     <td>
-    	<input type="text" name="quantity[]" class="form-control qty" id="qty_{{$row}}" value="{{$quantity}}">
+    	<input type="text" name="quantity[]" class="form-control qty" id="qty_{{$row}}" value="1">
     </td>
     <td>
-    	<input type="text" name="price[]" class="form-control price" value="{{$price}}">
+    	<input type="text" name="price[]" class="form-control price" value="{{$variation->default_sell_price}}">
     </td>
     <td>
-        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$quantity*$price}}">
-    	<span id="sub_total_{{$row}}" class="sub_total_text">{{$quantity*$price}}</span>
+        <input type="hidden" name="sub_total[]" class="sub_total" value="{{1*$variation->default_sell_price}}">
+    	<span id="sub_total_{{$row}}" class="sub_total_text">{{1*$variation->default_sell_price}}</span>
 	</td>
-	<td>
-        <input type="hidden" name="net_total[]" class="net_total" value="{{$quantity*$price}}">
-    	<span id="net_total_{{$row}}" class="net_total_text">{{$quantity*$price}}</span>
-    </td>
     <td>
-        <button type="button" class="btn btn-info remove">X</button>
+        <button type="button" class="btn btn-danger btn-sm remove">X</button>
     </td>
 </tr>
+@endforeach

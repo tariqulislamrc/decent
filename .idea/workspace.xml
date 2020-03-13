@@ -2,10 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Middleware/FrontendWebsiteEnabled.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Middleware/RedirectSecureIfRequired.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/backend/css/jquery-ui.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/backend/js/jquery-ui.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/WorkOrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/WorkOrderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SettingController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/RedirectSecureIfRequired.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/RedirectSecureIfRequired.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Setting.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Setting.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/system.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/system.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/production/work_order.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/production/work_order.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/production/work_order/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/production/work_order/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/production/work_order/include/itemlist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/production/work_order/include/itemlist.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/setting/system_setting.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/setting/system_setting.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +29,14 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -152,6 +172,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/models/Production" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
@@ -183,7 +204,9 @@
       <workItem from="1583739182424" duration="863000" />
       <workItem from="1583746346513" duration="5967000" />
       <workItem from="1583901685783" duration="2839000" />
-      <workItem from="1583910707190" duration="1629000" />
+      <workItem from="1583910707190" duration="14071000" />
+      <workItem from="1584004742694" duration="6143000" />
+      <workItem from="1584074549533" duration="8344000" />
     </task>
     <servers />
   </component>
@@ -194,6 +217,10 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="559" y="191" key="#Intentions" timestamp="1584076924305">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="559" y="191" key="#Intentions/0.27.1920.1053@0.27.1920.1053" timestamp="1584076924305" />
     <state x="688" y="303" key="FileChooserDialogImpl" timestamp="1583689882325">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -202,9 +229,14 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="601" y="320" key="NewPhpClassDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1583903474456" />
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1583913434376">
+    <state x="624" y="261" key="run.anything.popup" timestamp="1583921432622">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583913434376" />
+    <state x="624" y="261" key="run.anything.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583921432622" />
+    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup" timestamp="1584086010470">
+      <screen x="0" y="27" width="3840" height="1053" />
+    </state>
+    <state x="623" y="259" width="773" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1584079661389" />
+    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup/0.27.3840.1053@0.27.3840.1053" timestamp="1584086010470" />
   </component>
 </project>
