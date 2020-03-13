@@ -66,7 +66,9 @@
                           </table>
                       </div>
                   </div>
-                  <h3 class="bg-success text-center py-2">Production ingredients category</h3>
+                   <div class="card">
+                     <div class="card-body">
+                      <h3 class="border border-primary text-center py-2">Production ingredients category</h3>
                   <div class="row">
                       <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.depertment_new_category',$model->id) }}">
                         <i class="fa fa-plus-square mr-2" aria-hidden="true"></i>
@@ -93,7 +95,11 @@
                       </table>
                   </div>
 
-                  <h3 class="bg-success text-center py-2">Store Request</h3>
+                     </div>
+                   </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="text-center py-2 border border-primary">Store Request</h3>
                   <div class="row">
                       <table class="table table-bordered example">
                           <thead>
@@ -126,6 +132,8 @@
                               @endforeach
                           </thead>
                       </table>
+                  </div>
+                    </div>
                   </div>
                 </div>
             </div>

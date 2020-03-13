@@ -481,6 +481,20 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            
            Route::get('product/report','DepertmentReportController@product_report')->name('product_report');
            Route::post('product/report','DepertmentReportController@get_product_report')->name('get_product_report');
+
+           Route::get('raw-material/report','DepertmentReportController@raw_material_report')->name('raw_material_report');
+           Route::get('get_dept_store_request','DepertmentReportController@get_dept_store_request');
+           Route::post('raw-material/report','DepertmentReportController@get_rawmaterial_report')->name('get_rawmaterial_report');
+
+           Route::get('store-material/report','DepertmentReportController@store_material_report')->name('store_material_report');
+           Route::post('store-material/report','DepertmentReportController@get_storematerial_report')->name('get_storematerial_report');
+
+           Route::get('product/report-details','DepertmentReportController@product_report_details')->name('product_report_details');
+           Route::post('product/report-details','DepertmentReportController@get_product_report_details')->name('get_product_report_details');
+
+           Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
+           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
+
         });  
 	 });
 

@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Report'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Material Report'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
 	<div>
 		<h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
-		{{_lang('Report')}}</h1>
+		{{_lang('Material Report')}}</h1>
 	</div>
 </div>
 @stop
@@ -13,15 +13,16 @@
 <!-- Basic initialization -->
 <div class="card">
 	<div class="card-header">
-		<h6>{{_lang('Depertment Product Report')}}</h6>
+		<h6>{{_lang('Depertment Raw Material Report')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.depertment.get_product_report')}}" method="post" enctype="multipart/form-data" target="_blank">
+		<form action="{{route('admin.report.depertment.get_rawmaterial_report')}}" method="post" enctype="multipart/form-data" target="_blank">
 			@csrf
 			<div class="row">
 				<div class="col-md-4 form-group">
 					<label for="depertment_id">{{_lang('Depertment')}}</label>
-                  <select name="depertment_id" id="depertment_id" class="form-control select">
+                  <select name="depertment_id" id="depertment_id" class="form-control select" required>
+                  	<option value="">Select Depertment</option>
                   	@foreach ($depertments as $element)
                   		<option value="{{ $element->id }}">{{ $element->name }}</option>
                   	@endforeach
@@ -29,12 +30,9 @@
 				</div>
 
 				<div class="col-md-4 form-group">
-					<label for="work_order_id">{{_lang('Work Order')}}</label>
-                  <select name="work_order_id" id="work_order_id" class="form-control select">
-                  	<option value="All">All Work Order</option>
-                  	@foreach ($orders as $order)
-                  		<option value="{{ $order->id }}">{{ $order->prefix}}-{{  $order->code }}</option>
-                  	@endforeach
+					<label for="depertment_store_id">{{_lang('Store Request')}}</label>
+                  <select name="depertment_store_id" id="depertment_store_id" class="form-control select" required>
+                  	<option value="">Store Request</option>
                   </select>
 				</div>
 
@@ -80,5 +78,28 @@
 <script>
 $('.select').select2();
 _componentDatefPicker();
+$(document).on('change', '#depertment_id', function() {
+    var depertment_id = $(this).val();
+    $('.pageloader').show();
+    $.ajax({
+        type: 'GET',
+        url: '/admin/report/depertment/get_dept_store_request',
+        data: {
+            depertment_id: depertment_id
+        },
+        dateType: 'json',
+        success: function(data) {
+        	$('.pageloader').hide();
+        	if (data.length>0) {
+            $('#depertment_store_id').html("");
+            $('#depertment_store_id').append($('<option>').text("All Request").attr('value', "All"));
+            $.each(data, function(i, request) {
+                $('#depertment_store_id').append($('<option>').text(request.dstore_id+"("+request.request_date+")").attr('value', request.id));
+            });
+          }
+        }
+    });
+});
 </script>
+
 @endpush

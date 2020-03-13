@@ -1,6 +1,7 @@
 <?php
 use App\User;
 use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\ApproveStoreItem;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\IdGenerator;
@@ -417,8 +418,20 @@ function report_product_flow($dept_id,$wrk_id,$v_id,$id)
 }
 
 function rawMaterialUseQty($id){
-	$value =MaterialReport::where('done_material_report_id',$id)->sum('qty');
+	$value =MaterialReport::where('done_material_report_id',$id);
 
+	return $value;
+}
+
+function approve_rawmaterial_report($id,$sDate,$eDate)
+{
+	$value =ApproveStoreItem::where('store_request_id',$id)->whereBetween('approve_date',[$sDate,$eDate])->sum('qty');
+	return $value;
+}
+
+function done_rawmaterial_report($id,$sDate,$eDate)
+{
+	$value =MaterialReport::where('store_request_id',$id)->whereBetween('date',[$sDate,$eDate]);
 	return $value;
 }
 ?>

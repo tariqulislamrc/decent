@@ -20,5 +20,9 @@ class ApproveStoreItem extends Model
         return $this->belongsTo('App\models\depertment\Depertment');
    }
 
+    public function accept_by(){
+        return $this->belongsTo('App\User','updated_by','id');
+   }
+
     
 }

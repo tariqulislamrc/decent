@@ -9,7 +9,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    
+    <title>{{ isset($title) ? $title .' | '. get_option('site_title') :  get_option('site_title')}}</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset(get_option('favicon')?'storage/logo/'.get_option('favicon'):'favicon.png')}}">
     
     <style>
         .footer-bg {
@@ -62,7 +63,6 @@
         
 
     </style>
-    <title>Decent Invoice</title>
 </head>
 
 <body>
@@ -70,7 +70,7 @@
         <p class="h2 text-center text-color mb-3">Decent Footwear LTD </p>
         <p class="text-center mb-0"> 67, Nayapaltan City Heart 12/6, Dhaka-1000</p>
         <p> Report Date :11-03-2020</p>
-        <p class="text-center"> <span class="border rounded-pill px-4 py-2 border-dark font-weight-bold"> SALES AND DUES STATEMENT </span> </p>
+        <p class="text-center"> <span class="border rounded-pill px-4 py-2 border-dark font-weight-bold"> {{ isset($report_title)?$report_title:'' }} </span> </p>
     </section>
    @yield('content')
 

@@ -1,11 +1,11 @@
-@extends('layouts.report', ['title' => _lang('Depertment Product Report'),'report_title'=>_lang('Product Report')])
+@extends('layouts.report', ['title' => _lang('Depertment Raw Material Report'),'report_title'=>_lang('Raw Material Report')])
 
 @section('content')
  <div class="container-fluid px-4 pt-4">
 
         <div class="row">
             <div class="col-md-6">
-                <p class="h5 text-uppercase"><b>{{ $order->name }} Depertment: </b> {{ _lang('Product Report') }} </p>
+                <p class="h5 text-uppercase"><b> {{ _lang('Raw Material Report') }} </b></p>
                 <p><b>{{ _lang('Date Range') }}: </b> {{ formatDate($sDate) }} <b>To</b>{{ formatDate($eDate) }} </p>
             </div>
             <div class="col-md-6 text-right">
@@ -22,41 +22,38 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th scope="col">{{ _lang('Store ID') }}</th>
                         <th scope="col">{{ _lang('WorkOrder') }}</th>
-                        <th scope="col">{{ _lang('Product') }}</th>
+                        <th scope="col">{{ _lang('Material') }}</th>
                         <th scope="col">{{ _lang('Request Qty') }}</th>
+                        <th scope="col">{{ _lang('Approve Qty') }}</th>
                         <th scope="col">{{ _lang('Done Qty') }}</th>
-                        <th scope="col">{{ _lang('Waste') }}</th>
+                        <th scope="col">{{ _lang('Waste Qty') }}</th>
                         <th scope="col">{{ _lang('Done By') }}</th>
-                        <th scope="col">{{ _lang('Date') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach ($result as $element)
                 	<tr>
+                        <th>{{ $element->depertment_store_id }}</th>
                 		<th>{{ $element->work_order->prefix }}-{{ $element->work_order->code }}</th>
-                        <th>{{ $element->product?$element->product->name:'' }}-{{ $element->variation->name }}</th>
-                        <td>{{ $element->qty  }}</td>
+                        <th>{{ $element->material->name }}</th>
+                        <td>{{ $element->qty  }} {{ $element->material->unit->unit }}</td>
                         <td> 
-                        	@if ($order->flow=='First')
-                        		{{ $element->qty  }}
-                        	@else
-                        	{{ report_product_flow($depertment_id,$element->work_order_id,$element->variation_id,$element->id) }}
-                        	@endif
+                          {{ approve_rawmaterial_report($element->id,$sDate,$eDate) }}
+                          {{ $element->material->unit->unit }}
                         </td>
                         <td>
-                        	@if ($order->flow=='First')
-                        	0
-                        	@else
-                        		{{ $element->qty-report_product_flow($depertment_id,$element->work_order_id,$element->variation_id,$element->id) }}
-                        	@endif
+                        {{ done_rawmaterial_report($element->id,$sDate,$eDate)->sum('qty') }}
+                        {{ $element->material->unit->unit }}
+                        </td>
+                         <td>
+                        {{ done_rawmaterial_report($element->id,$sDate,$eDate)->sum('waste') }}
+                        {{ $element->material->unit->unit }}
                         </td>
                         <td>
                            {{ $element->send_by->email }}
                         	
-                        </td>
-                        <td>
-                        	{{ formatDate($element->date) }}
                         </td>
                     </tr>
                 	@endforeach

@@ -476,9 +476,27 @@
                     </a>
                 </li>
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}" href="{{ route('admin.expense.ex.index') }}">
+                    <a class="treeview-item {{Request::is('admin/report/depertment/raw-material/report') ? 'active':''}}" href="{{ route('admin.report.depertment.raw_material_report') }}">
                         <i class="icon fa fa-circle-o"></i>
                         {{_lang('Material Report')}}
+                    </a>
+                 </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/report/depertment/product/report-details') ? 'active':''}}" href="{{ route('admin.report.depertment.product_report_details') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Product Report Details')}}
+                    </a>
+                </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/report/depertment/raw-material/report-details') ? 'active':''}}" href="{{ route('admin.report.depertment.raw_material_report_details') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Material Report Details')}}
+                    </a>
+                </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/report/depertment/store-material/report') ? 'active':''}}" href="{{ route('admin.report.depertment.store_material_report') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Store Material Report')}}
                     </a>
                 </li>
             </ul>

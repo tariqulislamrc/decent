@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Report'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Details Depertment Product Report'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
 	<div>
 		<h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
-		{{_lang('Report')}}</h1>
+		{{_lang('Details Depertment Product Report')}}</h1>
 	</div>
 </div>
 @stop
@@ -13,10 +13,10 @@
 <!-- Basic initialization -->
 <div class="card">
 	<div class="card-header">
-		<h6>{{_lang('Depertment Product Report')}}</h6>
+		<h6>{{_lang('Details Depertment Product Report')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.depertment.get_product_report')}}" method="post" enctype="multipart/form-data" target="_blank">
+		<form action="{{route('admin.report.depertment.get_product_report_details')}}" method="post" enctype="multipart/form-data" target="_blank">
 			@csrf
 			<div class="row">
 				<div class="col-md-4 form-group">

@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Report'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Material Report'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
 	<div>
 		<h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
-		{{_lang('Report')}}</h1>
+		{{_lang('Material Report')}}</h1>
 	</div>
 </div>
 @stop
@@ -13,32 +13,23 @@
 <!-- Basic initialization -->
 <div class="card">
 	<div class="card-header">
-		<h6>{{_lang('Depertment Product Report')}}</h6>
+		<h6>{{_lang('Depertment Raw Material Report')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.depertment.get_product_report')}}" method="post" enctype="multipart/form-data" target="_blank">
+		<form action="{{route('admin.report.depertment.get_storematerial_report')}}" method="post" enctype="multipart/form-data" target="_blank">
 			@csrf
 			<div class="row">
-				<div class="col-md-4 form-group">
+				<div class="col-md-6 form-group">
 					<label for="depertment_id">{{_lang('Depertment')}}</label>
-                  <select name="depertment_id" id="depertment_id" class="form-control select">
+                  <select name="depertment_id" id="depertment_id" class="form-control select" required>
+                  	<option value="All">All Depertment</option>
                   	@foreach ($depertments as $element)
                   		<option value="{{ $element->id }}">{{ $element->name }}</option>
                   	@endforeach
                   </select>
 				</div>
 
-				<div class="col-md-4 form-group">
-					<label for="work_order_id">{{_lang('Work Order')}}</label>
-                  <select name="work_order_id" id="work_order_id" class="form-control select">
-                  	<option value="All">All Work Order</option>
-                  	@foreach ($orders as $order)
-                  		<option value="{{ $order->id }}">{{ $order->prefix}}-{{  $order->code }}</option>
-                  	@endforeach
-                  </select>
-				</div>
-
-				<div class="col-md-4 form-group">
+				<div class="col-md-6 form-group">
 					<label for="user_id">{{_lang('User')}}</label>
                   <select name="user_id" id="user_id" class="form-control select">
                   	<option value="All">All User</option>
@@ -81,4 +72,5 @@
 $('.select').select2();
 _componentDatefPicker();
 </script>
+
 @endpush
