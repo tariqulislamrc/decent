@@ -50,7 +50,7 @@ $('.select').select2();
 
 // Date
 $('.date').datepicker({
-    format: "yyyy/mm/dd",
+    dateFormat: "yy-mm-dd",
     autoclose: true,
     todayHighlight: true
 });

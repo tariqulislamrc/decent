@@ -319,7 +319,7 @@ function curency() {
 // format date
 function carbonDate($date){
 	$dtobj = Carbon\Carbon::parse($date);
-	$dtformat = $dtobj->format(get_option('date_format'));
+	return $dtformat = $dtobj->format(get_option('date_format'));
 }
 
 // format time
@@ -468,4 +468,126 @@ function done_rawmaterial_report($id,$sDate,$eDate)
 	return $value;
 
 }
+
+
+// Sadik Work Start
+// find employee designation name useing employee id
+function employee_designation($employee_id) {
+	$designation_description = EmployeeDesignation::where('employee_id', $employee_id)->first();
+	if($designation_description) {
+		$designation_id = $designation_description->designation_id;
+		$find_designation = Designation::where('id', $designation_id)->first();
+		if($find_designation) {
+			$designation = $find_designation->name;
+		} else {
+			$designation = '';
+		}
+	} else {
+		$designation = '';
+	}
+
+	return $designation;
+}
+
+// find employee name using employee id
+
+function find_employee_name_using_employee_id($employee_id) {
+	$employee  = Employee::where('id', $employee_id)->first();
+
+	if($employee) {
+
+		$name = $employee->name;
+
+	} else {
+
+		$name = '';
+
+	}
+
+	return $name;
+}
+
+// find employee salary structure  earning total using employee id
+function find_employee_earning_salary_using_employee_id($employee_id){
+
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->total_earning;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+// find employee salary structure  deduction total using employee id
+function find_employee_deduction_salary_using_employee_id($employee_id){
+	
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->total_deduction;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+// find employee total salary structure  deduction total using employee id
+function find_employee_total_salary_using_employee_id($employee_id){
+	
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->net_salary;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+function checkatndance($employee, $date)
+{
+    $reslust = EmployeeAttendance::where('employee_id', $employee)->where('date_of_attendance', $date)->first();
+    if ($reslust != null) {
+        return $reslust->employee_attendance_type_id;
+    } else {
+        return false;
+    }
+}
+
+// find employee department name using employee id
+function employee_department($employee_id) {
+	$designation_description = EmployeeDesignation::where('employee_id', $employee_id)->first();
+	if($designation_description) {
+		$department_id = $designation_description->department_id;
+		$find_department = Department::where('id', $department_id)->first();
+		if($find_department) {
+			$department = $find_department->name;
+		} else {
+			$department = '';
+		}
+	} else {
+		$department = '';
+	}
+
+	return $department;
+}
+
+// Sadik Work Stop
 ?>

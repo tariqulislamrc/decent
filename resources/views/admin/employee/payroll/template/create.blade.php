@@ -29,7 +29,7 @@
                         <div class="col-md-6 form-group">
                             <label for="name">{{_lang('Name')}} <span class="text-danger">*</span>
                             </label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Type Template Name" required>
+                            <input autocomplete="off" type="text" name="name" id="name" class="form-control" placeholder="Type Template Name" required>
                         </div>
 
                         {{-- Active Status --}}
