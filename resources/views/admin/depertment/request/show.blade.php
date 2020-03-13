@@ -15,7 +15,7 @@
   <div class="col-md-12">
     <div class="tile">
       <div class="tile-body">
-        <h3 class="bg-info text-center py-2">Store Request</h3>
+        <h3 class="border border-primary text-center py-2">Store Request</h3>
         <div class="row">
           <table class="table table-bordered">
             <thead>

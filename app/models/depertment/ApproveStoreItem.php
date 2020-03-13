@@ -9,15 +9,19 @@ class ApproveStoreItem extends Model
 {
     use SoftDeletes;
     public function material(){
-        return $this->belongsTo('App\models\production\RawMaterial','raw_material_id','id');
+        return $this->belongsTo('App\models\Production\RawMaterial','raw_material_id','id');
    }
 
    public function work_order(){
-        return $this->belongsTo('App\models\production\WorkOrder');
+        return $this->belongsTo('App\models\Production\WorkOrder');
    }
 
    public function depertment(){
         return $this->belongsTo('App\models\depertment\Depertment');
+   }
+
+    public function accept_by(){
+        return $this->belongsTo('App\User','updated_by','id');
    }
 
     
