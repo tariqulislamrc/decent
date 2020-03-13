@@ -57,7 +57,7 @@
                 @endcan
 
                 @can('employee_leave_type.view')
-                
+
                 {{-- Employee Leave Type --}}
                 <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave-type*') ? 'active':''}}"
                         href="{{ route('admin.employee-leave-type.index') }}"><i class="icon fa fa-circle-o"></i>
@@ -347,7 +347,29 @@
                     class="app-menu__label">{{_lang('Client')}}</span></a></li>
     @endcan
 
-    @can('language.view')
+
+        <li class="treeview {{ Request::is('admin/sale*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Sale Pos')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Pos')}}
+                    </a>
+                </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}" href="{{ route('admin.expense.ex.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('All Sale')}}
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        @can('language.view')
         {{-- Language --}}
         <li><a class="app-menu__item {{ Request::is('admin/language*') ? ' active' : '' }}"
                href="{{ route('admin.language') }}"><i class="app-menu__icon fa fa-language"
