@@ -163,43 +163,109 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(function () {
-    $("#product_id").select2({
-        ajax: {
-            url: "/admin/product/get_product",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    term: params.term
-                };
-            },
-            processResults: function (data, params) {
-                return {
-                    results: data.items,
-                };
-            },
-            cache: true
-        },
-        placeholder: 'Search for a Category',
-        minimumInputLength: 1,
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection
+
+        $("#item").on('click', '.remove', function () {
+            $(this).closest('tr').remove();
+            $("#discount_amount").val("");
+            $("#discount").val("");
+            $("#paid").val("");
+        });
+
+
+        $("#item").on('keyup change', '.qty, .price', function () {
+            var tr = $(this).parent().parent();
+            var qty = tr.find('.qty').val();
+            var price = tr.find('.price').val();
+            var total = qty * price;
+            tr.find('.sub_total').val(total);
+            tr.find('.net_total').val(total);
+            tr.find('.sub_total_text').text(total);
+            tr.find('.net_total_text').text(total);
+        });
+
+
+    $('.select_custom').select2({
+        width: '88%'
     });
 
-    function formatRepo(repo) {
-        if (repo.loading) return repo.text;
+    // Modal :::::::::::::::::::
+    $(document).on('click', '.btn-modal', function (e) {
+        e.preventDefault();
+        var container = $(this).data('container');
+        $.ajax({
+            url: $(this).data('url'),
+            dataType: 'html',
+            success: function (result) {
+                $(container)
+                    .html(result)
+                    .modal('show');
+                _remortFormValidation();
+            },
+        });
+    });
 
-        var markup = '<div class="select2-result-repository clearfix">' +
-            '<div class="select2-result-repository__title">' + repo.name + '</div></div>';
-
-        return markup;
+    if ($('#search_product').length > 0) {
+        $('#search_product')
+            .autocomplete({
+                source: '/admin/product/get_product',
+                minLength: 2,
+                response: function(event, ui) {
+                    if (ui.content.length == 1) {
+                        ui.item = ui.content[0];
+                        $(this)
+                            .data('ui-autocomplete')
+                            ._trigger('select', 'autocompleteselect', ui);
+                        $(this).autocomplete('close');
+                    } else if (ui.content.length == 0) {
+                        var term = $(this).data('ui-autocomplete').term;
+                        toastr.error('No Product Found', 'Opps!');
+                        /*swal({
+                            title: 'No Product found',
+                            text: term + 'Add as a new Product',
+                            buttons: ['Cancel', 'Ok'],
+                        }).then(value => {
+                            if (value) {
+                                var container = $('.quick_add_product_modal');
+                                $.ajax({
+                                    url: '/products/quick_add?product_name=' + term,
+                                    dataType: 'html',
+                                    success: function(result) {
+                                        $(container)
+                                            .html(result)
+                                            .modal('show');
+                                    },
+                                });
+                            }
+                        });*/
+                    }
+                },
+                select: function(event, ui) {
+                    $(this).val(null);
+                    get_purchase_entry_row(ui.item.product_id, ui.item.variation_id);
+                },
+            })
+            .autocomplete('instance')._renderItem = function(ul, item) {
+            return $('<li>')
+                .append('<div>' + item.text + '</div>')
+                .appendTo(ul);
+        };
     }
 
-    function formatRepoSelection(repo) {
-        return repo.name || repo.text;
+    function get_purchase_entry_row(product_id, variation_id) {
+        
+
+        if (product_id) {
+            var row_count = $('#row').val();
+            $.ajax({
+                method: 'POST',
+                url: '/admin/production-work-order/append',
+                dataType: 'json',
+                data: { product_id: product_id, row_count: row_count, variation_id: variation_id },
+                success: function(result) {
+                    $('#item').append(result.html);
+                },
+            });
+        }
     }
 
 });

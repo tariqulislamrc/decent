@@ -25,6 +25,7 @@ class CreateMaterialReportsTable extends Migration
             $table->foreign('raw_material_id')->on('raw_materials')
                 ->references('id')->onDelete('cascade');
             $table->string('qty')->nullable();
+            $table->string('waste')->nullable();
             $table->text('note')->nullable();
             $table->text('date')->nullable();
             $table->integer('done_material_report_id')->nullable();

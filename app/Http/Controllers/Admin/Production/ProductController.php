@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\models\Production\Category;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
+use App\models\Production\ProductPhoto;
 use App\models\Production\RawMaterial;
 use App\models\Production\VariationTemplate;
 use App\models\Production\ProductVariation;
@@ -40,10 +41,11 @@ class ProductController extends Controller
                     return $document->prefix . numer_padding($document->code, get_option('digits_production_code'));
                 })
                 ->editColumn('category_id', function ($document) {
-                    return $document->category->name;
+                    return $document->category? $document->category->name : null;
                 })
                 ->editColumn('sub_category_id', function ($document) {
-                    return $document->sub_category->name;
+                    return $document->sub_category ? $document->sub_category->name : '';
+
                 })
                 ->editColumn('status', function ($document) {
                     if ($document->status == 'Active') {
@@ -337,7 +339,7 @@ class ProductController extends Controller
         $sub_sku = $variations['sub_sku'];
         $variation_value = $variations['variation_value_id'];
 
-        // ProductVariation Insert 
+        // ProductVariation Insert
         $product_variations = new ProductVariation;
         $product_variations->variation_template_id = $pv[0];
         $product_variations->variation_template_id_2 = $pv[1];
@@ -400,7 +402,7 @@ class ProductController extends Controller
 
             $name = $name1->name.'-'. $name2->name;
             $variation->name = $name;
-            
+
             $valid =  Variation::where('name', $name)->where('product_id', $product_id)->where('product_variation_id', $id)->first();
 
             if($valid){
@@ -417,11 +419,45 @@ class ProductController extends Controller
 
     public function details_add($id)
     {
-        return view('admin.production.product.details-add');
+        return view('admin.production.product.details-add',compact('id'));
     }
+
     public function details_store(Request $request, $id)
     {
-        return view('admin.production.product.details-add');
+        $request->validate([
+            'short_description' => 'required',
+            'product_description' => 'required',
+            // 'photo' => 'mimes:jpeg,jpg,png | max:2000 | required',
+        ]);
+
+        $model = Product::findOrFail($id);
+
+        $model->short_description = $request->short_description;
+        $model->information = $request->information;
+        $model->product_description = $request->product_description;
+        $model->seo_title = $request->seo_title;
+        $model->title = $request->title;
+        $model->keyword = $request->keyword;
+        $model->meta_description = $request->meta_description;
+        $model->updated_by = auth()->user()->id;
+        $model->save();
+
+        for ($i = 0; $i < count($request->photo); $i++) {
+            $photo = new ProductPhoto();
+
+            if ($request->hasFile('photo')) {
+            $storagepath = $request->file('photo')[$i]->store('public/product');
+            $fileName = basename($storagepath);
+            $photo->photo = $fileName;
+            } else {
+                $photo->photo = '';
+            }
+            $photo->product_id = $id;
+            $photo->save();
+        }
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.production-product.index')]);
+
     }
 
 }

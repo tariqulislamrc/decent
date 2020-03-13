@@ -66,7 +66,9 @@
                           </table>
                       </div>
                   </div>
-                  <h3 class="bg-success text-center py-2">Production ingredients category</h3>
+                   <div class="card">
+                     <div class="card-body">
+                      <h3 class="border border-primary text-center py-2">Production ingredients category</h3>
                   <div class="row">
                       <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.depertment_new_category',$model->id) }}">
                         <i class="fa fa-plus-square mr-2" aria-hidden="true"></i>
@@ -93,7 +95,11 @@
                       </table>
                   </div>
 
-                  <h3 class="bg-success text-center py-2">Store Request</h3>
+                     </div>
+                   </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h3 class="text-center py-2 border border-primary">Store Request</h3>
                   <div class="row">
                       <table class="table table-bordered example">
                           <thead>
@@ -116,7 +122,11 @@
                                        {{ $store->store_request->sum('qty') }}
                                      </td>
                                      <td>
+<<<<<<< HEAD
                                         <a href="{{ route('admin.report.approve_request',$store->id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('View') }}
+=======
+                                        <a href="{{ route('admin.department.approve_request',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('View') }}
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
                                         </a>
                                        <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.mainrequest.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
                                        </a>
@@ -126,6 +136,8 @@
                               @endforeach
                           </thead>
                       </table>
+                  </div>
+                    </div>
                   </div>
                 </div>
             </div>

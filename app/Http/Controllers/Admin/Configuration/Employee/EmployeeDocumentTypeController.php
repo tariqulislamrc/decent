@@ -58,9 +58,11 @@ class EmployeeDocumentTypeController extends Controller
         $model->name = $request->name;
         $model->description = $request->description;
         $model->save();
+
         // Activity Log
         activity()->log('Created a Employee Document Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-document-type.index')]);
+        
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -104,7 +106,7 @@ class EmployeeDocumentTypeController extends Controller
 
         // Activity Log
         activity()->log('Update a Employee Document Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-document-type.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
     }
 
     /**
@@ -122,6 +124,6 @@ class EmployeeDocumentTypeController extends Controller
         // Activity Log
         activity()->log('Delete a Employee Document Type - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.employee-document-type.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }

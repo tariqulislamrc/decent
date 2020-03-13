@@ -43,6 +43,4 @@
 
 <script>
     $('.select').select2({  width: '100%' });
-
-    _formValidation();
 </script>

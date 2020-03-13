@@ -9,7 +9,15 @@ class MaterialReport extends Model
 {
     use SoftDeletes;
 
-    // public function total_use_qty(){
-    //   return $this->hasMany(MaterialReport::class,'done_material_report_id','id');
-    // }
+    public function material(){
+        return $this->belongsTo('App\models\Production\RawMaterial','raw_material_id','id');
+   }
+
+   public function depertment(){
+        return $this->belongsTo('App\models\depertment\Depertment');
+   }
+
+    public function accept_by(){
+        return $this->belongsTo('App\User','created_by','id');
+   }
 }

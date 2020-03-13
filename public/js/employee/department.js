@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran = '';
 var DatatableSelect = function () {
 
 
@@ -47,7 +47,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+        emran = $('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -76,7 +76,7 @@ var DatatableSelect = function () {
                 targets: [2]
             }],
 
-            order: [0, 'asc'],
+            order: [0, 'desc'],
             processing: true,
             serverSide: true,
 

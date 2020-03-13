@@ -147,7 +147,7 @@
 										<div class="box">
 											<div class="b1">
 												<div class="b2">
-													<a href="product-detail.html"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/275x290'}}" alt="image description"></a>
+													<a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/275x290'}}" alt="image description"></a>
 													<ul class="mt-stars">
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star"></i></li>
@@ -163,7 +163,7 @@
 											</div>
 										</div>
 										<div class="txt">
-											<strong class="title"><a href="product-detail.html">{{$item->name}}</a></strong>
+											<strong class="title"><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
 											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
 										</div>
 									</div><!-- mt product1 center end here -->

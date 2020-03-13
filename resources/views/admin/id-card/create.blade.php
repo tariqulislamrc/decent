@@ -28,23 +28,10 @@
             <input type="text" name="show_per_page" id="show_per_page" class="form-control"
                 placeholder="Enter No of Id Cards shown Per Page" required>
         </div>
-
-
-        {{-- Type --}}
-        <div class="col-12 col-sm-6">
-            <div class="form-group"> 
-                <div class="radio radio-success">
-                    <input type="radio" checked value="employee" id="employee" name="type"> 
-                    <label for="employee">Employee</label>
-                </div>
-            </div>
-        </div>
-
-
         
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
                     class="icon-arrow-right14 position-right"></i></button>
             <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
@@ -54,6 +41,4 @@
 
 <script>
     $('.select').select2({  width: '100%' });
-
-    _formValidation();
 </script>

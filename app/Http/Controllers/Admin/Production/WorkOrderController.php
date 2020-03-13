@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Production;
 
+use App\models\Production\Variation;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Yajra\Datatables\Datatables;
 use App\models\Production\Brand;
 use App\models\Production\Product;
@@ -20,14 +24,16 @@ class WorkOrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
-    public function index(){
+    public function index()
+    {
         return view('admin.production.work_order.index');
     }
 
 
-    public function datatable(Request $request){
+    public function datatable(Request $request)
+    {
         if ($request->ajax()) {
             $document = WorkOrder::where('status', '!=', 'requisition')->get();
             return DataTables::of($document)
@@ -43,9 +49,10 @@ class WorkOrderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
-    public function create(){
+    public function create()
+    {
         $brand = Brand::all();
         $models = Product::all();
         $code_prefix = get_option('work_order_code_prefix');
@@ -53,16 +60,17 @@ class WorkOrderController extends Controller
         $uniqu_id = generate_id('workorder', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
 
-        return view('admin.production.work_order.create',compact('brand','models','code_prefix','code_digits','uniqu_id'));
+        return view('admin.production.work_order.create', compact('brand', 'models', 'code_prefix', 'code_digits', 'uniqu_id'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'prefix' => '',
             'code' => '',
@@ -86,7 +94,7 @@ class WorkOrderController extends Controller
         $success = $model->save();
         if ($success) {
             $count = count($request->product_id);
-            for ($i=0; $i < $count; $i++) { 
+            for ($i = 0; $i < $count; $i++) {
                 $line_purchase = new WorkOrderProduct;
                 $line_purchase->workorder_id = $model->id;
                 $line_purchase->product_id = $request->product_id[$i];
@@ -104,40 +112,43 @@ class WorkOrderController extends Controller
         generate_id("workorder", true);
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'),'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load' => true]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function show($id){
+    public function show($id)
+    {
         $model = WorkOrder::findOrFail($id);
-        return view('admin.production.work_order.show',compact('model'));
+        return view('admin.production.work_order.show', compact('model'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function edit($id){
+    public function edit($id)
+    {
         $brand = Brand::all();
         $model = WorkOrder::findOrFail($id);
-        return view('admin.production.work_order.edit',compact('model','brand'));
+        return view('admin.production.work_order.edit', compact('model', 'brand'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'prefix' => '',
             'code' => '',
@@ -159,10 +170,10 @@ class WorkOrderController extends Controller
         $model->tek_marks = 0;
         $model->created_by = Auth::user()->id;
         $success = $model->save();
-        $line_purchase = WorkOrderProduct::where('workorder_id',$id)->delete();
+        $line_purchase = WorkOrderProduct::where('workorder_id', $id)->delete();
         if ($success) {
             $count = count($request->product_id);
-            for ($i=0; $i < $count; $i++) { 
+            for ($i = 0; $i < $count; $i++) {
                 $line_purchase = new WorkOrderProduct;
                 $line_purchase->workorder_id = $id;
                 $line_purchase->product_id = $request->product_id[$i];
@@ -179,56 +190,125 @@ class WorkOrderController extends Controller
         }
         // Activity Log
         activity()->log('updated a Work order By - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'),'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load' => true]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         $model = WorkOrder::findOrFail($id);
         $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'),'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
     }
 
-    public function item(Request $request){
-        $model =Product::find($request->product_id);
+    public function item(Request $request)
+    {
+        $model = Product::find($request->product_id);
         return response()->json($model);
     }
 
 
-    public function append(Request $request){
-        $product = $request->product;
-        $quantity = $request->quantity;
-        $row = $request->row;
-        $price = $request->price;
-        $model =Product::find($product);
-        return view('admin.production.work_order.include.itemlist',compact('model','quantity','row','price'));
-    }
+    public function append(Request $request)
+    {
+        $product_id = $request->product_id;
+        $variation_id = $request->variation_id;
+        $row = $request->row_count;
 
-      // getCatagory
-    public function getProduct(){
-        $people = [];
-        $data = [];
+        if (!empty($product_id)) {
+            $product = Product::where('id', $product_id)
+                ->first();
 
-        $people = Product::where('name', 'like', '%' . $_GET['term'] . '%')
-            ->orderBy('id', 'DESC')
-            ->get();
+            $query = Variation::where('product_id', $product_id)
+                ->with(['value1', 'value2']);
+            if ($variation_id !== '0') {
+                $query->where('id', $variation_id);
+            }
 
-        foreach ($people as $k => $v) {
-            $data[$k]['id'] = $v->id;
-            $data[$k]['name'] = $this->getCatagoryParent($v->id);
+            $variations = $query->get();
+            $html = view('admin.production.work_order.include.itemlist')
+                ->with(compact(
+                    'product',
+                    'variations',
+                    'row',
+                    'variation_id'
+                ))->render();
+
         }
-        return response()->json(['items' => $data]);
+        return response()->json(['product_id' => $product_id, 'variation_id' => $variation_id, 'html' => $html]);
     }
 
-    public function getCatagoryParent($id, $name = Null){
+    // getCatagory
+    public function getProduct()
+    {
+
+        $term = request()->term;
+        $products = Product::leftJoin(
+            'variations',
+            'products.id',
+            '=',
+            'variations.product_id'
+        )->where(function ($query) use ($term) {
+            $query->where('products.name', 'like', '%' . $term . '%');
+            $query->orWhere('articel', 'like', '%' . $term . '%');
+            $query->orWhere('prefix', 'like', '%' . $term . '%');
+            $query->orWhere('sub_sku', 'like', '%' . $term . '%');
+
+        })
+            ->orderBy('products.id', 'DESC')
+            ->select(
+                'products.id as product_id',
+                'products.name',
+                // 'products.sku as sku',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'variations.sub_sku as sub_sku'
+            )
+            ->get();
+        $products_array = [];
+        foreach ($products as $product) {
+            $products_array[$product->product_id]['name'] = $product->name;
+            $products_array[$product->product_id]['articel'] = $product->sub_sku;
+            $products_array[$product->product_id]['variations'][]
+                = [
+                'variation_id' => $product->variation_id,
+                'variation_name' => $product->variation,
+                'sub_sku' => $product->sub_sku,
+            ];
+        }
+
+        $result = [];
+        $i = 1;
+        if (!empty($products_array)) {
+            foreach ($products_array as $key => $value) {
+
+                $name = $value['name'];
+                foreach ($value['variations'] as $variation) {
+                    $text = $name;
+                        $text = $text . ' (' . $variation['variation_name'] . ')';
+                    $i++;
+                    $result[] = ['id' => $i,
+                        'text' => $text . ' - ' . $variation['sub_sku'],
+                        'product_id' => $key,
+                        'variation_id' => $variation['variation_id'],
+                    ];
+                }
+                $i++;
+            }
+        }
+
+        return json_encode($result);
+    }
+
+    public function getCatagoryParent($id, $name = Null)
+    {
         $category = Product::find($id);
         if ($category) {
-            $name =  $category->name;
+            $name = $category->name;
         }
         return $name;
     }

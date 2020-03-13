@@ -35,7 +35,7 @@
     <tbody>
         <tr>
             <td colspan="{{ $variations->count()+3 }}">
-                <select class="form-control select_custom" data-placeholder="Select Work Order" name="send_depertment_id" required>
+                <select class="form-control select_custom" data-placeholder="Select Depertment" name="send_depertment_id" required>
                     <option value="">Select One</option>
                     @foreach ($depertments as $depertment_value)
                     <option value="{{ $depertment_value->id }}">{{ $depertment_value->name}}

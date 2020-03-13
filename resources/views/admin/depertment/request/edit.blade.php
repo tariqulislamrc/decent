@@ -58,6 +58,21 @@
                                 {{ $model->material->name }}
                             </td>
                             <td>
+<<<<<<< HEAD
+                                {{ $model->qty }} {{ $model->material->unit->unit }}
+                            </td>
+                            <td>
+                                {{ $approve_item }} {{ $model->material->unit->unit }}
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control qty " id="{{$model->id}}" name="qty" value="{{ $model->qty-$approve_item }}" required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">{{ $model->material->unit->unit }}</span>
+                                    </div>
+                                </div>
+                                
+=======
                                 {{ $model->qty }}
                             </td>
                             <td>
@@ -66,12 +81,28 @@
                             <td>
                                 <input type="text" class="form-control qty " id="{{$model->id}}" name="qty"
                                 value="{{ $model->qty-$approve_item }}" required>
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>
                     <tr>
                         <td colspan="2">
+<<<<<<< HEAD
+                            <label for="note">{{_lang('Status')}} </label>
+                            <select name="status" class="form-control" style="width: 100%">
+                                <option value="Approve">Approve</option>
+                                <option value="Partial">Partial</option>
+                            </select>
+                        </td>
+                        <td colspan="2">
+                            <label for="note">{{_lang('Note')}}
+                            </label>
+                            <textarea name="note" class="form-control" id="" placeholder="Note"></textarea>
+                        </td>
+                    </tr>
+                    </tfoot>
+=======
                              <label for="note">{{_lang('Status')}} </label>
                                 <select name="status" class="form-control" style="width: 100%">
                                     <option value="Approve">Approve</option>
@@ -85,6 +116,7 @@
                         </td>
                     </tr>
                 </tfoot>
+>>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
                 </table>
             </div>
         </div>

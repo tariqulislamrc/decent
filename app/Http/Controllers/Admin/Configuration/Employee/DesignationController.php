@@ -21,12 +21,14 @@ class DesignationController extends Controller
      */
     public function index()
     {
-       $categories = EmployeeCategory::all();
+        $categories = EmployeeCategory::all();
+        
         $designations = Designation::all();
+
         return view('admin.employee.designation.index',compact('categories','designations'));
     }
 
-        public function datatable(Request $request)
+    public function datatable(Request $request)
     {
         if ($request->ajax()) {
             $document = Designation::where('name', '!=', config('system.default_role.admin'))->get();
@@ -52,7 +54,9 @@ class DesignationController extends Controller
     public function create()
     {
         $categories = EmployeeCategory::all();
+
         $designations = Designation::all();
+
         return view('admin.employee.designation.create',compact('categories','designations'));
     }
 
@@ -71,14 +75,21 @@ class DesignationController extends Controller
         ]);
 
         $model = new Designation;
+
         $model->employee_category_id = $request->employee_category_id;
+
         $model->name = $request->name;
+
         $model->top_designation_id = $request->top_designation_id;
+
         $model->description = $request->description;
+
         $model->save();
+
         // Activity Log
         activity()->log('Created a Employee Designation - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.designation.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -119,21 +130,26 @@ class DesignationController extends Controller
     {
         //   dd("amar sonar bangla");
         $model =  Designation::findOrFail($id);
+
         $request->validate([
-          'name' => ['required', 'string', 'max:255',
-          Rule::unique('designations', 'name')->ignore($model->id)],            'employee_category_id' => 'required',
-          
-      ]);
+            'name' => ['required', 'string', 'max:255',
+            Rule::unique('designations', 'name')->ignore($model->id)],           
+            'employee_category_id' => 'required',
+        ]);
 
         $model->employee_category_id = $request->employee_category_id;
+
         $model->name = $request->name;
+
         $model->top_designation_id = $request->top_designation_id;
+
         $model->description = $request->description;
+
         $model->save();
 
         // Activity Log
         activity()->log('Update a Employee Designation - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.designation.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
     }
 
     /**
@@ -145,21 +161,20 @@ class DesignationController extends Controller
     public function destroy($id)
     {
         $type = Designation::findOrFail($id);
+
         $name = $type->name;
+        
         $type->delete();
 
         // Activity Log
         activity()->log('Delete a Employee Designation - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.designation.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
-
-  
 
     // term_info
     public function term_info(Request $request) {
         $id = $request->model_id;
-        dd($id);
         $models = EmployeeTerm::where('employee_id', $id)->get();
 		return view('admin.employee.list.ajax.term_info', compact('models'));
     }

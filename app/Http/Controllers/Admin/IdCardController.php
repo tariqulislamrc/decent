@@ -30,7 +30,7 @@ class IdCardController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
                     return view('admin.id-card.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+            })->rawColumns(['action'])->make(true);
         }
     }
 
@@ -54,7 +54,6 @@ class IdCardController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'type' => 'required',
             'width' => 'required',
             'height' => 'required',
             'show_per_page' => 'required',
@@ -62,7 +61,7 @@ class IdCardController extends Controller
 
         $model = new IdCardTemplate;
         $model->name = $request->name;
-        $model->type = $request->type;
+        $model->type = 'Employee';
         $model->width = $request->width;
         $model->height = $request->height;
         $model->show_per_page = $request->show_per_page;
@@ -70,7 +69,7 @@ class IdCardController extends Controller
 
         // Activity Log
         activity()->log('Created a Employee Id Card Template - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.id-card-template')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -124,7 +123,7 @@ class IdCardController extends Controller
 
         // Activity Log
         activity()->log('Created a Employee Id Card Template - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.id-card-template')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -141,11 +140,8 @@ class IdCardController extends Controller
 
         // Activity Log
         activity()->log('Created a Employee Id Card Template - ' . $name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.id-card-template')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
-
-
-
 
     public function id_card()
     {

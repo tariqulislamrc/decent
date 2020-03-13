@@ -1,6 +1,14 @@
 <?php
+
+use App\models\employee\Department;
+use App\models\employee\Designation;
+use App\models\employee\Employee;
+use App\models\employee\EmployeeAttendance;
+use App\models\employee\EmployeeDesignation;
+use App\models\employee\EmployeeSalary;
 use App\User;
 use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\ApproveStoreItem;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\IdGenerator;
@@ -83,19 +91,18 @@ function gbv($params, $keys) {
 }
 
 if (!function_exists('get_option')) {
-	function get_option($name, $default = null) {
-	    if(!\Illuminate\Support\Facades\Schema::hasTable('settings')){
-	        return config('system.'.$name);
+    function get_option($name)
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            $setting = DB::table('settings')->where('name', $name)->get();
+            if (!$setting->isEmpty()) {
+                return $setting[0]->value;
+            }
+            return $default;
+
         }
-		$setting = DB::table('settings')->where('name', $name)->get();
-		if (!$setting->isEmpty()) {
-			return $setting[0]->value;
-		}
-		return $default;
-
-	}
+    }
 }
-
 function toWord($word) {
 	$word = str_replace('_', ' ', $word);
 	$word = str_replace('-', ' ', $word);
@@ -312,7 +319,7 @@ function curency() {
 // format date
 function carbonDate($date){
 	$dtobj = Carbon\Carbon::parse($date);
-		return $dtformat = $dtobj->format(get_option('date_format'));
+	$dtformat = $dtobj->format(get_option('date_format'));
 }
 
 // format time
@@ -339,8 +346,9 @@ function numer_padding($id, $code_digits=3){
 }
 
 	function current_designation($id){
-    	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
-    	$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
+		$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
+
+		$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
     	$dept_id = ($emp_d AND $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
 
     	return $designation;
@@ -364,7 +372,7 @@ function numer_padding($id, $code_digits=3){
 			return  $days;
     }
 
-function formatDate($date){
+	function formatDate($date){
 		$dtobj = Carbon\Carbon::parse($date);
 		if(get_option('date_format') == 'y-m-d'){
 			return $dtformat = $dtobj->format('F jS, Y');
@@ -381,6 +389,23 @@ function formatDate($date){
 		else{
 			return $dtformat = $dtobj->format('F jS Y, g:i A');
 		}
+	}
+
+	function designation_category($id){
+		$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
+		$d_id = $emp_d->designation_id;
+		$d = App\models\employee\Designation::findOrFail($d_id);
+		$category = ($d and $d->category->name) ? $d->category->name : "";
+		return $category;
+	}
+
+	function days_in_month($month, $year)
+	{
+		if (checkdate($month, 31, $year)) return 31;
+		if (checkdate($month, 30, $year)) return 30;
+		if (checkdate($month, 29, $year)) return 29;
+		if (checkdate($month, 28, $year)) return 28;
+		return 0; // error
 	}
 
 	function validEmail($garbaseEmail){
@@ -404,7 +429,6 @@ function formatDate($date){
     return $validEmail;
 }
 
-<<<<<<< HEAD
 function variation_value($id){
 
 	$value =VariationTemplateDetails::find($id);
@@ -418,16 +442,30 @@ function report_product_flow($dept_id,$wrk_id,$v_id,$id)
 }
 
 function rawMaterialUseQty($id){
-	$value =MaterialReport::where('done_material_report_id',$id)->sum('qty');
+	$value =MaterialReport::where('done_material_report_id',$id);
 
 	return $value;
-=======
-  function textShorten($text, $limit = 400){
-	$text = $text. " ";
-	$text = substr($text, 0, $limit);
-	$text = substr($text, 0, strrpos($text, ' '));
-	$text = $text.".....";
-	return $text;
->>>>>>> c0147b304c80fc3c4a5d1ec8bdcec1697da06a9a
+}
+
+  function textShorten($text, $limit = 400)
+  {
+      $text = $text . " ";
+      $text = substr($text, 0, $limit);
+      $text = substr($text, 0, strrpos($text, ' '));
+      $text = $text . ".....";
+      return $text;
+  }
+
+function approve_rawmaterial_report($id,$sDate,$eDate)
+{
+	$value =ApproveStoreItem::where('store_request_id',$id)->whereBetween('approve_date',[$sDate,$eDate])->sum('qty');
+	return $value;
+}
+
+function done_rawmaterial_report($id,$sDate,$eDate)
+{
+	$value =MaterialReport::where('store_request_id',$id)->whereBetween('date',[$sDate,$eDate]);
+	return $value;
+
 }
 ?>

@@ -57,13 +57,11 @@ class DepertmentReportController extends Controller
         }
         elseif ($depert_name->flow=='last') {
               $products =ProductFlow::where('send_depertment_id',$request->depertment)->where('work_order_id',$request->id)->distinct('variation_id')->get();
-              // dd($products);
-
               return view('admin.depertment.report.include.get_final_product',compact('depertments','variations','products','depert_name')); 
         }
         else{
           $products =ProductFlow::where('send_depertment_id',$request->depertment)->where('work_order_id',$request->id)->distinct('variation_id')->get();
- 
+        
            return view('admin.depertment.report.include.get_middle_product',compact('depertments','variations','products','depert_name')); 
         }
     }
@@ -81,6 +79,7 @@ class DepertmentReportController extends Controller
             'qty.*'=>'nullable|integer',
   
         ]);
+        $total_qty="";
         $flow_type =$request->flow_type;
         if ($flow_type=='First') {
         for ($i=0; $i <count($request->qty) ; $i++) { 
@@ -105,7 +104,8 @@ class DepertmentReportController extends Controller
         elseif($flow_type=='middle')
         {
          for ($i=0; $i <count($request->qty) ; $i++) { 
-            if ($request->qty[$i]>0) {
+          if ($request->qty[$i]>0) {
+            $total_qty+=$request->qty[$i];
             $rq_qty =$request->req_qty[$i];
             $done_qty =$request->done_qty[$i];
             if (($done_qty+$request->qty[$i])>$rq_qty) {
@@ -127,10 +127,14 @@ class DepertmentReportController extends Controller
             $model->save();
          }
         }
+       if($total_qty <= 0){
+         throw ValidationException::withMessages(['message' => _lang('You Cant Send Zero Quantity')]);
+        }
         }
         else{
          for ($i=0; $i <count($request->qty) ; $i++) { 
           if ($request->qty[$i]>0) {
+            $total_qty+=$request->qty[$i];
             $rq_qty =$request->req_qty[$i];
             $done_qty =$request->done_qty[$i];
             if (($done_qty+$request->qty[$i])>$rq_qty) {
@@ -170,6 +174,9 @@ class DepertmentReportController extends Controller
               }                            
             
          } 
+        }
+        if($total_qty <= 0){
+         throw ValidationException::withMessages(['message' => _lang('You Cant Send Zero Quantity')]);
         }
         }
 
@@ -246,11 +253,15 @@ class DepertmentReportController extends Controller
         for ($i=0; $i <count($request->qty) ; $i++) { 
            if ($request->qty[$i]>0) {
                $total_rqt_quantity += $request->qty[$i];
+               if ($request->approve_qty[$i]<($request->total_use_qty[$i]+$request->total_waste[$i]+$request->qty[$i]+$request->waste[$i])) {
+                   throw ValidationException::withMessages(['message' => _lang('Too Large Qty Instead of Approve Qty ')]);
+               }
                $model =new MaterialReport;
                $model->store_request_id =$request->store_request_id[$i];
                $model->depertment_id=$request->depertment_id[$i];
                $model->raw_material_id =$request->raw_material_id[$i];
                $model->qty =$request->qty[$i];
+               $model->waste =$request->waste[$i];
                $model->date=date('Y-m-d');
                $model->done_material_report_id =$request->store_request_id[$i];
                $model->created_by =auth()->user()->id;

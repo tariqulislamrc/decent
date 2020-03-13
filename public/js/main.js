@@ -5,10 +5,10 @@ var _componentSelect2Normal = function() {
 
 var _componentDatePicker = function() {
 $('.date').datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: true,
-        todayHighlight: true
-    });
+    format: "dd/mm/yyyy",
+    autoclose: true,
+    todayHighlight: true
+});
 
 };
 

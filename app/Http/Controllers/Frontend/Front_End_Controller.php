@@ -50,4 +50,9 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.product_grid_view', compact('category', 'products'));
     }
 
+    public function product_details($id){
+        $model = Product::with('photo_details', 'variation')->findOrFail($id);
+        return view('eCommerce.product_details', compact('model'));
+    }
+
 }

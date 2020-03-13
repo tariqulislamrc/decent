@@ -29,8 +29,21 @@ class SettingController extends Controller
                 return response()->json(['success' => false, 'status' => 'danger', 'message' => $validator->errors()]);
             }
 
-	        /*$input = $request->all();
-	        dd($input);*/
+	        $input = $request->all();
+            $config_type = $request->config_type;
+            $old_configs = Setting::all();
+
+            $boolean_system_setting = config('system.boolean.'.$config_type);
+
+            if($boolean_system_setting){
+                foreach($boolean_system_setting as $v){
+                    $config = Setting::firstOrCreate(['name' => $v]);
+                    $config->value = 0;
+                    $config->save();
+                }
+            }
+
+
 
             foreach($_POST as $key => $value){
                 if($key == "_token"){
@@ -52,7 +65,7 @@ class SettingController extends Controller
 
                     Setting::insert($data);
                 }
-		    }
+            }
 
             if($request->hasFile('logo')) {
                 $storagepath = $request->file('logo')->store('public/logo');

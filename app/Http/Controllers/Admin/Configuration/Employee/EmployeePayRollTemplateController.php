@@ -33,11 +33,12 @@ class EmployeePayRollTemplateController extends Controller
     {
         if ($request->ajax()) {
             $documents = PayrollTemplate::query();
+
             return Datatables::of($documents)
                 ->addIndexColumn()
                 ->editColumn('is_active', function ($document) {
                     if ($document->is_active == '0') {
-                        return '<span class="badge badge-info">' . 'Inactive' . '</span>';
+                        return '<span class="badge badge-danger">' . 'Inactive' . '</span>';
                     } elseif ($document->is_active == '1') {
                         return '<span class="badge badge-success">' . 'Active' . '</span>';
                     }
@@ -93,7 +94,7 @@ class EmployeePayRollTemplateController extends Controller
         }
         // Activity Log
         activity()->log('Created a Employee Payroll Template - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-payroll-template.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.payroll-template.index')]);
     }
 
     /**
@@ -155,7 +156,7 @@ class EmployeePayRollTemplateController extends Controller
         }
         // Activity Log
         activity()->log('Created a Employee Payroll Template - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-payroll-template.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.payroll-template.index')]);
     }
 
     /**
@@ -172,6 +173,6 @@ class EmployeePayRollTemplateController extends Controller
 
         // Activity Log
         activity()->log('Created a Employee Payroll Template - ' . $name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.employee-payroll-template.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }

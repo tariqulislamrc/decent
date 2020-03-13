@@ -50,76 +50,79 @@
                             <textarea name="description" class="form-control" id=""placeholder="Enter Description"></textarea>
                         </div>
                     </div>
-
-
-                    <div class="list-group">
-                        <ul class="" id="sortable">
-                        @foreach ($models as $item)
-                        <li class="list-group-item ui-state-default" id="item_{{$loop->index}}" data-id="{{$loop->index}}">
-                        {{-- <input type="text" name="position[{{$item->id}}]" id="position_{{$loop->index}}" value="{{$loop->index}}"> --}}
-                            <div class="row" draggable="false">
-                                <div class="col-12 col-sm-3"><i class="fa fa-arrows-alt pointer mr-2"></i> <span
-                                        class="{{$item->type== 'Earning'?'text-success':'text-danger'}}">{{$item->name}} <i>({{$item->alias}})</i> </span>
-                                </div>
-                                <div class="col-12 col-sm-4">
-                                    <div  class="form-group"><select required id="{{$item->id}}"
-                                            name="pay_head_category[{{$item->id}}]" class="pay_head_category custom-select col-12">
-                                            <option value="">Select One</option>
-                                            <option value="not_applicable">
-                                                Not Applicable
-                                            </option>
-                                            <option value="attendance">
-                                                On Attendance
-                                            </option>
-                                            <option value="flat_rate">
-                                                Flat Rate
-                                            </option>
-                                            <option value="user_defined">
-                                                User Defined
-                                            </option>
-                                            <option value="computation">
-                                                Computation
-                                            </option>
-                                            <option value="production">
-                                                On Production
-                                            </option>
-                                        </select>
-                                        <!---->
+                    @if (count($models))
+                        <div class="list-group">
+                            <ul class="" id="sortable">
+                                @foreach ($models as $item)
+                                <li class="list-group-item ui-state-default" id="item_{{$loop->index}}" data-id="{{$loop->index}}">
+                                    <div class="row" draggable="false">
+                                        <div class="col-12 col-sm-3"><i class="fa fa-arrows-alt pointer mr-2"></i> <span
+                                                class="{{$item->type== 'Earning'?'text-success':'text-danger'}}">{{$item->name}} <i>({{$item->alias}})</i> </span>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <div  class="form-group"><select required id="{{$item->id}}"
+                                                    name="pay_head_category[{{$item->id}}]" class="pay_head_category custom-select col-12">
+                                                    <option value="">Select One</option>
+                                                    <option value="not_applicable">
+                                                        Not Applicable
+                                                    </option>
+                                                    <option value="attendance">
+                                                        On Attendance
+                                                    </option>
+                                                    <option value="flat_rate">
+                                                        Flat Rate
+                                                    </option>
+                                                    <option value="user_defined">
+                                                        User Defined
+                                                    </option>
+                                                    <option value="computation">
+                                                        Computation
+                                                    </option>
+                                                    <option value="production">
+                                                        On Production
+                                                    </option>
+                                                </select>
+                                                <!---->
+                                            </div>
+                                        </div>
+            
+                                        {{-- Computation Formula --}}
+                                        <div class="col-12 col-sm-5" id="computation_{{$item->id}}" style="display:none">
+                                            <div class="form-group">
+                                                <input type="text" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->id}}]"
+                                                    placeholder="Computation Formula" class="pay_head form-control">
+                                            </div>
+                                        </div>
+            
+                                        {{-- Attendance Type --}}
+                                        <div class=" col-12 col-sm-5 form-group" id="attendance_type_{{$item->id}}"
+                                            style="display:none">
+                                            <select data-placeholder="Select Attendance Type" id="attendance_{{$item->id}}" name="attendance_type[{{$item->id}}]"
+                                                class="attendance form-control select">
+                                                <option value="">Select Attendance Type</option>
+                                                @foreach ($type as $model)
+                                                <option value="{{$model->id}}">{{$model->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-    
-                                {{-- Computation Formula --}}
-                                <div class="col-12 col-sm-5" id="computation_{{$item->id}}" style="display:none">
-                                    <div class="form-group">
-                                        <input type="text" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->id}}]"
-                                            placeholder="Computation Formula" class="pay_head form-control">
-                                    </div>
-                                </div>
-    
-                                {{-- Attendance Type --}}
-                                <div class=" col-12 col-sm-5 form-group" id="attendance_type_{{$item->id}}"
-                                    style="display:none">
-                                    <select data-placeholder="Select Attendance Type" id="attendance_{{$item->id}}" name="attendance_type[{{$item->id}}]"
-                                        class="attendance form-control select">
-                                        <option value="">Select Attendance Type</option>
-                                        @foreach ($type as $model)
-                                        <option value="{{$model->id}}">{{$model->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                    </div>
-                    <div class="form-group col-md-12" align="right">
-                        {{-- <input type="hidden" name="type[]" value=" "> --}}
-                        <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
-                                class="icon-arrow-right14 position-right"></i></button>
-                        <button type="button" class="btn btn-link" id="submiting"
-                            style="display: none;">{{_lang('Processing')}}
-                            <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="form-group col-md-12" align="right">
+                            {{-- <input type="hidden" name="type[]" value=" "> --}}
+                            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
+                                    class="icon-arrow-right14 position-right"></i></button>
+                            <button type="button" class="btn btn-link" id="submiting"
+                                style="display: none;">{{_lang('Processing')}}
+                                <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                        </div>
+                    @else
+                        <div class="border border-danger p-2 m-2 text-center">
+                            You Didn't add any payhead yet. If you want to add employee payroll template, you must add pay head first. Go to the Employee Pay Head or <a href="{{route('admin.employee-pay-head.index')}} ">Click On this link</a>
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>

@@ -43,15 +43,13 @@ Route::get('product-list',function(){
 	return view('eCommerce.product_list_view');
 })->name('product-list');
 
-Route::get('product-details',function(){
-	return view('eCommerce.product_detalis');
-})->name('product-details');
+Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/
 Route::group(['middleware' => ['install']], function () {
-Route::get('/', function () {
-    // return redirect()->route('login');
+
+Route::get('/', function() {
 	return view('welcome');
 });
 Auth::routes();
@@ -104,13 +102,31 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('employee-s-structure.ajax', 'Configuration\Employee\EmployeeSalaryStructureController@ajaxcall')->name('employee-s-structure.ajax');
 			Route::get('employee-s-structure-datatable', 'Configuration\Employee\EmployeeSalaryStructureController@datatable')->name('employee-s-structure.datatable');
 
-		//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
+		// ::::::::::::::::::::::::::::::::::::::::::::::::::   Payroll ::::::::::::::::::::::::::::::::::::::::::::;;;;
+		Route::get('payroll-initialize-datatable', 'Employee\PayrollController@datatable')->name('payroll-initialize.datatable');
+		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
+		Route::resource('payroll-initialize', 'Employee\PayrollController');
+
+			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
 
-		//:::::::::::::::::::::::::::::Employee Attendance Type:::::::::::::::::::::::::::::::::
-		Route::get('employee-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
-		Route::resource('employee-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// holiday section
+	    Route::get('datable', 'Calender\HolidayController@datatable')->name('holiday.datatable');
+		Route::resource('holiday', 'Calender\HolidayController');
+
+
+		//::::::::::::::::::::::::::::: Attendance Type:::::::::::::::::::::::::::::::::
+		Route::post('/date_check_for_holiday', 'Configuration\Employee\EmployeeAttendanceController@checkholiday')->name('date_check_for_holiday');
+
+		Route::get('attendance-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
+		Route::resource('attendance-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// ::::::::::::::::::::::::::::::: Attendance:::::::::::::::::::::::::::::::::::::::
+		Route::any('attendance-attendance-department', 'Configuration\Employee\EmployeeAttendanceController@department')->name('attendance-attendance.department');
+		Route::any('attendance-attendance-designation', 'Configuration\Employee\EmployeeAttendanceController@designation')->name('attendance-attendance.designation');
+		Route::any('attendance-attendance-date', 'Configuration\Employee\EmployeeAttendanceController@date')->name('attendance-attendance.date');
+		Route::any('attendance-attendance-fetch', 'Configuration\Employee\EmployeeAttendanceController@fetch')->name('attendance-attendance.fetch');
+		Route::resource('attendance-employee-attendance', 'Configuration\Employee\EmployeeAttendanceController');
 
 		//:::::::::::::::::::::::::::::Employee List::::::::::::::::::::::::::::::::::::
 		Route::get('employee-list-datatable', 'Configuration\Employee\EmployeeListController@datatable')->name('list.datatable');
@@ -240,7 +256,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-work-order/datatable', 'Production\WorkOrderController@datatable')->name('work-order.datatable');
 			Route::get('production-work-order/item', 'Production\WorkOrderController@item')->name('production-work-order.item');
 			Route::get('product/get_product', 'Production\WorkOrderController@getProduct');
-			Route::get('production-work-order/append', 'Production\WorkOrderController@append');
+			Route::post('production-work-order/append', 'Production\WorkOrderController@append');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
 
 			// Production Variation Route
@@ -271,7 +287,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 			Route::get('production-product/details/add/{id}', 'Production\ProductController@details_add')->name('production-product.details-add');
 
-			Route::post('production-product/details/store', 'Production\ProductController@details_store')->name('production-product.details-store');
+			Route::post('production-product/details/store/{id}', 'Production\ProductController@details_store')->name('production-product.details-store');
 
 			Route::resource('production-product', 'Production\ProductController');
 
@@ -409,12 +425,14 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
 		Route::resource('our-team','OurTeamController');
 		//Our workspace route
+
+
 		Route::get('our-workspace/datatable', 'OurWorkspaceControler@datatable')->name('our-workspace.datatable');
 		Route::resource('our-workspace','OurWorkspaceControler');
 		//Contact message route
 		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
 		Route::resource('contact-msg','ContactMessageController');
-		
+
 	});
 
 	//Sms Marketing:::::::::::::::::::
@@ -435,7 +453,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::delete('department/employee/delete/{id}', 'DepertmentController@employee_destroy')->name('depertment.employee.delete');
 		Route::get('department/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
+
 		Route::delete('department/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+
+		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
+
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
@@ -478,6 +500,32 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::put('/edit', 'UserController@update')->name('update');
 			Route::delete('/delete/{id}', 'UserController@destroy')->name('delete');
 		});
+
+	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
+
+          Route::get('/',function(){
+          	return view('admin.report.index');
+          })->name('index');
+        Route::group(['as' => 'depertment.', 'prefix' => 'depertment','namespace' => 'Report',], function () {
+
+           Route::get('product/report','DepertmentReportController@product_report')->name('product_report');
+           Route::post('product/report','DepertmentReportController@get_product_report')->name('get_product_report');
+
+           Route::get('raw-material/report','DepertmentReportController@raw_material_report')->name('raw_material_report');
+           Route::get('get_dept_store_request','DepertmentReportController@get_dept_store_request');
+           Route::post('raw-material/report','DepertmentReportController@get_rawmaterial_report')->name('get_rawmaterial_report');
+
+           Route::get('store-material/report','DepertmentReportController@store_material_report')->name('store_material_report');
+           Route::post('store-material/report','DepertmentReportController@get_storematerial_report')->name('get_storematerial_report');
+
+           Route::get('product/report-details','DepertmentReportController@product_report_details')->name('product_report_details');
+           Route::post('product/report-details','DepertmentReportController@get_product_report_details')->name('get_product_report_details');
+
+           Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
+           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
+
+        });
+	 });
 
 	});
 

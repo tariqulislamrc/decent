@@ -45,8 +45,7 @@ class EmployeeListController extends Controller
             })
 
             ->editColumn('designation', function ($document) {
-                // dd();                                                                        
-                return current_designation($document->id)?current_designation($document->id):"";
+                return current_designation($document->id) ?current_designation($document->id):"";
             })
             ->editColumn('department', function ($document) {
                 // dd();                                                                        

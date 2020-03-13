@@ -26,11 +26,11 @@ class EmployeeAttendanceTypeController extends Controller
             return Datatables::of($document)
                 ->addIndexColumn()
                 ->editColumn('is_active', function($model){
-                    return $model->is_active == 1?'Active':'Inactive';
+                    return $model->is_active == 1?'<span class="badge badge-success">Active</span>':'<span class="badge badge-danger">Inactive</span>';
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.attendance-type.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+                })->rawColumns(['action', 'is_active'])->make(true);
         }
     }
 
@@ -57,15 +57,23 @@ class EmployeeAttendanceTypeController extends Controller
         ]);
 
         $model = new EmployeeAttendanceType;
+
         $model->name = $request->name;
+
         $model->alias = $request->alias;
+
         $model->type = $request->type;
+
         $model->is_active = $request->is_active?1 : 0;
+
         $model->description = $request->description;
+
         $model->save();
+
         // Activity Log
         activity()->log('Created a Employee Attendance Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-attendance-type.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
     }
 
     /**
@@ -89,6 +97,7 @@ class EmployeeAttendanceTypeController extends Controller
     {
         // find the data
         $model = EmployeeAttendanceType::where('id', $id)->firstOrFail();
+
         // return
         return view('admin.employee.attendance-type.edit', compact('model'));
     }
@@ -103,16 +112,23 @@ class EmployeeAttendanceTypeController extends Controller
     public function update(Request $request, $id)
     {
         $model = EmployeeAttendanceType::findOrFail($id);
+
         $model->name = $request->name;
+
         $model->alias = $request->alias;
+
         $model->type = $request->type;
+
         $model->is_active = $request->is_active ? 1 : 0;
+
         $model->description = $request->description;
+
         $model->save();
 
         // Activity Log
         activity()->log('Update a Employee Attendance Type - ' . $request->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-attendance-type.index')]);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
     }
 
     /**
@@ -130,6 +146,6 @@ class EmployeeAttendanceTypeController extends Controller
         // Activity Log
         activity()->log('Delete a Employee Attendance Type - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.employee-attendance-type.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }
