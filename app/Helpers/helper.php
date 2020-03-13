@@ -91,19 +91,18 @@ function gbv($params, $keys) {
 }
 
 if (!function_exists('get_option')) {
+    function get_option($name)
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            $setting = DB::table('settings')->where('name', $name)->get();
+            if (!$setting->isEmpty()) {
+                return $setting[0]->value;
+            }
+            return $default;
+
         }
-	        return config('system.'.$name);
-	function get_option($name) {
-	    if(!\Illuminate\Support\Facades\Schema::hasTable('settings')){
-		$setting = DB::table('settings')->where('name', $name)->get();
-		if (!$setting->isEmpty()) {
-			return $setting[0]->value;
-		}
-		return $default;
-
-	}
+    }
 }
-
 function toWord($word) {
 	$word = str_replace('_', ' ', $word);
 	$word = str_replace('-', ' ', $word);
@@ -317,7 +316,7 @@ function curency() {
 	];
 }
 
-// format date 
+// format date
 function carbonDate($date){
 	$dtobj = Carbon\Carbon::parse($date);
 	$dtformat = $dtobj->format(get_option('date_format'));
@@ -406,7 +405,7 @@ function numer_padding($id, $code_digits=3){
 		if (checkdate($month, 30, $year)) return 30;
 		if (checkdate($month, 29, $year)) return 29;
 		if (checkdate($month, 28, $year)) return 28;
-		return 0; // error 
+		return 0; // error
 	}
 
 	function validEmail($garbaseEmail){

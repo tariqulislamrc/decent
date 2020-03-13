@@ -106,7 +106,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('payroll-initialize-datatable', 'Employee\PayrollController@datatable')->name('payroll-initialize.datatable');
 		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
 		Route::resource('payroll-initialize', 'Employee\PayrollController');
-		
+
 			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
@@ -118,7 +118,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		//::::::::::::::::::::::::::::: Attendance Type:::::::::::::::::::::::::::::::::
 		Route::post('/date_check_for_holiday', 'Configuration\Employee\EmployeeAttendanceController@checkholiday')->name('date_check_for_holiday');
-		
+
 		Route::get('attendance-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
 		Route::resource('attendance-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
 		// ::::::::::::::::::::::::::::::: Attendance:::::::::::::::::::::::::::::::::::::::
@@ -453,12 +453,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::delete('department/employee/delete/{id}', 'DepertmentController@employee_destroy')->name('depertment.employee.delete');
 		Route::get('department/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
-<<<<<<< HEAD
+
 		Route::delete('department/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
-=======
-		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+
 		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
->>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
+
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');

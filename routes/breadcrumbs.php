@@ -210,7 +210,7 @@ Breadcrumbs::for('/employee-details', function ($trail, $id) {
 
 // Recycle Bin Start
 
-// Trash Home 
+// Trash Home
 Breadcrumbs::for('trash', function ($trail) {
     $trail->push('Recycle Bin Home', route('admin.trash.index'));
 });
@@ -397,7 +397,7 @@ Breadcrumbs::for('purchase-details', function ($trail) {
     $trail->push('Create', route('admin.production-purchase.index'));
 });
 
-<<<<<<< HEAD
+
 // Home > eCommerce Our Team
 Breadcrumbs::for('eCommerce.our-team', function ($trail) {
     $trail->parent('home');
@@ -430,7 +430,7 @@ Breadcrumbs::for('our-workspace-create', function ($trail) {
 Breadcrumbs::for('eCommerce.contact-msg', function ($trail) {
     $trail->parent('home');
     $trail->push('Contact Message', route('admin.eCommerce.contact-msg.index'));
-=======
+});
 // Home > Employee Attendance
 Breadcrumbs::for('employee-attendance', function ($trail) {
     $trail->parent('home');
@@ -441,5 +441,5 @@ Breadcrumbs::for('employee-attendance', function ($trail) {
 Breadcrumbs::for('employee-attendance-create', function ($trail) {
     $trail->parent('employee-attendance');
     $trail->push('Create', route('admin.attendance-employee-attendance.create'));
->>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
+
 });
