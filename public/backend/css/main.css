@@ -15290,3 +15290,47 @@ img.zoom {
 .cursour{
   cursor:pointer;
 }
+
+
+#product_list_body {
+    max-height: 480px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.eq-height-row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+.product_list {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.product_box {
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 2px;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid darkgray;
+    font-weight: 600;
+}
+
+.bg-gray {
+    color: #000;
+    background-color: #d2d6de !important;
+}
+.product_box .text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-height: 14px;
+    max-height: 14px;
+}
