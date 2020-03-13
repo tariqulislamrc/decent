@@ -36,6 +36,22 @@
                                             <option {{get_option('default_sidebar') == '1' ? 'selected' : ''}} value="1">{{_lang('Normal')}}</option>
                                         </select>
                                     </div>
+
+                                    {{-- Default Holiday In a Week --}}
+                                    <div class="col-md-6">
+                                        {{ Form::label('holiday', _lang('Default Holiday') , ['class' => 'col-form-label ']) }}
+                                        <select name="holiday" class="form-control select" required data-placeholder="Select A Day">
+                                            <option value="">Select A Day</option>
+                                            <option {{get_option('holiday') == 'Friday' ? 'selected' : ''}}  value="Friday">Friday</option>
+                                            <option {{get_option('holiday') == 'Saturday' ? 'selected' : ''}}  value="Saturday">Saturday</option>
+                                            <option {{get_option('holiday') == 'Sunday' ? 'selected' : ''}}  value="Sunday">Sunday</option>
+                                            <option {{get_option('holiday') == 'Monday' ? 'selected' : ''}}  value="Monday">Monday</option>
+                                            <option  {{get_option('holiday') == 'Tuesday' ? 'selected' : ''}} value="Tuesday">Tuesday</option>
+                                            <option {{get_option('holiday') == 'Wednesday' ? 'selected' : ''}}  value="Wednesday">Wednesday</option>
+                                            <option {{get_option('holiday') == 'Thursday' ? 'selected' : ''}}  value="Thursday">Thursday</option>
+                                        </select>
+                                    </div>
+
                                     {{-- TimeZone --}}
                                     <div class="col-md-6">
                                         {{ Form::label('timezone', _lang('TimeZone') , ['class' => 'col-form-label ']) }}

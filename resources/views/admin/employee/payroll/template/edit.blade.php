@@ -22,7 +22,7 @@
     <div class="col-md-12">
         <div class="card border-right">
             <div class="card-body">
-                <form action="{{route('admin.employee-payroll-template.update', $model->id)}}" method="post" id="content_form">
+                <form action="{{route('admin.payroll-template.update', $model->id)}}" method="post" id="content_form">
                     @csrf
                     @method('PATCH')
                     <div class="row">

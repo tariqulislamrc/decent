@@ -3,10 +3,7 @@
 
         @can('employee.view')
         {{-- Employee --}}
-        <li data-placement="bottom" title="Employee all System" class="treeview {{ Request::is('admin/employee*') ? ' is-expanded' : '' }}"><a class="app-menu__item"
-                href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span
-                    class="app-menu__label">{{_lang('Employee')}}</span><i
-                    class="treeview-indicator fa fa-angle-right"></i></a>
+        <li data-placement="bottom" title="Employee all System" class="treeview {{ Request::is('admin/employee*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{_lang('Employee')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 @can('employee_category.view')
                 {{-- Employee Document Type --}}
@@ -36,6 +33,13 @@
                         {{_lang('Employee Document Type')}}</a></li>
                 @endcan
 
+                @can('employee_list.view')
+                {{-- Employee list --}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
+                        href="{{ route('admin.employee-list.index') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Employee')}}</a></li>
+                @endcan
+
                 @can('employee_id_card.view')
                 {{-- Employee Id Card --}}
                 <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-id-card*') ? 'active':''}}"
@@ -44,6 +48,7 @@
                 @endcan
 
                 @can('employee_leave_type.view')
+                
                 {{-- Employee Leave Type --}}
                 <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave-type*') ? 'active':''}}"
                         href="{{ route('admin.employee-leave-type.index') }}"><i class="icon fa fa-circle-o"></i>
@@ -55,14 +60,6 @@
                 <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave*') ? 'active':''}}"
                         href="{{ route('admin.employee-leave.view') }}"><i class="icon fa fa-circle-o"></i>
                         {{_lang('Employee Leave')}}</a></li>
-                @endcan
-
-                @can('employee_attendance_type.view')
-                {{-- Employee Attendance Type --}}
-                <li class="mt-1"><a
-                        class="treeview-item {{Request::is('admin/employee-attendance-type*') ? 'active':''}}"
-                        href="{{ route('admin.employee-attendance-type.index') }}"><i class="icon fa fa-circle-o"></i>
-                        {{_lang('Employee Attendance Type')}}</a></li>
                 @endcan
 
                 @can('employee_payhead.view')
@@ -79,15 +76,28 @@
                         {{_lang('Employee Payroll')}}</a></li> --}}
                 @endcan
 
-                @can('employee_list.view')
-                {{-- Employee list --}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
-                        href="{{ route('admin.employee-list.index') }}"><i class="icon fa fa-circle-o"></i>
-                        {{_lang('Employee List')}}</a></li>
-                @endcan
-
             </ul>
         </li>
+        @endcan
+
+        {{-- holiday --}}
+        @can('holiday.view')
+                <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/holiday*') ? ' active' : '' }}" href="{{ route('admin.holiday.index') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Holiday')}}</span></a></li>
+        @endcan
+
+
+        {{-- Employee Attendance --}}
+        @can('employee_attendance.view')
+                <li class="treeview {{ Request::is('admin/attendance*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-address-book-o"></i><span class="app-menu__label">{{_lang('Attendance')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                                @can('employee_attendance_type.view')
+                                        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-attendance-type*') ? 'active':''}}" href="{{ route('admin.attendance-attendance-type.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Attendance Type')}}</a></li>
+                                @endcan
+                                @can('employee_attendance.view')
+                                        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}" href="{{ route('admin.attendance-employee-attendance.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Attendance')}}</a></li>
+                                @endcan
+                        </ul>
+                </li>
         @endcan
 
         {{-- Employee Payroll --}}
@@ -97,9 +107,7 @@
 
         @can('production.view')
         {{-- User Section--}}
-        <li class="treeview {{ Request::is('admin/production*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
-                data-toggle="treeview"><i class="app-menu__icon fa fa-stumbleupon"></i><span
-                    class="app-menu__label">{{_lang('Production')}}</span><i
+        <li class="treeview {{ Request::is('admin/production*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-stumbleupon"></i><span class="app-menu__label">{{_lang('Production')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
                         @can('production_category.view')

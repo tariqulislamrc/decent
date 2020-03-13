@@ -49,7 +49,7 @@
         <!-- /page content -->
         @if(isset($modal))
         <!-- Remote source -->
-        <div id="modal_remote" class="modal fade border-top-success rounded-top-0" role="dialog" >
+        <div id="modal_remote" class="modal fade border-top-success rounded-top-0" data-backdrop="static" role="dialog" >
             <div class="modal-dialog modal-{{ $modal }} modal-dialog-centered" >
                 <div class="modal-content">
                     <div class="modal-header bg-light border-grey-300">

@@ -17,7 +17,6 @@ class DesignationController extends Controller
     // term_info
     public function term_info(Request $request) {
         $id = $request->model_id;
-        // dd($id);
         $models = EmployeeTerm::where('employee_id', $id)->orderBy('id', 'DESC')->get();
         return view('admin.employee.list.ajax.term_info', compact('models'));
     }

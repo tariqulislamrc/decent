@@ -48,9 +48,18 @@ class PurchaseController extends Controller
                         return '<span class="badge badge-info">' . 'Ordered' . '</span>';
                     }
                 })
+                ->editColumn('payment_status', function ($document) {
+                    if ($document->payment_status == 'Paid') {
+                        return '<span class="badge badge-success">' . 'Paid' . '</span>';
+                    } else if($document->payment_status == 'Partial') {
+                        return '<span class="badge badge-info">' . 'Partial' . '</span>';
+                    } else if($document->payment_status == 'Due') {
+                        return '<span class="badge badge-info">' . 'Due' . '</span>';
+                    }
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.purchase.action', compact('model'));
-                })->rawColumns(['action','status'])->make(true);
+                })->rawColumns(['action','status', 'payment_status'])->make(true);
         }
     }
 
@@ -94,12 +103,21 @@ class PurchaseController extends Controller
             $brand_id = $brand->brand_id;
         }
 
+        if ($request->payment == 0) {
+            $type = 'Due';
+        } else if($request->payment_due_hidden > 0){
+            $type = 'Partial';
+        }else{
+            $type = 'Paid';
+        }
+
         $model = new Transaction;
         $model->purchase_by = $request->purchase_by;
         $model->reference_no = $request->reference_no;
         $model->invoice_no = $invoice_no;
         $model->date = $request->purchase_date;
-        $model->type = 'Purchase';
+        $model->type = 'debit';
+        $model->transaction_type = 'Purchase';
         $model->work_order_id = $wo_id;
         $model->brand_id = $brand_id;
         $model->status = $request->status;
@@ -110,7 +128,7 @@ class PurchaseController extends Controller
         $model->net_total = $request->final_total;
         $model->paid = $request->payment;
         $model->due = $request->payment_due_hidden;
-        $model->payment_status = 'debit';
+        $model->payment_status = $type;
         $model->stuff_note = $request->stuff_notes;
         $model->sell_note = $request->sell_notes;
         $model->transaction_note = $request->transaction_notes;
@@ -147,7 +165,7 @@ class PurchaseController extends Controller
             $payment->transaction_no = $request->transaction_no;
             $payment->amount = $request->payment;
             $payment->note = $request->payment_note;
-            $payment->type = 'debit';
+            $payment->type = $type;
             $payment->created_by = auth()->user()->id;
             $payment->save();
         }
@@ -177,7 +195,39 @@ class PurchaseController extends Controller
     public function payment($id)
     {
         $model = Transaction::findOrFail($id);
-        return view('admin.production.purchase.details', compact('model'));
+        return view('admin.production.purchase.payment', compact('model'));
+    }
+
+    public function add_payment(Request $request, $id)
+    {
+        if ($request->due_amount > 0) {
+            $type = 'Partial';
+        }else if($request->due_amount == 0){
+            $type = 'Paid';
+        }
+
+        $payment = new TransactionPayment;
+        $payment->transaction_id = $id;
+        $payment->method = $request->method;
+        $payment->payment_date = $request->payment_date;
+        $payment->transaction_no = $request->transaction_no;
+        $payment->amount = $request->paid_amount;
+        $payment->note = $request->payment_note;
+        $payment->type = $type;
+        $payment->created_by = auth()->user()->id;
+        $payment->save();
+
+        $transaction = Transaction::findOrFail($id);
+        $new_paid = $transaction->paid + $request->paid_amount;
+        $transaction->paid = $new_paid;
+        $transaction->payment_status = $type;
+        $transaction->due = $request->due_amount;
+        $transaction->save();
+
+        // Activity Log
+        activity()->log('Add Payment - ' . Auth::user()->id);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update Successfuly')]);
+
     }
 
     /**
@@ -211,7 +261,9 @@ class PurchaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $type = Transaction::where('wo_id', $id)->delete();
+        $type = TransactionPayment::where('transaction_id', $id)->delete();
+        $type = Purchase::where('transaction_id', $id)->delete();
     }
 
 

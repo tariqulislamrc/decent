@@ -25,8 +25,6 @@
                             <tr>
                                 <th>{{_lang('id')}}</th>
                                 <th>{{_lang('Depertment')}}</th>
-                                <th>{{_lang('Row Material')}}</th>
-                                <th>{{_lang('qty')}}</th>
                                 <th>{{_lang('Date')}}</th>
                                 <th>{{_lang('Status')}}</th>
                                 <th>{{_lang('Send By')}}</th>
@@ -106,13 +104,7 @@
                 }, {
                     data: 'depertment',
                     name: 'depertment'
-                }, {
-                    data: 'material',
-                    name: 'material'
-                }, {
-                    data: 'qty',
-                    name: 'qty'
-                }, {
+                },{
                     data: 'date',
                     name: 'date'
                 },

@@ -1,4 +1,11 @@
 <?php
+
+use App\models\employee\Department;
+use App\models\employee\Designation;
+use App\models\employee\Employee;
+use App\models\employee\EmployeeAttendance;
+use App\models\employee\EmployeeDesignation;
+use App\models\employee\EmployeeSalary;
 use App\User;
 use App\models\employee\IdGenerator;
 
@@ -81,6 +88,9 @@ function gbv($params, $keys) {
 
 if (!function_exists('get_option')) {
 	function get_option($name) {
+	    if(!\Illuminate\Support\Facades\Schema::hasTable('settings')){
+	        return config('system.'.$name);
+        }
 		$setting = DB::table('settings')->where('name', $name)->get();
 		if (!$setting->isEmpty()) {
 			return $setting[0]->value;
@@ -138,7 +148,7 @@ function tz_list() {
 	return $zones_array;
 }
 
-// currency list 
+// currency list
 function curency() {
 	return $currency = [
 		'AED' => '&#1583;.&#1573;', // ?
@@ -303,13 +313,132 @@ function curency() {
 	];
 }
 
-// format date 
-function carbonDate($date){
-	$dtobj = Carbon\Carbon::parse($date);
-		return $dtformat = $dtobj->format(get_option('date_format'));
+// find employee designation name useing employee id
+function employee_designation($employee_id) {
+	$designation_description = EmployeeDesignation::where('employee_id', $employee_id)->first();
+	if($designation_description) {
+		$designation_id = $designation_description->designation_id;
+		$find_designation = Designation::where('id', $designation_id)->first();
+		if($find_designation) {
+			$designation = $find_designation->name;
+		} else {
+			$designation = '';
+		}
+	} else {
+		$designation = '';
+	}
+
+	return $designation;
 }
 
-// format time 
+// find employee name using employee id
+
+function find_employee_name_using_employee_id($employee_id) {
+	$employee  = Employee::where('id', $employee_id)->first();
+
+	if($employee) {
+
+		$name = $employee->name;
+
+	} else {
+
+		$name = '';
+
+	}
+
+	return $name;
+}
+
+// find employee salary structure  earning total using employee id
+function find_employee_earning_salary_using_employee_id($employee_id){
+
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->total_earning;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+// find employee salary structure  deduction total using employee id
+function find_employee_deduction_salary_using_employee_id($employee_id){
+	
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->total_deduction;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+// find employee total salary structure  deduction total using employee id
+function find_employee_total_salary_using_employee_id($employee_id){
+	
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+
+	if($emp_salary) {
+
+		$earning = $emp_salary->net_salary;
+	
+	} else {
+
+		$earning = 0;
+
+	}
+
+	return $earning;
+}
+
+function checkatndance($employee, $date)
+{
+    $reslust = EmployeeAttendance::where('employee_id', $employee)->where('date_of_attendance', $date)->first();
+    if ($reslust != null) {
+        return $reslust->employee_attendance_type_id;
+    } else {
+        return false;
+    }
+}
+
+
+// find employee department name using employee id
+function employee_department($employee_id) {
+	$designation_description = EmployeeDesignation::where('employee_id', $employee_id)->first();
+	if($designation_description) {
+		$department_id = $designation_description->department_id;
+		$find_department = Department::where('id', $department_id)->first();
+		if($find_department) {
+			$department = $find_department->name;
+		} else {
+			$department = '';
+		}
+	} else {
+		$department = '';
+	}
+
+	return $department;
+}
+
+// format date
+function carbonDate($date){	
+	$dtobj = Carbon\Carbon::parse($date);
+	$dtformat = $dtobj->format(get_option('date_format'));
+}
+
+// format time
 function carbonTime($date){
 	$dtobj = Carbon\Carbon::parse($date);
 	return $dtformat = $dtobj->format(get_option('time_format'));
@@ -322,9 +451,9 @@ function generate_id($id_type, $update = false){
 	if ($update) {
 	  $last_id = IdGenerator::updateOrCreate(['id_type' => $id_type], ['id_no' => $id]);
 	  $id = $last_id->id_no;
-	} 
+	}
       return $id;
-	
+
 }
 
 function numer_padding($id, $code_digits=3){
@@ -333,8 +462,9 @@ function numer_padding($id, $code_digits=3){
 }
 
 	function current_designation($id){
-    	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
-    	$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
+		$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
+
+		$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
     	$dept_id = ($emp_d AND $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
 
     	return $designation;
@@ -347,7 +477,7 @@ function numer_padding($id, $code_digits=3){
     	$dept = App\models\employee\Department::where('id',$dept_id)->first();
     	return  $dept ? $dept->name: "";
 	}
-	
+
 
     function to_date($start_date , $end_date){
 		$datetime1 = new DateTime($start_date);
@@ -358,7 +488,7 @@ function numer_padding($id, $code_digits=3){
 			return  $days;
     }
 
-function formatDate($date){
+	function formatDate($date){
 		$dtobj = Carbon\Carbon::parse($date);
 		if(get_option('date_format') == 'y-m-d'){
 			return $dtformat = $dtobj->format('F jS, Y');
@@ -375,6 +505,23 @@ function formatDate($date){
 		else{
 			return $dtformat = $dtobj->format('F jS Y, g:i A');
 		}
+	}
+
+	function designation_category($id){
+		$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
+		$d_id = $emp_d->designation_id;
+		$d = App\models\employee\Designation::findOrFail($d_id);
+		$category = ($d and $d->category->name) ? $d->category->name : "";
+		return $category;
+	}
+
+	function days_in_month($month, $year)
+	{
+		if (checkdate($month, 31, $year)) return 31;
+		if (checkdate($month, 30, $year)) return 30;
+		if (checkdate($month, 29, $year)) return 29;
+		if (checkdate($month, 28, $year)) return 28;
+		return 0; // error 
 	}
 
 	function validEmail($garbaseEmail){

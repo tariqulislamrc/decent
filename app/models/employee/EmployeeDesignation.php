@@ -12,9 +12,11 @@ class EmployeeDesignation extends Model
     function department(){
     	return $this->belongsTo(Department::class);
     }
+    
     function designation(){
-    	return $this->belongsTo(Designation::class, 'id', 'designation_id');
+    	return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
+
     function terms(){
     	return $this->belongsTo(EmployeeTerm::class,'employee_term_id','id');
     }

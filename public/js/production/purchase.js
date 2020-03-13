@@ -109,6 +109,9 @@ var DatatableSelect = function () {
                     data: 'status',
                     name: 'status'
                 }, {
+                    data: 'payment_status',
+                    name: 'payment_status'
+                }, {
                     data: 'action',
                     name: 'action'
                 }
@@ -172,3 +175,24 @@ var DatatableSelect = function () {
 document.addEventListener('DOMContentLoaded', function () {
     DatatableSelect.init();
 });
+
+    $("#method").on('change', function () {
+        var type = $(this).val();
+        if (type == 'cash') {
+            $("#tr_hide").hide(500);
+        } else {
+            $("#tr_hide").show(500);
+        }
+    });
+
+    $("#paidAmount").on('keyup blur', function () {
+        var paid = $(this).val();
+        var total = $('#Totalamt').val();
+        var due = total - paid;
+
+        if (due < 0) {
+            alert('aaa');
+            $('#paidAmount').val('');
+        }
+        $('#dueAmmount').val(due);
+    });

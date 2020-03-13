@@ -68,7 +68,7 @@ Breadcrumbs::for('employee-category', function ($trail) {
 // Home > Employee Category
 Breadcrumbs::for('employee-attendance-type', function ($trail) {
     $trail->parent('home');
-    $trail->push('Employee Attendance Type', route('admin.employee-attendance-type.index'));
+    $trail->push('Employee Attendance Type', route('admin.attendance-attendance-type.index'));
 });
 
 // Home > Employee leave
@@ -87,6 +87,18 @@ Breadcrumbs::for('employee-payroll', function ($trail) {
 Breadcrumbs::for('employee-payroll-template', function ($trail) {
     $trail->parent('employee-payroll');
     $trail->push('Template', route('admin.payroll-template.index'));
+});
+
+// Home > Employee payroll Iniatitalization
+Breadcrumbs::for('employee-payroll-init', function ($trail) {
+    $trail->parent('employee-payroll');
+    $trail->push('Init', route('admin.payroll-initialize.index'));
+});
+
+// Home > Calender > Holiday
+Breadcrumbs::for('holiday', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Holiday Information', route('admin.holiday.index'));
 });
 
 // Home > Employee payroll Salary Structure
@@ -377,4 +389,16 @@ Breadcrumbs::for('purchase-create', function ($trail) {
 Breadcrumbs::for('purchase-details', function ($trail) {
     $trail->parent('purchase');
     $trail->push('Create', route('admin.production-purchase.index'));
+});
+
+// Home > Employee Attendance
+Breadcrumbs::for('employee-attendance', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Employee Attendance', route('admin.attendance-employee-attendance.index'));
+});
+
+// Home > Employee Attendance Create
+Breadcrumbs::for('employee-attendance-create', function ($trail) {
+    $trail->parent('employee-attendance');
+    $trail->push('Create', route('admin.attendance-employee-attendance.create'));
 });

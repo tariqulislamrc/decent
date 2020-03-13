@@ -15,6 +15,9 @@
     enctype="multipart/form-data">
     @method('PUT')
     @csrf
+    <input type="hidden" name="depertment_id" value="{{ $model->depertment_id }}">
+    <input type="hidden" name="raw_material_id" value="{{ $model->raw_material_id }}">
+    <input type="hidden" name="work_order_id" value="{{ $model->work_order_id }}">
     <div class="card">
         <div class="card-header">
             <h6>{{_lang('Store Request ')}}</h6>
@@ -43,6 +46,8 @@
                         <tr>
                             <th>Product Name</th>
                             <th>Request Quantity</th>
+                            <th>Approve Qty</th>
+                            <th>Remaining Qty</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,14 +57,26 @@
                                 {{ $model->material->name }}
                             </td>
                             <td>
+                                {{ $model->qty }}
+                            </td>
+                            <td>
+                                {{ $approve_item }}
+                            </td>
+                            <td>
                                 <input type="text" class="form-control qty " id="{{$model->id}}" name="qty"
-                                value="{{ $model->qty }}" required>
+                                value="{{ $model->qty-$approve_item }}" required>
                             </td>
                         </tr>
                     </tbody>
-                </table>
-                <tfoot>
+                    <tfoot>
                     <tr>
+                        <td colspan="2">
+                             <label for="note">{{_lang('Status')}} </label>
+                                <select name="status" class="form-control" style="width: 100%">
+                                    <option value="Approve">Approve</option>
+                                    <option value="Partial">Partial</option>
+                                </select>
+                        </td>
                         <td colspan="2">
                         <label for="note">{{_lang('Note')}}
                         </label>
@@ -67,10 +84,10 @@
                         </td>
                     </tr>
                 </tfoot>
+                </table>
             </div>
         </div>
         <div class="form-group col-md-12" id="submit_btn" align="right">
-            {{-- <input type="hidden" name="type[]" value=" "> --}}
             <button type="submit" class="btn btn-primary" id="submit">{{_lang('Approve & Store')}}<i
             class="icon-arrow-right14 position-right"></i></button>
             <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}

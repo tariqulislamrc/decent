@@ -5,10 +5,10 @@ var _componentSelect2Normal = function() {
 
 var _componentDatePicker = function() {
 $('.date').datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: true,
-        todayHighlight: true
-    });
+    format: "dd/mm/yyyy",
+    autoclose: true,
+    todayHighlight: true
+});
 
 };
 
@@ -227,9 +227,7 @@ if ($('.ajax_form').length > 0) {
                     });
                 } else {
                     toastr.error(jsonValue.message);
-
                 }
-                _componentSelect2Normal();
                 $('#submit').show();
                 $('#submiting').hide();
             }
@@ -328,7 +326,7 @@ var _modalFormValidation = function () {
 
                     if (typeof(emran) != "undefined" && emran !== null) {
                         emran.ajax.reload(null, false);
-                    } 
+                    }
 
                 }
             },
@@ -410,7 +408,7 @@ var _remortFormValidation = function () {
                      .val(result.id)
                      .trigger('change');
                     $('.'+result.modal).modal('toggle');
-                 
+
 
                 }
             },
@@ -491,7 +489,7 @@ var _remortClassFormValidation = function () {
                      .val(result.id)
                      .trigger('change');
                     $('.'+result.modal).modal('toggle');
-                 
+
 
                 }
             },
@@ -772,7 +770,7 @@ var _componentRemoteModalLoadAfterAjax = function () {
                 $('#branch_no').focus();
                 _componentSelect2Normal();
                 _modalFormValidation();
-                
+
             })
             .fail(function (data) {
                 $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');

@@ -48,7 +48,7 @@
                 <i class="fa fa-calculator fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Payroll</h4>
                 <p class="card-text font-80pc">Generate employee's payroll based on their attendance, take print out,
-                    send it to your employee's email</p> <a href="/employee/payroll/list" class="btn btn-primary btn-sm">Go
+                    send it to your employee's email</p> <a href="{{route('admin.payroll-initialize.index')}} " class="btn btn-primary btn-sm">Go
                     to Payroll</a>
             </div>
         </div>

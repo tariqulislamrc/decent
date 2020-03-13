@@ -12,8 +12,8 @@
 */
 
 Route::group(['middleware' => ['install']], function () {
-Route::get('/', function () {
-    // return redirect()->route('login');
+
+Route::get('/', function() {
 	return view('welcome');
 });
 
@@ -67,13 +67,31 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('employee-s-structure.ajax', 'Configuration\Employee\EmployeeSalaryStructureController@ajaxcall')->name('employee-s-structure.ajax');
 			Route::get('employee-s-structure-datatable', 'Configuration\Employee\EmployeeSalaryStructureController@datatable')->name('employee-s-structure.datatable');
 
-		//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
+		// ::::::::::::::::::::::::::::::::::::::::::::::::::   Payroll ::::::::::::::::::::::::::::::::::::::::::::;;;;
+		Route::get('payroll-initialize-datatable', 'Employee\PayrollController@datatable')->name('payroll-initialize.datatable');
+		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
+		Route::resource('payroll-initialize', 'Employee\PayrollController');
+		
+			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
 
-		//:::::::::::::::::::::::::::::Employee Attendance Type:::::::::::::::::::::::::::::::::
-		Route::get('employee-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
-		Route::resource('employee-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// holiday section
+	    Route::get('datable', 'Calender\HolidayController@datatable')->name('holiday.datatable');
+		Route::resource('holiday', 'Calender\HolidayController');
+
+
+		//::::::::::::::::::::::::::::: Attendance Type:::::::::::::::::::::::::::::::::
+		Route::post('/date_check_for_holiday', 'Configuration\Employee\EmployeeAttendanceController@checkholiday')->name('date_check_for_holiday');
+		
+		Route::get('attendance-attendance-type-datatable', 'Configuration\Employee\EmployeeAttendanceTypeController@datatable')->name('attendance-type.datatable');
+		Route::resource('attendance-attendance-type', 'Configuration\Employee\EmployeeAttendanceTypeController');
+		// ::::::::::::::::::::::::::::::: Attendance:::::::::::::::::::::::::::::::::::::::
+		Route::any('attendance-attendance-department', 'Configuration\Employee\EmployeeAttendanceController@department')->name('attendance-attendance.department');
+		Route::any('attendance-attendance-designation', 'Configuration\Employee\EmployeeAttendanceController@designation')->name('attendance-attendance.designation');
+		Route::any('attendance-attendance-date', 'Configuration\Employee\EmployeeAttendanceController@date')->name('attendance-attendance.date');
+		Route::any('attendance-attendance-fetch', 'Configuration\Employee\EmployeeAttendanceController@fetch')->name('attendance-attendance.fetch');
+		Route::resource('attendance-employee-attendance', 'Configuration\Employee\EmployeeAttendanceController');
 
 		//:::::::::::::::::::::::::::::Employee List::::::::::::::::::::::::::::::::::::
 		Route::get('employee-list-datatable', 'Configuration\Employee\EmployeeListController@datatable')->name('list.datatable');
@@ -233,7 +251,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-wop-materials/product', 'Production\WopMaterialController@product')->name('wop-materials.product');
 			Route::resource('production-wop-materials', 'Production\WopMaterialController');
 
-		// Production wop-materials Route
+		// Production Purchase Route
 			Route::get('production-purchase/datatable', 'Production\PurchaseController@datatable')->name('purchase.datatable');
 			Route::get('production-purchase/product', 'Production\PurchaseController@product')->name('purchase.product');
 			Route::get('production-purchase/material', 'Production\PurchaseController@material')->name('purchase.material');
@@ -245,6 +263,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-purchase/request', 'Production\PurchaseController@request')->name('production-purchase.request');
 			Route::get('production-purchase/details/{id}', 'Production\PurchaseController@details')->name('production-purchase.details');
 			Route::get('production-purchase/payment/{id}', 'Production\PurchaseController@payment')->name('production-purchase.payment');
+			Route::patch('production-purchase/add_payment/{id}', 'Production\PurchaseController@add_payment')->name('production-purchase.add_payment');
 			Route::resource('production-purchase', 'Production\PurchaseController');
 			// Client:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
@@ -365,6 +384,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/category/{id}','DepertmentController@new_category')->name('depertment_new_category');
 		Route::post('depertment/newcategory','DepertmentController@new_category_add')->name('depertment_new_category_add');
 		Route::delete('depertment/category/delete/{id}', 'DepertmentController@category_destroy')->name('depertment.category.delete');
+		Route::get('depertment/approve/request/{id}','DepertmentController@approve_request')->name('department.approve_request');
 		Route::resource('department', 'DepertmentController');
 		//Store Request:::::::::::::::::::::::::::::::
 		Route::get('request/department/{id}','StoreRequestController@request')->name('request.department');
@@ -378,6 +398,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('request/datatable', 'StoreRequestController@datatable')->name('request.datatable');
 		Route::get('request/get_prev_request','StoreRequestController@get_prev_request')->name('request.get_reques_prev');
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
+		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
 		Route::resource('request', 'StoreRequestController');
 
 

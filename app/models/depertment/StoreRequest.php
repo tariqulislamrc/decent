@@ -23,4 +23,8 @@ class StoreRequest extends Model
   public function send_by(){
         return $this->belongsTo('App\User','created_by','id');
    }
+
+  public function approve_store_item(){
+      return $this->hasMany(ApproveStoreItem::class);
+    }
 }
