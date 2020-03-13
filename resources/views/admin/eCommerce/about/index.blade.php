@@ -30,7 +30,7 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            <label for="header_image">{{_lang('Header Image')}}</label>
+            <label for="header_image">{{_lang('Header Image(1920x205)')}}</label>
             <input type="file" name="header_image" id="header_image" class="form-control">
         </div>
       </div>

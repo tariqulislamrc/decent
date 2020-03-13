@@ -2,36 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Report/DepertmentReportController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/material_report.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/material_report_details.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/product_report.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/product_report_details.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/product_report_details_print.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/product_report_print.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/rawmaterial_report_details_print.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/rawmaterial_report_print.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/store_material_report.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/depertment/storematerial_report_print.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/report/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/layouts/report.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/helper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/DepertmentReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/DepertmentReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/depertment/ApproveStoreItem.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/depertment/ApproveStoreItem.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/depertment/MaterialReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/depertment/MaterialReport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/depertment/ProductFlow.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/depertment/ProductFlow.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/depertment/StoreRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/depertment/StoreRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_03_11_075323_create_material_reports_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_03_11_075323_create_material_reports_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/ContactMessageController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/eCommerce/contact.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/eCommerce/our_workspace.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/action.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/contact_message/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/AboutUsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/AboutUsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/OurTeamController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/OurTeamController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/OurWorkspaceControler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/eCommerce/OurWorkspaceControler.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/eCommerce/ContactUs.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/eCommerce/ContactUs.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_03_11_170753_create_contact_us_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_03_11_170753_create_contact_us_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/_partials/admin/sidebar/main_sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/_partials/admin/sidebar/main_sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/report/approve_request.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/report/approve_request.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/report/include/get_middle_product.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/report/include/get_middle_product.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/report/include/get_product.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/report/include/get_product.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/request/append_wk_material.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/request/append_wk_material.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/request/appendproduct_mat.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/request/appendproduct_mat.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/request/appendrow_mat.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/request/appendrow_mat.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/request/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/request/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/request/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/request/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/depertment/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/depertment/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/about/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/about/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_team/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_team/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_team/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_team/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/action.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/action.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/eCommerce/our_workspace/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/breadcrumbs.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/breadcrumbs.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -248,10 +241,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="624" y="261" key="run.anything.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583921432622" />
-    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup" timestamp="1584089251960">
+    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup" timestamp="1584089515985">
       <screen x="0" y="27" width="3840" height="1053" />
     </state>
     <state x="623" y="259" width="773" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1584079661389" />
-    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup/0.27.3840.1053@0.27.3840.1053" timestamp="1584089251960" />
+    <state x="215" y="248" width="1546" height="678" key="search.everywhere.popup/0.27.3840.1053@0.27.3840.1053" timestamp="1584089515985" />
   </component>
 </project>

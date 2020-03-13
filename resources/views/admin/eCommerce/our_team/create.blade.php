@@ -41,7 +41,7 @@
                 
                 {{-- Image One --}}
                 <div class="col-md-3 form-group">
-                    <label for="image_one">{{_lang('Image One')}}</label>
+                    <label for="image_one">{{_lang('Image One( 280x290 )')}}</label>
                     <input type="file"  name="image_one" id="image_one" required class="form-control" />
                 </div>
 
@@ -52,7 +52,7 @@
 
                 {{-- Image Two --}}
                 <div class="col-md-3 form-group">
-                    <label for="image_two">{{_lang('Image Two')}}</label>
+                    <label for="image_two">{{_lang('Image Two (1920x320)')}}</label>
                     <input type="file"  name="image_two" id="image_two" required class="form-control" />
                 </div>
 

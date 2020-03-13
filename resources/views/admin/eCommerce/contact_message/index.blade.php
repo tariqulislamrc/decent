@@ -1,13 +1,13 @@
-@extends('layouts.app', ['title' => _lang('Our Workspace'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Contact Message'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-placement="bottom" title="Our worksapce"><i class="fa fa-universal-access mr-4"></i> {{_lang('Our worksapce')}}</h1>
-            <p>{{_lang('Here you can Add, Edit & Delete worksapce')}}</p>
+            <h1 data-placement="bottom" title="Contact Message."><i class="fa fa-universal-access mr-4"></i> {{_lang('Contact Message')}}</h1>
+            <p>{{_lang('Here you can Replay, Seen, Unseen & Delete Contact Message')}}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            {{ Breadcrumbs::render('eCommerce.our-worksapce') }}
+            {{ Breadcrumbs::render('eCommerce.contact-msg') }}
         </ul>
     </div>
 @stop
@@ -18,20 +18,16 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">
-                    @can('our_workspace.create')
-                        <a data-placement="bottom" title="Create New workspace" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.our-workspace.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
-                    @endcan
-                </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.our-workspace.datatable') }}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.contact-msg.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
-                                <th>{{_lang('Image One')}}</th>
-                                <th>{{_lang('Image Two')}}</th>
-                                <th>{{_lang('Image Three')}}</th>
-                                <th>{{_lang('Image Four')}}</th>
+                                <th>{{_lang('Name')}}</th>
+                                <th>{{_lang('Email')}}</th>
+                                <th>{{_lang('subject')}}</th>
+                                <th>{{_lang('Status')}}</th>
+                                <th>{{_lang('Date & Time')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>
@@ -53,6 +49,6 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/eCommerce/our_workspace.js') }}"></script>
+    <script src="{{ asset('js/eCommerce/contact.js') }}"></script>
 @endpush
 

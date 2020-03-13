@@ -412,3 +412,9 @@ Breadcrumbs::for('our-workspace-create', function ($trail) {
     $trail->parent('eCommerce.our-worksapce');
     $trail->push('Workspace Create', route('admin.eCommerce.our-workspace.create'));
 });
+
+// Home > eCommerce Contact Message
+Breadcrumbs::for('eCommerce.contact-msg', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Contact Message', route('admin.eCommerce.contact-msg.index'));
+});

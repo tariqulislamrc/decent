@@ -406,9 +406,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		//Our Team route
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
 		Route::resource('our-team','OurTeamController');
-		Route::resource('our-workspace','OurWorkspaceControler');
 		//Our workspace route
-		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
+
+
+		Route::get('our-workspace/datatable', 'OurWorkspaceControler@datatable')->name('our-workspace.datatable');
+		Route::resource('our-workspace','OurWorkspaceControler');
+		//Contact message route
+		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
+		Route::resource('contact-msg','ContactMessageController');
+
 	});
 
 	//Sms Marketing:::::::::::::::::::
@@ -474,12 +480,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		});
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
-       
+
           Route::get('/',function(){
           	return view('admin.report.index');
           })->name('index');
         Route::group(['as' => 'depertment.', 'prefix' => 'depertment','namespace' => 'Report',], function () {
-           
+
            Route::get('product/report','DepertmentReportController@product_report')->name('product_report');
            Route::post('product/report','DepertmentReportController@get_product_report')->name('get_product_report');
 
@@ -496,7 +502,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
            Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
 
-        });  
+        });
 	 });
 
 	});
