@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="" />
+    <list default="true" id="fe308769-66de-468d-a14d-f99b93ba24cf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/models/Production/ProductPhoto.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_03_12_161648_create_product_photos_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2020_03_12_161858_add_short_description_to_products_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Helpers/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/helper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Production/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Frontend/Front_End_Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Frontend/Front_End_Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/Production/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Production/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/Production/ProductVariation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/Production/ProductVariation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/css/tagsinput.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/css/tagsinput.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/production/product/details-add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/production/product/details-add.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/eCommerce/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/eCommerce/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/eCommerce/product_detalis.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/eCommerce/product_details.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/eCommerce/product_grid_view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/eCommerce/product_grid_view.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -1,5 +1,8 @@
 @extends('layouts.app', ['title' => _lang('Production Product For Ecommerce'), 'modal' => 'lg'])
 {{-- Header Section --}}
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/tagsinput.css')}}">
+@endpush
 @section('page.header')
 <div class="app-title">
     <div>
@@ -14,7 +17,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-<form action="{{route('admin.production-product.details-store')}}" method="post" id="content_form"
+<form action="{{route('admin.production-product.details-store', $id)}}" method="post" id="content_form"
     enctype="multipart/form-data">
     @csrf
     <div class="card">
@@ -33,20 +36,26 @@
                 <div class="col-md-6 form-group">
                     <label for="information">{{_lang('Information')}} <span class="text-danger">*</span>
                     </label>
-                    <textarea  name="information" id="information" class="form-control" placeholder="Enter Information" required></textarea>
+                    <textarea  name="information" id="information" class="form-control" placeholder="Enter Information" ></textarea>
                 </div>
                 {{-- Product Details --}}
                 <div class="col-md-12 form-group">
-                    <label for="description">{{_lang('Description')}}
+                    <label for="product_description">{{_lang('Description')}}
                     </label>
-                    <textarea name="description" class="form-control summernote" id="description"
+                    <textarea name="product_description" class="form-control summernote" id="product_description" required
                         placeholder="Enter Product Details"></textarea>
                 </div>
 
                 {{-- Select Image --}}
                 <div class="col-md-6 form-group">
                     <label for="photo">{{_lang('Upload Product Photo')}}</label>
-                    <input type="file" class="form-control" name="photo" id="photo" multiple>
+                    <input required type="file" class="form-control" name="photo[]" id="photo" multiple>
+                </div>
+
+                {{-- Seo Title --}}
+                <div class="col-md-6 form-group">
+                    <label for="seo_title">{{_lang('Seo Title')}}</label>
+                    <input type="text" class="form-control" name="seo_title" id="seo_title" multiple>
                 </div>
 
                 {{-- Meta Title --}}
@@ -57,10 +66,11 @@
                 {{-- Meta Keyword --}}
                 <div class="col-md-6 form-group">
                     <label for="keyword">{{_lang('Meta Keyword')}}</label>
-                    <input type="text" class="form-control" name="keyword" id="keyword" multiple>
+                    <input type="text" class="form-control" data-role="tagsinput" name="keyword" id="keyword">
                 </div>
+
                 {{-- Meta Description --}}
-                <div class="col-md-6 form-group">
+                <div class="col-md-12 form-group">
                     <label for="meta_description">{{_lang('Meta Description')}}</label>
                     <textarea name="meta_description" class="form-control" id="meta_description"
                         placeholder="Enter Meta Description"></textarea>
@@ -74,7 +84,6 @@
                     class="icon-arrow-right14 position-right"></i></button>
             <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </form>
@@ -84,4 +93,5 @@
 @push('scripts')
 <script src="{{ asset('js/production/product.js') }}"></script>
 <script src="{{ asset('js/production/add_product.js') }}"></script>
+<script src="{{asset('backend/js/tagsinput.js')}}"></script>
 @endpush

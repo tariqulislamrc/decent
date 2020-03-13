@@ -43,9 +43,7 @@ Route::get('product-list',function(){
 	return view('eCommerce.product_list_view');
 })->name('product-list');
 
-Route::get('product-details',function(){
-	return view('eCommerce.product_detalis');
-})->name('product-details');
+Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/
@@ -271,7 +269,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 			Route::get('production-product/details/add/{id}', 'Production\ProductController@details_add')->name('production-product.details-add');
 
-			Route::post('production-product/details/store', 'Production\ProductController@details_store')->name('production-product.details-store');
+			Route::post('production-product/details/store/{id}', 'Production\ProductController@details_store')->name('production-product.details-store');
 
 			Route::resource('production-product', 'Production\ProductController');
 

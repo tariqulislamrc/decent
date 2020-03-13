@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\models\Production\Category;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
+use App\models\Production\ProductPhoto;
 use App\models\Production\RawMaterial;
 use App\models\Production\VariationTemplate;
 use App\models\Production\ProductVariation;
@@ -44,6 +45,7 @@ class ProductController extends Controller
                 })
                 ->editColumn('sub_category_id', function ($document) {
                     return $document->sub_category ? $document->sub_category->name : '';
+
                 })
                 ->editColumn('status', function ($document) {
                     if ($document->status == 'Active') {
@@ -417,11 +419,45 @@ class ProductController extends Controller
 
     public function details_add($id)
     {
-        return view('admin.production.product.details-add');
+        return view('admin.production.product.details-add',compact('id'));
     }
+
     public function details_store(Request $request, $id)
     {
-        return view('admin.production.product.details-add');
+        $request->validate([
+            'short_description' => 'required',
+            'product_description' => 'required',
+            // 'photo' => 'mimes:jpeg,jpg,png | max:2000 | required',
+        ]);
+
+        $model = Product::findOrFail($id);
+
+        $model->short_description = $request->short_description;
+        $model->information = $request->information;
+        $model->product_description = $request->product_description;
+        $model->seo_title = $request->seo_title;
+        $model->title = $request->title;
+        $model->keyword = $request->keyword;
+        $model->meta_description = $request->meta_description;
+        $model->updated_by = auth()->user()->id;
+        $model->save();
+
+        for ($i = 0; $i < count($request->photo); $i++) {
+            $photo = new ProductPhoto();
+
+            if ($request->hasFile('photo')) {
+            $storagepath = $request->file('photo')[$i]->store('public/product');
+            $fileName = basename($storagepath);
+            $photo->photo = $fileName;
+            } else {
+                $photo->photo = '';
+            }
+            $photo->product_id = $id;
+            $photo->save();
+        }
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.production-product.index')]);
+
     }
 
 }
