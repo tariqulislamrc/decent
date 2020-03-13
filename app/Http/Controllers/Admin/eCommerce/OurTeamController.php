@@ -60,9 +60,9 @@ class OurTeamController extends Controller
         $data = $request->validate([
             'team_name' => 'required|unique:our_teams|max:255',
             'team_designation' => 'required|unique:our_teams|max:255',
-            'image_one' => 'required',
+            'image_one' => 'required|image_one|mimes:jpeg,png,jpg,gif|max:2048',
             'image_one_alt' => '',
-            'image_two' => 'required',
+            'image_two' => 'required|image_two|mimes:jpeg,png,jpg,gif|max:2048',
             'image_two_alt' => '',
             'description' => 'required',
         ]);
@@ -117,8 +117,8 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
-         $model = OurTeam::findOrFail($id);
-         $data = $request->validate([
+        $model = OurTeam::findOrFail($id);
+        $data = $request->validate([
             'team_name' => ['required',Rule::unique('our_teams')->ignore($model->id)],
             'team_designation' => ['required',Rule::unique('our_teams')->ignore($model->id)],
             'image_one' => '',
@@ -154,8 +154,7 @@ class OurTeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $model = OurTeam::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted'),'goto' => route('admin.eCommerce.our-team.index')]);

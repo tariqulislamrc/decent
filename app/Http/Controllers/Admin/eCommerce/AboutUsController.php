@@ -16,7 +16,7 @@ class AboutUsController extends Controller{
     //    dd($request->all());
        $data = $request->validate([
             'name' => 'required',
-            'header_image' => '',
+            'header_image' => 'header_image|mimes:jpeg,png,jpg,gif|max:2048',
             'header_image_alt' => '',
             'seo_title' => '',
             'meta_keyword' => '',

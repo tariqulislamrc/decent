@@ -407,8 +407,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
 		Route::resource('our-team','OurTeamController');
 		//Our workspace route
-		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
+		Route::get('our-workspace/datatable', 'OurWorkspaceControler@datatable')->name('our-workspace.datatable');
 		Route::resource('our-workspace','OurWorkspaceControler');
+		//Contact message route
+		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
+		Route::resource('contact-msg','ContactMessageController');
 		
 	});
 

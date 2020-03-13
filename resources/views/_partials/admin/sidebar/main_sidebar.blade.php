@@ -352,6 +352,11 @@
                 <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-workspace.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('OUR WORKSPACE')}}</a></li>
                 @endcan
 
+                @can('role.view')
+                {{--Our Team--}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
+                @endcan
+
             </ul>
         </li>
         @endcan

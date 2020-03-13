@@ -41,7 +41,7 @@
                 
                 {{-- Image One --}}
                 <div class="col-md-3 form-group">
-                    <label for="image_one">{{_lang('Image One')}}</label>
+                     <label for="image_one">{{_lang('Image One ( 280x290 )')}}</label>
                     <input type="file"  name="image_one" id="image_one" class="form-control" />
                 </div>
 
@@ -52,7 +52,7 @@
 
                 {{-- Image Two --}}
                 <div class="col-md-3 form-group">
-                    <label for="image_two">{{_lang('Image Two')}}</label>
+                    <label for="image_two">{{_lang('Image Two (1920x320)')}}</label>
                     <input type="file"  name="image_two" id="image_two" class="form-control" />
                 </div>
 
@@ -72,7 +72,7 @@
 
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i class="icon-arrow-right14 position-right"></i></button>
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Submit')}}<i class="icon-arrow-right14 position-right"></i></button>
             <button type="button" class="btn btn-link" id="submiting"
                 style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
         </div>
