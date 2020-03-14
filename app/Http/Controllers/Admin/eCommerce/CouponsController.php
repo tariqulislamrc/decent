@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\Coupon;
 use Yajra\DataTables\DataTables;
+use Illuminate\Validation\Rule;
 use Auth;
 
 class CouponsController extends Controller{
@@ -79,7 +80,8 @@ class CouponsController extends Controller{
      */
     public function edit($id)
     {
-        //
+        $model = Coupon::findOrFail($id);
+        return view('admin.eCommerce.coupons.edit',compact('model'));
     }
 
     /**
@@ -89,9 +91,17 @@ class CouponsController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+        $model = Coupon::findOrFail($id);
+        $data = $request->validate([
+            'coupons_code' => ['required',Rule::unique('coupons')->ignore($model->id)],
+            'discount_type' => 'required',
+            'discount_amount' => 'required',
+            'note' => '',
+        ]);
+        $data['updated_by']=Auth::user()->id;
+        $model->update($data);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Coupons Update Successfuly'), 'goto' => route('admin.eCommerce.coupons.index')]);
     }
 
     /**
@@ -100,8 +110,9 @@ class CouponsController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+        $model = Coupon::findOrFail($id);
+        $model->delete();
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Coupons Delete Successfuly'), 'goto' => route('admin.eCommerce.coupons.index')]);
     }
 }
