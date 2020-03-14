@@ -289,6 +289,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 			Route::post('production-product/details/store/{id}', 'Production\ProductController@details_store')->name('production-product.details-store');
 
+			Route::get('products/list','Production\ProductController@product_list');
 			Route::resource('production-product', 'Production\ProductController');
 
 
@@ -504,6 +505,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 Route::group(['as' => 'sale.', 'prefix' => 'sale','namespace' => 'Sale'], function () {
 	 	    Route::get('/pos/get-product-suggestion', 'SalePOsController@getProductSuggestion');
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
+	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
 	 		Route::resource('pos','SalePOsController');
 	 });
 
