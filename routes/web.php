@@ -51,7 +51,7 @@ Route::group(['middleware' => ['install']], function () {
 
 Route::get('/', function() {
 	return view('welcome');
-});
+})->middleware('frontend.website.enabled');
 Auth::routes();
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 	//ui:::::::::::::::::::
