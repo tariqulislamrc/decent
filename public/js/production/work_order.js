@@ -92,7 +92,7 @@ var DatatableSelect = function () {
                 }, {
                     data: 'type',
                     name: 'type'
-                },{
+                }, {
                     data: 'date',
                     name: 'date'
                 }, {
@@ -138,7 +138,6 @@ var DatatableSelect = function () {
     };
 
 
-
     //
     // Return objects assigned to module
     //
@@ -164,24 +163,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 $(function () {
 
-        $("#item").on('click', '.remove', function () {
-            $(this).closest('tr').remove();
-            $("#discount_amount").val("");
-            $("#discount").val("");
-            $("#paid").val("");
-        });
+    $("#item").on('click', '.remove', function () {
+        $(this).closest('tr').remove();
+        $("#discount_amount").val("");
+        $("#discount").val("");
+        $("#paid").val("");
+    });
 
 
-        $("#item").on('keyup change', '.qty, .price', function () {
-            var tr = $(this).parent().parent();
-            var qty = tr.find('.qty').val();
-            var price = tr.find('.price').val();
-            var total = qty * price;
-            tr.find('.sub_total').val(total);
-            tr.find('.net_total').val(total);
-            tr.find('.sub_total_text').text(total);
-            tr.find('.net_total_text').text(total);
-        });
+    $("#item").on('keyup change', '.qty, .price', function () {
+        var tr = $(this).parent().parent();
+        update_sub_total(tr);
+    });
+
+    function update_sub_total(tr) {
+        var qty = tr.find('.qty').val();
+        var price = tr.find('.price').val();
+        var total = qty * price;
+        tr.find('.sub_total').val(total);
+        tr.find('.net_total').val(total);
+        tr.find('.sub_total_text').text(total);
+        tr.find('.net_total_text').text(total);
+    }
 
 
     $('.select_custom').select2({
@@ -209,7 +212,7 @@ $(function () {
             .autocomplete({
                 source: '/admin/product/get_product',
                 minLength: 2,
-                response: function(event, ui) {
+                response: function (event, ui) {
                     if (ui.content.length == 1) {
                         ui.item = ui.content[0];
                         $(this)
@@ -239,12 +242,12 @@ $(function () {
                         });*/
                     }
                 },
-                select: function(event, ui) {
+                select: function (event, ui) {
                     $(this).val(null);
                     get_purchase_entry_row(ui.item.product_id, ui.item.variation_id);
                 },
             })
-            .autocomplete('instance')._renderItem = function(ul, item) {
+            .autocomplete('instance')._renderItem = function (ul, item) {
             return $('<li>')
                 .append('<div>' + item.text + '</div>')
                 .appendTo(ul);
@@ -252,25 +255,43 @@ $(function () {
     }
 
     function get_purchase_entry_row(product_id, variation_id) {
+        //Get item addition method
+        var is_added = false;
+        //Search for variation id in each row of pos table
+        $('#item')
+            .find('tr')
+            .each(function () {
+                var row_v_id = $(this)
+                    .find('.variation_id')
+                    .val();
+                if (
+                    row_v_id == variation_id
+                ) {
+                    is_added = true;
+                    //Increment product quantity
+                    qty_element = $(this).find('.qty');
+                    qty_element.val(parseInt(qty_element.val()) + 1);
+                    update_sub_total($(this));
+                    $('input#search_product')
+                        .focus()
+                        .select();
+                }
+            });
 
 
-        if (product_id) {
+        if (!is_added && product_id) {
             var row_count = $('#row').val();
             $.ajax({
                 method: 'POST',
                 url: '/admin/production-work-order/append',
                 dataType: 'json',
-                data: { product_id: product_id, row_count: row_count, variation_id: variation_id },
-                success: function(result) {
+                data: {product_id: product_id, row_count: row_count, variation_id: variation_id},
+                success: function (result) {
                     $('#item').append(result.html);
-                    var item = $('#item').find('.product_id');
-                    $.each(item, function (i, v) {
-                        console.log($(this).data('variation'));
-                    })
                     if ($(result.html).find('.qty').length) {
                         $('#row').val(
                             $(result.html).find('.qty').length + parseInt(row_count)
-                        );
+                        ).trigger('change');
                     }
                 },
             });
