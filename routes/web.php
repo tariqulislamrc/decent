@@ -22,6 +22,7 @@ Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact')
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
+Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 
 Route::get('blog',function(){
 	return view('eCommerce.blog');
@@ -30,6 +31,14 @@ Route::get('blog',function(){
 Route::get('wishlist',function(){
 	return view('eCommerce.wishlist');
 })->name('wishlist');
+
+Route::get('checkout',function(){
+	return view('eCommerce.checkout');
+})->name('checkout');
+
+Route::get('cart',function(){
+	return view('eCommerce.shopping-cart');
+})->name('cart');
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 
@@ -416,23 +425,32 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
+		// All Coupons route
+		Route::get('coupons/datatable','CouponsController@datatable')->name('coupons.datatable');
+    	Route::resource('coupons','CouponsController');
 		//Privacy and Policy route
     	Route::get('privacy-policy/index','PrivacyPolicyController@index')->name('privacy-policy.index');
-	Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
+		Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
+
 		//about us route
 		Route::get('about-us/index','AboutUsController@index')->name('about-us.index');
 		Route::post('about-us/store','AboutUsController@store')->name('about-us.store');
+
 		//Our Team route
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
 		Route::resource('our-team','OurTeamController');
+
 		//Our workspace route
-
-
 		Route::get('our-workspace/datatable', 'OurWorkspaceControler@datatable')->name('our-workspace.datatable');
 		Route::resource('our-workspace','OurWorkspaceControler');
+
 		//Contact message route
 		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
 		Route::resource('contact-msg','ContactMessageController');
+
+		//Terams and Condition route
+    	Route::get('terams-conditions/index','TeramsConditionsController@index')->name('terams-conditions.index');
+		Route::post('terams-conditions/store','TeramsConditionsController@store')->name('terams-conditions.store');
 
 	});
 

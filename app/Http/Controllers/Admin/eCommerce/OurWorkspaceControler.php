@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use App\models\eCommerce\OurWorkspace;
+use Illuminate\Support\Facades\Storage;
 
 class OurWorkspaceControler extends Controller{
     /**
@@ -154,6 +155,9 @@ class OurWorkspaceControler extends Controller{
         ]);
 
          if ($request->hasFile('image_one')) {
+             if ($model->image_one) {
+                Storage::delete('public/eCommerce/about/'.$model->image_one);
+            }
             $storagepath = $request->file('image_one')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
             $data['image_one'] = $fileName;
@@ -162,6 +166,9 @@ class OurWorkspaceControler extends Controller{
         }
 
          if ($request->hasFile('image_two')) {
+             if ($model->image_two) {
+                Storage::delete('public/eCommerce/about/'.$model->image_two);
+            }
             $storagepath = $request->file('image_two')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
             $data['image_two'] = $fileName;
@@ -170,17 +177,20 @@ class OurWorkspaceControler extends Controller{
         }
 
         if ($request->hasFile('image_three')) {
+            if ($model->image_three) {
+                Storage::delete('public/eCommerce/about/'.$model->image_three);
+            }
             $storagepath = $request->file('image_three')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
-            if ($model->image_three) {
-                unlink(asset("storage/eCommerce/about".$model->image_three));
-            }
             $data['image_three'] = $fileName;
         }else{
             $data['image_three'] = $model->image_three;
         }
 
         if ($request->hasFile('image_four')) {
+            if ($model->image_four) {
+                Storage::delete('public/eCommerce/about/'.$model->image_four);
+            }
             $storagepath = $request->file('image_four')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
             $data['image_four'] = $fileName;
@@ -200,6 +210,7 @@ class OurWorkspaceControler extends Controller{
      */
     public function destroy($id){
         $model = OurWorkspace::findOrFail($id);
+        Storage::delete(['public/eCommerce/about/'.$model->image_one, 'public/eCommerce/about/'.$model->image_two, 'public/eCommerce/about/'.$model->image_three, 'public/eCommerce/about/'.$model->image_four]);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted'), 'goto' => route('admin.eCommerce.our-workspace.index')]);
     }
