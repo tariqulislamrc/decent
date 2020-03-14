@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\ContactUs;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactFormMail;
+use Auth;
 
 class ContactMessageController extends Controller{
     /**
@@ -16,22 +19,20 @@ class ContactMessageController extends Controller{
     public function index(){
         return view('admin.eCommerce.contact_message.index');
     }
-
-
     public function datatable(Request $request){
        if ($request->ajax()) {
-            $document = ContactUs::where('name', '!=', config('system.default_role.admin'))->get();
+            $document = ContactUs::where('msg_status',1)->where('name', '!=', config('system.default_role.admin'))->get();
             return DataTables::of($document)
                 ->addIndexColumn()
-                ->addColumn('action', function ($model) {
-                    return view('admin.eCommerce.contact_message.action', compact('model'));
-                })
-                ->editColumn('status', function ($model) {
-                    if ($model->level_status=='seen') {
+                 ->editColumn('status', function ($model) {
+                    if ($model->level_status == 'Unseen') {
                         return '<span class="badge badge-danger">Unseen</span>';
                     }else{
                         return '<span class="badge badge-success">Seen</span>';
                     }
+                })
+                ->addColumn('action', function ($model) {
+                    return view('admin.eCommerce.contact_message.action', compact('model'));
                 })
                 ->rawColumns(['action','status'])->make(true);
         }
@@ -52,9 +53,24 @@ class ContactMessageController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+       $data = $request->validate([
+            'email' => 'required',
+            'subject' => '',
+            'description' => 'required',
+        ]);
+        $model = new ContactUs;
+        $model->name = Auth::user()->name;
+        $model->email = Auth::user()->email;
+        $model->subject = $request->subject;
+        $model->descsription = $request->descsription;
+        $model->level_status ='unseen';
+        $model->replay_by =Auth::user()->id;
+        $model->msg_status = 0;
+        $model->save();
+        
+        Mail::to($request->email)->send(new ContactFormMail($data));
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Message Send  Successfully'), 'load'=>true]);
     }
 
     /**
@@ -63,9 +79,10 @@ class ContactMessageController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $model = ContactUs::findOrFail($id);
+        $model->level_status = 'seen';
+        $model->save();
         return view('admin.eCommerce.contact_message.show',compact('model'));
     }
 

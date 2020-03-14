@@ -275,12 +275,7 @@
 
     @can('setting.view')
         {{-- Settings --}}
-        <li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item"
-                                                                                          href="#"
-                                                                                          data-toggle="treeview"><i
-                    class="app-menu__icon fa fa-cogs"></i><span
-                    class="app-menu__label">{{_lang('Settings')}}</span><i
-                    class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">{{_lang('Settings')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 @can('setting.view')
                     {{-- General Settings --}}
@@ -454,21 +449,17 @@
 
     @can('eCommerce.view')
         {{-- eCommerce Section--}}
-        <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item"
-                                                                                            href="#"
-                                                                                            data-toggle="treeview"><i
-                    class="app-menu__icon fa fa-shopping-cart"></i><span
-                    class="app-menu__label">{{_lang('E-Commerce')}}</span><i
-                    class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('E-Commerce')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
 
                 @can('role.view')
+                    {{-- Add Coupons --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
+                @endcan
+
+                @can('role.view')
                     {{--Privacy Policy--}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
-                            href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i
-                                class="icon fa fa-circle-o"></i>
-                            {{_lang('Privacy Policy')}}</a></li>
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
                 @endcan
 
                 @can('role.view')
@@ -486,19 +477,20 @@
                                 class="icon fa fa-circle-o"></i>{{_lang('Our Team')}}</a></li>
                 @endcan
                 @can('role.view')
-                    {{--Our Team--}}
+                    {{--Our workspace--}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}"
                             href="{{ route('admin.eCommerce.our-workspace.index') }}"><i
-                                class="icon fa fa-circle-o"></i>{{_lang('OUR WORKSPACE')}}</a></li>
+                                class="icon fa fa-circle-o"></i>{{_lang('Our Workspac')}}</a></li>
                 @endcan
 
                 @can('role.view')
-                    {{--Our Team--}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}"
-                            href="{{ route('admin.eCommerce.contact-msg.index') }}"><i
-                                class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
+                    {{--Contact Message --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
+                @endcan
+                @can('role.view')
+                    {{--Term and Condition --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
                 @endcan
 
             </ul>
