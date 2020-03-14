@@ -506,6 +506,7 @@ class ProductController extends Controller
                 'VBD.qty_available as qty',
                 'variations.default_sell_price as selling_price',
                 'variations.sub_sku as sku',
+                'VBD.brand_id as brand_id',
                 'products.photo as image'
             );
             $result = $products->orderBy('VBD.qty_available', 'desc')

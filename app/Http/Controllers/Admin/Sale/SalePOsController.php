@@ -165,10 +165,10 @@ class SalePOsController extends Controller
                 ->select( 'p.id as product_id',
                         'p.category_id',
                         'vbd.qty_available',
-                        'variations.default_sell_price',
+                        'variations.default_sell_price as selling_price',
                         'variations.id as variation_id',
                         'vbd.brand_id as brand_id',
-                         'variations.sub_sku as sku',
+                        'variations.sub_sku as sku',
                     )
                 ->first();
       if ($data !=null && $data->qty_available>0) {
@@ -191,7 +191,7 @@ class SalePOsController extends Controller
                 ->select( 'p.id as product_id',
                         'p.category_id',
                         'vbd.qty_available',
-                        'variations.default_sell_price as sale_price',
+                        'variations.default_sell_price as selling_price',
                         'variations.id as variation_id',
                         'vbd.brand_id as brand_id',
                         'variations.sub_sku as sku',

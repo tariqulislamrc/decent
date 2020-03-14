@@ -1,5 +1,21 @@
 @extends('layouts.app', ['title' => _lang('Sale Pos'), 'modal' => 'lg'])
 {{-- Header Section --}}
+@push('admin.css')
+<style>
+    
+   .table th, .table td {
+    padding: 0.2rem 0.5rem;
+}
+
+.pos_product_div .form-control{
+  padding: 0.1rem 0.65rem;
+}
+
+.btn-sm, .btn-group-sm > .btn{
+        padding: 0rem 0.5rem;
+}
+</style>
+@endpush
 @section('page.header')
 <div class="app-title">
 	<div>
@@ -16,9 +32,36 @@
 		<form action="{{route('admin.report.depertment.get_rawmaterial_report')}}" method="post" enctype="multipart/form-data" target="_blank">
             <input type="hidden" id="row" value="0">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-7">
                   <div class="row">
-                      <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                 <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                             </div>
+                            <input type="text" class="form-control date " id="date" name="date" value="" placeholder="Date">
+                         </div>
+                      </div>
+                        <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                 <span class="input-group-text"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
+                             </div>
+                           <select name="sale_type" class="form-control">
+                               <option value="retail">Retail sales</option>
+                               <option value="wholesale">Wholesale</option>
+                           </select>
+                         </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                 <span class="input-group-text"><i class="fa fa-male" aria-hidden="true"></i></span>
+                             </div>
+                            <select name="customer_id" class="form-control customer_id" id="customer_id">
+                            </select>    
+                         </div>
+                      </div>
                       <div class="col-md-6">
                           <div class="input-group mb-3">
                             <div class="input-group-append">
@@ -29,16 +72,16 @@
                       </div>
                       <div class="col-md-12">
                              <div class="card">
-                                <div class="card-body">
+                                <div class="card-body p-2">
                                     <div class="pos_product_div">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>{{ _lang('Product') }}</th>
-                                                <th>{{ _lang('Qty') }}</th>
-                                                <th>{{ _lang('Price') }}</th>
-                                                <th>{{ _lang('Total') }}</th>
-                                                <th>{{ _lang('X') }}</th>
+                                                <th style="width: 40%;">{{ _lang('Product') }}</th>
+                                                <th style="width: 15%;">{{ _lang('Qty') }}</th>
+                                                <th style="width: 15%;">{{ _lang('Price') }}</th>
+                                                <th style="width: 20%;">{{ _lang('Total') }}</th>
+                                                <th style="width: 10%;">{{ _lang('X') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="item"></tbody>
@@ -47,13 +90,16 @@
                                 </div>
                             </div>  
                       </div>
+                      <div class="col-md-12">
+                          @include('admin.salePos.partials.pos_details')
+                      </div>
                   </div>          
                 </div>
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<div class="card">
 						<div class="crad-body">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6 ">
                                     <div class="form-group">
 									<select name="brand_id" id="brand_id" class="form-control select" required>
 
@@ -64,7 +110,7 @@
 									</select>
                                 </div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6 ">
                                     <div class="form-group">
 									<select name="category_id" id="category_id" class="form-control select" required>
 										<option value="all">All Category</option>
@@ -88,8 +134,14 @@
 					</div>
 				</div>
 			</div>
+            @include('admin.salePos.partials.payment_modal')
 		</form>
 	</div>
+</div>
+
+{{-- Contact Modal --}}
+<div class="modal fade border-top-success rounded-top-0 contact_modal" role="dialog">
+    @include('admin.client.quick_add')
 </div>
 <!-- /basic initialization -->
 @stop
@@ -199,6 +251,7 @@ function item1(item, variation_id, quantity) {
             success: function(data) {
                 $("#item").append(data);
                 $('#row').val(row + 1);
+                calculate();
             }
         });
     } else {
@@ -209,8 +262,9 @@ function item1(item, variation_id, quantity) {
                     var qty = parseFloat($('#qty_' + id).val());
                     parseFloat($('#qty_' + id).val(qty + quantity));
                     var nwqty = parseFloat($('#qty_' + id).val());
-                    var amt = nwqty * parseFloat(item.sell_price);
+                    var amt = nwqty * parseFloat(item.selling_price);
                     $("#amt_" + id).html(amt);
+                    calculate();
                     found = false;
                     return false;
 
@@ -230,11 +284,17 @@ function item1(item, variation_id, quantity) {
                 success: function(data) {
                     $("#item").append(data);
                     $('#row').val(row + 1);
+                    calculate();
                 }
             });
         }
     }
 }
+
+$("#item").on('click', '.btn_remove', function() {
+    $(this).closest('tr').remove();
+    calculate();
+})
 
 
     //Add Product
@@ -261,7 +321,7 @@ function item1(item, variation_id, quantity) {
                         $(this).autocomplete('close');
                     }
                 } else if (ui.content.length == 0) {
-                    toastr.error('No Product Found');
+                      swal("Oops", "Out Off Stock", "error");
                     $('input#search_product').select();
                 }
             },
@@ -276,14 +336,237 @@ function item1(item, variation_id, quantity) {
                     $(this).val(null);
                      item1(ui.item, ui.item.variation_id, 1);
                 } else {
-                  toastr.error('Out Of Stock');
+                    toastr.error('Out of Stock');
                 }
             },
         })
+        // .autocomplete('instance')._renderItem = function(ul, item) {
+        //     return $('<li>')
+        //         .append('<div>' + item.name + '</div>')
+        //         .appendTo(ul);
+        // };
+
         .autocomplete('instance')._renderItem = function(ul, item) {
+        if (item.qty <= 0) {
+            var string = '<li class="ui-state-disabled">' + item.name;
+                string += '-' + item.variation;
+        
+            var selling_price = item.selling_price;
+            string +=
+                ' (' +
+                item.sku +
+                ')' +
+                '<br> Price: ' +
+                selling_price +
+                ' (Out of stock) </li>';
+            return $(string).appendTo(ul);
+        } else {
+            var string = '<div>' + item.name;
+                string += '-' + item.variation;
+            var selling_price = item.selling_price;
+            string += ' (' + item.sku + ')' + '<br> Price: ' + selling_price;
+            string += '</div>';
             return $('<li>')
-                .append('<div>' + item.name + '</div>')
+                .append(string)
                 .appendTo(ul);
-        };
+        }
+    };
+
+    //get customer
+    $('#customer_id').select2({
+        ajax: {
+            url: '/admin/client/customers',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page,
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: data,
+                };
+            },
+        },
+        templateResult: function (data) { 
+            return data.text + "<br>" + 'mobile' + ": " + data.mobile; 
+        },
+        minimumInputLength: 1,
+        language: {
+            noResults: function() {
+                var name = $('#customer_id')
+                    .data('select2')
+                    .dropdown.$search.val();
+                return (
+                    '<button type="button" data-name="' +
+                    name +
+                    '" class="btn btn-link add_new_customer"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>&nbsp; ' +
+                    'add_name_as_new_customer'+name +
+                    '</button>'
+                );
+            },
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        },
+        width: '87.5%'
+    });
+
+    $(document).on('click', '.add_new_customer', function() {
+        $('#customer_id').select2('close');
+        var name = $(this).data('name');
+        $('.contact_modal')
+            .find('input#name')
+            .val(name);
+        $('.contact_modal')
+            .find('select#contact_type')
+            .val('customer')
+            .closest('div.contact_type_div')
+            .addClass('hide');
+        $('.contact_modal').modal('show');
+    });
+
+    $('.contact_modal').on('hidden.bs.modal', function() {
+        $('form.quick_add_contact')
+            .find('button[type="submit"]')
+            .removeAttr('disabled');
+        $('form.quick_add_contact')[0].reset();
+    });
+    _remortFormValidation();
+
+    function calculate() {
+        var sub_total = 0;
+        var shipping_charges=0;
+        var qty = 0;
+        $(".amt").each(function() {
+            sub_total = sub_total + ($(this).html() * 1);
+        })
+
+        $(".qty").each(function() {
+            qty = qty + ($(this).val() * 1);
+        })
+
+        $(".total_item").val(qty);
+        $(".total_item").text(qty);
+          net_total = sub_total;
+        $(".sub_total").val(sub_total);
+        $(".sub_total").text(sub_total);
+        var discount =pos_discount(sub_total);
+        net_total =sub_total-discount;
+
+        var tax =pos_order_tax(net_total,discount);
+        net_total =net_total+tax;
+
+        shipping_charges =shipping();
+        net_total =net_total+shipping_charges;
+
+        $(".net_total").val(net_total);
+        $(".net_total").text(net_total);
+        var change_amount =calculate_balance_due(net_total);
+        $('.change_return_span').text(change_amount);
+        $('#due').val(change_amount);
+         
+    }
+
+
+    $("#discount_amount, #discount_type,#tax_calculation_amount,#shipping_charges,#paid").on('keyup blur change', function () {
+       calculate();
+    });
+
+
+ function pos_discount(total_amount) {
+    var calculation_type = $('#discount_type').val();
+    var calculation_amount = __read_number($('#discount_amount'));
+
+    var discount = __calculate_amount(calculation_type, calculation_amount, total_amount);
+
+    $('#total_discount').val(discount, false);
+
+    return discount;
+}
+
+function __read_number(input_element, use_page_currency = false) {
+    return input_element.val();
+}
+
+function pos_order_tax(price_total, discount) {
+    var calculation_type = 'percentage';
+    var calculation_amount = __read_number($('#tax_calculation_amount'));
+    var total_amount = price_total;
+
+    var order_tax = __calculate_amount(calculation_type, calculation_amount, total_amount);
+
+
+    $('span#order_tax').text(order_tax, false);
+    return order_tax;
+}
+
+function shipping()
+{
+  var shipping_charges =parseFloat($('#shipping_charges').val()); 
+  return isNaN(shipping_charges) ? 0 : shipping_charges;;
+   
+}
+
+function __calculate_amount(calculation_type, calculation_amount, amount) {
+    var calculation_amount = parseFloat(calculation_amount);
+    calculation_amount = isNaN(calculation_amount) ? 0 : calculation_amount;
+
+    var amount = parseFloat(amount);
+    amount = isNaN(amount) ? 0 : amount;
+
+    switch (calculation_type) {
+        case 'fixed':
+            return parseFloat(calculation_amount);
+        case 'percentage':
+            return parseFloat((calculation_amount / 100) * amount);
+        default:
+            return 0;
+    }
+}
+
+
+function calculate_balance_due(total) {
+    var paid =parseFloat($('#paid').val());
+    paid=isNaN(paid) ? 0 : paid;
+    $('.total_paying').text(paid);
+    var total_change =total-paid;
+    return total_change;
+}
+
+$(document).on('click','#payment_modal',function(){
+    
+    var qty =$('.total_item').val();
+    if (qty =="" || qty==0) {
+     swal("Oops", "Something Wrong", "error");
+        $('#paymentModal').modal('hide');
+    }
+    else
+    {
+     $('#paymentModal').modal('show');
+    }
+});
+
+$(document).on('change','.method',function(){
+    var method =$(".method").val();
+    if (method=='cash') {
+        $('.reference_no').hide(300);
+    }
+    else
+    {
+      $('.reference_no').show(400);  
+    }
+});
+
+$("#item").delegate(".qty,.sale_price", "keyup", function() {
+    var tr = $(this).parent().parent();
+    tr.find(".amt").html(tr.find(".qty").val() * tr.find(".sale_price").val());
+    calculate();
+
+
+})
+
 </script>
 @endpush
