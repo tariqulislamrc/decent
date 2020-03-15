@@ -79,7 +79,7 @@ class DepertmentReportController extends Controller
             'qty.*'=>'nullable|integer',
   
         ]);
-        $total_qty="";
+        $total_qty=0;
         $flow_type =$request->flow_type;
         if ($flow_type=='First') {
         for ($i=0; $i <count($request->qty) ; $i++) { 
@@ -132,6 +132,7 @@ class DepertmentReportController extends Controller
         }
         }
         else{
+            
          for ($i=0; $i <count($request->qty) ; $i++) { 
           if ($request->qty[$i]>0) {
             $total_qty+=$request->qty[$i];
@@ -151,6 +152,7 @@ class DepertmentReportController extends Controller
             $model->created_by=auth()->user()->id;
             $model->done_depertment_id=$request->done_depertment_id[$i];
             $model->save();
+           
             $brand_id =WorkOrder::find($request->work_order_id)->brand_id;
             $product_variation_id =Variation::find($request->variation_id[$i])->product_variation_id;
 
@@ -158,21 +160,22 @@ class DepertmentReportController extends Controller
                                         ->where('variation_id',$request->variation_id[$i])
                                         ->where('brand_id',$brand_id)
                                         ->first();
-
+                   
             if ($variation_exit) {
                  $variation_exit->qty_available =$variation_exit->qty_available+$request->qty[$i];
                  $variation_exit->save();
+                 
               }
               else{
-                $add_new_brand_qty =new VariationBrandDetails;
-                $add_new_brand_qty->product_id=$request->product_id;
+                  $add_new_brand_qty =new VariationBrandDetails;
+                $add_new_brand_qty->product_id=$request->product_id[$i];
                 $add_new_brand_qty->product_variation_id=$product_variation_id;
                 $add_new_brand_qty->variation_id=$request->variation_id[$i];
                 $add_new_brand_qty->brand_id=$brand_id;
                 $add_new_brand_qty->qty_available =$request->qty[$i];
                 $add_new_brand_qty->save();
-              }                            
-            
+              }
+                   
          } 
         }
         if($total_qty <= 0){

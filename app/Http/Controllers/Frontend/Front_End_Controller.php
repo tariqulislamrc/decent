@@ -11,6 +11,8 @@ use App\models\Production\Product;
 use App\models\eCommerce\OurTeam;
 use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
+use App\models\Production\Variation;
+use App\models\Production\VariationBrandDetails;
 
 class Front_End_Controller extends Controller{
     
@@ -44,8 +46,13 @@ class Front_End_Controller extends Controller{
     }
 
     public function product(){
+        $product_id = [];
         $brand_id = get_option('default_brand');
-        $products = Product::get();
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+        $products = Product::whereIn('id', $product_id)->get();
         $category = Category::with('product')->get();
         return view('eCommerce.product_grid_view', compact('category', 'products'));
     }
@@ -53,6 +60,11 @@ class Front_End_Controller extends Controller{
     public function product_details($id){
         $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model'));
+    }
+    public function get_price(Request $request){
+        $price = Variation::findOrFail($request->id);
+        $qty = VariationBrandDetails::where('variation_id', $request->id)->first();
+        return response()->json(['price' => $price, 'qty' => $qty]);
     }
 
 }

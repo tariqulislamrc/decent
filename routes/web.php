@@ -44,6 +44,9 @@ Route::get('product-list',function(){
 })->name('product-list');
 
 Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
+Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
+Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
+// Route::get('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/

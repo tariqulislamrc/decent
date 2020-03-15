@@ -4,12 +4,15 @@
             <div class="col-xs-12">
                 <!-- mt logo start here -->
                 {{-- <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset(get_option('logo')?'storage/logo/'.get_option('logo'):'favicon.png')}}"></a></div> --}}
-                <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
+                <div class="mt-logo"><a href="{{route('f')}}"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
                 <span class="tel"> +1 (555) 333 22 11</span>
+                <a href="">
                 <div class="mt-sh-cart2">
                     <span class="icon-handbag"></span>
-                    <span>$75.00</span>
-                </div>
+                    <span id="cart_total">$ {{\Cart::getTotal()}}</span>
+                </div>   
+                </a>       
+
                 <!-- mt nav box start here -->
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">

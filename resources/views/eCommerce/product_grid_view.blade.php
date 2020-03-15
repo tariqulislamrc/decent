@@ -1,4 +1,5 @@
-@extends('eCommerce.layouts.app')         
+@extends('eCommerce.layouts.app')   
+
 	@push('main')
 	 <!-- mt main start here -->
 			<main id="mt-main">
@@ -148,16 +149,16 @@
 											<div class="b1">
 												<div class="b2">
 													<a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/275x290'}}" alt="image description"></a>
-													<ul class="mt-stars">
+													{{-- <ul class="mt-stars">
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star-o"></i></li>
-													</ul>
+													</ul> --}}
 													<ul class="links">
-														<li><a href="#"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
-														<li><a href="#"><i class="icomoon icon-exchange"></i></a></li>
+														{{-- <li><a href="#"><i class="icomoon icon-exchange"></i></a></li> --}}
 													</ul>
 												</div>
 											</div>

@@ -21,6 +21,7 @@
 	<!-- include the site stylesheet -->
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/responsive.css">
 	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
+	<link href="{{asset('backend/css/parsley.css')}}" rel="stylesheet">
 	@stack('admin.css')
 </head>
 <body>
@@ -74,5 +75,6 @@
 	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 	<script src="{{asset('frontend')}}/js/main.js"></script>
+	@stack('scripts')
 </body>
 </html>
