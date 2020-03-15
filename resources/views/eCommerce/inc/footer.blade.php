@@ -8,15 +8,13 @@
                     <div class="logo">
                         <a href="index.html"><img src="{{asset('frontend')}}/images/logo.png" alt="Schon"></a>
                     </div>
-                    <p>Exercitation ullamco laboris nisi ut aliquip ex commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <p>{{get_option('description')?get_option('description'):''}}</p>
                     <!-- Social Network of the Page -->
                     <ul class="list-unstyled social-network">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-whatsapp"></i></a></li>
+                        <li><a target="_blank" href="{{get_option('twiter')}}"><i class="fa fa-twitter"></i></a></li>
+                        <li><a target="_blank" href="{{get_option('fb')}}"><i class="fa fa-facebook"></i></a></li>
+                        <li><a target="_blank" href="{{get_option('youtube')}}"><i class="fa fa-youtube"></i></a></li>
+                        <li><a target="_blank" href="{{get_option('linkedin')}}"><i class="fa fa-linkedin"></i></a></li>
                     </ul>
                     <!-- Social Network of the Page end -->
                 </div>
@@ -63,9 +61,9 @@
                 <div class="f-widget-about">
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled address-list align-right">
-                        <li><i class="fa fa-map-marker"></i><address>Connaugt Road Central Suite 18B, 148 <br>New Yankee</address></li>
-                        <li><i class="fa fa-phone"></i><a href="tel:15553332211">+1 (555) 333 22 11</a></li>
-                        <li><i class="fa fa-envelope-o"></i><a href="mailto:&#105;&#110;&#102;&#111;&#064;&#115;&#099;&#104;&#111;&#110;&#046;&#099;&#104;&#097;&#105;&#114;">&#105;&#110;&#102;&#111;&#064;&#115;&#099;&#104;&#111;&#110;&#046;&#099;&#104;&#097;&#105;&#114;</a></li>
+                        <li><i class="fa fa-map-marker"></i><address>{{get_option('address')?get_option('address'):''}}</address></li>
+                        <li><i class="fa fa-phone"></i><a href="tel:15553332211">{{get_option('phone')?get_option('phone'):''}}</a></li>
+                        <li><i class="fa fa-envelope-o"></i><a href="mailto:&#105;&#110;&#102;&#111;&#064;&#115;&#099;&#104;&#111;&#110;&#046;&#099;&#104;&#097;&#105;&#114;">{{get_option('email')?get_option('email'):''}}</a></li>
                     </ul>
                 </div>
                 <!-- F Widget About of the Page end -->
