@@ -12605,7 +12605,6 @@ a:focus {
 	top: 0;
 	z-index: 9999;
 }
-
 .loader {
 	display: block;
 	position: absolute;
@@ -12624,3 +12623,7 @@ a:focus {
 	margin: 0;
 }
 
+.ratting-area .list-group-item img{
+	display: inline-block;
+	width: 20px;
+}

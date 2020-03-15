@@ -74,5 +74,6 @@
 	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 	<script src="{{asset('frontend')}}/js/main.js"></script>
+	@stack('frontend-script')
 </body>
 </html>

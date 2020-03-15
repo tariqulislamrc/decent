@@ -68,8 +68,8 @@
                                     </div>
                                     {{-- Address 2 --}}
                                     <div class="col-md-6">
-                                        {{ Form::label('address', _lang('Optional More Address') , ['class' => 'col-form-label ']) }}
-                                        {{ Form::text('address', get_option('address'), ['class' => 'form-control', 'placeholder' => _lang('Enter Institute Optional More Address')]) }}
+                                        {{ Form::label('address_optional', _lang('Optional More Address') , ['class' => 'col-form-label ']) }}
+                                        {{ Form::text('address_optional', get_option('address_optional'), ['class' => 'form-control', 'placeholder' => _lang('Enter Institute Optional More Address')]) }}
                                     </div>
                                     {{-- City --}}
                                     <div class="col-md-6">
