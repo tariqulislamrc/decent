@@ -6,7 +6,7 @@
     </div>
     <div class="card-body" id="data34">
         <div class="data-item">
-            <form action="{{route('admin.payroll-initialize.step_one')}} " method="POST" id="step_one_submit">
+            <form action="{{route('admin.payroll-initialize.step_one')}}" method="POST" id="step_one_submit">
                 @csrf
                 <div class="row">
     
@@ -50,7 +50,7 @@ $('.select').select2();
 
 // Date
 $('.date').datepicker({
-    format: "yyyy/mm/dd",
+    dateFormat: "yy-mm-dd",
     autoclose: true,
     todayHighlight: true
 });

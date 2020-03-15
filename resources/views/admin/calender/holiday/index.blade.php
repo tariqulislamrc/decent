@@ -35,7 +35,7 @@
                         <div class="col-md-12 form-group">
                             <label for="calender">{{_lang('Select Holidays')}}
                             </label>
-                            <input type="text" name="calender" id="holiday_calender" class="form-control date"
+                            <input type="text" name="calender" id="holiday_calender" class="form-control date_format"
                                 placeholder="Select Date" readonly required>
                         </div>
 
@@ -139,8 +139,8 @@
     });
 
     function date_p() {
-        $('.date').datepicker({
-            format: "yyyy-mm-dd",
+        $('.date_format').datepicker({
+            dateFormat: "yy-mm-dd",
             autoclose: true,
             daysOfWeekDisabled: [5],
             todayHighlight: true,

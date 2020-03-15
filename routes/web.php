@@ -116,6 +116,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		// ::::::::::::::::::::::::::::::::::::::::::::::::::   Payroll ::::::::::::::::::::::::::::::::::::::::::::;;;;
 		Route::get('payroll-initialize-datatable', 'Employee\PayrollController@datatable')->name('payroll-initialize.datatable');
+		Route::get('payroll-initialize/print/{id}', 'Employee\PayrollController@print')->name('payroll-initialize.print');
 		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
 		Route::resource('payroll-initialize', 'Employee\PayrollController');
 

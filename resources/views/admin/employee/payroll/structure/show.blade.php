@@ -27,7 +27,11 @@
                     @if ($item->amount != '')
                         @php
                             $template_id = $item->payroll_template_detail_id;
-                            $template = App\models\employee\PayHead::where('id', $template_id)->where('type', 'Earning')->first();
+                            $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
+                            if($templaate_details) {
+                                $pay_head_id = $templaate_details->pay_head_id;
+                                $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Earning')->first();
+                            }
                         @endphp
                         @if ($template)
                             <tr>
@@ -53,7 +57,11 @@
                     @if ($item->amount != '')
                         @php
                             $template_id = $item->payroll_template_detail_id;
-                            $template = App\models\employee\PayHead::where('id', $template_id)->where('type', 'Deduction')->first();
+                            $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
+                            if($templaate_details) {
+                                $pay_head_id = $templaate_details->pay_head_id;
+                                $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Deduction')->first();
+                            }
                         @endphp
                         @if ($template)
                             <tr>
@@ -72,7 +80,7 @@
             <table class="table table-bordered table-striped">
                 <tr>
                     <th width="50%" class="text-center">Total Earning</th>
-                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$model->total_earning}}</th>
+                    <th with="50%" class="text-center text-success">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$model->total_earning}}</th>
                 </tr>
             </table>
         </div>
@@ -80,7 +88,7 @@
             <table class="table table-bordered table-striped">
                 <tr>
                     <th width="50%" class="text-center">Total Deduction</th>
-                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$model->deduction != '' ? $model->deduction : 0}}</th>
+                    <th with="50%" class="text-center text-danger">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$model->total_deduction != '' ? $model->total_deduction : 0}}</th>
                 </tr>
             </table>
         </div>
@@ -95,7 +103,6 @@
         </table>
     </div>
 </div>
- 
 <hr>
 <p>
     <i class="fa fa-clock-o" aria-hidden="true"></i> <small>Created at {{$model->created_at}}</small> 

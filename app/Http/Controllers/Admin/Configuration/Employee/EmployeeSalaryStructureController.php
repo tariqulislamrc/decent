@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Configuration\Employee;
 
+use App\Helper\MathExpression;
 use App\Http\Controllers\Admin\Employee\Designation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -86,14 +87,25 @@ class EmployeeSalaryStructureController extends Controller
      */
     public function store(Request $request)
     {
+        $x = array();
+
         // validate data from form
         $request->validate([
             'employee_id'   =>   'required',
             'date_effective'   =>   'required',
             'payroll_template_id'   =>   'required',
         ]);
-
+        
         $payroll_template_id = $request->payroll_template_id;
+
+        $payroll_template_details = PayrollTemplateDetail::where('payroll_template_id' ,$payroll_template_id)->get();
+        $var = array();
+        foreach($payroll_template_details as $details) {
+            $pay_head_id = $details->pay_head_id;
+            $pay_head = PayHead::where('id', $pay_head_id)->first();
+            $alias = $pay_head->alias;
+            $var[$pay_head->id] = $alias;
+        }
 
         $uuid =  Str::uuid()->toString();
 
@@ -115,52 +127,97 @@ class EmployeeSalaryStructureController extends Controller
 
                 $amount = $request->amount[$i];
 
+                if($i == 0) {
+                    $x[] = intval($amount);
+                }
+
+                // First Payroll Template Details row for creating computaion
+                $first_payroll_details = PayrollTemplateDetail::findOrFail($request->template_details_id[0]);
+
+                if($first_payroll_details->category == 'computaion') {
+                    return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. First Template ca not be Computation')]);
+                }
+
+                if($first_payroll_details) {
+                    
+                   $pay_head_id = $first_payroll_details->pay_head_id;
+                   $pay_head = PayHead::findOrFail($pay_head_id);
+
+                } else {
+
+                    $alias = '';
+
+                }
+
                 $template_model = PayrollTemplateDetail::where('id', $template_id)->first();
 
-                $template_alias_id = $request->template_details_id[0];
-
-                $alias_template = PayrollTemplateDetail::where('id', $template_alias_id)->first();
-
-                $pay_head_alias = $alias_template->payhead->alias;
-
-                
-
-
+                                
                 if($template_model) {
+
+                    $pay_head_id= $template_model->pay_head_id;
+
+                    $pay_head = PayHead::where('id', $pay_head_id)->first();
+
+                    if($pay_head) {
+                        $alias = $pay_head->alias;
+                    } else {
+                        $alias = '';
+                    }
 
                     $category = $template_model->category;
                     
-                    $cat_id = $template_model->id;
-
                     if($category == 'computation') {
 
-                        if($i == 0) {
+                        $template_alias_id = $request->template_details_id[$i - 1];
 
-                            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Basic Must Be Flat Ratio')]);
-                            die();
+                        $alias_template = PayrollTemplateDetail::where('id', $template_alias_id)->first();
 
-                        }
-
-                        // find the category information 
-
-                        $cat_info = PayrollTemplateDetail::where('id', $cat_id)->first();
-                        
-                        // find the computation login
-                        $computation = $cat_info->computation;
-
-                        $explode_computation = explode('*', $computation);
-
-                        $alias = $explode_computation[0];
-                        
-                        dd($pay_head_alias);
-                        if($pay_head_alias == $alias) {
-                            dd('ok');
+                        if($alias_template) {
+                            $pay_head_id = $alias_template->pay_head_id;
+                            if($pay_head_id) {
+                                $pay_head = PayHead::where('id', $pay_head_id)->first();
+                                if($pay_head) {
+                                    $alias = $pay_head->alias;
+                                } else {
+                                    $alias = '';
+                                }
+                            } else {
+                                $alias = '';
+                            }
                         } else {
-                            dd('problem');
+                            $alias = '';
                         }
 
+                        $computaion = $template_model->computation;
+
+                        $explode = explode(' ', $computaion);
+
+                        $g = $explode[0];
+                        $g = trim($g);
+
+                        $search = array_search($g , $var);
 
 
+                        $eve = str_replace($alias, $request->amount[0], $computaion);
+
+                        $obj = new MathExpression;
+                        $result = $obj->execute($eve);
+                        $x[] = $result;
+
+                        $pay_head_id = $template_model->pay_head_id;
+                        if($pay_head_id != NULL) {
+                            $pay_head = PayHead::where('id', $pay_head_id)->first();
+                            if($pay_head) {
+                                $type = $pay_head->type;
+                                if($type == 'Earning') {
+                                    $total_earning = $total_earning + $result;
+                                } else {
+                                    $total_deduction = $total_deduction + $result;
+                                }
+                            }
+                        }
+
+                        
                     } else {
 
                         $payhead_status = $template_model->payhead->type;
@@ -184,6 +241,9 @@ class EmployeeSalaryStructureController extends Controller
 
             }
 
+            dd($x);
+
+
             $total_salary = $total_earning - $total_deduction ; 
 
             $model = new EmployeeSalary;
@@ -201,8 +261,7 @@ class EmployeeSalaryStructureController extends Controller
 
             for($i = 0; $i < $count_template_details_id; $i++) {
 
-                $template_id = $request->template_details_id[$i];
-
+                $template_id = $request->template_details_id[$i];                
                 $amount = $request->amount[$i];
 
                 $template_model = PayrollTemplateDetail::where('id', $template_id)->first();
@@ -212,7 +271,12 @@ class EmployeeSalaryStructureController extends Controller
                 $item = new EmployeeSalaryDetail;
                 $item->employee_salary_id = $employee_salary_id;
                 $item->payroll_template_detail_id = $template_details_id;
-                $item->amount = $amount;
+
+                if($template_model->category == 'computation') {
+                    $item->amount = $x[$i -1];
+                } else {
+                    $item->amount = $amount;
+                }
                 $item->save();
             }
             

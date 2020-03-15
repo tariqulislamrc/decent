@@ -58,6 +58,7 @@ class HolidayController extends Controller
             'calender' => 'required',
             'description' => 'required',
         ]);
+
         
         $holiday = explode(',',$request->holiday);
         foreach ($holiday as $dates) {
