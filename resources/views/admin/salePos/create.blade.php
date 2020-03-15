@@ -14,6 +14,10 @@
 .btn-sm, .btn-group-sm > .btn{
         padding: 0rem 0.5rem;
 }
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #797979;
+}
 </style>
 @endpush
 @section('page.header')

@@ -15352,9 +15352,6 @@ td span.total_item{
   color: #000;
 }
 
-.table-bordered th, .table-bordered td {
-    border: 1px solid #797979;
-}
 
 .box {
     border-radius: 3px;
