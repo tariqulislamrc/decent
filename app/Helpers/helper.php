@@ -320,7 +320,8 @@ function curency() {
 // format date
 function carbonDate($date){
 	$dtobj = Carbon\Carbon::parse($date);
-	return $dtformat = $dtobj->format(get_option('date_format'));
+	$dtformat = $dtobj->format(get_option('date_format'));
+	return $dtformat;
 }
 
 // format time
@@ -509,9 +510,9 @@ function find_employee_name_using_employee_id($employee_id) {
 }
 
 // find employee salary structure  earning total using employee id
-function find_employee_earning_salary_using_employee_id($employee_id){
+function find_employee_earning_salary_using_employee_id($employee_id, $payroll_id){
 
-	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
@@ -527,9 +528,9 @@ function find_employee_earning_salary_using_employee_id($employee_id){
 }
 
 // find employee salary structure  deduction total using employee id
-function find_employee_deduction_salary_using_employee_id($employee_id){
+function find_employee_deduction_salary_using_employee_id($employee_id, $payroll_id){
 	
-	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
@@ -545,9 +546,9 @@ function find_employee_deduction_salary_using_employee_id($employee_id){
 }
 
 // find employee total salary structure  deduction total using employee id
-function find_employee_total_salary_using_employee_id($employee_id){
+function find_employee_total_salary_using_employee_id($employee_id, $payroll_id){
 	
-	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->latest()->first();
+	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 

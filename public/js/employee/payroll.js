@@ -85,7 +85,7 @@ var DatatableSelect = function () {
                 // { data: 'checkbox', name: 'checkbox' },
                 {
                     data: 'DT_RowIndex',
-                    name: 'payroll'
+                    name: 'id'
                 }, {
                     data: 'employee',
                     name: 'employee'
