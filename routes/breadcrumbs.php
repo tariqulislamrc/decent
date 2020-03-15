@@ -448,3 +448,8 @@ Breadcrumbs::for('product-coupons', function ($trail) {
     $trail->parent('home');
     $trail->push('Product Coupons', route('admin.eCommerce.coupons.index'));
 });
+// Home > Product shipping charge
+Breadcrumbs::for('shipping-charge', function ($trail) {
+    $trail->parent('home');
+    $trail->push('shipping charge', route('admin.eCommerce.shipping-charge.index'));
+});

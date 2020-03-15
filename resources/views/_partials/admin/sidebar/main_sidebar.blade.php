@@ -458,6 +458,11 @@
                 @endcan
 
                 @can('role.view')
+                    {{-- Add Coupons --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}" href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
+                @endcan
+
+                @can('role.view')
                     {{--Privacy Policy--}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
                 @endcan

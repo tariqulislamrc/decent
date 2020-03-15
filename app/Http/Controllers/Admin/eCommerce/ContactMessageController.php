@@ -25,10 +25,10 @@ class ContactMessageController extends Controller{
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn('status', function ($model) {
-                    if ($model->level_status == 'Unseen') {
-                        return '<span class="badge badge-danger">Unseen</span>';
+                    if ($model->level_status == 'unseen') {
+                        return '<span class="badge badge-danger">Not Replay</span>';
                     }else{
-                        return '<span class="badge badge-success">Seen</span>';
+                        return '<span class="badge badge-success">Replay Suuccess</span>';
                     }
                 })
                 ->addColumn('action', function ($model) {
@@ -68,6 +68,12 @@ class ContactMessageController extends Controller{
         $model->replay_by =Auth::user()->id;
         $model->msg_status = 0;
         $model->save();
+
+        if ($request->row_id) {
+           $success = ContactUs::findOrFail($request->row_id);
+           $success->level_status = 'seen';
+           $success->save();
+        }
         
         Mail::to($request->email)->send(new ContactFormMail($data));
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Message Send  Successfully'), 'load'=>true]);
@@ -81,8 +87,6 @@ class ContactMessageController extends Controller{
      */
     public function show($id){
         $model = ContactUs::findOrFail($id);
-        $model->level_status = 'seen';
-        $model->save();
         return view('admin.eCommerce.contact_message.show',compact('model'));
     }
 

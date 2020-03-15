@@ -1,14 +1,14 @@
-@extends('layouts.app', ['title' => _lang('Product Coupons'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('shipping charge'), 'modal' => 'lg'])
 
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-placement="bottom" title="Product Coupons"><i class="fa fa-universal-access mr-4"></i> {{_lang('Product Coupons')}}</h1>
-            <p>{{_lang('Create coupons for product. Here you can Add, Edit & Delete the product Coupons')}}</p>
+            <h1 data-placement="bottom" title="shipping charge"><i class="fa fa-universal-access mr-4"></i> {{_lang('shipping charge')}}</h1>
+            <p>{{_lang('Create shipping charge for product. Here you can Add, Edit & Delete the shipping charge')}}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            {{ Breadcrumbs::render('product-coupons') }}
+            {{ Breadcrumbs::render('shipping-charge') }}
         </ul>
     </div>
 @stop
@@ -21,18 +21,18 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('product_coupons.create')
-                        <button data-placement="bottom" title="Create New Product Coupons" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.coupons.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New shipping charge" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.shipping-charge.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.coupons.datatable') }}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.shipping-charge.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
-                                <th>{{_lang('Coupons Code')}}</th>
-                                <th>{{_lang('Discount')}}</th>
+                                <th>{{_lang('Shipping Area')}}</th>
+                                <th>{{_lang('Shipping Charge')}}</th>
                                 <th>{{_lang('Note')}}</th>
-                                <th width="15%">{{_lang('action')}}</th>
+                                <th width="15%">{{_lang('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,6 +53,6 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/eCommerce/coupons.js') }}"></script>
+    <script src="{{ asset('js/eCommerce/shipping_charge.js') }}"></script>
 @endpush
 

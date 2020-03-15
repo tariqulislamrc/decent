@@ -4,7 +4,6 @@ namespace App\models\eCommerce;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Coupon extends Model
-{
+class ShippingCharge extends Model{
     protected $guarded  = [];
 }

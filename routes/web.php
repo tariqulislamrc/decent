@@ -427,7 +427,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
 		// All Coupons route
 		Route::get('coupons/datatable','CouponsController@datatable')->name('coupons.datatable');
-    	Route::resource('coupons','CouponsController');
+		Route::resource('coupons','CouponsController');
+		// All shipping charge route
+		Route::get('shipping-charge/datatable','ShippingChargeController@datatable')->name('shipping-charge.datatable');
+    	Route::resource('shipping-charge','ShippingChargeController');
 		//Privacy and Policy route
     	Route::get('privacy-policy/index','PrivacyPolicyController@index')->name('privacy-policy.index');
 		Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
