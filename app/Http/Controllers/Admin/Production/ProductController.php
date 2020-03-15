@@ -139,7 +139,6 @@ class ProductController extends Controller
             $purchase->description = $request->raw_description[$i];
             $purchase->unit_id = $request->unit[$i];
             $purchase->created_by = auth()->user()->id;
-
             $purchase->save();
         }
 
@@ -302,9 +301,9 @@ class ProductController extends Controller
         return view('admin.production.product.include.itemlist', compact('unit', 'unit_price', 'model', 'quantity', 'Price', 'waste', 'uses', 'status', 'description'));
     }
 
-    public function show_variation_form(Request $request)
+    public function show_variation_form($id)
     {
-        return view('admin.production.product.variation');
+        return view('admin.production.product.variation', compact('id'));
     }
 
     public function variation_show($id)
