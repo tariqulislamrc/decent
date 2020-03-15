@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\RawMaterial;
-use App\models\Production\VariationTemplate;
 use App\models\Production\WorkOrder;
 use App\models\depertment\ApproveStoreItem;
 use App\models\depertment\Depertment;
@@ -128,8 +127,9 @@ class StoreRequestController extends Controller
      */
     public function edit($id)
     {
-        $model =StoreRequest::find($id);
-        return view('admin.depertment.request.edit',compact('model'));
+        $model =StoreRequest::findOrFail($id);
+        $approve_item =$model->approve_store_item->sum('qty');
+        return view('admin.depertment.request.edit',compact('model','approve_item'));
     }
 
     /**
@@ -141,13 +141,35 @@ class StoreRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $model =StoreRequest::find($id);
-        $model->qty =$request->qty;
+        $model =StoreRequest::findOrFail($id);
+        $approve_item =$model->approve_store_item->sum('qty');
+        if ($request->qty ==0) {
+            throw ValidationException::withMessages(['message' => _lang('You can not approve zero qty')]);
+        }
+        if (($request->qty+$model->approve_qty)>$model->qty) {
+           throw ValidationException::withMessages(['message' => _lang('Request Qty >Approve Qty')]);
+        }
+        $model->approve_qty =$model->approve_qty+$request->qty;
         $model->approve_date=date('Y-m-d');
         $model->status=$request->status;
         $model->note=$request->note;
         $model->updated_by=auth()->user()->id;
         $model->save();
+        $approve =new ApproveStoreItem;
+        $approve->depertment_id=$request->depertment_id;
+        $approve->raw_material_id=$request->raw_material_id;
+        $approve->work_order_id=$request->work_order_id;
+        $approve->store_request_id=$model->id;
+        $approve->qty=$request->qty;
+        $approve->note=$request->note;
+        $approve->updated_by=auth()->user()->id;
+        $approve->approve_date=date('Y-m-d');
+        $approve->save();
+        //row material stock update
+        $material=$approve->material;
+        $material->stock =$material->stock-$request->qty;
+        $material->save();
+        $this->status_change($model->depertment_store_id);
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'goto'=>route('admin.request.index')]);
     }
@@ -162,6 +184,29 @@ class StoreRequestController extends Controller
     {
         $model =StoreRequest::find($id)->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
+    }
+
+
+    public function request_destroy($id)
+    {
+       $model =DepertmentStore::find($id)->delete();
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
+    }
+
+    private function status_change($id)
+    {
+        $dept_store =DepertmentStore::findOrFail($id);
+        $request_count =$dept_store->store_request->count();
+        $approve_count =$dept_store->store_request()->where('status','Approve')->count();
+        if ($request_count==$approve_count) {
+            $status ='Approve';
+        }
+        else{
+            $status='Partial';
+        }
+        $dept_store->status=$status;
+        $dept_store->save();
+        return true;
     }
 
 
@@ -281,5 +326,19 @@ class StoreRequestController extends Controller
     {
         $models = RawMaterial::where('id', $request->id)->get();
         return view('admin.depertment.request.appendrow_mat', compact('models'));
+    }
+
+    public function depertmentflow($id)
+    {
+        $model =ApproveStoreItem::findOrFail($id);
+        $depertment =Depertment::select('id','name')->get()->except($model->depertment_id);
+
+        $products = ApproveStoreItem::
+              join('work_order_products', 'approve_store_items.work_order_id', '=', 'work_order_products.workorder_id')
+            ->join('products', 'work_order_products.product_id', '=', 'products.id')
+            ->select('products.*')
+            ->first();
+            dd($products);
+        return view('admin.depertment.request.flow.depertmentflow',compact('model','depertment'));
     }
 }
