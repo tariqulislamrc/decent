@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
+    use SoftDeletes;
+     protected $guarded = ['id'];
 
     public function employee()
     {
@@ -28,4 +30,20 @@ class Transaction extends Model
     {
         return $this->hasMany(TransactionPayment::class, 'transaction_id', 'id');
     }
+
+    public function sell_lines()
+    {
+        return $this->hasMany('App\models\inventory\TransactionSellLine');
+    }
+
+    public function client()
+    {
+        return $this->belongsTo('App\models\Client');
+    }
+
+    public function created_person()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+    }
+
 }

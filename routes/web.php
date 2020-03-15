@@ -332,6 +332,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
 			Route::get('client/mail/{id}','ClientController@email')->name('client.mail');
 			Route::get('client/sms/{id}','ClientController@sms')->name('client.sms');
+
+			Route::get('client/customers','ClientController@customers');
+			Route::post('client/customers','ClientController@quick_add')->name('client.quick_add');
 			Route::resource('client', 'ClientController');
 
 		// Production Route End

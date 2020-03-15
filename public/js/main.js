@@ -1,6 +1,6 @@
 var _componentSelect2Normal = function() {
 
-    $('.select').select2({width: '100%'});
+    $('.select').select2({width:'100%'});
 };
 
 var _componentDatePicker = function() {

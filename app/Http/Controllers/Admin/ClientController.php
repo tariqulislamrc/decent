@@ -66,6 +66,22 @@ class ClientController extends Controller
      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
     }
 
+    public function quick_add(Request $request)
+    {
+        $validator = $request->validate([
+            'name'=>'required',
+            'mobile'=>'required',
+            'email'=>'nullable|email',
+            'net_total'=>'nullable|numeric',
+        ]);
+
+         $input = $request->only(['type',
+                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
+         $input['created_by'] = auth()->user()->id;
+         $contact = Client::create($input);
+         return response()->json(['id'=>$contact->id,'name'=>$contact->name,'addto'=>'customer_id','modal'=>'contact_modal']);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -143,4 +159,35 @@ class ClientController extends Controller
         $model =Client::find($id);
         return view('admin.client.sms',compact('model'));
     }
+
+   public function customers()
+    {
+        if (request()->ajax()) {
+            $term = request()->input('q', '');
+
+            $contacts = Client::query();
+
+            if (!empty($term)) {
+                $contacts->where(function ($query) use ($term) {
+                    $query->where('name', 'like', '%' . $term .'%')
+                            ->orWhere('mobile', 'like', '%' . $term .'%');
+                });
+            }
+
+            $contacts = $contacts->select(
+                'id',
+                'name as text',
+                'mobile',
+                'landmark',
+                'city',
+                'state',
+            )
+                    ->get();
+
+            return json_encode($contacts);
+        }
+    }
 }
+
+
+

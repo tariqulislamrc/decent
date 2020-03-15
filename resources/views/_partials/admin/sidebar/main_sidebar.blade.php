@@ -631,4 +631,25 @@
             </li>
         </ul>
     </li>
+
+
+    <li class="treeview {{ Request::is('admin/sale*') ? ' is-expanded' : '' }}">
+    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+        <span class="app-menu__label">{{_lang('Sale Pos')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Pos')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.index') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('All Sale')}}
+            </a>
+        </li>
+    </ul>
+</li>
 @endif

@@ -15340,3 +15340,41 @@ img.zoom {
     overflow-y: auto;
     margin-bottom: 20px;
 }
+
+td span{
+  font-size: 12px;
+  font-weight: 600;
+  color: #009688;
+}
+td span.total_item{
+  font-size: 12px;
+  font-weight: 500;
+  color: #000;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #797979;
+}
+
+.box {
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    color: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.bg-purple {
+    background-color: #605ca8 !important;
+}
+.box.box-solid {
+    border-top: 0;
+}
+.box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+}

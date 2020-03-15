@@ -15,10 +15,13 @@ class CreateTransactionPaymentsTable extends Migration
     {
         Schema::create('transaction_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('transaction_id')->nullable();
+            $table->integer('transaction_id')->nullable();
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->string('method')->nullable();
             $table->string('payment_date')->nullable();
             $table->string('transaction_no')->nullable();
+            $table->integer('is_return')->default(0);
             $table->string('amount')->nullable();
             $table->string('note')->nullable();
             $table->string('type')->nullable();
