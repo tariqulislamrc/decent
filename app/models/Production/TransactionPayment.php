@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TransactionPayment extends Model
 {
-    
+     protected $guarded = ['id'];
 }

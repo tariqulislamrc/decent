@@ -469,4 +469,20 @@ function done_rawmaterial_report($id,$sDate,$eDate)
 	return $value;
 
 }
+
+	function ref($num){
+		switch ($num) {
+		    case $num < 10:
+		        return "000".$num;
+		        break;
+		    case $num >= 10 && $num < 100:
+		        return "00".$num;
+		        break;
+		    case $num >+ 10 && $num >= 100 && $num < 1000:
+		        return "0".$num;
+		        break;
+		    default:
+		        return $num;;
+		}
+	}
 ?>

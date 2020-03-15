@@ -3,7 +3,7 @@
 @push('admin.css')
 <style>
     
-   .table th, .table td {
+.table th, .table td {
     padding: 0.2rem 0.5rem;
 }
 
@@ -29,7 +29,7 @@
 <!-- Basic initialization -->
 <div class="tile">
 	<div class="tile-body">
-		<form action="{{route('admin.report.depertment.get_rawmaterial_report')}}" method="post" enctype="multipart/form-data" target="_blank">
+		<form action="{{route('admin.sale.pos.store')}}" method="post" enctype="multipart/form-data" target="_blank" id="content_form">
             <input type="hidden" id="row" value="0">
 			<div class="row">
 				<div class="col-md-7">
@@ -58,7 +58,7 @@
                             <div class="input-group-append">
                                  <span class="input-group-text"><i class="fa fa-male" aria-hidden="true"></i></span>
                              </div>
-                            <select name="customer_id" class="form-control customer_id" id="customer_id">
+                            <select name="client_id" class="form-control customer_id" id="customer_id">
                             </select>    
                          </div>
                       </div>
@@ -101,7 +101,7 @@
 							<div class="row">
 								<div class="col-md-6 ">
                                     <div class="form-group">
-									<select name="brand_id" id="brand_id" class="form-control select" required>
+									<select name="brand_id" id="brand_id" class="form-control select">
 
 										<option value="">Select Brand</option>
 										@foreach ($brands as $brand)
@@ -112,7 +112,7 @@
 								</div>
 								<div class="col-md-6 ">
                                     <div class="form-group">
-									<select name="category_id" id="category_id" class="form-control select" required>
+									<select name="category_id" id="category_id" class="form-control select">
 										<option value="all">All Category</option>
 										@foreach ($categories as $category)
 										<option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -567,6 +567,6 @@ $("#item").delegate(".qty,.sale_price", "keyup", function() {
 
 
 })
-
+_formValidation();
 </script>
 @endpush

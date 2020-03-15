@@ -96,8 +96,8 @@
                     </div>
                 </div>
                 <div class="row">
-                      {{ Form::submit(_lang('Make Payment'), ['class' => 'btn btn-outline btn-success btn-round btn-wd w-100 ', 'id' => 'submit']) }}
-                        <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                      {{ Form::submit(_lang('Make Payment'), ['class' => 'btn btn-outline btn-success btn-round btn-wd w-100 ', 'id' => '']) }}
+                        <button type="button" class="btn btn-link" id="" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
                 </div>
             </div>
         </div>
