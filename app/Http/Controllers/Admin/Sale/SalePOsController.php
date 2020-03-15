@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\models\Production\Brand;
 use App\models\Production\Category;
 use App\models\Production\Product;
+use App\models\Production\Variation;
 use Illuminate\Http\Request;
 
 class SalePOsController extends Controller
@@ -157,10 +158,47 @@ class SalePOsController extends Controller
 
     public function get_variation_product(Request $request)
     {
-        $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
+        $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
                 ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
                 ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
-                ->where('p.business_id', $business_id)
-                ->where('variations.id', $variation_id);
+                ->where('variations.id', $request->variation_id)
+                ->select( 'p.id as product_id',
+                        'p.category_id',
+                        'vbd.qty_available',
+                        'variations.default_sell_price',
+                        'variations.id as variation_id',
+                        'vbd.brand_id as brand_id',
+                         'variations.sub_sku as sku',
+                    )
+                ->first();
+      if ($data !=null && $data->qty_available>0) {
+         return response()->json(['status'=>true,'product'=>$data]);
+        }
+        else
+        {
+           return response()->json(['status'=>false,'product'=>$data]); 
+        }
+    }
+
+    public function scannerappend1(Request $request)
+    {
+         $row =$request->row;
+         $quantity =$request->quantity;
+         $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
+                ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
+                ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
+                ->where('variations.id', $request->variation_id)
+                ->select( 'p.id as product_id',
+                        'p.category_id',
+                        'vbd.qty_available',
+                        'variations.default_sell_price as sale_price',
+                        'variations.id as variation_id',
+                        'vbd.brand_id as brand_id',
+                        'variations.sub_sku as sku',
+                        'variations.name as vari_name'
+                    )
+                ->first();
+
+                return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
     }
 }

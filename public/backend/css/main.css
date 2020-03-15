@@ -15334,3 +15334,9 @@ img.zoom {
     line-height: 14px;
     max-height: 14px;
 }
+.pos_product_div {
+    min-height: 50vh;
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}

@@ -31,8 +31,6 @@
                         <li><a href="#">Sofas</a></li>
                         <li><a href="#">Living</a></li>
                         <li><a href="#">Bedroom</a></li>
-                        <li><a href="#">Tables</a></li>
-                        <li><a href="#">New</a></li>
                     </ul>
                 </div>
                 <!-- Footer Nav of the Page end -->
@@ -41,11 +39,9 @@
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled f-widget-nav">
                         <li><a href="{{route('about')}}">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Terms &amp; Conditions</a></li>
+                        <li><a href="{{route('contact')}}">Contact Us</a></li>
+                        <li><a href="{{route('terms-condition')}}">Terms &amp; Conditions</a></li>
                         <li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>
-                        <li><a href="#">Customer Service</a></li>
-                        <li><a href="#">FAQs</a></li>
                     </ul>
                 </div>
                 <!-- Footer Nav of the Page end -->

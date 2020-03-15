@@ -73,7 +73,7 @@ var DatatableSelect = function () {
             }],
             columnDefs: [{
                 orderable: false,
-                targets: [6]
+                targets: [4]
             }],
 
             order: [0, 'asc'],
@@ -87,21 +87,15 @@ var DatatableSelect = function () {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 }, {
-                    data: 'name',
-                    name: 'name'
+                    data: 'coupons_code',
+                    name: 'coupons_code'
                 }, {
-                    data: 'email',
-                    name: 'email'
+                    data: 'discount_amount',
+                    name: 'discount_amount'
                 }, {
-                    data: 'subject',
-                    name: 'subject'
+                    data: 'note',
+                    name: 'note'
                 }, {
-                    data: 'status',
-                    name: 'status'
-                },{
-                    data: 'created_at',
-                    name: 'created_at'
-                },{
                     data: 'action',
                     name: 'action'
                 }

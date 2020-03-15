@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\models\eCommerce\OurTeam;
 use Yajra\DataTables\DataTables;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class OurTeamController extends Controller
 {
@@ -129,6 +130,9 @@ class OurTeamController extends Controller
         ]);
 
          if ($request->hasFile('image_one')) {
+             if ($model->image_one) {
+                Storage::delete('public/eCommerce/about/'.$model->image_one);
+            }
             $storagepath = $request->file('image_one')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
             $data['image_one'] = $fileName;
@@ -137,6 +141,9 @@ class OurTeamController extends Controller
         }
 
          if ($request->hasFile('image_two')) {
+             if ($model->image_two) {
+                Storage::delete('public/eCommerce/about/'.$model->image_two);
+            }
             $storagepath = $request->file('image_two')->store('public/eCommerce/about');
             $fileName = basename($storagepath);
             $data['image_two'] = $fileName;
@@ -156,6 +163,7 @@ class OurTeamController extends Controller
      */
     public function destroy($id){
         $model = OurTeam::findOrFail($id);
+        Storage::delete(['public/eCommerce/about/'.$model->image_one, 'public/eCommerce/about/'.$model->image_two]);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted'),'goto' => route('admin.eCommerce.our-team.index')]);
     }

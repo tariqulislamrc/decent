@@ -20,7 +20,7 @@ class CreateContactUsTable extends Migration
             $table->string('subject')->nullable();
             $table->text('descsription')->nullable();
             $table->tinyInteger('msg_status')->nullable();
-            $table->enum('level_status', ['seen', 'unseen']);
+            $table->enum('level_status', ['unseen', 'seen']);
              $table->integer('replay_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();

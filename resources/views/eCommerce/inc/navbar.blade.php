@@ -17,7 +17,7 @@
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
                         <li><a href="{{route('account')}}">My Account</a></li>
-                        <li><a href="{{route('wishlist')}}">Checkout</a></li>
+                        <li><a href="{{route('checkout')}}">Checkout</a></li>
                         <li><a href="{{route('wishlist')}}">Wishlist</a></li>
                     </ul>
                     <!-- mt holder start here -->

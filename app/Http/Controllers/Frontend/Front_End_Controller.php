@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
+use App\models\eCommerce\TeramsCondition;
 use App\models\Production\Category;
 use App\models\Production\Product;
 use App\models\eCommerce\OurTeam;
@@ -28,6 +29,11 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.about',compact('model','our_team','our_workspace'));
     }
 
+    public function termsCondition(){
+        $model = TeramsCondition::first();
+        return view('eCommerce.terms_conditions',compact('model'));
+    }
+
     public function contactUs(){
         return view('eCommerce.contact');
     }
@@ -39,7 +45,7 @@ class Front_End_Controller extends Controller{
             'subject' => 'required',
             'descsription' => 'required',
         ]);
-
+        $data['msg_status'] = 1;
         $model = new ContactUs;
         $model->create($data);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Message Seed Successfuly'), 'goto' => route('contact')]);

@@ -441,5 +441,15 @@ Breadcrumbs::for('employee-attendance', function ($trail) {
 Breadcrumbs::for('employee-attendance-create', function ($trail) {
     $trail->parent('employee-attendance');
     $trail->push('Create', route('admin.attendance-employee-attendance.create'));
+});
 
+// Home > Product Coupon Code
+Breadcrumbs::for('product-coupons', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Product Coupons', route('admin.eCommerce.coupons.index'));
+});
+// Home > Product shipping charge
+Breadcrumbs::for('shipping-charge', function ($trail) {
+    $trail->parent('home');
+    $trail->push('shipping charge', route('admin.eCommerce.shipping-charge.index'));
 });
