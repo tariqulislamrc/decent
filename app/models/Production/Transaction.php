@@ -41,6 +41,11 @@ class Transaction extends Model
         return $this->belongsTo('App\models\Client');
     }
 
+    public function return_parent()
+    {
+        return $this->hasOne(Transaction::class, 'return_parent_id');
+    }
+
     public function created_person()
     {
         return $this->belongsTo('App\User', 'created_by');

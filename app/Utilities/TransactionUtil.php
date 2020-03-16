@@ -82,6 +82,31 @@ class TransactionUtil
     }
 
 
+    public function IncreaseVariationQty($product_id, $variation_id, $brand_id, $new_quantity, $old_quantity = 0)
+
+    {
+        $product = Product::find($product_id);
+
+        //Check if stock is enabled or not.
+            //Decrement Quantity in variations location table
+            VariationBrandDetails::where('variation_id', $variation_id)
+                ->where('product_id', $product_id)
+                ->where('brand_id', $brand_id)
+                ->increment('qty_available', $new_quantity);
+
+            
+            // Variation::where('id', $variation_id)
+            //     ->where('product_id', $product_id)
+            //     ->decrement('qty_available', $qty_difference);
+
+            //TODO: Decrement quantity in products table
+            // Product::where('id', $product_id)
+            //     ->decrement('total_qty_available', $qty_difference);
+
+        return true;
+    }
+
+
         /**
      * Update the payment status for purchase or sell transactions. Returns
      * the status

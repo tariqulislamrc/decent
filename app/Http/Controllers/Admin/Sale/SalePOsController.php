@@ -78,7 +78,7 @@ class SalePOsController extends Controller
                    }
                  })
                 ->addColumn('action', function ($model) {
-                    return view('admin.expense.action', compact('model'));
+                    return view('admin.salePos.action', compact('model'));
                 })->rawColumns(['action','client','date','paid','due','payment_status'])->make(true);
         }
         $customer =Client::orderBy('id','DESC')->pluck('name','id');
@@ -178,7 +178,8 @@ class SalePOsController extends Controller
      */
     public function show($id)
     {
-        //
+        $model =Transaction::findOrfail($id);
+        return view('admin.salePos.show',compact('model'));
     }
 
     /**

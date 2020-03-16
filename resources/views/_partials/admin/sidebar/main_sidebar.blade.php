@@ -350,13 +350,13 @@
             <ul class="treeview-menu">
 
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
+                    <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
                         <i class="icon fa fa-circle-o"></i>
                         {{_lang('Pos')}}
                     </a>
                 </li>
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}" href="{{ route('admin.expense.ex.index') }}">
+                    <a class="treeview-item {{Request::is('admin/admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.index') }}">
                         <i class="icon fa fa-circle-o"></i>
                         {{_lang('All Sale')}}
                     </a>

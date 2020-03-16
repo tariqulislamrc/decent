@@ -537,6 +537,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
 	 		Route::resource('pos','SalePOsController');
+	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
+	 		Route::resource('return','SaleReturnController');
 	 });
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
