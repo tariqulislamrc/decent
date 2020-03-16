@@ -95,6 +95,12 @@ Breadcrumbs::for('employee-payroll-init', function ($trail) {
     $trail->push('Init', route('admin.payroll-initialize.index'));
 });
 
+// Home > Employee payroll Transection
+Breadcrumbs::for('employee-payroll-transection', function ($trail) {
+    $trail->parent('employee-payroll');
+    $trail->push('Transection', route('admin.payroll-transection.index'));
+});
+
 // Home > Calender > Holiday
 Breadcrumbs::for('holiday', function ($trail) {
     $trail->parent('home');

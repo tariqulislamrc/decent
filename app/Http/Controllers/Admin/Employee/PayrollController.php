@@ -186,7 +186,15 @@ class PayrollController extends Controller
      */
     public function edit($id)
     {
-        
+        dd($id);
+        $model = Payrolls::where('uuid', $id)->firstOrFail();
+        $start_date = $model->start_date;
+        $end_date = $model->end_date;
+        $salary = EmployeeSalary::where('id', $model->employee_salary_id)->first();
+
+        dd($model);
+
+        return view('admin.employee.payroll.payroll.print', compact('model', 'salary', 'start_date', 'end_date'));
     }
 
     /**
