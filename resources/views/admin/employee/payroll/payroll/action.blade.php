@@ -1,5 +1,5 @@
 @can('employee_payroll_init.update')
-    <a style="cursor:pointer;" id="content_managment" data-placement="bottom" title="Edit Employee Salary Structure." href="{{ route('admin.payroll-initialize.edit',$model->uuid) }}"  class="text-info" title="{{ _lang('Edit') }}" data-popup="tooltip" data-placement="bottom"><i class="fa fa-pencil-square-o fa-2x ml-1"></i></a>
+    <a style="cursor:pointer;" id="content_managment" data-placement="bottom" title="Edit Employee Salary Structure." href="{{ route('admin.payroll-initialize.edit',$model->uuid)}}"  class="text-info" title="{{ _lang('Edit') }}" data-popup="tooltip" data-placement="bottom"><i class="fa fa-pencil-square-o fa-2x ml-1"></i></a>
 @endcan
 
 @can('employee_payroll_init.print')

@@ -53,17 +53,21 @@
             </div>
         </div>
     </div>
+
+    @can('employee_payroll_transection.view')
     <div class="col-md-5 mx-auto m-2">
         <div class="card card-box border border-primary">
             <div class="card-body text-center">
                 <i class="fa fa-ticket fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Payroll Transaction</h4>
                 <p class="card-text font-80pc">Make payment of employee's salary, record loan/advance, load
-                    return/advance return of your employees</p> <a href="/employee/payroll/transaction"
+                    return/advance return of your employees</p> <a href="{{route('admin.payroll-transection.index')}}"
                     class="btn btn-primary btn-sm">Go to Payroll Transaction</a>
             </div>
         </div>
     </div>
+    @endcan
+    
 </div>
 <!-- /basic initialization -->
 @stop
