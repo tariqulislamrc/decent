@@ -12622,8 +12622,22 @@ a:focus {
 .changer-active #style-changer {
 	margin: 0;
 }
-
+.ratting-area .list-group-item{
+	list-style: none;
+}
 .ratting-area .list-group-item img{
 	display: inline-block;
 	width: 20px;
+}
+
+li#avrage_rating {
+    width: 200px !important;
+}
+
+ul.ratting-area {
+    padding-left: 0px;
+}
+
+li.list-group-item.count_rating {
+    width: 200px !important;
 }

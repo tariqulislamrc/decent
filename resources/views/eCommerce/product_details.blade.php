@@ -63,17 +63,15 @@
                             <h2 class="text-uppercase">{{$model->name}}</h2>
                             <!-- Rank Rating of the Page -->
                             <div class="rank-rating">
-                                <ul class="list-unstyled rating-list">
-                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
+                                <ul class="ratting-area" style="padding-left: 0px;">
+                                    <li class="list-group-item" id="avrage_rating"></li>
+                                    
                                 </ul>
-                                <span class="total-price">Reviews (12)</span>
+                                <span class="total-price">Reviews ({{$total_row}})</span>
                             </div>
                             <!-- Rank Rating of the Page end -->
                             <ul class="list-unstyled list">
-                                <li><a href="#"><i class="fa fa-share-alt"></i>SHARE</a></li>
+                                <li><div class="addthis_inline_share_toolbox"></div>{{-- <div class="sharethis-inline-share-buttons"></div> --}}</li>
                                 <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li>
                                 <li><a href="#"><i class="fa fa-heart"></i>ADD TO WISHLIST</a></li>
                             </ul>
@@ -127,7 +125,7 @@
                     <ul class="mt-tabs text-center text-uppercase">
                         <li><a href="#tab1" class="active">DESCRIPTION</a></li>
                         <li><a href="#tab2">INFORMATION</a></li>
-                        <li><a href="#tab3">REVIEWS (12)</a></li>
+                        <li><a href="#tab3">REVIEWS ({{$total_row}})</a></li>
                     </ul>
                     <div class="tab-content">
                         <div id="tab1">
@@ -138,62 +136,45 @@
                         </div>
                         <div id="tab3">
                             <div class="product-comment">
+								@foreach ($product_rating as $product_rating_item)
                                 <div class="mt-box">
                                     <div class="mt-hold">
-                                        <ul class="mt-star">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star-o"></i></li>
-                                        </ul>
-                                        <span class="name">John Wick</span>
-                                        <time datetime="2016-01-01">09:10 Nov, 19 2016</time>
+                                        <ul class="ratting-area">
+												<li class="list-group-item count_rating" data-score={{$product_rating_item->rating}}>
+
+												</li>
+											</ul>
+                                        <span class="name">{{$product_rating_item->name}}</span>
+                                        <time datetime="2016-01-01">{{date("h:i F d, Y",strtotime($product_rating_item->created_at))}}</time>
                                     </div>
-                                    <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                        reprehenderit in voluptate velit sse cillum dolore eu fugiat nulla pariatur.
-                                        Excepteur sint occaecat cupidatat non</p>
-                                </div>
-                                <div class="mt-box">
-                                    <div class="mt-hold">
-                                        <ul class="mt-star">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star-o"></i></li>
-                                            <li><i class="fa fa-star-o"></i></li>
-                                        </ul>
-                                        <span class="name">John Wick</span>
-                                        <time datetime="2016-01-01">09:10 Nov, 19 2016</time>
-                                    </div>
-                                    <p>Usmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit sse cillum
-                                        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non</p>
-                                </div>
-                                <form action="#" class="p-commentform">
+                                    <p>{{$product_rating_item->comment}}</p>
+								</div>
+
+								@endforeach
+								<form action="{{route('product-rating')}}" class="" id="content_form2">
+									@csrf
+									<input type="hidden" name="product_id" value="{{$model->id}}">
                                     <fieldset>
                                         <h2>Add Comment</h2>
                                         <div class="mt-row">
                                             <label>Rating</label>
-                                            <ul class="mt-star">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                            </ul>
+                                            <ul class="ratting-area">
+												<li class="list-group-item"  id="prd">
+
+												</li>
+											</ul>
                                         </div>
                                         <div class="mt-row">
                                             <label>Name</label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="name" required id="name" class="form-control">
                                         </div>
                                         <div class="mt-row">
                                             <label>E-Mail</label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" name="email" required id="email" class="form-control">
                                         </div>
                                         <div class="mt-row">
                                             <label>Review</label>
-                                            <textarea class="form-control"></textarea>
+                                            <textarea class="form-control" required name="comment" id="comment"></textarea>
                                         </div>
                                         <button type="submit" class="btn-type4">ADD REVIEW</button>
                                     </fieldset>
@@ -351,8 +332,37 @@
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
+<script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+
+{{-- <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e04ad47b601870012fd402d&product=inline-share-buttons' async='async'></script> --}}
+
 <script>
 	_formValidation();
+	_formValidation2();
 </script>
+<script>
+  $(function() {
+    $('#prd').raty({
+      number: 5, starOff: '{{asset("frontend/images/star-off-big.png")}}', starOn: '{{asset("frontend/images/star-on-big.png")}}', width: 300, scoreName: "score",
+    });
+  });
+</script>
+<script>
+$('#avrage_rating').raty({
+    score: '{{$avarage_rating}}',                 //default score
+    starOn: '{{asset("frontend/images/star-on-big.png")}}',
+    starOff: '{{asset("frontend/images/star-off-big.png")}}',
+    readOnly: true                                               //read only
+});
 
+$('.count_rating').raty({
+    score: function() { return $(this).attr('data-score');},           //default score
+    starOn: '{{asset("frontend/images/star-on-big.png")}}',
+    starOff: '{{asset("frontend/images/star-off-big.png")}}',
+    readOnly: true                                               //read only
+});
+
+</script>
 @endpush

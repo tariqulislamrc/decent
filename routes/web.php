@@ -23,6 +23,7 @@ Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactu
 
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
+Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
 
 Route::get('blog',function(){
 	return view('eCommerce.blog');
