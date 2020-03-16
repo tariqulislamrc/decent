@@ -23,6 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->string('invoice_no')->nullable();
             $table->string('date')->nullable();
             $table->string('type')->nullable();
+            $table->string('transaction_type')->nullable();
             $table->integer('work_order_id')->nullable();
             $table->string('status')->nullable();
             $table->double('sub_total',8,2)->nullable();
