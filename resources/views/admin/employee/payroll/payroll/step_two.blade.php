@@ -304,7 +304,7 @@
 
                     <th width="50%" class="text-center">Net Salary</th>
 
-                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning + $total_deduction}}</th>
+                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning - $total_deduction}}</th>
 
                 </tr>
 

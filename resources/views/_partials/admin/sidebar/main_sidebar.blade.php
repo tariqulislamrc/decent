@@ -79,14 +79,6 @@
                                 class="icon fa fa-circle-o"></i>
                             {{_lang('Employee Payhead')}}</a></li>
                 @endcan
-
-                @can('employee_payroll.view')
-                    {{-- Employee Payroll --}}
-                    {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-payroll*') ? 'active':''}}"
-                            href="{{ route('admin.employee-payroll.view') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Employee Payroll')}}</a></li> --}}
-                @endcan
-
             </ul>
         </li>
     @endcan
@@ -350,13 +342,13 @@
             <ul class="treeview-menu">
 
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
+                    <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}" href="{{ route('admin.sale.pos.create') }}">
                         <i class="icon fa fa-circle-o"></i>
                         {{_lang('Pos')}}
                     </a>
                 </li>
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}" href="{{ route('admin.expense.ex.index') }}">
+                    <a class="treeview-item {{Request::is('admin/admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.index') }}">
                         <i class="icon fa fa-circle-o"></i>
                         {{_lang('All Sale')}}
                     </a>

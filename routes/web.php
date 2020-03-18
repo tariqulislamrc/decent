@@ -23,6 +23,7 @@ Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactu
 
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
+Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
 
 Route::get('blog',function(){
 	return view('eCommerce.blog');
@@ -122,6 +123,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::post('payroll-initialize-step_one', 'Employee\PayrollController@step_one')->name('payroll-initialize.step_one');
 		Route::resource('payroll-initialize', 'Employee\PayrollController');
 
+		// ::::::::::::::::::::::::::::::::::::::::::::::::  Payroll Transection :::::::::::::::::::::::::::::::::::::::::::::::
+		Route::get('payroll-transection-datatable', 'Employee\PayrollTransectionController@datatable')->name('payroll-transection.datatable');
+		Route::post('check_payment_method', 'Employee\PayrollTransectionController@ajax')->name('check_payment_method');
+		Route::post('/check_advane_return', 'Employee\PayrollTransectionController@check_advane_return')->name('check_advane_return');
+		Route::post('/check_employee_payroll', 'Employee\PayrollTransectionController@check_employee_payroll')->name('check_employee_payroll');
+		Route::resource('payroll-transection', 'Employee\PayrollTransectionController');
+		
 			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
@@ -537,6 +545,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
 	 		Route::resource('pos','SalePOsController');
+	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
+	 		Route::resource('return','SaleReturnController');
 	 });
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {

@@ -14,6 +14,49 @@ class PermissionTableSeeder extends Seeder
 public function run() {
 		$data = [
 			// user permission
+			['name' => 'employee.view'],
+
+			// employee_attendance
+			['name' => 'employee_attendance.view'],
+			['name' => 'employee_attendance.create'],
+			['name' => 'employee_attendance.update'],
+			['name' => 'employee_attendance.delete'],
+
+			// employee_payroll
+			['name' => 'employee_payroll.view'],
+
+			// employee_payroll_transection
+			['name' => 'employee_payroll_transection.view'],
+			['name' => 'employee_payroll_transection.create'],
+			['name' => 'employee_payroll_transection.update'],
+			['name' => 'employee_payroll_transection.delete'],
+
+			// employee_payroll_init
+			['name' => 'employee_payroll_init.view'],
+			['name' => 'employee_payroll_init.create'],
+			['name' => 'employee_payroll_init.update'],
+			['name' => 'employee_payroll_init.delete'],
+			['name' => 'employee_payroll_init.print'],
+
+			// employee_payroll_salary_structure
+			['name' => 'employee_payroll_salary_structure.view'],
+			['name' => 'employee_payroll_salary_structure.create'],
+			['name' => 'employee_payroll_salary_structure.update'],
+			['name' => 'employee_payroll_salary_structure.delete'],
+
+			// employee_payroll_template
+			['name' => 'employee_payroll_template.view'],
+			['name' => 'employee_payroll_template.create'],
+			['name' => 'employee_payroll_template.update'],
+			['name' => 'employee_payroll_template.delete'],
+
+			// holiday
+			['name' => 'holiday.view'],
+			['name' => 'holiday.create'],
+			['name' => 'holiday.update'],
+			['name' => 'holiday.delete'],
+
+			// user permission
 			['name' => 'user.view'],
 			['name' => 'user.create'],
 			['name' => 'user.update'],
@@ -116,6 +159,13 @@ public function run() {
 			['name' => 'employee_attendance_type.create'],
 			['name' => 'employee_attendance_type.update'],
 			['name' => 'employee_attendance_type.delete'],
+
+			// Employee ID Card 
+			['name' => 'employee_id_card.view'],
+			['name' => 'employee_id_card.create'],
+			['name' => 'employee_id_card.update'],
+			['name' => 'employee_id_card.delete'],
+
 
 			//  Employee Payhead	
 			['name' => 'employee_payhead.view'],

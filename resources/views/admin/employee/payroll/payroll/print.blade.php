@@ -5,7 +5,86 @@
     $holiday = 0;
     $default_holiday = 0;
 
+
+    $attendance_types = App\models\employee\EmployeeAttendanceType::where('is_active', 1)->get();
+
 @endphp
+
+@foreach ($attendance_types as $item)
+
+    @php
+        
+        $present = 0;
+        $absent = 0;
+        $holiday = 0;
+        $default_holiday = 0;
+
+    @endphp
+
+    <tr>
+
+        <td>
+            <span class="float-right">
+
+                @php
+
+
+                    $dt = Carbon\Carbon::create($start_date);
+                    $dt2 = Carbon\Carbon::create($end_date);
+
+                    $period = Carbon\CarbonPeriod::create($dt , $dt2);
+                    
+                    foreach($period as $date) {
+                        if($date->isWeekend()) {
+                            $query = App\models\employee\EmployeeAttendance::where('employee_id', $salary->employee_id)->where('date_of_attendance', $date)->where('employee_attendance_type_id', 1)->first();
+                            if(!$query) {
+                                $default_holiday = $default_holiday + 1;
+                            }
+                        }
+                    }
+
+                    $holiday = $holiday + $default_holiday;
+
+                
+                    $query = App\models\employee\EmployeeAttendance::where('employee_id', $salary->employee_id)->whereBetween('date_of_attendance', [$start_date, $end_date])->where('employee_attendance_type_id', $item->id)->where('employee_attendance_type_id', '!=', 3)->count();
+
+                    // check present date
+                    $check_present = App\models\employee\EmployeeAttendance::where('employee_id', $salary->employee_id)->whereBetween('date_of_attendance', [$start_date, $end_date])->where('employee_attendance_type_id', 1)->count();
+
+                    // check the default holiday
+
+
+                    $present = $check_present + $present;
+
+                    // check holiday
+
+                    $check_holiday = App\models\holiday\Holiday::whereBetween('date', [$start_date, $end_date])->get();
+
+                    // check employee is present on the holiday
+
+                    foreach($check_holiday as $holi) {
+
+                        $holiday_date = $holi->date;
+
+                        $check = App\models\employee\EmployeeAttendance::where('employee_id', $salary->employee_id)->where('date_of_attendance', $holiday_date)->first();
+
+                        if(!$check) {
+
+                            $holiday = $holiday + 1;
+                        
+                        }
+
+                    }
+
+                @endphp
+                
+            </span>
+
+        </td>
+
+    </tr>
+
+@endforeach
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,7 +163,15 @@
 	            <table border="0" style="width:100%;margin-top: 20px;height: 100px;">
 		            <tr>
 		                <td style="width:40%;vertical-align: top;">
-		                    <img style="max-width:225px;" src="https://in.instikit.com/images/default_logo.png">
+		                    @if(get_option('logo'))
+    
+                                <img class="w-50" src="{{asset('storage/logo')}}/{{get_option('logo')}}" alt="">
+                            
+                            @else 
+                        
+                                <img src="{{asset('logo.png')}}" alt="Company Logo">
+                            
+                            @endif
 		                </td>
 		                <td style="width:60%;vertical-align: top;">
 		                    <table align="right" class="table-head">
@@ -277,7 +364,7 @@
             </tr>
             <tr>
                 <th>Net Salary</th>
-                <th style="text-align: right;">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning + $total_deduction}}</th>
+                <th style="text-align: right;">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning - $total_deduction}}</th>
             </tr>
         </tbody>
     </table>

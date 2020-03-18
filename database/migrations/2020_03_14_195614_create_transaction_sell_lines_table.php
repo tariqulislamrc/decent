@@ -15,8 +15,8 @@ class CreateTransactionSellLinesTable extends Migration
     {
         Schema::create('transaction_sell_lines', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('transaction_id')->nullable();
-            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            // $table->unsignedBigInteger('transaction_id')->nullable();
+            // $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->unsignedBigInteger('product_id')->nullable();

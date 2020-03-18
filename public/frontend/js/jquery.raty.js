@@ -74,6 +74,8 @@
 
         that.data({ 'settings': this.opt, 'raty': true });
       });
+
+      
     }, _adjustPrecision: function() {
       this.opt.targetType = 'score';
       this.opt.half       = true;
