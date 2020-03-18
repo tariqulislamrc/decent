@@ -445,6 +445,11 @@
             <ul class="treeview-menu">
 
                 @can('role.view')
+                    {{-- Add Slider  --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}" href="{{ route('admin.eCommerce.slider.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a></li>
+                @endcan
+
+                @can('role.view')
                     {{-- Add Coupons --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
                 @endcan
@@ -461,10 +466,7 @@
 
                 @can('role.view')
                     {{--about us --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
-                            href="{{ route('admin.eCommerce.about-us.index') }}"><i
-                                class="icon fa fa-circle-o"></i> {{_lang('About Us')}}</a></li>
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('About Us')}}</a></li>
                 @endcan
 
                 @can('role.view')
@@ -488,6 +490,11 @@
                 @can('role.view')
                     {{--Term and Condition --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
+                @endcan
+
+                @can('role.view')
+                    {{--Seo --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
                 @endcan
 
             </ul>

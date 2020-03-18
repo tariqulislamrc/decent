@@ -14,9 +14,7 @@
 /* ====================================================
 		Frontend Route
 ==========================================================*/
-Route::get('f',function(){
-	return view('eCommerce.index');
-})->name('f');
+Route::get('f','Frontend\Front_End_Controller@index')->name('f');
 
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
@@ -443,6 +441,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
 		// All Coupons route
+		Route::get('slider/datatable','SliderController@datatable')->name('slider.datatable');
+		Route::resource('slider','SliderController');
+		// All Coupons route
 		Route::get('coupons/datatable','CouponsController@datatable')->name('coupons.datatable');
 		Route::resource('coupons','CouponsController');
 		// All shipping charge route
@@ -455,6 +456,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		//about us route
 		Route::get('about-us/index','AboutUsController@index')->name('about-us.index');
 		Route::post('about-us/store','AboutUsController@store')->name('about-us.store');
+
+		//about us route
+		Route::get('seo/index','SeoController@index')->name('seo.index');
+		Route::post('seo/store','SeoController@store')->name('seo.store');
 
 		//Our Team route
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');

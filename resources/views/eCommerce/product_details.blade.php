@@ -21,7 +21,7 @@
                         <!-- Comment List of the Page -->
                         <ul class="list-unstyled comment-list">
                             <li><a href="#"><i class="fa fa-heart"></i>27</a></li>
-                            <li><a href="#"><i class="fa fa-comments"></i>12</a></li>
+                            <li><a href="#"><i class="fa fa-comments"></i>{{$total_row}}</a></li>
                             <li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>
                         </ul>
                         <!-- Comment List of the Page end -->
