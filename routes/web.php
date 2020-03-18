@@ -542,11 +542,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('/pos/get-product-suggestion', 'SalePOsController@getProductSuggestion');
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
+	 	    Route::get('pos/printpayment/{id}','SalePOsController@printpayment')->name('pos.printpayment');
+	 	    Route::get('pos/print/{id}','SalePOsController@pos_print')->name('pos.print');
 	 		Route::resource('pos','SalePOsController');
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
+	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
 	 });
-
+    //Payment 
+	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
 
           Route::get('/',function(){
@@ -584,7 +588,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 });
 
 
-Route::get('/contact_form_submit', 'Frontend/Front_End_Controller@contact_form_submit')->name('contact_form_submit');
+Route::get('/contact_form_submit', 'Frontend\Front_End_Controller@contact_form_submit')->name('contact_form_submit');
 
 Route::get('/installs', 'Install\InstallController@index');
 Route::get('install/database', 'Install\InstallController@database');

@@ -19,6 +19,7 @@ class TransactionUtil
   		'type'=>'Credit',
   		'reference_no'=>$ref_no,
   		'transaction_type'=>'Sale',
+      'sale_type'=>$input['sale_type'],
   		'brand_id'=>1,
   		'sub_total'=>$input['sub_total'],
   		'discount'=>$input['discount'],

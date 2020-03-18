@@ -361,6 +361,13 @@
                         {{_lang('All Sale')}}
                     </a>
                 </li>
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/admin/return') ? 'active':''}}" href="{{ route('admin.sale.return.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Sale Return List')}}
+                    </a>
+                </li>
             </ul>
         </li>
 

@@ -22,4 +22,8 @@ class TransactionSellLine extends Model
         return $this->belongsTo('App\models\Production\Variation');
    }
 
+    public function returnsale() {
+        return $this->hasMany('App\models\inventory\ReturnTransaction');
+    }
+
 }
