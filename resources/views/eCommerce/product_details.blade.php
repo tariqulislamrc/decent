@@ -105,7 +105,7 @@
                                 <fieldset>
                                     <div class="row-val">
                                         <label for="qty">qty</label>
-                                        <input type="number" name="qty" required id="qty" placeholder="1">
+                                        <input type="number" name="qty" required id="qty" placeholder="00">
                                     </div>
                                     <div class="row-val">
                                         <button type="submit">ADD TO CART</button>
@@ -350,9 +350,7 @@
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
-<script>
-	_formValidation();
-</script>
 
 @endpush

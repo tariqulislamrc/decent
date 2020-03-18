@@ -32,10 +32,6 @@ Route::get('wishlist',function(){
 	return view('eCommerce.wishlist');
 })->name('wishlist');
 
-Route::get('checkout',function(){
-	return view('eCommerce.checkout');
-})->name('checkout');
-
 Route::get('cart',function(){
 	return view('eCommerce.shopping-cart');
 })->name('cart');
@@ -58,6 +54,10 @@ Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shop
 Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
 Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
 Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
+Route::get('coupon-check', 'Frontend\CartController@coupon_check')->name('coupon-check');
+Route::post('shopping-cart-store', 'Frontend\CartController@store_cart')->name('shopping-cart-store');
+Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
+Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/

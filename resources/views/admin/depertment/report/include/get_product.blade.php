@@ -7,8 +7,8 @@
             @endforeach
             <td>{{ $depert_name->name }} {{ _lang('Qty') }}</td>
         </tr>
-        <tr>
-            @foreach ($products as $product)
+        @foreach ($products as $product)
+            <tr>
             <td>
                 {{ $product->name }}
                 <input type="hidden" name="variation_id[]" value="{{ $product->id }}">
@@ -19,9 +19,9 @@
             <td>
                 <input type="text" class="form-control" name="qty[]" required>
             </td>
+        </tr>
             @endforeach
             <input type="hidden" name="flow_type" value="First">
-        </tr>
     </thead>
     <tbody>
         <tr>

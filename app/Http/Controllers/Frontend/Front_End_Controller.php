@@ -67,6 +67,8 @@ class Front_End_Controller extends Controller{
         $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model'));
     }
+
+    
     public function get_price(Request $request){
         $price = Variation::findOrFail($request->id);
         $qty = VariationBrandDetails::where('variation_id', $request->id)->first();

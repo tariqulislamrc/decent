@@ -9,7 +9,7 @@
                 <a href="{{route('shopping-cart-show')}}">
                 <div class="mt-sh-cart2">
                     <span class="icon-handbag"></span>
-                    <span id="cart_total">$ {{\Cart::getTotal()}}</span>
+                    <span id="cart_total">{{get_option('currency')}} {{\Cart::getTotal()}}</span>
                 </div>   
                 </a>       
 
@@ -17,7 +17,7 @@
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
                         <li><a href="{{route('account')}}">My Account</a></li>
-                        <li><a href="{{route('checkout')}}">Checkout</a></li>
+                        <li><a href="{{route('shopping-checkout')}}">Checkout</a></li>
                         <li><a href="{{route('wishlist')}}">Wishlist</a></li>
                     </ul>
                     <!-- mt holder start here -->
