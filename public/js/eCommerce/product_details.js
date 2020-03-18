@@ -26,14 +26,7 @@
     });
 
 
-var _formValidation = function () {
-    if ($('#content_form').length > 0) {
-        $('#content_form').parsley().on('field:validated', function () {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-        });
-    }
+
 
     $('#content_form').on('submit', function (e) {
         e.preventDefault();
@@ -54,16 +47,14 @@ var _formValidation = function () {
             success: function (data) {
                 if (data.status == 'danger') {
                     toastr.error(data.message);
-
                 } else {
                     toastr.success(data.message);
-                    $('#cart_total').text(data.cart_total);
+                    $('#cart_total').text(data.bdt + ' ' + data.cart_total);
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
                     if (data.goto) {
                         setTimeout(function () {
-
                             window.location.href = data.goto;
                         }, 500);
                     }
@@ -115,4 +106,4 @@ var _formValidation = function () {
             }
         });
     });
-};
+

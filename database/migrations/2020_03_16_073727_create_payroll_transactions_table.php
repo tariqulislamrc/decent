@@ -17,6 +17,7 @@ class CreatePayrollTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->string('payroll_id')->nullable();
             $table->string('head')->nullable();
             $table->double('amount', 2)->nullable();
             $table->timestamp('date_of_transaction')->nullable();
@@ -27,13 +28,12 @@ class CreatePayrollTransactionsTable extends Migration
             $table->string('account_holder')->nullable();
             $table->string('account_no')->nullable();
             $table->string('check_no')->nullable();
-            $table->string('check_active_id')->nullable();
+            $table->string('check_active_date')->nullable();
             $table->string('mob_banking_name')->nullable();
             $table->string('mob_account_holder')->nullable();
             $table->string('sending_mob_no')->nullable();
             $table->string('receiving_mob_no')->nullable();
             $table->string('mob_tx_id')->nullable();
-            $table->string('payment_method')->nullable();
             $table->string('document')->nullable();
             $table->string('tx_type')->nullable();
             $table->longtext('additional_note')->nullable();

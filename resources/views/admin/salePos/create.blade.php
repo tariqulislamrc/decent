@@ -43,7 +43,7 @@
                             <div class="input-group-append">
                                  <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                              </div>
-                            <input type="text" class="form-control date " id="date" name="date" value="" placeholder="Date">
+                            <input type="text" class="form-control date " id="date" name="date" value="{{ date('Y-m-d') }}" placeholder="Date">
                          </div>
                       </div>
                         <div class="col-md-6">
@@ -71,7 +71,7 @@
                             <div class="input-group-append">
                                  <span class="input-group-text"><i class="fa fa-barcode"></i></span>
                              </div>
-                            <input type="text" class="form-control search_product " id="search_product" name="search_product" value="">
+                            <input type="text" class="form-control search_product " id="search_product" name="search_product" value="" placeholder="Scan Product">
                          </div>
                       </div>
                       <div class="col-md-12">
@@ -571,6 +571,7 @@ $("#item").delegate(".qty,.sale_price", "keyup", function() {
 
 
 })
+_componentDatefPicker();
 _formValidation();
 </script>
 @endpush

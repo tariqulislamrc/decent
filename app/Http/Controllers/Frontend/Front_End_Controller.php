@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
+use App\models\eCommerce\Seo;
+use App\models\eCommerce\Slider;
 use App\models\eCommerce\TeramsCondition;
 use App\models\Production\Category;
 use App\models\Production\Product;
@@ -17,6 +19,12 @@ use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
 
 class Front_End_Controller extends Controller{
+
+    public function index(){
+        $seo  = Seo::first();
+        $slider = Slider::all();
+        return view('eCommerce.index',compact('seo','slider'));
+    }
     
     public function privacyPolicy(){
         $model = PrivacyPolicy::first();
@@ -68,10 +76,16 @@ class Front_End_Controller extends Controller{
         $product_rating = ProductRating::where('product_id',$id)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
-        $avarage_rating = ceil($avarage / $total_row);
+        if ($total_row>0) {
+            $avarage_rating = ceil($avarage / $total_row);
+        }else{
+            $avarage_rating = 0;
+        }
         $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model','product_rating','avarage_rating','total_row'));
     }
+
+    
     public function get_price(Request $request){
         $price = Variation::findOrFail($request->id);
         $qty = VariationBrandDetails::where('variation_id', $request->id)->first();

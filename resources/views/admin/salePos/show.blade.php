@@ -55,12 +55,37 @@
                             
                             <p class="card-text font-80pc">
                                 <span><b>{{ _lang('Total') }}: </b>{{ $model->net_total }}</span> <br>
-                                <span><b>{{ _lang('Paid') }}</b> : {{ $model->paid }}</span>
+                                @if ($model->discount)
+                                <span><b>{{ _lang('Discount Amount') }}: </b>{{ $model->discount_amount }}</span> <br>
+                                @endif
+                                <span><b>{{ _lang('Paid') }}</b> : {{  $model->payment->sum('amount') }}</span>
+                                @if($model->return == 1)
+                                <small>(This Sale has return item)</small> <br>
+                                @endif
+                                @if($model->return == 1 || ($model->net_total - $model->payment->sum('amount')) > 0 )
+                                @php
+                                $return =$model->return_parent->sum('net_total')
+                                @endphp
+                                <span><b>{{ _lang('Return') }}: </b>{{ $return }}</span> <br>
+                                @endif
+                                 @if($model->net_total - $model->paid > 0)
+                                <span><b>{{ _lang('Due') }}</b> : {{ $model->net_total- $model->payment->sum('amount') }}</span>
+                                 @endif
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+                <div class="row">
+      <div class="col-md-12">
+        @if($model->return == 1)
+          <div class="well" style="background-color: rgba(255, 222, 160, 0.25);">
+            This Sale has return item 
+          </div>
+        @endif
+      </div>
+    </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -75,6 +100,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="pill" href="#menu2">{{ _lang('Make Payment') }}</a>
                                 </li>
+                                @if($model->return == 1)
+                                 <li class="nav-item">
+                                    <a class="nav-link" data-toggle="pill" href="#menu3">{{ _lang('Return Details') }}</a>
+                                </li>
+                                @endif
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -86,6 +116,10 @@
                                 </div>
                                 <div id="menu2" class="container tab-pane fade"><br>
                                     @include('admin.salePos.partials.make_payment')
+                                </div>
+
+                                <div id="menu3" class="container tab-pane fade"><br>
+                                    @include('admin.salePos.partials.return_item_list')
                                 </div>
                             </div>
                         </div>
@@ -101,5 +135,17 @@
 @push('scripts')
 <script>
 $('select').select2();
+_componentDatefPicker();
+$(document).on('change','.method',function(){
+    var method =$(".method").val();
+    if (method=='cash') {
+        $('.reference_no').hide(300);
+    }
+    else
+    {
+      $('.reference_no').show(400);  
+    }
+});
+ _formValidation();
 </script>
 @endpush

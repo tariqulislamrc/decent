@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <input type="text" name="prefix" id="prefix" class="form-control" placeholder="Prefix" value="{{$model->prefix}}" required></div>
-                        <div class="col-md-8"> 
+                        <div class="col-md-8">
                             <input type="text" name="code" id="code" class="form-control" placeholder="Code Here" required value="{{$model->code}}"></div>
                     </div>
                 </div>
@@ -108,13 +108,14 @@
                             @foreach ($model->workOrderProduct as $key => $produc_titem)
                             <tr>
                                 <td>
-                                    {{$produc_titem->product->name}}
-                                    <input type="hidden" name="product_id[]" class="form-controll product_id" value="{{$produc_titem->product_id}}">
+                                    {{$produc_titem->product->name}} {{ \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first() ? \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first()->name : '' }}
+                                    <input type="hidden" name="product_id[]" class="product_id" value="{{$produc_titem->product_id}}">
+                                    <input type="hidden" name="variation_id[]" class="variation_id" value="{{$produc_titem->variation_id}}">
                                     <input type="hidden" class="form-controll code" id="code_{{$key}}" data-id="{{$key}}" value="{{$produc_titem->product_id}}">
                                 </td>
-                                
+
                                 <td>
-                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$produc_titem->qty}}">
+                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$provariation_idduc_titem->qty}}">
                                 </td>
                                 <td>
                                     <input type="text" name="price[]" class="form-control price" value="{{$produc_titem->price}}">
@@ -156,7 +157,7 @@
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
 <script src="{{ asset('js/production/work_order.js') }}"></script>
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
 	$(document).on('change','#product_id',function(){
         var product_id = $(this).val();
         var quantity =1;
@@ -206,7 +207,7 @@ function item(item, product,quantity,price) {
                 $("#net_total_" + id).html(amt);
                 found = false;
                 return false;
-                
+
             }
         })
         if (found) {
@@ -250,6 +251,6 @@ function item(item, product,quantity,price) {
     tr.find('.net_total_text').text(total);
     });
 
-}); 
+});
 </script>
 @endpush

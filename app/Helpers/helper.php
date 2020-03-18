@@ -12,6 +12,7 @@ use App\models\depertment\ApproveStoreItem;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\IdGenerator;
+use App\models\employee\PayrollTransaction;
 
 if (!function_exists('_lang')) {
 	function _lang($string = '') {
@@ -589,6 +590,18 @@ function employee_department($employee_id) {
 	}
 
 	return $department;
+}
+
+// total_advance_payment using employee id
+function total_advance_payment($employee_id) {
+	$total = PayrollTransaction::where('employee_id', $employee_id)->where('tx_type', 'Advance Payment')->sum('amount');
+	return $total;
+}
+
+// total_advance_return using employee id
+function total_advance_return($employee_id) {
+	$total = PayrollTransaction::where('employee_id', $employee_id)->where('tx_type', 'Advance Return')->sum('amount');
+	return $total;
 }
 
 // Sadik Work Stop

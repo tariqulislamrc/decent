@@ -8,6 +8,7 @@ use App\models\eCommerce\AboutUs;
 use Illuminate\Support\Facades\Storage;
 
 class AboutUsController extends Controller{
+    
     public function index(){
         $model = AboutUs::first();
         return view('admin.eCommerce.about.index',compact('model'));

@@ -15,6 +15,8 @@ class CreateReturnTransactionsTable extends Migration
     {
         Schema::create('return_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('transaction_id')->nullable();
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->unsignedBigInteger('transaction_sell_line_id')->nullable();
             $table->foreign('transaction_sell_line_id')->references('id')->on('transaction_sell_lines')->onDelete('cascade');
             $table->unsignedBigInteger('purchase_id')->nullable();

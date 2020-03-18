@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Employee;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\employee\Employee;
 use App\models\employee\EmployeeSalary;
 use App\models\employee\Payrolls;
 use Carbon\Carbon;
@@ -46,9 +47,9 @@ class PayrollController extends Controller
                     return $usd . ' ' . $salary;
                 })
                 ->editColumn('status', function ($document) {
-                    if($document->status == 'paid') {
+                    if($document->payment_status == 'Paid') {
                         $output = '<span class="badge badge-primary">Paid</span>';
-                    } elseif($document->status == 'partial') {
+                    } elseif($document->payment_status == 'Partial') {
                         $output = '<span class="badge badge-info">Partital</span>';
                     } else {
                         $output = '<span class="badge badge-danger">Due</span>';
@@ -186,13 +187,10 @@ class PayrollController extends Controller
      */
     public function edit($id)
     {
-        dd($id);
         $model = Payrolls::where('uuid', $id)->firstOrFail();
         $start_date = $model->start_date;
         $end_date = $model->end_date;
         $salary = EmployeeSalary::where('id', $model->employee_salary_id)->first();
-
-        dd($model);
 
         return view('admin.employee.payroll.payroll.print', compact('model', 'salary', 'start_date', 'end_date'));
     }

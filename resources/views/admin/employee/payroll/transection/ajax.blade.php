@@ -35,13 +35,13 @@
     {{-- Mobile Banking Name --}}
     <div class="col-md-6 form-group">
         <label for="mob_banking_name">{{_lang('Mobile Banking Name')}}</label>
-        <input type="text" name="Mobile Banking Name" id="Mobile Banking Name" class="form-control" autocomplete="off" placeholder="Enter Mobile Banking Name">
+        <input type="text" name="mob_banking_name" id="Mobile Banking Name" class="form-control" autocomplete="off" placeholder="Enter Mobile Banking Name">
     </div>
 
     {{-- Mobile Account Holder --}}
     <div class="col-md-6 form-group">
         <label for="mob_account_holder">{{_lang('Mobile Account Holder')}}</label>
-        <input type="text" name="Mobile Account Holder" id="Mobile Account Holder" class="form-control" autocomplete="off" placeholder="Enter Mobile Account Holder" >
+        <input type="text" name="mob_account_holder" id="Mobile Account Holder" class="form-control" autocomplete="off" placeholder="Enter Mobile Account Holder" >
     </div>
 
     {{-- Sending Mobile Number --}}

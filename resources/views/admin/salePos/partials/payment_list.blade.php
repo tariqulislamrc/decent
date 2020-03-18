@@ -16,7 +16,9 @@
       <td>{{ $pay->method }}</td>
       <td>{{ $pay->amount }}</td>
       <td>{{ $pay->note }}</td>
-      <td>Action</td>
+      <td>
+        <a href="{{ route('admin.sale.pos.printpayment',$pay->id) }}" class="btn btn-primary">Print</a>
+      </td>
     </tr>
     @endforeach
   </tbody>

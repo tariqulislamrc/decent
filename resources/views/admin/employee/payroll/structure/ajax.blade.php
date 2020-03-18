@@ -5,7 +5,7 @@
             $amount = array();
         @endphp
         @foreach ($details as $item)
-            @if ($item->category != 'computation' && $item->category != 'not_applicable')
+            @if ($item->category != 'computation' && $item->category != 'not_applicable' && $item->category != 'user_defined')
                 <div class="col-md-12">
                     <div class="form-group row">
                         <div class="col-md-4">

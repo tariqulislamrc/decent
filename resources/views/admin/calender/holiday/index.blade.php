@@ -21,6 +21,7 @@
 <!-- Basic initialization -->
 <div class="row">
     {{-- following section is for the form --}}
+    @can('holiday.create')
     <div class="col-md-4">
         <div class="tile">
             <div class="tile-head mb-2">
@@ -69,8 +70,10 @@
             </div>
         </div>
     </div>
+    @endcan
 
     {{-- The following section is for the table to show data  --}}
+    @can('holiday.view')
     <div class="col-md-8">
         <div class="tile">
 
@@ -92,6 +95,7 @@
             </div>
         </div>
     </div>
+    @endcan
 </div>
 <!-- /basic initialization -->
 @stop

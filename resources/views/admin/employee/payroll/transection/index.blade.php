@@ -25,14 +25,14 @@
                     @endcan
                 </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.payroll-initialize.datatable') }}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.payroll-transection.datatable') }}">
                         <thead>
                             <tr>
-                                <th>{{_lang('Payroll')}}</th>
+                                <th>{{_lang('Voucher')}}</th>
                                 <th>{{_lang('Employee')}}</th>
-                                <th>{{_lang('Payroll Period')}}</th>
-                                <th>{{_lang('Net Salary')}}</th>
-                                <th>{{_lang('Status')}}</th>
+                                <th>{{_lang('Head')}}</th>
+                                <th>{{_lang('Pay Method')}}</th>
+                                <th>{{_lang('Amount')}}</th>
                                 <th>{{_lang('Created At')}}</th>
                                 <th>{{_lang('Action')}}</th>
                             </tr>
@@ -55,6 +55,6 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script>
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/employee/payroll.js') }}"></script>
+    <script src="{{ asset('js/employee/payroll_transaction.js') }}"></script>
 @endpush
 

@@ -14,9 +14,7 @@
 /* ====================================================
 		Frontend Route
 ==========================================================*/
-Route::get('f',function(){
-	return view('eCommerce.index');
-})->name('f');
+Route::get('f','Frontend\Front_End_Controller@index')->name('f');
 
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
@@ -32,10 +30,6 @@ Route::get('blog',function(){
 Route::get('wishlist',function(){
 	return view('eCommerce.wishlist');
 })->name('wishlist');
-
-Route::get('checkout',function(){
-	return view('eCommerce.checkout');
-})->name('checkout');
 
 Route::get('cart',function(){
 	return view('eCommerce.shopping-cart');
@@ -59,6 +53,10 @@ Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shop
 Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
 Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
 Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
+Route::get('coupon-check', 'Frontend\CartController@coupon_check')->name('coupon-check');
+Route::post('shopping-cart-store', 'Frontend\CartController@store_cart')->name('shopping-cart-store');
+Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
+Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
 /* ====================================================
 		End Frontend Route
 ==========================================================*/
@@ -124,7 +122,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('payroll-initialize', 'Employee\PayrollController');
 
 		// ::::::::::::::::::::::::::::::::::::::::::::::::  Payroll Transection :::::::::::::::::::::::::::::::::::::::::::::::
+		Route::get('payroll-transection-datatable', 'Employee\PayrollTransectionController@datatable')->name('payroll-transection.datatable');
 		Route::post('check_payment_method', 'Employee\PayrollTransectionController@ajax')->name('check_payment_method');
+		Route::post('/check_advane_return', 'Employee\PayrollTransectionController@check_advane_return')->name('check_advane_return');
 		Route::post('/check_employee_payroll', 'Employee\PayrollTransectionController@check_employee_payroll')->name('check_employee_payroll');
 		Route::resource('payroll-transection', 'Employee\PayrollTransectionController');
 		
@@ -441,6 +441,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
 		// All Coupons route
+		Route::get('slider/datatable','SliderController@datatable')->name('slider.datatable');
+		Route::resource('slider','SliderController');
+		// All Coupons route
 		Route::get('coupons/datatable','CouponsController@datatable')->name('coupons.datatable');
 		Route::resource('coupons','CouponsController');
 		// All shipping charge route
@@ -453,6 +456,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		//about us route
 		Route::get('about-us/index','AboutUsController@index')->name('about-us.index');
 		Route::post('about-us/store','AboutUsController@store')->name('about-us.store');
+
+		//about us route
+		Route::get('seo/index','SeoController@index')->name('seo.index');
+		Route::post('seo/store','SeoController@store')->name('seo.store');
 
 		//Our Team route
 		Route::get('our-team/datatable', 'OurTeamController@datatable')->name('our-team.datatable');
@@ -542,11 +549,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('/pos/get-product-suggestion', 'SalePOsController@getProductSuggestion');
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
+	 	    Route::get('pos/printpayment/{id}','SalePOsController@printpayment')->name('pos.printpayment');
+	 	    Route::get('pos/print/{id}','SalePOsController@pos_print')->name('pos.print');
 	 		Route::resource('pos','SalePOsController');
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
+	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
 	 });
-
+    //Payment 
+	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
 
           Route::get('/',function(){
@@ -584,7 +595,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 });
 
 
-Route::get('/contact_form_submit', 'Frontend/Front_End_Controller@contact_form_submit')->name('contact_form_submit');
+Route::get('/contact_form_submit', 'Frontend\Front_End_Controller@contact_form_submit')->name('contact_form_submit');
 
 Route::get('/installs', 'Install\InstallController@index');
 Route::get('install/database', 'Install\InstallController@database');
