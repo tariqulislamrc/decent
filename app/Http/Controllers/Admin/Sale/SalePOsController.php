@@ -149,7 +149,7 @@ class SalePOsController extends Controller
             $payment->client_id=$transaction->client_id;
             $payment->method =$request->method;
             $payment->payment_date =$input['date'];
-            $payment->transaction_no =$ref_no;
+            $payment->transaction_no =$input['check_no'];
             $payment->amount =$request->paid;
             $payment->note =$request->sale_note;
             $payment->type ='Credit';
@@ -160,7 +160,7 @@ class SalePOsController extends Controller
         //Update payment status
          $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
 
-         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated')]);
+         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated'),'window'=>route('admin.sale.pos.print',$transaction->id)]);
 
     }
     else
@@ -327,5 +327,18 @@ class SalePOsController extends Controller
                 ->first();
 
                 return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
+    }
+
+
+    public function printpayment($id)
+    {
+        $model =TransactionPayment::find($id);
+        return view('admin.salePos.partials.paymentPrint',compact('model'));
+    }
+
+    public function pos_print($id)
+    {
+        $model =Transaction::find($id);
+        return view('admin.salePos.partials.posPrint',compact('model'));
     }
 }

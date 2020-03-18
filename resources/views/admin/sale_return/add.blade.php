@@ -15,6 +15,23 @@
 <!-- Basic initialization -->
 <div class="tile">
     <div class="tile-body">
+        <div class="card">
+            <div class="card-body">
+                <h3>{{ _lang('Parent Sale') }}</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{{ _lang('Reference No') }} : {{ $model->reference_no }}</th>
+                            <th>{{ _lang('Customer') }} : {{ $model->client->name }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ _lang('Date') }} : {{ $model->date }}</th>
+                            <th>{{ _lang('Total Sale') }} : {{ $model->net_total }}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
         <form action="{{route('admin.sale.return.store')}}" method="post" enctype="multipart/form-data" id="content_form">
             <input type="hidden" name="transaction_id" value="{{ $model->id }}">
             <div class="card">
@@ -35,13 +52,14 @@
                                 <td>
                                     <input type="hidden" name="return[{{ $key }}][sale_id]" value="{{ $element->id }}">
                                     {{$element->variation->name }}-{{$element->product->name }}
-                                    <input type="hidden" name="return[{{ $key }}]['product_id']" value="{{ $element->product_id }}">
-                                    <input type="hidden" name="return[{{ $key }}]['variation_id']" value="{{ $element->variation_id }}">
+                                     <input type="hidden" name="return[{{ $key }}][product_id]" value="{{ $element->product_id }}">
+                                    <input type="hidden" name="return[{{ $key }}][variation_id]" value="{{ $element->variation_id }}">
                                 </td>
                                 <td>
                                     {{ $element->quantity }}
                                 </td>
                                 <td>
+                                    <input type="hidden" name="return[{{ $key }}][unit_price]" value="{{ $element->unit_price }}">
                                     {{ $element->unit_price }}
                                 </td>
                                 <td>
