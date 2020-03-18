@@ -7,65 +7,33 @@
 				<div class="col-xs-12">
 					<!-- banner frame start here -->
 					<div class="banner-frame mt-paddingsmzero wow fadeInUp" data-wow-delay="0.4s">
+
 						<!-- slider 7 start here -->
 						<div class="slider-7 mt-paddingbottomsm wow fadeInLeft" data-wow-delay="0.4s">
 							<!-- slider start here -->
 							<div class="slider banner-slider">
+								@foreach ($slider as $slider_item)
 								<!-- holder star here -->
 								<div class="s-holder">
-									<img src="http://placehold.it/765x580" alt="image description">
+									<img src="{{$slider_item->slider_image?asset('storage/eCommerce/slider/'.$slider_item->slider_image):'http://placehold.it/765x580'}}" alt="Slider Image">
 									<div class="s-box">
-										<strong class="s-title">FURNITURE DESIGNS IDEAS</strong>
-										<span class="heading add">NEW</span>
-										<span class="heading add">COLLECTION</span>
+										<strong class="s-title">{{$slider_item->title}}</strong>
+										<span class="heading add">{{$slider_item->title_heading}}</span>
 										<div class="s-txt">
-											<p>Consectetur adipisicing elit. Beatae accusamus, optio, repellendus inventore</p>
+											<p>{{$slider_item->short_description}}</p>
 										</div>
-										<a href="product-detail.html" class="s-shop">SHOP NOW</a>
+										<a href="{{route('product-details',$slider_item->product_id)}}" class="s-shop">SHOP NOW</a>
 									</div>
 								</div><!-- holder end here -->
-								<!-- holder start here -->
-								<div class="s-holder">
-									<img src="http://placehold.it/765x580" alt="image description">
-									<div class="s-box">	
-										<strong class="s-title">FURNITURE DESIGNS IDEAS</strong>
-										<span class="heading">Upholstered fabric</span>
-										<span class="heading add">Counter stool</span>
-										<div class="s-txt">
-											<p>Consectetur adipisicing elit. Beatae accusamus, optio, repellendus inventore</p>
-										</div>
-									</div>
-								</div><!-- holder end here -->
-								<!-- holder start here -->
-								<div class="s-holder">
-									<img src="http://placehold.it/765x580" alt="image description">
-									<div class="s-box">
-										<strong class="s-title">FURNITURE DESIGNS IDEAS</strong>
-										<span class="heading">Upholstered fabric</span>
-										<span class="heading add">Counter stool</span>
-										<div class="s-txt">
-											<p>Consectetur adipisicing elit. Beatae accusamus, optio, repellendus inventore</p>
-										</div>
-									</div>
-								</div><!-- holder end here -->
-								<!-- holder start here -->
-								<div class="s-holder">
-									<img src="http://placehold.it/765x580" alt="image description">
-									<div class="s-box">
-										<strong class="s-title">KITCHEN ACCESSORIES</strong>
-										<span class="heading">Wooden chopping board</span>
-										<span class="heading add">Chopping Boards</span>
-										<div class="s-txt">
-											<p>Remo is a cutting board in solid oak wood, with an explicit reference to the oars of the boats.</p>
-										</div>
-									</div>
-								</div><!-- holder end here -->
+								@endforeach
 							</div>
 						</div><!-- slider 7 end here -->
+
+
 						<!-- banner box third start here -->
 						<div class="banner-box third wow fadeInRight" data-wow-delay="0.4s">
 							<!-- banner 12 right white start here -->
-							<div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
+							<div  class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
 								<img src="http://placehold.it/415x225" alt="image description">
 								<div class="holder">
 									<h2><span>Chairs</span><strong>ZIO DINING CHAIR</strong></h2>

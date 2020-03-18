@@ -453,3 +453,9 @@ Breadcrumbs::for('shipping-charge', function ($trail) {
     $trail->parent('home');
     $trail->push('shipping charge', route('admin.eCommerce.shipping-charge.index'));
 });
+
+// Home > Product shipping charge
+Breadcrumbs::for('slider', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Slider', route('admin.eCommerce.slider.index'));
+});

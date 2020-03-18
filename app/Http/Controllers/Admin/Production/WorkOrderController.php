@@ -213,8 +213,7 @@ class WorkOrderController extends Controller
     }
 
 
-    public function append(Request $request)
-    {
+    public function append(Request $request){
         $product_id = $request->product_id;
         $variation_id = $request->variation_id;
         $row = $request->row_count;
