@@ -98,6 +98,7 @@ class WorkOrderController extends Controller
                 $line_purchase = new WorkOrderProduct;
                 $line_purchase->workorder_id = $model->id;
                 $line_purchase->product_id = $request->product_id[$i];
+                $line_purchase->variation_id = $request->variation_id[$i];
                 $line_purchase->qty = $request->quantity[$i];
                 $line_purchase->price = $request->price[$i];
                 $line_purchase->sub_total = $request->sub_total[$i];
