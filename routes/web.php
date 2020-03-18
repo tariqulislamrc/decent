@@ -124,7 +124,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('payroll-initialize', 'Employee\PayrollController');
 
 		// ::::::::::::::::::::::::::::::::::::::::::::::::  Payroll Transection :::::::::::::::::::::::::::::::::::::::::::::::
+		Route::get('payroll-transection-datatable', 'Employee\PayrollTransectionController@datatable')->name('payroll-transection.datatable');
 		Route::post('check_payment_method', 'Employee\PayrollTransectionController@ajax')->name('check_payment_method');
+		Route::post('/check_advane_return', 'Employee\PayrollTransectionController@check_advane_return')->name('check_advane_return');
 		Route::post('/check_employee_payroll', 'Employee\PayrollTransectionController@check_employee_payroll')->name('check_employee_payroll');
 		Route::resource('payroll-transection', 'Employee\PayrollTransectionController');
 		

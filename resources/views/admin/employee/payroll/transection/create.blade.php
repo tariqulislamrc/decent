@@ -7,7 +7,7 @@
             <img src="{{asset('loader_new.gif')}}" alt="">
         </div>
 
-        <form action="{{route('admin.payroll-transection.store')}}" method="POST" id="">
+        <form action="{{route('admin.payroll-transection.store')}}" method="POST" id="content_form">
             @csrf
             <div class="row">
 
@@ -93,19 +93,35 @@
         var url = $(this).data('url');
         if(head == 'Salary Payment') {
             $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                val: val
-            },
-            beforeSend: function() {
-                $('#loader_new').fadeIn();
-            }, 
-            success: function (data) {
-                $('#employee_id_error').html(data);
-                $('#loader_new').fadeOut();
-            }
-        });
+                type: 'POST',
+                url: url,
+                data: {
+                    val: val
+                },
+                beforeSend: function() {
+                    $('#loader_new').fadeIn();
+                }, 
+                success: function (data) {
+                    $('#employee_id_error').html(data);
+                    $('#loader_new').fadeOut();
+                }
+            });
+        } else if (head == 'Advance Return') {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/check_advane_return',
+                data: {
+                    val: val
+                },
+                beforeSend: function() {
+                    $('#loader_new').fadeIn();
+                }, 
+                success: function (data) {
+                    $('#employee_id_error').html(data);
+                
+                    $('#loader_new').fadeOut();
+                }
+            });
         }
     });
 

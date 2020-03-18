@@ -154,6 +154,7 @@ class EmployeeSalaryStructureController extends Controller
                                 
                 if($template_model) {
 
+
                     $pay_head_id= $template_model->pay_head_id;
 
                     $pay_head = PayHead::where('id', $pay_head_id)->first();
@@ -165,9 +166,25 @@ class EmployeeSalaryStructureController extends Controller
                     }
 
                     $category = $template_model->category;
+
+
+                    if($category == 'flat_rate') {
+                        if($pay_head->type == 'Earning') {
+                            $total_earning = $total_earning + $amount;
+                        } else {
+                            $total_deduction = $total_deduction + $amount;
+                        }
+                    }
+
+                    if($category == 'user_defined') {
+                        return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. User Defind is not working at this moment . Contact with Sadik')]);
+                    }
+                    
+                    if($category == 'production') {
+                        return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. On Production is not working at this moment . Contact with Sadik')]);
+                    }
                     
                     if($category == 'computation') {
-
                         $template_alias_id = $request->template_details_id[$i - 1];
 
                         $alias_template = PayrollTemplateDetail::where('id', $template_alias_id)->first();
@@ -218,20 +235,7 @@ class EmployeeSalaryStructureController extends Controller
                         }
 
                         
-                    } else {
-
-                        $payhead_status = $template_model->payhead->type;
-                        
-                        if($payhead_status == 'Earning') {
-
-                            $total_earning = $total_earning + $amount;
-
-                        } else {
-
-                            $total_deduction = $total_deduction + $amount;
-                        }
-
-                    }
+                    } 
 
                 } else {
 
@@ -241,7 +245,7 @@ class EmployeeSalaryStructureController extends Controller
 
             }
 
-            dd($x);
+           
 
 
             $total_salary = $total_earning - $total_deduction ; 
