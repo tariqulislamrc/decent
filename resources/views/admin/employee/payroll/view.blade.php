@@ -18,6 +18,8 @@
 @section('content')
 <!-- Basic initialization -->
 <div class="row">
+    
+    @can('employee_payroll_template.view')
     <div class="col-md-5 mx-auto ">
         <div class="card card-box border border-primary">
             <div class="card-body text-center">
@@ -29,6 +31,9 @@
             </div>
         </div>
     </div>
+    @endcan
+
+    @can('employee_payroll_salary_structure.view')
     <div class="col-md-5 mx-auto m-2">
         <div class="card card-box border border-primary">
             <div class="card-body text-center">
@@ -36,12 +41,13 @@
                 <h4 class="card-title">Salary Structure</h4>
                 <p class="card-text font-80pc">Define salary structure of all employees with different effective dates,
                     generate payroll for your employees.</p> 
-                    @can('employee_payroll_salary_structure')
                         <a href="{{route('admin.payroll-s-structure.index')}} " class="btn btn-primary btn-sm">Go to Salary Structure</a>
-                    @endcan
             </div>
         </div>
     </div>
+    @endcan
+
+    @can('employee_payroll_init.view')
     <div class="col-md-5 mx-auto m-2">
         <div class="card card-box border border-primary">
             <div class="card-body text-center">
@@ -53,6 +59,7 @@
             </div>
         </div>
     </div>
+    @endcan
 
     @can('employee_payroll_transection.view')
     <div class="col-md-5 mx-auto m-2">

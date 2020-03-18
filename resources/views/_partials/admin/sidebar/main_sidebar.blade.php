@@ -79,14 +79,6 @@
                                 class="icon fa fa-circle-o"></i>
                             {{_lang('Employee Payhead')}}</a></li>
                 @endcan
-
-                @can('employee_payroll.view')
-                    {{-- Employee Payroll --}}
-                    {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-payroll*') ? 'active':''}}"
-                            href="{{ route('admin.employee-payroll.view') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Employee Payroll')}}</a></li> --}}
-                @endcan
-
             </ul>
         </li>
     @endcan
