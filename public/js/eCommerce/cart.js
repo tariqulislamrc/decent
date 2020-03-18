@@ -1,32 +1,62 @@
-   $(document).ready(function () {
-       $('.select').select2();
-   });
-    $(document).on('change', '#get_price', function () {
+    $(document).on('blur', '.cart-qty', function () {
         // it will get action url
+        var tr = $(this).parent().parent();
         var url = $(this).data('url');
-        var id = $(this).val();
+        var qty = $(this).val();
+        var id = tr.find(".cart-id").val();
 
         $.ajax({
                 url: url,
                 data: {
-                    id: id
+                    id: id,
+                    qty: qty
                 },
                 type: 'Get',
                 dataType: 'json'
             })
             .done(function (data) {
-                $('#product_price').val(data.price.default_sell_price);
-                $('#price').html('BDT ' + data.price.default_sell_price);
-                if (data.qty) {
-                    $('#qty').html('( ' + data.qty.qty_available + ' pieces available )');
-                } else {
-                    $('#qty').html('(Out Of Stock)');
-                }
+                $('#data').html(data.view);
+                $('#total').text(data.total);
+                $('#total_hidden').val(data.total);
+                $('#sub_total').text(data.sub_total);
+                $('#sub_total_hidden').val(data.sub_total);
+                $('#cart_total').text(data.bdt + ' ' + data.total);
             })
     });
 
+$(document).on('click', '.remove', function () {
+    // it will get action url
+    var tr = $(this).parent().parent();
+    var url = $(this).data('url');
+    var id = tr.find(".cart-id").val();
+
+    $.ajax({
+            url: url,
+            data: {
+                id: id
+            },
+            type: 'Get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+            $('#data').html(data.view);
+            $('#total').text(data.total);
+            $('#total_hidden').val(data.total);
+            $('#sub_total').text(data.sub_total);
+            $('#sub_total_hidden').val(data.sub_total);
+            $('#cart_total').text(data.bdt + ' ' + data.total);
+        })
+});
 
 
+var _formValidation = function () {
+    if ($('#content_form').length > 0) {
+        $('#content_form').parsley().on('field:validated', function () {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+        });
+    }
 
     $('#content_form').on('submit', function (e) {
         e.preventDefault();
@@ -47,14 +77,16 @@
             success: function (data) {
                 if (data.status == 'danger') {
                     toastr.error(data.message);
+
                 } else {
                     toastr.success(data.message);
-                    $('#cart_total').text(data.bdt + ' ' + data.cart_total);
+                    $('#cart_total').text(data.cart_total);
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
                     if (data.goto) {
                         setTimeout(function () {
+
                             window.location.href = data.goto;
                         }, 500);
                     }
@@ -106,4 +138,51 @@
             }
         });
     });
+};
 
+
+$(document).on('click', '#coupon-submit', function () {
+    // it will get action url
+    var url = $(this).data('url');
+    var coupon = $('#coupon-value').val();
+    var total_hidden = $('#total_hidden').val();
+    var sub_total_hidden = $('#sub_total_hidden').val();
+
+    $.ajax({
+            url: url,
+            data: {
+                coupon: coupon
+            },
+            type: 'Get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+            if (data.status == 'danger') {
+                toastr.error(data.message);
+            } else if (data.status == 'error') {
+                toastr.error(data.message);
+            } else if (data.status == 'success') {
+                toastr.success(data.message);
+                var amt = data.coupon.discount_amount;
+
+                if (data.coupon.discount_type == 'percentage') {
+                    var total_amt = (total_hidden * amt) / 100;
+                    var sub_total = total_hidden - total_amt;
+
+                    $('#total').text(sub_total);
+                    $('#total_hidden').val(sub_total);
+                    $('#sub_total').text(sub_total);
+                    $('#sub_total_hidden').val(sub_total);
+                    $('.mt-holder').hide('500');
+                } else {
+                    var sub_total = total_hidden - amt;
+                    $('#total').text(sub_total);
+                    $('#total_hidden').val(sub_total);
+                    $('#sub_total').text(sub_total);
+                    $('#sub_total_hidden').val(sub_total);
+                    $('.mt-holder').hide('500');
+                }
+
+            }
+        })
+});

@@ -103,7 +103,7 @@
                                 <fieldset>
                                     <div class="row-val">
                                         <label for="qty">qty</label>
-                                        <input type="number" name="qty" required id="qty" placeholder="1">
+                                        <input type="number" name="qty" required id="qty" placeholder="00">
                                     </div>
                                     <div class="row-val">
                                         <button type="submit">ADD TO CART</button>
@@ -331,6 +331,7 @@
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
 <script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -339,8 +340,6 @@
 {{-- <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e04ad47b601870012fd402d&product=inline-share-buttons' async='async'></script> --}}
 
 <script>
-	_formValidation();
-	_formValidation2();
 </script>
 <script>
   $(function() {
@@ -356,6 +355,7 @@ $('#avrage_rating').raty({
     starOff: '{{asset("frontend/images/star-off-big.png")}}',
     readOnly: true                                               //read only
 });
+	_formValidation2();
 
 $('.count_rating').raty({
     score: function() { return $(this).attr('data-score');},           //default score

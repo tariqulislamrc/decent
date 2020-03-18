@@ -1,32 +1,11 @@
-   $(document).ready(function () {
-       $('.select').select2();
-   });
-    $(document).on('change', '#get_price', function () {
-        // it will get action url
-        var url = $(this).data('url');
-        var id = $(this).val();
-
-        $.ajax({
-                url: url,
-                data: {
-                    id: id
-                },
-                type: 'Get',
-                dataType: 'json'
-            })
-            .done(function (data) {
-                $('#product_price').val(data.price.default_sell_price);
-                $('#price').html('BDT ' + data.price.default_sell_price);
-                if (data.qty) {
-                    $('#qty').html('( ' + data.qty.qty_available + ' pieces available )');
-                } else {
-                    $('#qty').html('(Out Of Stock)');
-                }
-            })
-    });
-
-
-
+var _formValidation = function () {
+    if ($('#content_form').length > 0) {
+        $('#content_form').parsley().on('field:validated', function () {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+        });
+    }
 
     $('#content_form').on('submit', function (e) {
         e.preventDefault();
@@ -47,14 +26,15 @@
             success: function (data) {
                 if (data.status == 'danger') {
                     toastr.error(data.message);
+
                 } else {
                     toastr.success(data.message);
-                    $('#cart_total').text(data.bdt + ' ' + data.cart_total);
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
                     if (data.goto) {
                         setTimeout(function () {
+
                             window.location.href = data.goto;
                         }, 500);
                     }
@@ -106,4 +86,31 @@
             }
         });
     });
+};
 
+
+$(document).on('change', '#checkbox', function () {
+    
+    if ($('#checkbox').is(":checked")) {
+      $('#shipping_area').show(500);
+        $('#forname').prop("required", true);
+        $('#foremail').prop("required", true);
+        $('#forphone').prop("required", true);
+        $('#foraddress').prop("required", true);
+        $('#forcity').prop("required", true);
+    }else{
+        $('#shipping_area').hide(500);
+        $('#forname').prop("required", false);
+        $('#foremail').prop("required", false);
+        $('#forphone').prop("required", false);
+        $('#foraddress').prop("required", false);
+        $('#forcity').prop("required", false);
+
+        $('#forname').val("");
+        $('#foremail').val("");
+        $('#forphone').val("");
+        $('#foraddress').val("");
+        $('#forcity').val("");
+    }
+
+});
