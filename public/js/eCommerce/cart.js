@@ -171,15 +171,13 @@ $(document).on('click', '#coupon-submit', function () {
 
                     $('#total').text(sub_total);
                     $('#total_hidden').val(sub_total);
-                    $('#sub_total').text(sub_total);
-                    $('#sub_total_hidden').val(sub_total);
+                    $('#coupon_amt').val(total_amt);
                     $('.mt-holder').hide('500');
                 } else {
                     var sub_total = total_hidden - amt;
                     $('#total').text(sub_total);
-                    $('#total_hidden').val(sub_total);
-                    $('#sub_total').text(sub_total);
                     $('#sub_total_hidden').val(sub_total);
+                     $('#coupon_amt').val(amt);
                     $('.mt-holder').hide('500');
                 }
 

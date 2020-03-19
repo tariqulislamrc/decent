@@ -14,10 +14,13 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        $role = Role::create(['name' => 'Super Admin', 'guard_name' => 'web']);
+        /*$role = Role::create(['name' => 'Super Admin', 'guard_name' => 'web']);
         $user =User::find(1);
-        $user->assignRole($role->name);
+        $user->assignRole($role->name);*/
 		// $role = Role::where('name', 'Super Admin')->first();
 		// $role->givePermissionTo(Permission::all());
+
+
+        $role = Role::create(['name' => 'Clients', 'guard_name' => 'web']);
     }
 }

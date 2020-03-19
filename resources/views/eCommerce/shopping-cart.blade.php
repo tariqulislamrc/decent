@@ -132,7 +132,7 @@
                                 <strong class="title sub-title pull-left">CART SUBTOTAL</strong>
                                 <div class="txt pull-right">
                                     <span id="sub_total">{{get_option('currency')}} {{Cart::getSubTotal()}}</span>
-                                    <input type="hidden" value="{{Cart::getSubTotal()}}" id="sub_total_hidden">
+                                    <input type="hidden" name="sub_total_hidden" value="{{Cart::getSubTotal()}}" id="sub_total_hidden">
                                 </div>
                             </div>
                         </li>
@@ -149,7 +149,8 @@
                                 <strong class="title sub-title pull-left">CART TOTAL</strong>
                                 <div class="txt pull-right">
                                     <span id="total">{{get_option('currency')}} {{Cart::getTotal()}}</span>
-                                    <input type="hidden" value="{{Cart::getTotal()}}" id="total_hidden">
+                                    <input type="hidden" name="total_hidden" value="{{Cart::getTotal()}}" id="total_hidden">
+                                    <input type="hidden" name="coupon_amt" value="" id="coupon_amt">
                                 </div>
                             </div>
                         </li>

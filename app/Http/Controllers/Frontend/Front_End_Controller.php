@@ -93,7 +93,7 @@ class Front_End_Controller extends Controller{
     }
 
     public function productRating(Request $request){
-         $data = $request->validate([
+         $request->validate([
             'product_id' => 'required',
             'user_id' => '',
             'score' => 'required',
