@@ -50,8 +50,8 @@
                         <li><a href="#">My Account</a></li>
                         <li><a href="#">Order Tracking</a></li>
                         <li><a href="#">Wish List</a></li>
-                        <li><a href="#">Shopping Cart</a></li>
-                        <li><a href="#">Checkout</a></li>
+                        <li><a href="{{route('shopping-cart-show')}}">Shopping Cart</a></li>
+                        <li><a href="{{route('shopping-checkout')}}">Checkout</a></li>
                     </ul>
                 </div>
                 <!-- Footer Nav of the Page end -->
@@ -62,8 +62,8 @@
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled address-list align-right">
                         <li><i class="fa fa-map-marker"></i><address>{{get_option('address')?get_option('address'):''}}</address></li>
-                        <li><i class="fa fa-phone"></i><a href="tel:15553332211">{{get_option('phone')?get_option('phone'):''}}</a></li>
-                        <li><i class="fa fa-envelope-o"></i><a href="mailto:&#105;&#110;&#102;&#111;&#064;&#115;&#099;&#104;&#111;&#110;&#046;&#099;&#104;&#097;&#105;&#114;">{{get_option('email')?get_option('email'):''}}</a></li>
+                        <li><i class="fa fa-phone"></i><a href="tel:{{get_option('phone')?get_option('phone'):''}}">{{get_option('phone')?get_option('phone'):''}}</a></li>
+                        <li><i class="fa fa-envelope-o"></i><a href="mailto:{{get_option('email')?get_option('email'):''}}">{{get_option('email')?get_option('email'):''}}</a></li>
                     </ul>
                 </div>
                 <!-- F Widget About of the Page end -->

@@ -21,6 +21,19 @@ use App\models\Production\VariationBrandDetails;
 class Front_End_Controller extends Controller{
 
     public function index(){
+
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+        $products = ProductRating::whereIn('product_id', $product_id)->orderBy('rating', 'DESC')->get();
+        
+        
+
+
+        
         $seo  = Seo::first();
         $slider = Slider::all();
         return view('eCommerce.index',compact('seo','slider'));
