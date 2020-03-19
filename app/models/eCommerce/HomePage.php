@@ -1,10 +1,10 @@
 <?php
 
 namespace App\models\eCommerce;
-use Illuminate\Database\Eloquent\SoftDeletes;
+ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Slider extends Model{
+class HomePage extends Model{
     use SoftDeletes;
     protected $guarded  = [];
     public function product(){

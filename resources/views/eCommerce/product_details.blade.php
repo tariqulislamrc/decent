@@ -344,23 +344,29 @@
 <script>
   $(function() {
     $('#prd').raty({
-      number: 5, starOff: '{{asset("frontend/images/star-off-big.png")}}', starOn: '{{asset("frontend/images/star-on-big.png")}}', width: 300, scoreName: "score",
+        number: 5, 
+        starOff: '{{asset("frontend/images/star-off.png")}}', 
+        starOn: '{{asset("frontend/images/star-on.png")}}',
+        width: 300, 
+        scoreName: "score",
     });
   });
 </script>
 <script>
 $('#avrage_rating').raty({
-    score: '{{$avarage_rating}}',                 //default score
-    starOn: '{{asset("frontend/images/star-on-big.png")}}',
-    starOff: '{{asset("frontend/images/star-off-big.png")}}',
-    readOnly: true                                               //read only
+    score:'{{$avarage_rating}}',                 //default score
+    starHalf: '{{asset("frontend/images/star-half.png")}}',
+    starOn: '{{asset("frontend/images/star-on.png")}}',
+    starOff: '{{asset("frontend/images/star-off.png")}}',
+    readOnly: true,
+    halfShow : true                                        //read only
 });
 	_formValidation2();
 
 $('.count_rating').raty({
     score: function() { return $(this).attr('data-score');},           //default score
-    starOn: '{{asset("frontend/images/star-on-big.png")}}',
-    starOff: '{{asset("frontend/images/star-off-big.png")}}',
+    starOn: '{{asset("frontend/images/star-on.png")}}',
+    starOff: '{{asset("frontend/images/star-off.png")}}',
     readOnly: true                                               //read only
 });
 

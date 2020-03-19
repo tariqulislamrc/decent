@@ -14,6 +14,7 @@ use App\models\Production\Product;
 use App\models\eCommerce\OurTeam;
 use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
+use App\models\eCommerce\HomePage;
 use App\models\eCommerce\ProductRating;
 use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
@@ -23,7 +24,9 @@ class Front_End_Controller extends Controller{
     public function index(){
         $seo  = Seo::first();
         $slider = Slider::all();
-        return view('eCommerce.index',compact('seo','slider'));
+        $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
+        $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
+        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two'));
     }
     
     public function privacyPolicy(){
@@ -77,7 +80,7 @@ class Front_End_Controller extends Controller{
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
         if ($total_row>0) {
-            $avarage_rating = ceil($avarage / $total_row);
+            $avarage_rating = ($avarage / $total_row);
         }else{
             $avarage_rating = 0;
         }
@@ -108,6 +111,13 @@ class Front_End_Controller extends Controller{
         $model->email=$request->email;
         $model->comment=$request->comment;
         $model->save();
+        if ($request->product_id) {
+            $retting_model = ProductRating::findOrFail($model->id);
+            $product_model = Product::findOrFail($request->product_id);
+            $avarage = $retting_model->avg('rating');
+            $product_model->avarage_retting = $avarage;
+            $product_model->save();
+        }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => route('product-details', $request->product_id)]);
     }
 

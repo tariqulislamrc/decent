@@ -465,3 +465,16 @@ Breadcrumbs::for('slider', function ($trail) {
     $trail->parent('home');
     $trail->push('Slider', route('admin.eCommerce.slider.index'));
 });
+
+
+// Home > Home Page Image
+Breadcrumbs::for('eCommerce.home-page', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.index'));
+});
+
+// Home > Home Page Image Create
+Breadcrumbs::for('home-page-create', function ($trail) {
+    $trail->parent('eCommerce.home-page');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.create'));
+});
