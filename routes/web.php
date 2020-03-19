@@ -442,7 +442,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
-		// All Coupons route
+		// All home page image route
+		Route::get('home-page/datatable','HomePageController@datatable')->name('home-page.datatable');
+		Route::resource('home-page','HomePageController');
+		// All slider route
 		Route::get('slider/datatable','SliderController@datatable')->name('slider.datatable');
 		Route::resource('slider','SliderController');
 		// All Coupons route

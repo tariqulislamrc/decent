@@ -33,27 +33,31 @@
 						<!-- banner box third start here -->
 						<div class="banner-box third wow fadeInRight" data-wow-delay="0.4s">
 							<!-- banner 12 right white start here -->
+							@if (isset($banner_image_one))
 							<div  class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-								<img src="http://placehold.it/415x225" alt="image description">
+								<img src="{{asset('storage/eCommerce/home_page/'.$banner_image_one->banner_image_one)}}" alt="{{$banner_image_one->banner_image_one_alt}}">
 								<div class="holder">
-									<h2><span>Chairs</span><strong>ZIO DINING CHAIR</strong></h2>
-									<a class="btn-shop" href="product-detail.html">
+									<h2>{{$banner_image_one->product->name}}</h2>
+									<a class="btn-shop" href="{{route('product-details',$banner_image_one->product_id)}}">
 										<span>SHOP NOW</span>
 										<i class="fa fa-angle-right"></i>
 									</a>
 								</div>
 							</div><!-- banner 12 right white end here -->
+							@endif
 							<!-- banner 13 right start here -->
+							@if (isset($banner_image_two))
 							<div class="banner-13 right wow fadeInDown" data-wow-delay="0.4s">
-								<img src="http://placehold.it/415x335" alt="image description">
+								<img src="{{asset('storage/eCommerce/home_page/'.$banner_image_two->banner_image_two)}}" alt="{{$banner_image_two->banner_image_two_alt}}">
 								<div class="holder">
-									<h2><span>Accessories / Lighting</span><strong>TOTEM FLOOR LAMP</strong></h2>
-									<a class="btn-shop" href="product-detail.html">
+									<h2>{{$banner_image_two->product->name}}</h2>
+									<a class="btn-shop" href="{{route('product-details',$banner_image_two->product_id)}}">
 										<span>SHOP NOW</span>
 										<i class="fa fa-angle-right"></i>
 									</a>
 								</div>
 							</div><!-- banner 13 right end here -->
+							@endif
 						</div><!-- banner box third end here -->
 					</div><!-- banner frame end here -->
 					<!-- F Promo Box style2 of the Page -->
@@ -121,28 +125,29 @@
 								</a>
 							</div>
 						</div><!-- banner 9 end here -->
-						<!-- banner 10 start here -->
-						<div class="banner-10">
+						<!-- banner 9 start here -->
+						<div class="banner-9">
 							<img alt="image description" src="http://placehold.it/400x210">
 							<div class="holder">
-								<h2><span>Coffee Tables</span><strong>S.O.S. BLOCKS</strong></h2>
+								<h2><span>Wall Decor</span><strong>CLOCKs</strong></h2>
 								<a href="product-detail.html" class="btn-shop">
 									<span>VIEW</span>
 									<i class="fa fa-angle-right"></i>
 								</a>
 							</div>
-						</div><!-- banner 10 end here -->
-						<!-- banner 11 start here -->
-						<div class="banner-11">
+						</div><!-- banner 9 end here -->
+						<!-- banner 9 start here -->
+						<div class="banner-9">
 							<img alt="image description" src="http://placehold.it/400x210">
 							<div class="holder">
-								<h2><span>Floor Lamps</span><strong>ROCKING LAMP</strong></h2>
+								<h2><span>Wall Decor</span><strong>CLOCKs</strong></h2>
 								<a href="product-detail.html" class="btn-shop">
 									<span>VIEW</span>
 									<i class="fa fa-angle-right"></i>
 								</a>
 							</div>
-						</div><!-- banner 11 end here -->
+						</div><!-- banner 9 end here -->
+						
 					</div><!-- banner frame end here -->
 					<!-- mt producttabs style5 start here -->
 					<div class="mt-producttabs style5 wow fadeInUp" data-wow-delay="0.4s">

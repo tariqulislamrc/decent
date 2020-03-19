@@ -1,8 +1,8 @@
 @extends('eCommerce.layouts.app')
 @push('seo_section')
-    <meta name="description" content="{{$model->meta_description}}">
-    <meta name="keywords" content="{{$model->meta_keyword}}">
-    <meta name="title" content="{{$model->seo_title}}">
+    <meta name="description" content="{{$model->meta_description?$model->meta_description:''}}">
+    <meta name="keywords" content="{{$model->meta_keyword?$model->meta_keyword:''}}">
+    <meta name="title" content="{{$model->seo_title?$model->seo_title:''}}">
 @endpush      
 	@push('main')
 	  <!-- Main of the Page -->

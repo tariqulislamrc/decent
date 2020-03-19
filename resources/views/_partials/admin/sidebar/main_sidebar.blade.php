@@ -457,6 +457,11 @@
                 @endcan
 
                 @can('role.view')
+                    {{-- Home Page Image  --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}" href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li>
+                @endcan
+
+                @can('role.view')
                     {{-- Add Coupons --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
                 @endcan
