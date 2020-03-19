@@ -4,6 +4,15 @@ $route = 'admin.emailmarketing.template.';
 @extends('layouts.app', ['title' => _lang('Send Sms'),'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
+
+<style>
+
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+    background-color: #e4e2e2;
+    margin: 0px 6px;
+}
+</style>
 <div class="app-title">
   <div>
     <h1 data-placement="bottom" title="SendSms."><i class="fa fa-universal-access mr-4"></i>

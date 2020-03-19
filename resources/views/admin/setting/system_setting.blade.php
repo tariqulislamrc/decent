@@ -173,88 +173,104 @@
                                             {{get_option('set_sms_gateway') == 'Custom' ? 'selected' : ''}} value="Custom">{{_lang('Custom')}}</option>
                                     </select>
                                 </div>
+                                
+                                <div class="col-md-6"></div>
 
                                 {{-- Enable Https --}}
                                 <div class="col-md-3 mt-3">
+                                   <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="enable_https">{{_lang('Enable Https')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input name="enable_https" id="enable_https"
                                                    {{get_option('enable_https') == '1' ? 'checked' : ''}} type="checkbox"
-                                                   value="1"><span class="button-indecator"></span>
+                                                   value="1"><span class="button-indecator text-primary"></span>
                                         </label>
+                                    </div>
                                     </div>
                                 </div>
 
                                 {{-- Show Error Display --}}
                                 <div class="col-md-3 mt-3">
+                                   <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="show_error_display">{{_lang('Show Error Display')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input name="show_error_display" id="show_error_display"
                                                    {{get_option('show_error_display') == '1' ? 'checked' : ''}} value="1"
-                                                   type="checkbox"><span class="button-indecator"></span>
+                                                   type="checkbox"><span class="button-indecator text-primary"></span>
                                         </label>
+                                       </div>
                                     </div>
                                 </div>
 
                                 {{-- Enable FrontEnd Website --}}
                                 <div class="col-md-3 mt-3">
+                                     <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="enable_frontend_website">{{_lang('Enable FrontEnd Website')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input name="enable_frontend_website" id="enable_frontend_website"
                                                    {{get_option('enable_frontend_website') == '1' ? 'checked' : ''}} type="checkbox"
-                                                   value="1"><span class="button-indecator"></span>
+                                                   value="1"><span class="button-indecator text-primary"></span>
                                         </label>
+                                    </div>
                                     </div>
                                 </div>
 
                                 {{-- IP Filter--}}
                                 <div class="col-md-3 mt-3">
+                                    <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="ip_filter">{{_lang('IP Filter')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input name="ip_filter" value="1" id="ip_filter"
                                                    {{get_option('ip_filter') == '1' ? 'checked' : ''}} type="checkbox"><span
-                                                class="button-indecator"></span>
+                                                class="button-indecator text-primary"></span>
                                         </label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {{-- To-Do --}}
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
+                                    <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="todo">{{_lang('To-Do ')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input value="1" name="todo" id="todo"
                                                    {{get_option('todo') == '1' ? 'checked' : ''}} type="checkbox"><span
-                                                class="button-indecator"></span>
+                                                class="button-indecator text-primary"></span>
                                         </label>
                                     </div>
                                 </div>
+                                </div>
 
                                 {{-- BackUp --}}
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
+                                    <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="backup">{{_lang('BackUp ')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input value="1" name="backup" id="backup"
                                                    {{get_option('backup') == '1' ? 'checked' : ''}} type="checkbox"><span
-                                                class="button-indecator"></span>
+                                                class="button-indecator text-primary"></span>
                                         </label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {{-- Enable Maintenance Mode --}}
-                                <div class="col-md-4 mt-3">
+                                <div class="col-md-3 mt-3">
+                                    <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="maintenance_mode">{{_lang('Enable Maintenance Mode ')}}</label>
                                     <div class="toggle lg">
-                                        <label>
+                                        <label class="mb-0">
                                             <input name="maintenance_mode" value="1" id="maintenance_mode"
                                                    {{get_option('maintenance_mode') == '1' ? 'checked' : ''}} type="checkbox"><span
-                                                class="button-indecator"></span>
+                                                class="button-indecator text-primary"></span>
                                         </label>
+                                    </div>
                                     </div>
                                 </div>
 

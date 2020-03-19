@@ -10,7 +10,9 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+<p class="text-right"> 
 <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
+</p>
 <div class="tile">
     <div class="row">
         <div class="col-md-12">
