@@ -1,5 +1,13 @@
 @extends('layouts.app', ['title' => _lang('setting'), 'modal' => false])
 
+<style>
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+    background-color: #eceaea;
+    margin: 0px 6px;
+}
+</style>
+
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
@@ -22,7 +30,7 @@
                 <div class="tile-body">
                     <div class="bs-component">
                         {{-- Tab Panel --}}
-                        <ul class="nav nav-pills nav-justified" role="tablist">
+                        <ul class="nav nav-pills nav-justified mb-3" role="tablist">
                             <li class="nav-item">
                                 <a data-placement="bottom" title="Update Your Software Information from here." class="nav-link active" data-toggle="pill" href="#home">{{_lang('home')}}</a>
                             </li>

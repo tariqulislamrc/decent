@@ -21,7 +21,7 @@
     
     @can('employee_payroll_template.view')
     <div class="col-md-5 mx-auto ">
-        <div class="card card-box border border-primary">
+        <div class="card card-box shadow mb-5">
             <div class="card-body text-center">
                 <i class="fa fa-id-card-o fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Payroll Template</h4>
@@ -34,8 +34,8 @@
     @endcan
 
     @can('employee_payroll_salary_structure.view')
-    <div class="col-md-5 mx-auto m-2">
-        <div class="card card-box border border-primary">
+    <div class="col-md-5 mx-auto">
+        <div class="card card-box shadow mb-5">
             <div class="card-body text-center">
                 <i class="fa fa-picture-o fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Salary Structure</h4>
@@ -49,7 +49,7 @@
 
     @can('employee_payroll_init.view')
     <div class="col-md-5 mx-auto m-2">
-        <div class="card card-box border border-primary">
+        <div class="card card-box shadow mb-5">
             <div class="card-body text-center">
                 <i class="fa fa-calculator fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Payroll</h4>
@@ -63,7 +63,7 @@
 
     @can('employee_payroll_transection.view')
     <div class="col-md-5 mx-auto m-2">
-        <div class="card card-box border border-primary">
+        <div class="card card-box shadow mb-5">
             <div class="card-body text-center">
                 <i class="fa fa-ticket fa-4x" aria-hidden="true"></i>
                 <h4 class="card-title">Payroll Transaction</h4>
