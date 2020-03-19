@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -38,30 +37,41 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
-        // public function employee() {
-        // 	return $this->hasOne('App\models\employee\Employee');
-        // }
 
-        // public function getProfile() {
-            
-        // 		$profile = $this->Employee;
-            
+    public function employee()
+    {
+        return $this->hasOne('App\models\employee\Employee');
+    }
 
-        // 	return $profile;
-        // }
+/*    public function getNameAttribute()
+    {
+        $profile = $this->getProfile();
+
+        return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name;
+    }*/
+
+    public function getProfile()
+    {
+
+        if ($this->hasRole('client')) {
+            $profile = $this->Client;
+        } else {
+            $profile = $this->Employee;
+        }
 
 
-        // public function getNameAttribute() {
-        // 	$profile = $this->getProfile();
+        return $profile;
+    }
 
-        // 	return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name;
-        // }
+/*    public function getNameWithEmailAttribute()
+    {
+        $profile = $this->getProfile();
 
+        return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
+    }*/
 
-        // public function getNameWithEmailAttribute() {
-        // 	$profile = $this->getProfile();
-
-        // 	return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
-        // }
+    public function client()
+    {
+        return $this->hasOne('App\models\Client');
+    }
 }
