@@ -43,6 +43,7 @@ class Front_End_Controller extends Controller{
         $model = PrivacyPolicy::first();
         return view('eCommerce.privacy_policy',compact('model'));
     }
+ 
 
     public function aboutUs(){
         $model = AboutUs::first();

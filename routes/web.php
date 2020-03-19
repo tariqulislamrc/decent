@@ -16,6 +16,11 @@
 ==========================================================*/
 Route::get('f','Frontend\Front_End_Controller@index')->name('f');
 
+// Login Registration Route
+Route::get('frontend-login', 'Frontend\ProfileController@login')->name('frontend-login');
+Route::get('frontend-register', 'Frontend\ProfileController@register')->name('frontend-register');
+Route::post('user-register','Frontend\ProfileController@register_store')->name('user-register');
+
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 
@@ -31,9 +36,6 @@ Route::get('wishlist',function(){
 	return view('eCommerce.wishlist');
 })->name('wishlist');
 
-Route::get('cart',function(){
-	return view('eCommerce.shopping-cart');
-})->name('cart');
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 
