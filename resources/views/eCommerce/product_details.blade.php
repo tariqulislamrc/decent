@@ -103,7 +103,7 @@
                                 <fieldset>
                                     <div class="row-val">
                                         <label for="qty">qty</label>
-                                        <input type="number" name="qty" required id="qty" placeholder="00">
+                                        <input type="number" name="qty" value="01" required id="qty" placeholder="00">
                                     </div>
                                     <div class="row-val">
                                         <button type="submit">ADD TO CART</button>
@@ -336,10 +336,8 @@
 <script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
-
-{{-- <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5e04ad47b601870012fd402d&product=inline-share-buttons' async='async'></script> --}}
-
 <script>
+    $('#content_form').parsley();
 </script>
 <script>
   $(function() {

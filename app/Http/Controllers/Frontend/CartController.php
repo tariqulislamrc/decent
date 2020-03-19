@@ -15,6 +15,11 @@ class CartController extends Controller
 {
     public function add_cart(Request $request)
     {
+
+        $request->validate([
+            'variation' => 'required',
+            'qty' => 'required'
+        ]);
         
         $qty_available = 0;
         $qty = VariationBrandDetails::where('variation_id', $request->variation)->first();
@@ -43,6 +48,7 @@ class CartController extends Controller
 
     public function show_cart()
     {
+        Session::put('coupon',null); 
         $models = Cart::getContent();
         return view('eCommerce.shopping-cart', compact('models'));
 
@@ -104,7 +110,11 @@ class CartController extends Controller
 
     public function store_cart(Request $request)
     {
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Message Seed Successfuly'), 'goto' => route('shopping-checkout')]);
+        $models = Cart::getContent();
+        Session::put('total', $request->total_hidden);
+        Session::put('coupon', $request->coupon_amt);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
     }
 
     public function checkout(Request $request)
@@ -113,9 +123,18 @@ class CartController extends Controller
         return view('eCommerce.checkout', compact('models'));
     }
 
-
     public function store_checkout(Request $request)
     {
-        return view('eCommerce.checkout');
+        
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'company' => 'required',
+            'address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'email' => 'required',
+            'phone' => 'required'
+        ]);
     }
 }

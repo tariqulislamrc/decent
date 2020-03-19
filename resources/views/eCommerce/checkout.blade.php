@@ -58,43 +58,43 @@
                     <div action="#" class="bill-detail">
                         <fieldset>
                             <div class="form-group">
-                                <select class="form-control">
+                                <select name="country" class="form-control">
                                     <option value="1">Bangladesh</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <div class="col">
-                                    <input type="text" class="form-control" required placeholder="Name">
+                                    <input name="first_name" type="text" class="form-control" required placeholder="Name">
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" required placeholder="Last Name">
+                                    <input name="last_name" type="text" class="form-control" required placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" required placeholder="Company Name">
+                                <input name="company" type="text" class="form-control" required placeholder="Company Name">
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" required placeholder="Address"></textarea>
+                                <textarea name="address" class="form-control" required placeholder="Address"></textarea>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" required placeholder="Town / City">
+                                <input name="city" type="text" class="form-control" required placeholder="Town / City">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" required placeholder="State / Country">
+                                <input name="state" type="text" class="form-control" required placeholder="State / Country">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Postcode / Zip">
+                                <input name="postcode" type="text" class="form-control" placeholder="Postcode / Zip">
                             </div>
                             <div class="form-group">
                                 <div class="col">
-                                    <input type="email" class="form-control" required placeholder="Email Address">
+                                    <input name="email" type="email" class="form-control" required placeholder="Email Address">
                                 </div>
                                 <div class="col">
-                                    <input type="tel" class="form-control" required placeholder="Phone Number">
+                                    <input name="phone" type="tel" class="form-control" required placeholder="Phone Number">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input id="checkbox" type="checkbox"> Ship to a different address?
+                                <input name="checkbox" id="checkbox" type="checkbox"> Ship to a different address?
                             </div>
                            
                     
@@ -152,19 +152,6 @@
                 </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-                
                 <div class="col-xs-12 col-sm-6">
                     <div class="holder">
                         <h2>YOUR ORDER</h2>
@@ -180,21 +167,67 @@
                                     </thead>
                                     <tbody>
                                       @foreach ($models as $model)
+                                      @php
+                                      $product = App\models\Production\Product::with('photo_details', 'variation')->findOrFail($model->attributes->product_id);
+                                      @endphp
                                       <tr>
                                         <th scope="row"> {{$model->name}} ({{$model->quantity}})</th>
                                         <th scope="row"> {{$model->price}} </th>
                                         <td class="text-right font-weight-bold"> {{($model->price)*($model->quantity)}} </td>
+                                      <input type="hidden" name="product_id[]" value="{{$model->attributes->product_id}}">
+                                      <input type="hidden" name="variation_id[]" value="{{$model->id}}">
+                                      <input type="hidden" name="price[]" value="{{$model->price}}">
+                                      <input type="hidden" name="quantity[]" value="{{$model->quantity}}">
+                                      <input type="hidden" name="total[]" value="{{($model->price)*($model->quantity)}}">
                                       </tr>
                                       @endforeach
                                      
                                     </tbody>
                                   </table>
                             </li>
+                            @if (Session::get('coupon'))
                             <li>
                                 <div class="txt-holder">
                                     <strong class="title sub-title pull-left">CART SUBTOTAL</strong>
                                     <div class="txt pull-right">
                                         <span>{{get_option('currency')}} {{Cart::getSubTotal()}}</span>
+                                        <input type="hidden" name="sub_total" value="{{Cart::getSubTotal()}}">
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="txt-holder">
+                                    <strong class="title sub-title pull-left">SHIPPING</strong>
+                                    <div class="txt pull-right">
+                                        <span>Free Shipping</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="txt-holder">
+                                    <strong class="title sub-title pull-left">COUPON AMOUNT</strong>
+                                    <div class="txt pull-right">
+                                        <span>{{get_option('currency')}} {{Session::get('coupon')}}</span>
+                                         <input type="hidden" name="coupon" value="{{Session::get('coupon')}}">
+                                    </div>
+                                </div>
+                            </li>
+                            <li style="border-bottom: none;">
+                                <div class="txt-holder">
+                                    <strong class="title sub-title pull-left">ORDER TOTAL</strong>
+                                    <div class="txt pull-right">
+                                        <span>{{get_option('currency')}} {{Session::get('total')}}</span>
+                                        <input type="hidden" name="total" value="{{Session::get('total')}}">
+                                    </div>
+                                </div>
+                            </li>
+                            @else
+                            <li>
+                                <div class="txt-holder">
+                                    <strong class="title sub-title pull-left">CART SUBTOTAL</strong>
+                                    <div class="txt pull-right">
+                                        <span>{{get_option('currency')}} {{Cart::getSubTotal()}}</span>
+                                        <input type="hidden" name="sub_total" value="{{Cart::getSubTotal()}}">
                                     </div>
                                 </div>
                             </li>
@@ -211,9 +244,12 @@
                                     <strong class="title sub-title pull-left">ORDER TOTAL</strong>
                                     <div class="txt pull-right">
                                         <span>{{get_option('currency')}} {{Cart::getTotal()}}</span>
+                                        <input type="hidden" name="total" value="{{Cart::getTotal()}}">
                                     </div>
                                 </div>
                             </li>
+                            
+                            @endif
                         </ul>
                         <h2>PAYMENT METHODS</h2>
                         <!-- Panel Group of the Page -->
