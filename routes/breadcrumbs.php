@@ -478,3 +478,8 @@ Breadcrumbs::for('home-page-create', function ($trail) {
     $trail->parent('eCommerce.home-page');
     $trail->push('Page Image', route('admin.eCommerce.home-page.create'));
 });
+// Home > Home Page Image Create
+Breadcrumbs::for('home-page-edit', function ($trail) {
+    $trail->parent('eCommerce.home-page');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.index'));
+});

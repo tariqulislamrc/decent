@@ -115,39 +115,18 @@
 					<!-- banner frame start here -->
 					<div class="banner-frame nospace wow fadeInUp" data-wow-delay="0.4s">
 						<!-- banner 9 start here -->
+						@foreach ($banner_fream as $banner_fream_item)
 						<div class="banner-9">
-							<img alt="image description" src="http://placehold.it/400x210">
+							<img alt="{{$banner_fream_item->banner_frame_one_alt}}" src="{{asset('storage/eCommerce/home_page/'.$banner_fream_item->banner_frame_one)}}">
 							<div class="holder">
-								<h2><span>Wall Decor</span><strong>CLOCKs</strong></h2>
-								<a href="product-detail.html" class="btn-shop">
+								<h2><strong>{{$banner_fream_item->product->name}}</strong></h2>
+								<a href="{{route('product-details', $banner_fream_item->product_id)}}" class="btn-shop">
 									<span>VIEW</span>
 									<i class="fa fa-angle-right"></i>
 								</a>
 							</div>
 						</div><!-- banner 9 end here -->
-						<!-- banner 9 start here -->
-						<div class="banner-9">
-							<img alt="image description" src="http://placehold.it/400x210">
-							<div class="holder">
-								<h2><span>Wall Decor</span><strong>CLOCKs</strong></h2>
-								<a href="product-detail.html" class="btn-shop">
-									<span>VIEW</span>
-									<i class="fa fa-angle-right"></i>
-								</a>
-							</div>
-						</div><!-- banner 9 end here -->
-						<!-- banner 9 start here -->
-						<div class="banner-9">
-							<img alt="image description" src="http://placehold.it/400x210">
-							<div class="holder">
-								<h2><span>Wall Decor</span><strong>CLOCKs</strong></h2>
-								<a href="product-detail.html" class="btn-shop">
-									<span>VIEW</span>
-									<i class="fa fa-angle-right"></i>
-								</a>
-							</div>
-						</div><!-- banner 9 end here -->
-						
+						@endforeach
 					</div><!-- banner frame end here -->
 					<!-- mt producttabs style5 start here -->
 					<div class="mt-producttabs style5 wow fadeInUp" data-wow-delay="0.4s">
