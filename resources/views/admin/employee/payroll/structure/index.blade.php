@@ -4,8 +4,8 @@
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-placement="bottom" title="Employee Payroll Template."><i class="fa fa-universal-access mr-4"></i> {{_lang('Employee Payroll Template')}}</h1>
-            <p>{{_lang('Create Employee Payroll Template. Here you can Add, Edit & Delete The Employee Payroll Template')}}</p>
+            <h1 data-placement="bottom" title="Employee Salary Structure."><i class="fa fa-universal-access mr-4"></i> {{_lang('Employee Salary Structure')}}</h1>
+            <p>{{_lang('Create Employee Salary Structure. Here you can Add, Edit & Delete The Employee Payroll Template')}}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             {{ Breadcrumbs::render('employee-payroll-salary-structure') }}

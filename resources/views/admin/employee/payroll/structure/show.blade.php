@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <th colspan="2" class="text-center">Date Effective</th>
-            <td colspan="2" class="text-center">{{carbonDate($model->date_effective)}}</td>
+            <td colspan="2" class="text-center">{{formatDate($model->date_effective)}}</td>
         </tr>
     </table>
     <div class="row">
@@ -37,6 +37,21 @@
                             <tr>
                                 <td class="text-center text-success" width="25%">{{$template->name}}</td>
                                 <td class="text-center" width="25%"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$item->amount}}</td>
+                            </tr>
+                        @endif
+                    @else 
+                        @php
+                            $template_id = $item->payroll_template_detail_id;
+                            $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
+                            if($templaate_details) {
+                                $pay_head_id = $templaate_details->pay_head_id;
+                                $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Earning')->first();
+                            }
+                        @endphp
+                        @if ($template)
+                            <tr>
+                                <td class="text-center text-success" width="25%">{{$template->name}}</td>
+                                <td class="text-center" width="25%"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$item->amount == NULL ? '0' : $item->amount }}</td>
                             </tr>
                         @endif
                     @endif
@@ -67,6 +82,21 @@
                             <tr>
                                 <td class="text-center text-danger" width="25%">{{$template->name}}</td>
                                 <td class="text-center" width="25%"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$item->amount}}</td>
+                            </tr>
+                        @endif
+                    @else 
+                        @php
+                            $template_id = $item->payroll_template_detail_id;
+                            $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
+                            if($templaate_details) {
+                                $pay_head_id = $templaate_details->pay_head_id;
+                                $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Deduction')->first();
+                            }
+                        @endphp
+                        @if ($template)
+                            <tr>
+                                <td class="text-center text-danger" width="25%">{{$template->name}}</td>
+                                <td class="text-center" width="25%"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$item->amount == NULL ? '0' : $item->amount}}</td>
                             </tr>
                         @endif
                     @endif

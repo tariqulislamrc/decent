@@ -3,7 +3,7 @@
         <h6>{{_lang('Create New Salary Structure for Employee')}} </h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.payroll-s-structure.store')}}" method="POST" id="">
+        <form action="{{route('admin.payroll-s-structure.store')}}" method="POST" id="content_form">
             @csrf 
             <div class="row">
                 {{-- Employee --}}
