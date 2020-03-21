@@ -18,9 +18,11 @@ use App\models\eCommerce\HomePage;
 use App\models\eCommerce\ProductRating;
 use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class Front_End_Controller extends Controller{
-
+    
     public function index(){
 
         $product_id = [];
@@ -29,22 +31,28 @@ class Front_End_Controller extends Controller{
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
         }
-        $products = ProductRating::whereIn('product_id', $product_id)->orderBy('rating', 'DESC')->get();
-        
-        
-
-
-        
+        $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
         $seo  = Seo::first();
         $slider = Slider::all();
         $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
         $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
-        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two'));
+        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two', 'products'));
     }
     
     public function privacyPolicy(){
         $model = PrivacyPolicy::first();
         return view('eCommerce.privacy_policy',compact('model'));
+    }
+
+
+
+    public function account()
+    {
+        if (Auth::check()) {
+         return Redirect::to('home');
+    } else {
+         return view('eCommerce.account');
+    }
     }
  
 

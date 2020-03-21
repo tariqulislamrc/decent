@@ -28,7 +28,7 @@
                                 <h2 style="margin: 0 0 5px;">SIGN IN</h2>
                                 <p>Welcome back! Sign in to Your Account</p>
                             </header>
-                            <form action="{{ route('frontend-login') }}" method="post" id="login">
+                            <form action="{{ route('login') }}" method="post" id="login">
                               @csrf
                                 <fieldset>
                                     <input type="text" placeholder="Username or email address" class="input" autofocus name="email" id="email">

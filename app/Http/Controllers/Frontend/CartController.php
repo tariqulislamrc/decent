@@ -8,6 +8,7 @@ use App\models\eCommerce\Coupon;
 use App\models\Production\Product;
 use App\models\Production\VariationBrandDetails;
 use Cart;
+use Illuminate\Support\Facades\Redirect;
 use View;
 use Session;
 
@@ -48,9 +49,16 @@ class CartController extends Controller
 
     public function show_cart()
     {
-        Session::put('coupon',null); 
-        $models = Cart::getContent();
-        return view('eCommerce.shopping-cart', compact('models'));
+        $cart_total =  Cart::getContent();
+        
+        if (count($cart_total) > 0) {
+            Session::put('coupon', null);
+            $models = Cart::getContent();
+            return view('eCommerce.shopping-cart', compact('models'));
+        }else{
+            return redirect()->back()->with('error', 'The Cart is Empty.');  
+        }
+        
 
     }
 

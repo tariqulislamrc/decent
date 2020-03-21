@@ -17,6 +17,7 @@
 Route::get('f','Frontend\Front_End_Controller@index')->name('f');
 
 // Login Registration Route
+
 Route::get('frontend-login', 'Frontend\ProfileController@login')->name('frontend-login');
 Route::get('frontend-register', 'Frontend\ProfileController@register')->name('frontend-register');
 Route::post('user-register','Frontend\ProfileController@register_store')->name('user-register');
@@ -24,6 +25,7 @@ Route::post('user-register','Frontend\ProfileController@register_store')->name('
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 
+Route::get('account', 'Frontend\Front_End_Controller@account')->name('account');
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
@@ -39,9 +41,7 @@ Route::get('wishlist',function(){
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 
-Route::get('account',function(){
-	return view('eCommerce.account');
-})->name('account');
+
 
 Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
 

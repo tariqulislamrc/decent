@@ -637,62 +637,26 @@
 							<div class="col-xs-12 col-sm-6 col-md-3">
 								<h3 class="heading">Top Rated Products</h3>
 								<!-- mt product4 start here -->
+								@foreach ($products as $item)
 								<div class="mt-product4 mt-paddingbottom20">
 									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
+										<a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/80x80'}}" alt="image description"></a>
 									</div>
 									<div class="text">
 										<div class="frame">
-											<strong><a href="product-detail.html">Egon Wooden Chair</a></strong>
-											<ul class="mt-stars">
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-o"></i></li>
-											</ul>
+											<strong><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
+											<ul class="ratting-area">
+                                            <li class="list-group-item count_rating"
+                                                data-score={{$item->avarage_retting}}>
+
+                                            </li>
+                                        </ul>
 										</div>
 										<del class="off">$75,00</del>
 										<span class="price">$55,00</span>
 									</div>
 								</div><!-- mt product4 end here -->
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Oyo Cantilever Chair</a></strong>
-											<ul class="mt-stars">
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-o"></i></li>
-											</ul>
-										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
-									</div>
-								</div><!-- mt product4 end here -->
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Kurve Chair</a></strong>
-											<ul class="mt-stars">
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-o"></i></li>
-											</ul>
-										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
-									</div>
-								</div><!-- mt product4 end here -->
+								@endforeach
 							</div>
 						</div>
 					</div>
@@ -702,4 +666,29 @@
 	</main>
 	<!-- footer of the Page -->
 @endpush
+@push('scripts')
+<script src="{{asset('js/main.js')}}"></script>
+<script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+<script>
+    $('.count_rating').raty({
+        score: function () {
+            return $(this).attr('data-score');
+		}, //default score
+		starHalf: '{{asset("frontend/images/star-half.png")}}',
+        starOn: '{{asset("frontend/images/star-on.png")}}',
+        starOff: '{{asset("frontend/images/star-off.png")}}',
+		readOnly: true,
+		halfShow: true //read only
+    });
+</script>
+
+<script>
+	@if(Session::get('error'))
+	toastr.warning('{{Session::get('error')}}');
+	@endif
+</script>
+@endpush
+
 	

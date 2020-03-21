@@ -49,8 +49,8 @@
                     </div>
                     <!-- Slider of the Page end -->
                     <!-- Detail Holder of the Page -->
-					<form action="{{route('shopping-cart-add')}}" method="post" id="content_form">
-						@csrf
+                    <form action="{{route('shopping-cart-add')}}" method="post" id="content_form">
+                        @csrf
                         <input type="hidden" name="id" value="{{$model->id}}">
                         <input type="hidden" name="name" value="{{$model->name}}">
                         <div class="detial-holder">
@@ -65,13 +65,16 @@
                             <div class="rank-rating">
                                 <ul class="ratting-area" style="padding-left: 0px;">
                                     <li class="list-group-item" id="avrage_rating"></li>
-                                    
+
                                 </ul>
                                 <span class="total-price">Reviews ({{$total_row}})</span>
                             </div>
                             <!-- Rank Rating of the Page end -->
                             <ul class="list-unstyled list">
-                                <li><div class="addthis_inline_share_toolbox"></div>{{-- <div class="sharethis-inline-share-buttons"></div> --}}</li>
+                                <li>
+                                    <div class="addthis_inline_share_toolbox"></div>
+                                    {{-- <div class="sharethis-inline-share-buttons"></div> --}}
+                                </li>
                                 <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li>
                                 <li><a href="#"><i class="fa fa-heart"></i>ADD TO WISHLIST</a></li>
                             </ul>
@@ -136,33 +139,35 @@
                         </div>
                         <div id="tab3">
                             <div class="product-comment">
-								@foreach ($product_rating as $product_rating_item)
+                                @foreach ($product_rating as $product_rating_item)
                                 <div class="mt-box">
                                     <div class="mt-hold">
                                         <ul class="ratting-area">
-												<li class="list-group-item count_rating" data-score={{$product_rating_item->rating}}>
+                                            <li class="list-group-item count_rating"
+                                                data-score={{$product_rating_item->rating}}>
 
-												</li>
-											</ul>
+                                            </li>
+                                        </ul>
                                         <span class="name">{{$product_rating_item->name}}</span>
-                                        <time datetime="2016-01-01">{{date("h:i F d, Y",strtotime($product_rating_item->created_at))}}</time>
+                                        <time
+                                            datetime="2016-01-01">{{date("h:i F d, Y",strtotime($product_rating_item->created_at))}}</time>
                                     </div>
                                     <p>{{$product_rating_item->comment}}</p>
-								</div>
+                                </div>
 
-								@endforeach
-								<form action="{{route('product-rating')}}" class="" id="content_form2">
-									@csrf
-									<input type="hidden" name="product_id" value="{{$model->id}}">
+                                @endforeach
+                                <form action="{{route('product-rating')}}" class="" id="content_form2">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{$model->id}}">
                                     <fieldset>
                                         <h2>Add Comment</h2>
                                         <div class="mt-row">
                                             <label>Rating</label>
                                             <ul class="ratting-area">
-												<li class="list-group-item"  id="prd">
+                                                <li class="list-group-item" id="prd">
 
-												</li>
-											</ul>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div class="mt-row">
                                             <label>Name</label>
@@ -174,7 +179,8 @@
                                         </div>
                                         <div class="mt-row">
                                             <label>Review</label>
-                                            <textarea class="form-control" required name="comment" id="comment"></textarea>
+                                            <textarea class="form-control" required name="comment"
+                                                id="comment"></textarea>
                                         </div>
                                         <button type="submit" class="btn-type4">ADD REVIEW</button>
                                     </fieldset>
@@ -338,35 +344,39 @@
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
 <script>
     $('#content_form').parsley();
-</script>
-<script>
-  $(function() {
-    $('#prd').raty({
-        number: 5, 
-        starOff: '{{asset("frontend/images/star-off.png")}}', 
-        starOn: '{{asset("frontend/images/star-on.png")}}',
-        width: 300, 
-        scoreName: "score",
-    });
-  });
-</script>
-<script>
-$('#avrage_rating').raty({
-    score:'{{$avarage_rating}}',                 //default score
-    starHalf: '{{asset("frontend/images/star-half.png")}}',
-    starOn: '{{asset("frontend/images/star-on.png")}}',
-    starOff: '{{asset("frontend/images/star-off.png")}}',
-    readOnly: true,
-    halfShow : true                                        //read only
-});
-	_formValidation2();
 
-$('.count_rating').raty({
-    score: function() { return $(this).attr('data-score');},           //default score
-    starOn: '{{asset("frontend/images/star-on.png")}}',
-    starOff: '{{asset("frontend/images/star-off.png")}}',
-    readOnly: true                                               //read only
-});
+</script>
+<script>
+    $(function () {
+        $('#prd').raty({
+            number: 5,
+            starOff: '{{asset("frontend/images/star-off.png")}}',
+            starOn: '{{asset("frontend/images/star-on.png")}}',
+            width: 300,
+            scoreName: "score",
+        });
+    });
+
+</script>
+<script>
+    $('#avrage_rating').raty({
+        score: '{{$avarage_rating}}', //default score
+        starHalf: '{{asset("frontend/images/star-half.png")}}',
+        starOn: '{{asset("frontend/images/star-on.png")}}',
+        starOff: '{{asset("frontend/images/star-off.png")}}',
+        readOnly: true,
+        halfShow: true //read only
+    });
+    _formValidation2();
+
+    $('.count_rating').raty({
+        score: function () {
+            return $(this).attr('data-score');
+        }, //default score
+        starOn: '{{asset("frontend/images/star-on.png")}}',
+        starOff: '{{asset("frontend/images/star-off.png")}}',
+        readOnly: true //read only
+    });
 
 </script>
 @endpush
