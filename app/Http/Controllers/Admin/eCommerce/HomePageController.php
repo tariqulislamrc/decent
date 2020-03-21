@@ -62,8 +62,7 @@ class HomePageController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         $product = Product::all();
         return view('admin.eCommerce.home_page.create',compact('product'));
     }
@@ -162,9 +161,10 @@ class HomePageController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id){
+        $product = Product::all();
+        $model = HomePage::findOrFail($id);
+        return view('admin.eCommerce.home_page.edit',compact('product','model'));
     }
 
     /**
@@ -174,9 +174,95 @@ class HomePageController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+         $model = HomePage::findOrFail($id);
+         $data = $request->validate([
+            'product_id' => 'required|max:255',
+            'banner_image_one_check' => '',
+            'banner_image_one' => '',
+            'banner_image_one_alt' => '',
+            'banner_image_two_check' => '',
+            'banner_image_two' => '',
+            'banner_image_two_alt' => '',
+            'banner_frame_one' => '',
+            'banner_frame_one_alt' => '',
+            'banner_frame_two' => '',
+            'banner_frame_two_alt' => '',
+            'tab_slider_image' => '',
+            'tab_slider_image_alt' => '',
+            'sale_category_image' => '',
+            'sale_category_image_alt' => '',
+        ]);
+
+         if ($request->hasFile('banner_image_one')) {
+             if ($model->banner_image_one) {
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_image_one);
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_image_two);
+            }
+            $storagepath = $request->file('banner_image_one')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['banner_image_one'] = $fileName;
+        }else{
+            $data['banner_image_one'] =$model->banner_image_one;
+        }
+
+         if ($request->hasFile('banner_image_two')) {
+             if ($model->banner_image_two) {
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_image_two);
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_image_one);
+            }
+            $storagepath = $request->file('banner_image_two')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['banner_image_two'] = $fileName;
+        }else{
+            $data['banner_image_two'] = $model->banner_image_two;
+        }
+
+        if ($request->hasFile('banner_frame_one')) {
+            if ($model->banner_frame_one) {
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_frame_one);
+            }
+            $storagepath = $request->file('banner_frame_one')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['banner_frame_one'] = $fileName;
+        }else{
+            $data['banner_frame_one'] = $model->banner_frame_one;
+        }
+        if ($request->hasFile('banner_frame_two')) {
+            if ($model->banner_frame_two) {
+                Storage::delete('public/eCommerce/home_page/'.$model->banner_frame_two);
+            }
+            $storagepath = $request->file('banner_frame_two')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['banner_frame_two'] = $fileName;
+        }else{
+            $data['banner_frame_two'] = $model->banner_frame_two;
+        }
+
+        if ($request->hasFile('tab_slider_image')) {
+            if ($model->tab_slider_image) {
+                Storage::delete('public/eCommerce/home_page/'.$model->tab_slider_image);
+            }
+            $storagepath = $request->file('tab_slider_image')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['tab_slider_image'] = $fileName;
+        }else{
+            $data['tab_slider_image'] = $model->tab_slider_image;
+        }
+
+        if ($request->hasFile('sale_category_image')) {
+            if ($model->sale_category_image) {
+                Storage::delete('public/eCommerce/home_page/'.$model->sale_category_image);
+            }
+            $storagepath = $request->file('sale_category_image')->store('public/eCommerce/home_page');
+            $fileName = basename($storagepath);
+            $data['sale_category_image'] = $fileName;
+        }else{
+            $data['sale_category_image'] = $model->sale_category_image;
+        }
+
+        $model->update($data);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.home-page.index')]);
     }
 
     /**
