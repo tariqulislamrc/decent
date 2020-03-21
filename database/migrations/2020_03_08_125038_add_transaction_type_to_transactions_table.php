@@ -14,7 +14,7 @@ class AddTransactionTypeToTransactionsTable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('transaction_type')->nullable()->after('type');
+            // $table->string('transaction_type')->nullable()->after('type');
         });
     }
 

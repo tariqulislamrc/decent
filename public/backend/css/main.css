@@ -15375,3 +15375,10 @@ td span.total_item{
     border-bottom-left-radius: 3px;
     padding: 10px;
 }
+
+
+@media (min-width: 1200px){ 
+.modal-xl {
+    max-width: 1300px;
+}
+}

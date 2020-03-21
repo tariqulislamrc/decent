@@ -4,7 +4,8 @@
     $absent = 0;
     $holiday = 0;
     $default_holiday = 0;
-
+    $total_earning  = 0;
+    $total_deduction  = 0;
 
     $attendance_types = App\models\employee\EmployeeAttendanceType::where('is_active', 1)->get();
 
@@ -239,56 +240,25 @@
                             <table class="no-border">
                                 <tbody>
                                     @php
-
-                                        $total_paid_amount = 0;
-                                        $total_earning = 0;
-                                        $total_deduction = 0;
-
-                                        $items = App\models\employee\EmployeeSalaryDetail::where('employee_salary_id', $salary->id)->get();
-
-                                        $start_date = Carbon\Carbon::parse($start_date);
-                                        $end_date = Carbon\Carbon::parse($end_date);
-                                        $date_diff = $start_date->diffInDays($end_date);
-                                        $date_diff = $date_diff + 1;
-
+                                        $items = App\models\employee\PayrollDetail::where('payroll_id', $model->id)->get();
                                     @endphp
 
                                     @foreach ($items as $item)
-                                        @if ($item->amount != '')
-
+                                        @php
+                                            $pay_head_id = $item->pay_head_id;
+                                            $pay_head = App\models\employee\PayHead::where('id', $pay_head_id)->first();
+                                            $type = $pay_head->type;
+                                        @endphp
+                                        @if ($type == 'Earning')
                                             @php
-                                                $template_id = $item->payroll_template_detail_id;
-                                                $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
-
-                                                if($templaate_details) {
-                                                    $pay_head_id = $templaate_details->pay_head_id;
-                                                    $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Earning')->first();
-                                                }
+                                                $total_earning = $total_earning + $item->amount;
                                             @endphp
-
-                                            @if ($template)
-                                                @php
-
-                                                    $total_amount = $item->amount;
-                                                    $per_day_amount = $total_amount / $date_diff ;
-
-                                                    $total_present = $present + $holiday;
-
-                                                    $amount = $total_present * $per_day_amount ;
-                                                    $amount = number_format($amount, 2);
-
-                                                    $total_earning = $total_earning + $amount;
-
-                                                @endphp
-                                                <tr>
-                                                    <td width="50%">{{$template->name}}</td>
-                                                    <td style="text-align: right;"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$amount}}</td>
-                                                </tr>
-                                            @endif
-
+                                            <tr>
+                                                <td width="50%">{{$pay_head->name}}</td>
+                                                <td style="text-align: right;"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{round($item->amount)}}</td>
+                                            </tr>
                                         @endif
                                     @endforeach
-
                                 </tbody>
                             </table>                    
                         </td>
@@ -297,42 +267,23 @@
                             <table class="no-border">
                                 <tbody>
                                     @php
-                                        $items = App\models\employee\EmployeeSalaryDetail::where('employee_salary_id', $salary->id)->get();
+                                        $items = App\models\employee\PayrollDetail::where('payroll_id', $model->id)->get();
                                     @endphp
 
                                     @foreach ($items as $item)
-                                        @if ($item->amount != '')
-
+                                        @php
+                                            $pay_head_id = $item->pay_head_id;
+                                            $pay_head = App\models\employee\PayHead::where('id', $pay_head_id)->first();
+                                            $type = $pay_head->type;
+                                        @endphp
+                                        @if ($type == 'Deduction')
                                             @php
-                                                $template_id = $item->payroll_template_detail_id;
-                                                $templaate_details =App\models\employee\PayrollTemplateDetail::where('id', $template_id)->first();
-
-                                                if($templaate_details) {
-                                                    $pay_head_id = $templaate_details->pay_head_id;
-                                                    $template = App\models\employee\PayHead::where('id', $pay_head_id)->where('type', 'Deduction')->first();
-                                                }
+                                                $total_deduction = $total_deduction + $item->amount;
                                             @endphp
-
-                                            @if ($template)
-                                                @php
-
-                                                    $total_amount = $item->amount;
-                                                    $per_day_amount = $total_amount / $date_diff ;
-
-                                                    $total_present = $present + $holiday;
-
-                                                    $amount = $total_present * $per_day_amount ;
-                                                    $amount = number_format($amount, 2);
-
-                                                    $total_deduction = $total_deduction + $amount;
-
-                                                @endphp
-                                                <tr>
-                                                    <td width="50%">{{$template->name}}</td>
-                                                    <td style="text-align: right;"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$amount}}</td>
-                                                </tr>
-                                            @endif
-
+                                            <tr>
+                                                <td width="50%">{{$pay_head->name}}</td>
+                                                <td style="text-align: right;"> {{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{round($item->amount)}}</td>
+                                            </tr>
                                         @endif
 
                                     @endforeach

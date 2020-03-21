@@ -20,6 +20,7 @@ class AddPaidToTransactionsTable extends Migration
             $table->string('phone')->nullable()->after('email');
             $table->text('address')->nullable()->after('phone');
             $table->string('city')->nullable()->after('address');
+            $table->string('order_notes')->nullable()->after('transaction_note');
         });
     }
 
