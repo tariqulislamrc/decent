@@ -21,7 +21,7 @@ class AddShortDescriptionToProductsTable extends Migration
             $table->longText('meta_description')->nullable()->after('product_description');
             $table->string('seo_title')->nullable()->after('meta_description');
             $table->string('title')->nullable()->after('seo_title');
-            $table->string('keyword')->nullable()->after('avarage_retting');
+            $table->string('keyword')->nullable()->after('title');
         });
     }
 

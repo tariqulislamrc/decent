@@ -31,8 +31,8 @@
                             <form action="{{ route('login') }}" method="post" id="login">
                               @csrf
                                 <fieldset>
-                                    <input type="text" placeholder="Username or email address" class="input" autofocus name="email" id="email">
-                                    <input type="password" placeholder="Password" class="input" name="password" id="password">
+                                    <input required type="text" placeholder="Username or email address" class="input" autofocus name="email_or_username" id="email_or_username">
+                                    <input required type="password" placeholder="Password" class="input" name="password" id="password">
                                     <div class="box">
                                         <span class="left"><input class="checkbox" type="checkbox" id="check1"><label
                                                 for="check1">Remember Me</label></span>
@@ -59,5 +59,6 @@
 <!-- footer of the Page -->
 @endpush
 @push('scripts')
+<script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="{{ asset('js/auth/login.js') }}"></script>
 @endpush

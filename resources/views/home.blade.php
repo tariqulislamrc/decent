@@ -4,8 +4,8 @@
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-toggle="tooltip" data-placement="bottom" title="Savings and Credit Co-operative Management Software Dashboard"><i class="fa fa-dashboard mr-4"></i>{{_lang('Dashboard')}}</h1>
-            <p>{{_lang('Dashboard for Savings and Credit Co-operative Management Software')}} </p>
+            <h1 data-toggle="tooltip" data-placement="bottom" title="Decent Footware Management Software Dashboard"><i class="fa fa-dashboard mr-4"></i>{{_lang('Dashboard')}}</h1>
+            <p>{{_lang('Dashboard for Decent Footware')}} </p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item">{{ Breadcrumbs::render('home') }}</li>

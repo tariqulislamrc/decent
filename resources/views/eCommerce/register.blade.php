@@ -2,6 +2,7 @@
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
+    @if (auth('client')->check())
     <section class="mt-contact-banner" style="background-image: url(http://placehold.it/1920x205);">
         <div class="container">
             <div class="row">
@@ -17,6 +18,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Mt Detail Section of the Page end -->
     <!-- mt side widget end here -->
@@ -35,7 +37,7 @@
                                 <h2 style="margin: 0 0 5px;">register</h2>
                                 <p>Don’t have an account?</p>
                             </header>
-                            <form action="{{route('user-register')}}" method="post" id="content_form" style="margin: 0 0 80px;">
+                            <form action="{{route('register')}}" method="post" id="content_form" style="margin: 0 0 80px;">
                                 @csrf
                                 <fieldset>
                                     <div class="row">
@@ -48,10 +50,10 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" name="username" required placeholder="Username" class="input">
+                                            <input autocomplete="off" type="text" name="username" id="username" required placeholder="Username" class="input">
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" name="email" required placeholder="Your Email" class="input">
+                                            <input type="email" name="email" required placeholder="Your Email" class="input">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -67,7 +69,7 @@
                                             <input type="password" name="password" required placeholder="Password" class="input">
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="password" name="re_password" required placeholder="Re-type Password" class="input">
+                                            <input type="password" name="password_confirmation" required placeholder="Re-type Password" class="input">
                                             <input type="hidden" name="url" value="{{ url()->previous() }}">
                                         </div>
                                     </div>
@@ -100,8 +102,14 @@
 @push('scripts')
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
-<script src="{{ asset('js/eCommerce/register.js') }}"></script>
+{{-- <script src="{{ asset('js/eCommerce/register.js') }}"></script> --}}
 <script>
     _formValidation();
+    $('#username').keypress(function() {
+        var val = $(this).val();
+        if(val.trim()) {
+            // alert(val);
+        }
+    })
 </script>
 @endpush

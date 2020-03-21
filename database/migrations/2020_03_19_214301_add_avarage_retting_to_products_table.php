@@ -14,7 +14,6 @@ class AddAvarageRettingToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-
             $table->double('avarage_retting', 10, 2)->nullable()->after('title');
         });
     }

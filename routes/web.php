@@ -64,9 +64,13 @@ Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopp
 ==========================================================*/
 Route::group(['middleware' => ['install']], function () {
 
-Route::get('/', function() {
-	return view('welcome');
-})->middleware('frontend.website.enabled');
+Route::get('/', 'Frontend\Front_End_Controller@index');
+
+Route::get('admin/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
+Route::post('admin/login', 'Admin\Auth\LoginController@login')->name('admin.login');
+Route::post('admin/logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
+
+
 Auth::routes();
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 	//ui:::::::::::::::::::

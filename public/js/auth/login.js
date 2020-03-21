@@ -14,10 +14,12 @@
                 $("#loader").hide();
               toastr.success(data.message);
 
-              setTimeout(function(){
+              if(data.goto) {
+                setTimeout(function(){
 
-              window.location.href=data.goto;
-              },2500);
+                  window.location.href=data.goto;
+                },2500);
+              }
                },
                error:function (data) {
                 $("#loader").hide();

@@ -10,7 +10,7 @@
                     <div class="col-md-12 form-group">
                         <label for="name">{{_lang('Category Name')}} <span class="text-danger">*</span>
                         </label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Category Name" required>
+                        <input type="text" name="name" id="name" autocomplete="off" class="form-control" placeholder="Enter Employee Category Name" required>
                     </div>
                     {{-- Employee Category Description --}}
                     <div class="col-md-12 form-group">
