@@ -43,7 +43,7 @@
             <div class="table-responsive">
                 <table class="table table-condensed table-bordered table-th-green text-center table-striped"
                     id="purchase_entry_table">
-                    <thead>
+                    <thead class="bg-green text-light">
                         <tr>
                             <th>Product Name</th>
                             <th>Request Quantity</th>
@@ -51,7 +51,7 @@
                             <th>Remaining Qty</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-gray">
                         <tr>
                             <td>
                                 <input type="hidden" name="raw_material_id" value="{{ $model->raw_material_id}}" class="pid">

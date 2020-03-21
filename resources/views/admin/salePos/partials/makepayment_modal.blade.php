@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-12">
                     <label for="method">{{ _lang('Method') }} </label>
-                    <select name="method" class="form-control method" style="width: 100%">
+                    <select name="method" class="form-control select method" style="width: 100%">
                         <option value="cash">Cash</option>
                         <option value="check">Check</option>
                         <option value="other">Other</option>
@@ -29,7 +29,7 @@
                     <label for="amount">
                         {{ _lang('Amount') }}
                     </label>
-                    <input type="text" class="form-control" name="amount" id="amount" required>
+                    <input type="text" class="form-control" name="amount" id="amount" value="{{ $model->due }}" required>
                      <p id="message" style="color: red;"></p>
                 </div>
                 <div class="col-md-12">
@@ -53,3 +53,16 @@
   <strong>{{ _lang('This Transection has No Due') }}</strong>.
 </div>
 @endif
+
+<script>
+ $(document).on('change','.method',function(){
+        var method =$(".method").val();
+        if (method=='cash') {
+            $('.reference_no').hide(300);
+        }
+        else
+        {
+          $('.reference_no').show(400);  
+        }
+   });
+</script>

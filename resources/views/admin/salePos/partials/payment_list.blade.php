@@ -1,6 +1,6 @@
 <h3>{{ _lang('Payment History') }}</h3>
 <table class="table table-bordered">
-  <thead>
+  <thead class="bg-green text-light">
     <tr>
       <th>{{ _lang('Date') }}</th>
       <th>{{ _lang('Method') }}</th>
@@ -17,7 +17,7 @@
       <td>{{ $pay->amount }}</td>
       <td>{{ $pay->note }}</td>
       <td>
-        <a href="{{ route('admin.sale.pos.printpayment',$pay->id) }}" class="btn btn-primary">Print</a>
+        <a onclick="myFunction('{{ route('admin.sale.pos.printpayment',$pay->id)}}')" class="btn btn-info"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
       </td>
     </tr>
     @endforeach

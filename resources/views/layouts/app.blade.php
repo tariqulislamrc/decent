@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+        <meta name="description" content="Decent Footware.">
         <!-- Twitter meta-->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:site" content="@pratikborsadiya">
         <meta property="twitter:creator" content="@pratikborsadiya">
         <!-- Open Graph Meta-->
         <meta property="og:type" content="website">
-        <meta property="og:site_name" content="Vali Admin">
-        <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
-        <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
-        <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
-        <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+        <meta property="og:site_name" content="Decent Footware">
+        <meta property="og:title" content="Decent Footware">
+        <meta property="og:url" content="http://decent.sattproject.xyz">
+        <meta property="og:image" content="http://decent.sattproject.xyz">
+        <meta property="og:description" content="Decent Footware.">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,7 +44,7 @@
         <!-- /global stylesheets -->
         @stack('admin.css')
     </head>
-    <body class="app sidebar-mini rtl {{get_option('default_sidebar') == '0' ? 'sidenav-toggled':''}}" >
+    <body class="app sidebar-mini rtl {{get_option('default_sidebar') == '0' ||Request::is('admin/sale/pos/create') ? 'sidenav-toggled':''}}" >
         <div class="pageloader" style="display: none"></div>
         <!-- Navbar-->
         @include('_partials.admin.navbar')

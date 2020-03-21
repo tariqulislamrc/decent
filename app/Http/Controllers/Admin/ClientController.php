@@ -4,9 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\models\Client;
-use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use App\models\Production\Transaction;
+use App\models\Production\TransactionPayment;
 use App\models\email\EmailTemolate;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Yajra\DataTables\Facades\DataTables;
 
 class ClientController extends Controller
 {
@@ -62,6 +66,20 @@ class ClientController extends Controller
          $input['created_by'] = auth()->user()->id;
          $contact = Client::create($input);
 
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() + 1 : 1;
+        
+        $ref_no = $ym.'/Open-'.ref($row);
+        $transaction = Transaction::create([
+        'client_id'=>$contact->id,
+        'date'=>Carbon::now(),
+        'type'=>'Debit',
+        'reference_no'=>$ref_no,
+        'transaction_type'=>'opening_balance',
+        'net_total'=>$request->net_total,
+        'created_by'=>auth()->user()->id,
+        ]);
 
      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
     }
@@ -101,8 +119,21 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-      $model =Client::find($id);
-       return view('admin.client.form',compact('model'));
+           $model =Client::find($id);
+            $ob_transaction =  Transaction::where('client_id', $id)
+                                            ->where('transaction_type', 'opening_balance')
+                                            ->first();                          
+            $opening_balance = !empty($ob_transaction->net_total) ? $ob_transaction->net_total : 0;
+
+            //Deduct paid amount from opening balance.
+            if (!empty($opening_balance)) {
+                $opening_balance_paid = $this->getTotalAmountPaid($ob_transaction->id);
+                if (!empty($opening_balance_paid)) {
+                    $opening_balance = $opening_balance - $opening_balance_paid;
+                }
+
+            }
+       return view('admin.client.form',compact('model','opening_balance'));
     }
 
     /**
@@ -127,6 +158,41 @@ class ClientController extends Controller
          $contact =Client::find($id);
          $contact->update($input);
 
+        $ob_transaction =  Transaction::where('client_id', $id)
+                                        ->where('transaction_type', 'opening_balance')
+                                        ->first();  
+
+      if (!empty($ob_transaction)) {
+                $amount =$request->input('net_total');
+                $opening_balance_paid = $this->getTotalAmountPaid($ob_transaction->id);
+                if (!empty($opening_balance_paid)) {
+                    $amount += $opening_balance_paid;
+                }
+                
+                $ob_transaction->net_total = $amount;
+                $ob_transaction->save();
+                //Update opening balance payment status
+                // $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
+            } else {
+                //Add opening balance
+                if (!empty($request->input('net_total'))) {
+                     $ym = Carbon::now()->format('Y/m');
+
+                        $row = Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() + 1 : 1;
+                        
+                        $ref_no = $ym.'/Open-'.ref($row);
+                        $transaction = Transaction::create([
+                        'client_id'=>$contact->id,
+                        'date'=>Carbon::now(),
+                        'type'=>'Debit',
+                        'reference_no'=>$ref_no,
+                        'transaction_type'=>'opening_balance',
+                        'net_total'=>$request->net_total,
+                        'created_by'=>auth()->user()->id,
+                        ]);
+                }
+            }
+
          
      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated')]);
     }
@@ -139,11 +205,18 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
+     $count = Transaction::where('client_id', $id)
+                         ->count();
+    if ($count == 0) {                  
        $model= Client::find($id);
         $model->delete();
         if ($model) {
             return response()->json(['success' => true, 'status' => 'success', 'message' => 'Information Delete Successfully.']);
         }
+    }
+    else{
+      throw ValidationException::withMessages(['message' => _lang('You Cannot Delete this Contact')]);
+    }
 
     }
 
@@ -158,6 +231,16 @@ class ClientController extends Controller
     {
         $model =Client::find($id);
         return view('admin.client.sms',compact('model'));
+    }
+
+
+    private function getTotalAmountPaid($transaction_id)
+    {
+        $paid = TransactionPayment::where(
+            'transaction_id',
+            $transaction_id
+        )->sum('amount');
+        return $paid;
     }
 
    public function customers()
@@ -180,7 +263,7 @@ class ClientController extends Controller
                 'mobile',
                 'landmark',
                 'city',
-                'state',
+                'state'
             )
                     ->get();
 

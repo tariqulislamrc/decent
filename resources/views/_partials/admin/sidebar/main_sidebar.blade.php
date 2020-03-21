@@ -347,6 +347,13 @@
                         {{_lang('Pos')}}
                     </a>
                 </li>
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/add') ? 'active':''}}" href="{{ route('admin.sale.add') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Add Sale')}}
+                    </a>
+                </li>
                 <li class="mt-1">
                     <a class="treeview-item {{Request::is('admin/admin/sale/pos') ? 'active':''}}" href="{{ route('admin.sale.pos.index') }}">
                         <i class="icon fa fa-circle-o"></i>

@@ -434,6 +434,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('email-history','SendMailController@history')->name('email_history');
     	Route::get('email-history/{id}','SendMailController@history_view')->name('email_history_view');
     	Route::post('client-send-mail','SendMailController@client_send_mail')->name('client_send_mail');
+    	Route::post('transaction/email','SendMailController@transaction_email')->name('transaction_email');
     	Route::resource('sendmail', 'SendMailController');
 	});
 
@@ -485,7 +486,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('get_number_list/{type}','SendSmsController@get_number_list');
     	Route::get('sms-history/datatable','SendSmsController@history_table')->name('sms_history_datatable');
     	Route::get('sms-history','SendSmsController@history')->name('sms_history');
-    		Route::post('client-send-sms','SendSmsController@client_send_sms')->name('client_send_sms');
+    	Route::post('client-send-sms','SendSmsController@client_send_sms')->name('client_send_sms');
+    	Route::post('transaction/sms','SendSmsController@transaction_sms')->name('transaction_sms');
 		Route::resource('sendsms', 'SendSmsController');
 
 	});
@@ -549,8 +551,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('/pos/get-product-suggestion', 'SalePOsController@getProductSuggestion');
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
+	 	    Route::get('pos/view/{id}','SalePOsController@view')->name('pos.view');
 	 	    Route::get('pos/printpayment/{id}','SalePOsController@printpayment')->name('pos.printpayment');
 	 	    Route::get('pos/print/{id}','SalePOsController@pos_print')->name('pos.print');
+	 	    Route::get('pos/get-notification/{id}','SalePOsController@notification')->name('get_notification');
+	 	    Route::get('pos/payment/{id}','SalePOsController@payment')->name('pos.payment');
+	 	    Route::get('add','SalePOsController@sale_add')->name('add');
 	 		Route::resource('pos','SalePOsController');
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
@@ -558,6 +564,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 });
     //Payment 
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
+
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
 
           Route::get('/',function(){
