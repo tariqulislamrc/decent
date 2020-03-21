@@ -207,4 +207,15 @@ class SendSmsController extends Controller
         $this->sendsms->sendsms($request->mobile,$message);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Sms Send'),'load'=>true]);
     }
+
+    public function transaction_sms(Request $request)
+    {
+        $validator = $request->validate([
+            'mobile'=>'required',
+            'message'=>'required',
+          ]);
+        $message =$request->message;
+        $this->sendsms->sendsms($request->mobile,$message);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Sms Send')]);
+    }
 }

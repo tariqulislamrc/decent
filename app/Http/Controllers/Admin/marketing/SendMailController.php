@@ -302,4 +302,29 @@ class SendMailController extends Controller
 
            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Send Mail'),'load'=>true]);
     }
+
+    public function transaction_email(Request $request)
+    {
+         $validator = $request->validate([
+            'template'=>'required',
+            'email'=>'required|email',
+            'subject'=>'required',
+          ]);
+           Overrider::load("Settings");
+           $subject =$request->subject; 
+           $emailTemplate = EmailTemolate::find($request->template)->template;
+           $client_name =Client::where('email',$request->email)->first()->name;
+                    $jobs = (new EmailQueueJob(str_replace('{USERNAME}', $client_name,$emailTemplate), $request->email, $subject));
+                      $this->dispatch($jobs); 
+
+             $emailHistory = [
+                'sender_id' => auth()->user()->id,
+                'email_list' => json_encode($request->input('email')),
+                'template_id' => $request->template,
+                'subject' => $subject
+            ];
+
+           EmailHistory::create($emailHistory);
+           return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Send Mail')]);
+    }
 }

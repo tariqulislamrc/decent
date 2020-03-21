@@ -5,7 +5,7 @@
 			<img src="{{asset('no-product-image.jpg') }}" alt="" width="50">
 		</div>
 			<div class="text text-muted text-uppercase">
-				<small>{{$product->name}} 
+				<small>Products
 				
 					- {{$product->variation}}
 				</small>

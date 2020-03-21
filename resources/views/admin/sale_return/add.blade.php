@@ -37,7 +37,7 @@
             <div class="card">
                 <div class="card-body">
                     <table class="table table-bordered">
-                        <thead>
+                        <thead class="bg-green text-light">
                             <tr>
                                 <td>{{ _lang('Name') }}</td>
                                 <td>{{ _lang('Qty') }}</td>
@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                             @foreach ($model->sell_lines as $key=> $element)
-                            <tr>
+                            <tr class="bg-gray">
                                 <td>
                                     <input type="hidden" name="return[{{ $key }}][sale_id]" value="{{ $element->id }}">
                                     {{$element->variation->name }}-{{$element->product->name }}
@@ -66,7 +66,7 @@
                                     {{ $element->quantity_returned }}
                                 </td>
                                 <td>
-                                    <input type="text" name="return[{{ $key }}][return_units]" class="form-control">
+                                    <input type="text" name="return[{{ $key }}][return_units]" class="form-control" placeholder="Return Qty">
                                 </td>
                             </tr>
                             @endforeach
@@ -91,7 +91,7 @@
                     <div class="row mt-2">
                         <div class="col-md-6 mx-auto text-center">
                             <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('Return') }}</button>
-                            <button type="button" class="btn btn-link" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <img src="{{ asset('ajaxloader.gif') }}" width="80"></button>
+                            <button type="button" class="btn btn-link" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>

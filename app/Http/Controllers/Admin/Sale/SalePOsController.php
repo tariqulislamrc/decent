@@ -12,6 +12,7 @@ use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\Variation;
+use App\models\email\EmailTemolate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -96,6 +97,11 @@ class SalePOsController extends Controller
         $brands =Brand::select('id','name')->get();
         $categories=Category::all();
         return view('admin.salePos.create',compact('brands','categories'));
+    }
+
+    public function sale_add()
+    {
+       return view('admin.salePos.sale_add'); 
     }
 
     /**
@@ -213,7 +219,17 @@ class SalePOsController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $transaction =Transaction::find($id);
+       //Sale Related
+       $transaction->sell_lines()->delete();
+       //transaction Payment
+       $transaction->payment()->delete();
+       //return
+       $transaction->returntransaction()->delete();
+       $transaction->return_parent()->delete();
+       $transaction->delete();
+       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);
+
     }
 
     public function getProductSuggestion(Request $request)
@@ -295,7 +311,7 @@ class SalePOsController extends Controller
                         'variations.default_sell_price as selling_price',
                         'variations.id as variation_id',
                         'vbd.brand_id as brand_id',
-                        'variations.sub_sku as sku',
+                        'variations.sub_sku as sku'
                     )
                 ->first();
       if ($data !=null && $data->qty_available>0) {
@@ -340,5 +356,24 @@ class SalePOsController extends Controller
     {
         $model =Transaction::find($id);
         return view('admin.salePos.partials.posPrint',compact('model'));
+    }
+
+    public function notification($id)
+    {
+        $model =Transaction::find($id);
+        $templates = EmailTemolate::select('id','name')->get();
+        return view('admin.salePos.partials.notification',compact('model','templates'));
+    }
+
+    public function view($id)
+    {
+        $model =Transaction::find($id);
+        return view('admin.salePos.partials.view',compact('model'));
+    }
+
+    public function payment($id)
+    {
+        $model =Transaction::find($id);
+        return view('admin.salePos.partials.makepayment_modal',compact('model')); 
     }
 }

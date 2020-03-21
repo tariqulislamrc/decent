@@ -8,7 +8,7 @@
 @endif
 
 <table class="table table-bordered ">
-  <thead class="table-header-color">
+  <thead class="bg-green text-light">
     <th class="text-center">#</th>
     <th class="text-center">{{_lang('Item')}}</th>
     <th class="text-center">{{_lang('Qty')}}</th>

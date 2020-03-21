@@ -52,6 +52,6 @@ class TransactionPaymentController extends Controller
             $payment->save();
 
             $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => 'Payment Successfully.', 'load' => true]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => 'Payment Successfully.', 'window' => route('admin.sale.pos.printpayment',$payment->id)]);
    }
 }

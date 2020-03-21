@@ -1,6 +1,6 @@
 <h3>{{ _lang('Sale Item') }}</h3>
 <table class="table table-bordered">
-  <thead>
+  <thead class="bg-green text-light">
     <tr>
       <th>{{ _lang('Name') }}</th>
       <th>{{ _lang('Qty') }}</th>

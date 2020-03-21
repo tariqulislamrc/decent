@@ -1,80 +1,68 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta name="description"
-          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <!-- Twitter meta-->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:site" content="@pratikborsadiya">
-    <meta property="twitter:creator" content="@pratikborsadiya">
-    <!-- Open Graph Meta-->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Vali Admin">
-    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
-    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
-    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
-    <meta property="og:description"
-          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ isset($title) ? $title .' | '. get_option('site_title') :  get_option('site_title')}}</title>
-    <link rel="icon" type="image/png" sizes="16x16"
-          href="{{asset(get_option('favicon')?'storage/logo/'.get_option('favicon'):'favicon.png')}}">
-    <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('backend/css/main.css')}}">
-    <!-- Font-icon css-->
-    <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{asset('backend/css/dropify.min.css')}}">
-    <link href="{{asset('backend/css/summernote-bs4.css')}}" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
-    <link rel="stylesheet" href="{{ asset('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}">
-    <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
-    <style>
-        .pageloader {
-            position: fixed;
-            left: 0px;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            background: url('{{asset('pageloader.gif')}}') 50% 50% no-repeat rgb(249, 249, 249);
-            background-size: 8%;;
-            opacity: .7;
-        }
-    </style>
-    <!-- /global stylesheets -->
-    @stack('admin.css')
-</head>
-<body class="app sidebar-mini rtl {{get_option('default_sidebar') == '0' ? 'sidenav-toggled':''}}">
-<div class="pageloader" style="display: none"></div>
-<!-- Navbar-->
-@if(auth()->user()->hasRole('Clients'))
-@include('_partials.member.navbar')
-@else
-    @include('_partials.admin.navbar')
-    @endif
-    <!-- Sidebar menu-->
-    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
-@if(auth()->user()->hasRole('Clients'))
-    @include('_partials.member.sidebar')
-@else
-    @include('_partials.admin.sidebar')
-@endif
-    <main class="app-content">
-        <div style="position: absolute;top: 55%;left: 50%;z-index:100; display: none;" id="loader">
-            <img src="{{asset('img/loading.gif')}}" alt="">
-        </div>
-        @section('page.header')
-        @show
-        @section('content')
-        @show
-    </main>
-    <!-- /page content -->
-    @if(isset($modal))
+    <head>
+        <meta name="description" content="Decent Footware.">
+        <!-- Twitter meta-->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:site" content="@pratikborsadiya">
+        <meta property="twitter:creator" content="@pratikborsadiya">
+        <!-- Open Graph Meta-->
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Decent Footware">
+        <meta property="og:title" content="Decent Footware">
+        <meta property="og:url" content="http://decent.sattproject.xyz">
+        <meta property="og:image" content="http://decent.sattproject.xyz">
+        <meta property="og:description" content="Decent Footware.">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>{{ isset($title) ? $title .' | '. get_option('site_title') :  get_option('site_title')}}</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="{{asset(get_option('favicon')?'storage/logo/'.get_option('favicon'):'favicon.png')}}">
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="{{asset('backend/css/main.css')}}">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{asset('backend/css/dropify.min.css')}}">
+        <link href="{{asset('backend/css/summernote-bs4.css')}}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
+        <link rel="stylesheet" href="{{ asset('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}">
+        <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
+        <style>
+            .pageloader {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                background: url('{{asset('pageloader.gif')}}') 50% 50% no-repeat rgb(249,249,249);
+                background-size: 8%;;
+                opacity: .7;
+            }
+        </style>
+        <!-- /global stylesheets -->
+        @stack('admin.css')
+    </head>
+    <body class="app sidebar-mini rtl {{get_option('default_sidebar') == '0' ||Request::is('admin/sale/pos/create') ? 'sidenav-toggled':''}}" >
+        <div class="pageloader" style="display: none"></div>
+        <!-- Navbar-->
+        @include('_partials.admin.navbar')
+        <!-- Sidebar menu-->
+        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+        @include('_partials.admin.sidebar')
+        <main class="app-content">
+            <div style="position: absolute;top: 55%;left: 50%;z-index:100; display: none;" id="loader">
+                <img src="{{asset('img/loading.gif')}}" alt="">
+            </div>
+            @section('page.header')
+            @show
+            @section('content')
+            @show
+        </main>
+        <!-- /page content -->
+        @if(isset($modal))
         <!-- Remote source -->
         <div id="modal_remote" class="modal fade border-top-success rounded-top-0" data-backdrop="static" role="dialog">
             <div class="modal-dialog modal-{{ $modal }} modal-dialog-centered">

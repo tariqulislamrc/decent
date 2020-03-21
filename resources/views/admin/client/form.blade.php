@@ -75,7 +75,7 @@ $route = 'admin.client.';
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('net_total', _lang('Opening Balance') , ['class' => 'col-form-label']) }}
-          {{ Form::text('net_total', null, ['class' => 'form-control', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
+          {{ Form::text('net_total', isset($opening_balance)?$opening_balance:null, ['class' => 'form-control', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
         </div>
       </div>
     </div>
