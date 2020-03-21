@@ -37,7 +37,7 @@ class Front_End_Controller extends Controller{
         $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
         $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
         $banner_fream = HomePage::orderBy('id','desc')->take(3)->get();
-        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two','banner_fream'));
+        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two','banner_fream', 'products'));
     }
     
     public function privacyPolicy(){
@@ -51,9 +51,9 @@ class Front_End_Controller extends Controller{
     {
         if (Auth::check()) {
          return Redirect::to('home');
-    } else {
-         return view('eCommerce.account');
-    }
+        } else {
+            return view('eCommerce.account');
+        }
     }
  
 
