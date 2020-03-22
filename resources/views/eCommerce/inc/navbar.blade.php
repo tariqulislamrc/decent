@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                 <!-- mt logo start here -->
                 {{-- <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset(get_option('logo')?'storage/logo/'.get_option('logo'):'favicon.png')}}"></a></div> --}}
-                <div class="mt-logo"><a href="{{route('f')}}"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
+                <div class="mt-logo"><a href="{{url('/')}}"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
                 <span class="tel"> +1 (555) 333 22 11</span>
                 <a id='card_check' href="{{route('shopping-cart-show')}}">
                 <div class="mt-sh-cart2">
@@ -16,8 +16,9 @@
                 <!-- mt nav box start here -->
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
-                        @if (Auth::check())
-                        <li><a href="{{route('home')}}">Dashboard</a></li>
+                        @if (auth('client')->check())
+                            
+                        <li><a href="">Dashboard / {{auth('client')->user()->id}}</a></li>
                         @else
                         <li><a href="{{route('account')}}">My Account</a></li>
                         @endif

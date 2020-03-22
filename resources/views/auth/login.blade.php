@@ -2,7 +2,7 @@
 @section('auth')
 
       <div class="login-box">
-        <form class="login-form" action="{{ route('login') }}" method="post" id="login">
+        <form class="login-form" action="{{ route('admin.login') }}" method="post" id="login">
           <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
           <div class="form-group">
             <label class="control-label">Email</label>

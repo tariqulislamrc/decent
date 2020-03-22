@@ -9,14 +9,14 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller {
     /*
-        |--------------------------------------------------------------------------
-        | Login Controller
-        |--------------------------------------------------------------------------
-        |
-        | This controller handles authenticating users for the application and
-        | redirecting them to your home screen. The controller uses a trait
-        | to conveniently provide its functionality to your applications.
-        |
+            |--------------------------------------------------------------------------
+            | Login Controller
+            |--------------------------------------------------------------------------
+            |
+            | This controller handles authenticating users for the application and
+            | redirecting them to your home screen. The controller uses a trait
+            | to conveniently provide its functionality to your applications.
+            |
     */
 
     use AuthenticatesUsers;
@@ -60,7 +60,6 @@ class LoginController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function validateLogin(Request $request) {
-        dd($request->all());
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
@@ -145,6 +144,6 @@ class LoginController extends Controller {
      * @return mixed
      */
     protected function loggedOut(Request $request) {
-    return response()->json(['message' => 'Successfully Logout', 'goto' => route('login')]);
+    return response()->json(['message' => 'Successfully Logout', 'goto' => route('admin.login')]);
     }
 }
