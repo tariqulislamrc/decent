@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -72,6 +73,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $model = new Client;
         $model->type        =       'customer';
         $model->name        =       $data['name'];
@@ -84,17 +86,25 @@ class RegisterController extends Controller
         $model->save();
         $id = $model->id;
 
-        return User::create([
-            'clients_id' => $id,
-            'name' => $data['name'],
-            'last_name' => $data['last_name'],
-            'username' => $data['usernameusernameusername'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'status' => 'activated',
-        ]);
+        $data['id'] = $id;
+        $uuid =  Str::uuid()->toString();
+
+
+        $item = new User;
+        $item->clients_id = $id;
+        $item->name = $data['name'];
+        $item->surname = $data['last_name'];
+        $item->first_name = $data['name'];
+        $item->last_name = $data['last_name'];
+        $item->username = $data['username'];
+        $item->email = $data['email'];
+        $item->phone = $data['phone'];
+        $item->status = 'activated';
+        $item->uuid = $uuid;
+        $item->password = Hash::make($data['password']);
+        $item->save();
+
+        return $item;
     }
 
     /**

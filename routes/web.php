@@ -14,13 +14,19 @@
 /* ====================================================
 		Frontend Route
 ==========================================================*/
-Route::get('f','Frontend\Front_End_Controller@index')->name('f');
 
-// Login Registration Route
 
-Route::get('frontend-login', 'Frontend\ProfileController@login')->name('frontend-login');
-Route::get('frontend-register', 'Frontend\ProfileController@register')->name('frontend-register');
-Route::post('user-register','Frontend\ProfileController@register_store')->name('user-register');
+Route::get('/', 'Frontend\Front_End_Controller@index');
+
+Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
+	Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
+
+	// check_user_name_is_exist_or_not
+	Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
+	// check_email_is_exist_or_not
+	Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
+
+});
 
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
@@ -64,7 +70,6 @@ Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopp
 ==========================================================*/
 Route::group(['middleware' => ['install']], function () {
 
-Route::get('/', 'Frontend\Front_End_Controller@index');
 
 Route::get('admin/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login', 'Admin\Auth\LoginController@login')->name('admin.login');

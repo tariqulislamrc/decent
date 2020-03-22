@@ -66,4 +66,33 @@ class ProfileController extends Controller
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => url($url)]);
     }
+
+    // get access for member Dashboard
+    public function dashboard() {
+        if(auth('client')->check() == true) {
+            dd(auth('client')->user());
+        }
+    }
+
+    // check_user_name_is_exist_or_not
+    public function check_user_name_is_exist_or_not(Request $request) {
+        $username = $request->val;
+        $model = User::where('username', $username)->first();
+        if($model) {
+            echo 'Sorry. Username is Already Exist.';
+        } else {
+            echo '';
+        }
+    }
+
+    // check_email_is_exist_or_not
+    public function check_email_is_exist_or_not(Request $request) {
+        $email = $request->val;
+        $model = User::where('email', $email)->first();
+        if($model) {
+            echo 'Sorry. Email is Already Exist.';
+        } else {
+            echo '';
+        }
+    }
 }

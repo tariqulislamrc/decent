@@ -143,5 +143,4 @@ class Front_End_Controller extends Controller{
         }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => route('product-details', $request->product_id)]);
     }
-
 }

@@ -2,7 +2,6 @@
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
-    @if (auth('client')->check())
     <section class="mt-contact-banner" style="background-image: url(http://placehold.it/1920x205);">
         <div class="container">
             <div class="row">
@@ -10,7 +9,7 @@
                     <h1>SIGN IN or register</h1>
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="index.html">home <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="{{ url('/') }} ">home <i class="fa fa-angle-right"></i></a></li>
                             <li>register</li>
                         </ul>
                     </nav>
@@ -18,7 +17,6 @@
             </div>
         </div>
     </section>
-    @endif
 
     <!-- Mt Detail Section of the Page end -->
     <!-- mt side widget end here -->
@@ -37,12 +35,12 @@
                                 <h2 style="margin: 0 0 5px;">register</h2>
                                 <p>Don’t have an account?</p>
                             </header>
-                            <form action="{{route('register')}}" method="post" id="content_form" style="margin: 0 0 80px;">
+                            <form action="{{route('register')}}" method="post" id="content_form" autocomplete="off" style="margin: 0 0 80px;">
                                 @csrf
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" name="name" required placeholder="First Name" class="input">
+                                            <input autofocus type="text" name="name" required placeholder="First Name" class="input">
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
                                             <input type="text" name="last_name" required placeholder="Last Name" class="input">
@@ -50,10 +48,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input autocomplete="off" type="text" name="username" id="username" required placeholder="Username" class="input">
+                                            <input autocomplete="nope" type="text" name="username" id="username" required placeholder="Username" class="input username">
+                                            <span id="usernameError" class="text-danger"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="email" name="email" required placeholder="Your Email" class="input">
+                                            <input type="email" name="email" required placeholder="Your Email" class="input email">
+                                            <span id="emailError" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -105,10 +105,34 @@
 {{-- <script src="{{ asset('js/eCommerce/register.js') }}"></script> --}}
 <script>
     _formValidation();
-    $('#username').keypress(function() {
+    $('.username').on('blur', function() {
         var val = $(this).val();
-        if(val.trim()) {
-            // alert(val);
+        
+        var val = val.trim();
+        if(val != '') {
+            $.ajax({
+                type:'GET',
+                url:'/member/check_user_name_is_exist_or_not',
+                data:{val : val},
+                success:function(data){
+                    $('#usernameError').html(data);
+                }
+            });
+        }
+    })
+
+    $('.email').on('blur', function() {
+        var val = $(this).val();
+        var val = val.trim();
+        if(val != '') {
+            $.ajax({
+                type:'GET',
+                url:'/member/check_email_is_exist_or_not',
+                data:{val : val},
+                success:function(data){
+                    $('#emailError').html(data);
+                }
+            });
         }
     })
 </script>

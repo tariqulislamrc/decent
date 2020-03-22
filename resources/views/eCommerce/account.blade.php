@@ -42,7 +42,7 @@
                             </form>
                         </div>
 
-                        <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('frontend-register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
+                        <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
 
                     </div>
                 </div>

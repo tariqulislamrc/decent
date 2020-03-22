@@ -17,10 +17,9 @@
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
                         @if (auth('client')->check())
-                            
-                        <li><a href="">Dashboard / {{auth('client')->user()->id}}</a></li>
+                            <li><a href="{{ route('member.dashboard') }} ">Dashboard / {{auth('client')->user()->id}}</a></li>
                         @else
-                        <li><a href="{{route('account')}}">My Account</a></li>
+                            <li><a href="{{route('login')}}">My Account</a></li>
                         @endif
                         <li><a href="{{route('shopping-checkout')}}">Checkout</a></li>
                         <li><a href="{{route('wishlist')}}">Wishlist</a></li>
@@ -30,7 +29,7 @@
                         <!-- navigation start here -->
                         <nav id="nav">
                             <ul>
-                                <li><a href="{{route('f')}}">Home</a></li>
+                                <li><a href="{{url('/')}}">Home</a></li>
                                 <li><a href="{{route('product')}}">Product</a></li>
                                 <li><a href="{{route('blog')}}">Blog</a></li>
                                 <li><a href="{{route('about')}}">About</a></li>
