@@ -45,6 +45,11 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.privacy_policy',compact('model'));
     }
 
+    public function category_product($id){
+        $products = Product::where('category_id', $id)->get();
+        return view('eCommerce.category', compact('products'));
+    }
+
 
 
     public function account()

@@ -8,6 +8,7 @@ use App\models\eCommerce\Coupon;
 use App\models\Production\Product;
 use App\models\Production\VariationBrandDetails;
 use Cart;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use View;
 use Session;
@@ -118,17 +119,25 @@ class CartController extends Controller
 
     public function store_cart(Request $request)
     {
-        $models = Cart::getContent();
-        Session::put('total', $request->total_hidden);
-        Session::put('coupon', $request->coupon_amt);
+        if (Auth::check()) {
+            $models = Cart::getContent();
+            Session::put('total', $request->total_hidden);
+            Session::put('coupon', $request->coupon_amt);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
+        } else {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+        }
     }
 
     public function checkout(Request $request)
     {
-        $models = Cart::getContent();
-        return view('eCommerce.checkout', compact('models'));
+        if (Auth::check()) {
+            $models = Cart::getContent();
+            return view('eCommerce.checkout', compact('models'));
+            } else {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+            }
     }
 
     public function store_checkout(Request $request)

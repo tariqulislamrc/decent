@@ -76,6 +76,12 @@ var _formValidation = function () {
             dataType: 'JSON',
             success: function (data) {
                 if (data.status == 'danger') {
+                     if (data.goto) {
+                         setTimeout(function () {
+
+                             window.location.href = data.goto;
+                         }, 500);
+                     }
                     toastr.error(data.message);
 
                 } else {
@@ -108,6 +114,7 @@ var _formValidation = function () {
                 }
             },
             error: function (data) {
+                
                 var jsonValue = $.parseJSON(data.responseText);
                 const errors = jsonValue.errors;
                 if (errors) {
@@ -131,7 +138,9 @@ var _formValidation = function () {
                 } else {
                     toastr.warning(jsonValue.message);
 
+                    
                 }
+                
                 _componentSelect2Normal();
                 $('#submit').show();
                 $('#submiting').hide();

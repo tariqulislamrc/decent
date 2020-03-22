@@ -46,6 +46,7 @@ Route::get('wishlist',function(){
 
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
+Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
 
 
 
