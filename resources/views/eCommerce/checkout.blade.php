@@ -64,33 +64,34 @@
                             </div>
                             <div class="form-group">
                                 <div class="col">
-                                    <input name="first_name" type="text" class="form-control" required placeholder="Name">
+                                <input name="name" type="text" value="{{$client->name}}" class="form-control" required placeholder="Name">
+                                <input type="hidden" value="{{$client->id}}" name="client_id">
                                 </div>
                                 <div class="col">
-                                    <input name="last_name" type="text" class="form-control" required placeholder="Last Name">
+                                    <input name="last_name" type="text" value="{{$client->last_name}}" class="form-control" required placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input name="company" type="text" class="form-control" required placeholder="Company Name">
+                                <input name="company_name" type="text" value="{{$client->company_name}}" class="form-control" placeholder="Company Name">
                             </div>
                             <div class="form-group">
-                                <textarea name="address" class="form-control" required placeholder="Address"></textarea>
+                                <textarea name="address" class="form-control" required placeholder="Address">{{$client->address}}</textarea>
                             </div>
                             <div class="form-group">
-                                <input name="city" type="text" class="form-control" required placeholder="Town / City">
+                                <input name="city" type="text" value="{{$client->city}}" class="form-control" required placeholder="Town / City">
                             </div>
                             <div class="form-group">
-                                <input name="state" type="text" class="form-control" required placeholder="State / Country">
+                                <input name="state" type="text" value="{{$client->state}}" class="form-control" required placeholder="State / Country">
                             </div>
                             <div class="form-group">
-                                <input name="postcode" type="text" class="form-control" placeholder="Postcode / Zip">
+                                <input name="post_code" type="text" value="{{$client->post_code}}" class="form-control" placeholder="Postcode / Zip">
                             </div>
                             <div class="form-group">
                                 <div class="col">
-                                    <input name="email" type="email" class="form-control" required placeholder="Email Address">
+                                    <input name="email" type="email" value="{{$client->email}}" class="form-control" required placeholder="Email Address">
                                 </div>
                                 <div class="col">
-                                    <input name="phone" type="tel" class="form-control" required placeholder="Phone Number">
+                                    <input name="mobile" type="tel" value="{{$client->mobile}}" class="form-control" required placeholder="Phone Number">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -104,7 +105,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3" for="forname">Full Name</label>
                                 <div class="col-lg-9">
-                                        <input type="text" class="form-control" name="name" id="forname" style="font-size:12px;"
+                                        <input type="text" class="form-control" name="forname" id="forname" style="font-size:12px;"
                                         placeholder="Enter your Full Name">
 									</div>
                             </div>
@@ -112,7 +113,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3" for="foremail">Email Address</label>
                                 <div class="col-lg-9">
-                                <input type="email" class="form-control" name="email" value="" id="foremail"
+                                <input type="email" class="form-control" name="foremail" value="" id="foremail"
                                     style="font-size:12px;" placeholder="Enter your Email">
                                 </div>
                             </div>
@@ -121,7 +122,7 @@
 
                                 <label class="col-lg-3" for="forphone">Phone Number</label>
                                 <div class="col-lg-9">
-                                <input type="text" class="form-control" name="phone" value="" id="forphone"
+                                <input type="text" class="form-control" name="forphone" value="" id="forphone"
                                     style="font-size:12px;" placeholder="Enter your Phone">
                                 </div>
                             </div>
@@ -130,7 +131,7 @@
 
                                 <label class="col-lg-3" for="foraddress">Address</label>
                                 <div class="col-lg-9">
-                                    <textarea class="form-control" name="address" style="font-size:12px;" id="foraddress" placeholder="Address"></textarea>
+                                    <textarea class="form-control" name="foraddress" style="font-size:12px;" id="foraddress" placeholder="Address"></textarea>
                                 </div>
                             </div>
 
@@ -138,13 +139,13 @@
 
                                 <label class="col-lg-3" for="forcity">City</label>
                                 <div class="col-lg-9">
-                                <input type="text" class="form-control" name="city" id="forcity"
+                                <input type="text" class="form-control" name="forcity" id="forcity"
                                     style="font-size:12px;" placeholder="City / District">
                                 </div>
                             </div>
                     </div>
                      <div class="form-group">
-                                <textarea class="form-control" placeholder="Order Notes"></textarea>
+                                <textarea class="form-control" name="order_note" placeholder="Order Notes"></textarea>
                             </div>
                         </fieldset>
 

@@ -251,6 +251,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::any('/employee-details/login_info/{id}', 'UserController@set_login_info')->name('employee-details.login_info');
 
 
+			
+
 		// Production Route Start
 
 		// Production Category Route

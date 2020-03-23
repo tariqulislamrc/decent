@@ -49,9 +49,7 @@ class LoginController extends Controller {
      */
     public function showLoginForm(Request $request)
     {
-        
         return view('eCommerce.account');
-        
     }
     /**
      * Log the user out of the application.
