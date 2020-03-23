@@ -19,6 +19,8 @@ class CreateEmployeesTable extends Migration
             $table->string('prefix')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('shift_id')->nullable();
+            $table->foreign('shift_id')->references('id')->on('employee_shifts')->onDelete('cascade');
 			$table->date('date_of_action')->nullable();
             $table->integer('code')->nullable();
             $table->string('name')->nullable();

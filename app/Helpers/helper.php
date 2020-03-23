@@ -11,6 +11,7 @@ use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ApproveStoreItem;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
+use App\Models\Employee\EmployeeShift;
 use App\models\employee\IdGenerator;
 use App\models\employee\PayrollTransaction;
 
@@ -601,6 +602,18 @@ function total_advance_payment($employee_id) {
 function total_advance_return($employee_id) {
 	$total = PayrollTransaction::where('employee_id', $employee_id)->where('tx_type', 'Advance Return')->sum('amount');
 	return $total;
+}
+
+// current_shift
+function current_shift($id) {
+	$shift = EmployeeShift::where('id', $id)->first();
+	if($shift) {
+		$name = $shift->name;
+	} else {
+		$name = '';
+	}
+
+	return $name;
 }
 
 // Sadik Work Stop

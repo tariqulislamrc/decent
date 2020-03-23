@@ -10,6 +10,7 @@ use App\models\employee\EmployeeTerm;
 use App\models\employee\EmployeeDesignation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Employee\EmployeeShift;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Str;
 
@@ -47,6 +48,9 @@ class EmployeeListController extends Controller
             ->editColumn('designation', function ($document) {
                 return current_designation($document->id) ?current_designation($document->id):"";
             })
+            ->editColumn('shift', function ($document) {
+                return current_shift($document->shift_id);
+            })
             ->editColumn('department', function ($document) {
                 // dd();                                                                        
                 return current_dept($document->id)?current_dept($document->id):"";
@@ -61,7 +65,7 @@ class EmployeeListController extends Controller
             })
             ->addColumn('action', function ($model) {
                 return view('admin.employee.list.action', compact('model'));
-            })->rawColumns(['action','status'])->make(true);
+            })->rawColumns(['action','status', 'shift'])->make(true);
         }
     }
 
@@ -72,7 +76,6 @@ class EmployeeListController extends Controller
      */
     public function create()
     {
-        // dd(generate_id('employee'));
         // get designation or employees
         $designations = Designation::all();
         $departments = Department::all();
@@ -80,9 +83,10 @@ class EmployeeListController extends Controller
         $code_digits = get_option('digits_employee_code');
         $uniqu_id = generate_id('employee',false);
         $uniqu_id = numer_padding($uniqu_id,$code_digits);
+        $shifts = EmployeeShift::where('status', 1)->get();
 
        // retrurn the employee create page
-        return view('admin.employee.list.create',compact("designations","departments","code_prefix","uniqu_id"));
+        return view('admin.employee.list.create',compact("designations","departments","code_prefix","uniqu_id", 'shifts'));
     }
 
     /**
@@ -118,6 +122,8 @@ class EmployeeListController extends Controller
        $emp_model->contact_number = $request->contact_number;
        $emp_model->father_name = $request->father_name;
        $emp_model->mother_name = $request->mother_name;
+       $emp_model->shift_id = $request->shift;
+
        $emp_model->save();
 
        $emp_tbl_id = $emp_model->id ;
@@ -230,6 +236,7 @@ class EmployeeListController extends Controller
             'gender'            =>      'required',
             'father_name'       =>      'required',
             'mother_name'       =>      'required',
+            'shift'             =>      'required',
         ]);
 
         
@@ -258,6 +265,7 @@ class EmployeeListController extends Controller
         $model->mother_tongue = $mother_tongue;
         $model->father_name = $father_name;
         $model->mother_name = $mother_name;
+        $model->shift_id = $request->shift;
         $model->save();
 
         activity()->log('Updated an Employee Basic Information - ' . $request->name);

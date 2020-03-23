@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran = '';
 var DatatableSelect = function () {
 
 
@@ -47,7 +47,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+        emran = $('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -73,10 +73,10 @@ var DatatableSelect = function () {
             }],
             columnDefs: [{
                 orderable: false,
-                targets: [9]
+                targets: [2]
             }],
 
-            order: [0, 'desc'],
+            order: [0, 'asc'],
             processing: true,
             serverSide: true,
 
@@ -85,31 +85,22 @@ var DatatableSelect = function () {
                 // { data: 'checkbox', name: 'checkbox' },
                 {
                     data: 'DT_RowIndex',
-                    name: 'id'
-                }, {
-                    data: 'code',
-                    name: 'code'
+                    name: 'DT_RowIndex'
                 }, {
                     data: 'name',
                     name: 'name'
-                },  {
+                }, {
+                    data: 'start_time',
+                    name: 'start_time'
+                }, {
+                    data: 'end_time',
+                    name: 'end_time'
+                }, {
                     data: 'status',
                     name: 'status'
                 }, {
-                    data: 'shift',
-                    name: 'shift'
-                }, {
-                    data: 'contact_number',
-                    name: 'contact_number'
-                }, {
-                    data: 'department',
-                    name: 'department'
-                },{
-                    data: 'designation',
-                    name: 'designation'
-                },{
-                    data: 'joining_date',
-                    name: 'joining_date'
+                    data: 'note',
+                    name: 'note'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -142,7 +133,6 @@ var DatatableSelect = function () {
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _modalFormValidation();
-                    _componentDatefPicker();
                 })
                 .fail(function (data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
@@ -164,7 +154,6 @@ var DatatableSelect = function () {
             _componentSelect2Normal();
             _componentDatePicker();
             _formValidation();
-            _componentDatePicker();
         }
     }
 }();

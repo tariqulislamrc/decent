@@ -1,20 +1,23 @@
 {{-- Dashboard --}}
-<li data-placement="bottom" title="Go to home"><a class="app-menu__item {{ Request::is('home') ? ' active' : '' }}"
-                                                  href="{{ route('home') }}"><i
-            class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">{{_lang('dashboard')}}</span></a>
+<li data-placement="bottom" title="Go to home">
+    <a class="app-menu__item {{ Request::is('home') ? ' active' : '' }}" href="{{ route('home') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">{{_lang('dashboard')}}</span></a>
 </li>
+
 @if (!Request::is('admin/report*'))
 
     @can('employee.view')
         {{-- Employee --}}
         <li data-placement="bottom" title="Employee all System" class="treeview {{ Request::is('admin/employee*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{_lang('Employee')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
+                
+                {{-- Employee Shift --}}
+                @can('employee_shift.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-shift*') ? 'active':''}}" href="{{ route('admin.employee-shift.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Shift')}}</a></li>
+                @endcan
+                
                 @can('employee_category.view')
                     {{-- Employee Document Type --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
-                                        href="{{ route('admin.employee-category.index') }}"><i
-                                class="icon fa fa-circle-o"></i>
-                            {{_lang('Employee Category')}}</a></li>
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}" href="{{ route('admin.employee-category.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Category')}}</a></li>
                 @endcan
 
                 @can('employee-designation.view')
@@ -83,30 +86,30 @@
         </li>
     @endcan
 
-        {{-- holiday --}}
-        @can('holiday.view')
-                <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/holiday*') ? ' active' : '' }}" href="{{ route('admin.holiday.index') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Holiday')}}</span></a></li>
-        @endcan
+    {{-- holiday --}}
+    @can('holiday.view')
+        <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/holiday*') ? ' active' : '' }}" href="{{ route('admin.holiday.index') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Holiday')}}</span></a></li>
+    @endcan
 
+    {{-- Employee Attendance --}}
+    @can('employee_attendance.view')
+        <li class="treeview {{ Request::is('admin/attendance*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-address-book-o"></i><span class="app-menu__label">{{_lang('Attendance')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                @can('employee_attendance_type.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-attendance-type*') ? 'active':''}}" href="{{ route('admin.attendance-attendance-type.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Attendance Type')}}</a></li>
+                @endcan
+                            
+                @can('employee_attendance.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}" href="{{ route('admin.attendance-employee-attendance.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Attendance')}}</a></li>
+                @endcan
+            </ul>
+        </li>
+    @endcan
 
-        {{-- Employee Attendance --}}
-        @can('employee_attendance.view')
-                <li class="treeview {{ Request::is('admin/attendance*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-address-book-o"></i><span class="app-menu__label">{{_lang('Attendance')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-                        <ul class="treeview-menu">
-                                @can('employee_attendance_type.view')
-                                        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-attendance-type*') ? 'active':''}}" href="{{ route('admin.attendance-attendance-type.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Attendance Type')}}</a></li>
-                                @endcan
-                                @can('employee_attendance.view')
-                                        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}" href="{{ route('admin.attendance-employee-attendance.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Attendance')}}</a></li>
-                                @endcan
-                        </ul>
-                </li>
-        @endcan
-
-        {{-- Employee Payroll --}}
-        @can('employee_payroll.view')
-                <li data-placement="bottom" title="Employee PayRoll System"><a class="app-menu__item {{ Request::is('admin/payroll*') ? ' active' : '' }}" href="{{ route('admin.payroll.view') }}"><i class="app-menu__icon fa fa-calculator" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Payroll')}}</span></a></li>
-        @endcan
+    {{-- Employee Payroll --}}
+    @can('employee_payroll.view')
+            <li data-placement="bottom" title="Employee PayRoll System"><a class="app-menu__item {{ Request::is('admin/payroll*') ? ' active' : '' }}" href="{{ route('admin.payroll.view') }}"><i class="app-menu__icon fa fa-calculator" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Payroll')}}</span></a></li>
+    @endcan
 
     @can('production.view')
         {{-- User Section--}}

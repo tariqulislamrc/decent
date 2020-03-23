@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="{{asset('backend/css/parsley.css')}}">
         <link rel="stylesheet" href="{{ asset('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}">
         <link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
+        <link href="{{asset('backend/css/time.min.css')}}" rel="stylesheet">
         <style>
             .pageloader {
                 position: fixed;
