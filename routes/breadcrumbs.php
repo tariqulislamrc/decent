@@ -64,6 +64,11 @@ Breadcrumbs::for('employee-category', function ($trail) {
     $trail->push('Employee Category', route('admin.employee-category.index'));
 });
 
+// Home > Employee Shift
+Breadcrumbs::for('employee-shift', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Employee Shift', route('admin.employee-shift.index'));
+});
 
 // Home > Employee Category
 Breadcrumbs::for('employee-attendance-type', function ($trail) {

@@ -9,12 +9,15 @@
         {{-- Employee --}}
         <li data-placement="bottom" title="Employee all System" class="treeview {{ Request::is('admin/employee*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{_lang('Employee')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
+                
+                {{-- Employee Shift --}}
+                @can('employee_shift.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-shift*') ? 'active':''}}" href="{{ route('admin.employee-shift.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Shift')}}</a></li>
+                @endcan
+                
                 @can('employee_category.view')
                     {{-- Employee Document Type --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
-                                        href="{{ route('admin.employee-category.index') }}"><i
-                                class="icon fa fa-circle-o"></i>
-                            {{_lang('Employee Category')}}</a></li>
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}" href="{{ route('admin.employee-category.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Employee Category')}}</a></li>
                 @endcan
 
                 @can('employee-designation.view')

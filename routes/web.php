@@ -100,6 +100,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('employee-category-datatable', 'Configuration\Employee\EmployeeCategoryController@datatable')->name('category.datatable');
 		Route::resource('employee-category', 'Configuration\Employee\EmployeeCategoryController');
 
+		// ::::::::::::::::::::::::::::::  Employee Shift ::::::::::::::::::::::::::::::::::::::
+		Route::get('employee-shift-datatable', 'Configuration\Employee\EmployeeShiftController@datatable')->name('shift.datatable');
+		Route::resource('employee-shift', 'Configuration\Employee\EmployeeShiftController');
+
 		//:::::::::::::::::::::::::::::Employee leave type:::::::::::::::::::::::::::::::
 		Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
 		Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');

@@ -20,6 +20,21 @@
                     <input type="text" name="name" id="name" class="form-control"
                     placeholder="Enter Name" required value="{{$model->name}}">
                 </div>
+
+                {{-- Shift --}}
+                <div class="col-md-6 form-group">
+                    <label for="shift">{{_lang('Shift')}} <span class="text-danger">*</span>
+                    </label>
+                    @php
+                        $shifts = App\Models\Employee\EmployeeShift::where('status', 1)->get();
+                    @endphp
+                    <select name="shift" id="shift" class="form-control select" data-placeholder="Select Shift" required>
+                        <option value="">{{_lang('Select Shift')}}</option>
+                        @foreach ($shifts as $item)
+                            <option {{$item->id == $model->shift_id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
         
                 {{-- Date Of Birth --}}
                 <div class="col-md-6 form-group">
