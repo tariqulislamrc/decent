@@ -69,7 +69,7 @@ class DesignationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:designations|max:255',
+            'name' => 'required|min:1|unique:designations,name,NULL,id,deleted_at,NULL',
             'employee_category_id' => 'required',
             
         ]);
