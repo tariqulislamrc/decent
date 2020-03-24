@@ -495,6 +495,14 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
 		Route::resource('contact-msg','ContactMessageController');
 
+
+		//Contact message route
+		Route::get('product-rating/index', 'ProductRatingController@rating_index')->name('product-rating.index');
+		Route::get('product-rating/datatable', 'ProductRatingController@datatable')->name('product-rating.datatable');
+		Route::get('product-rating/status/{id}', 'ProductRatingController@status')->name('product-rating.status');
+		Route::any('product-rating/status_change/{id}', 'ProductRatingController@status_change')->name('product-rating.status_change');
+		Route::delete('product-rating/destroy/{id}', 'ProductRatingController@destroy')->name('product-rating.destroy');
+
 		//Terams and Condition route
     	Route::get('terams-conditions/index','TeramsConditionsController@index')->name('terams-conditions.index');
 		Route::post('terams-conditions/store','TeramsConditionsController@store')->name('terams-conditions.store');

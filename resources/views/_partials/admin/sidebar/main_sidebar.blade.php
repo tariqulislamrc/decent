@@ -509,6 +509,12 @@
                     {{--Contact Message --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
                 @endcan
+
+                @can('role.view')
+                    {{--Product Rating --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}" href="{{ route('admin.eCommerce.product-rating.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Product Rating')}}</a></li>
+                @endcan
+
                 @can('role.view')
                     {{--Term and Condition --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
