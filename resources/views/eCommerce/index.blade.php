@@ -447,27 +447,18 @@
 					<!-- banner frame start here -->
 					<div class="banner-frame wow fadeInUp" data-wow-delay="0.4s">
 						<!-- banner 15 start here -->
+					@foreach ($banner_fream_two as $banner_fream_two_item)
 						<div class="banner-15 right">
-							<img src="http://placehold.it/590x250" alt="image description">
+							<img src="{{asset('storage/eCommerce/home_page/'.$banner_fream_two_item->banner_frame_two)}}" alt="{{$banner_fream_two_item->banner_frame_two_alt}}">
 							<div class="holder">
-								<h2>Chairs <strong>ZIO DINING CHAIR</strong></h2>
-								<a class="btn-shop" href="#">
+								<h2><strong>{{$banner_fream_two_item->product->name}}</strong></h2>
+								<a class="btn-shop" href="{{route('product-details', $banner_fream_two_item->id)}}">
 									<span>SHOP NOW</span>
 									<i class="fa fa-angle-right"></i>
 								</a>
 							</div>
 						</div><!-- banner 15 end here -->
-						<!-- banner 15 start here -->
-						<div class="banner-15 right">
-							<img src="http://placehold.it/590x250" alt="image description">
-							<div class="holder">
-								<h2>Accessories / Lighting <strong>TOTEM FLOOR LAMP</strong></h2>
-								<a class="btn-shop" href="#">
-									<span>SHOP NOW</span>
-									<i class="fa fa-angle-right"></i>
-								</a>
-							</div>
-						</div><!-- banner 15 end here -->
+					@endforeach	
 					</div><!-- banner frame end here -->
 					<div class="mt-smallproducts mt-nopaddingtopxs wow fadeInUp" data-wow-delay="0.4s">
 						<div class="row">
@@ -625,9 +616,7 @@
 										<div class="frame">
 											<strong><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
 											<ul class="ratting-area">
-                                            <li class="list-group-item count_rating"
-                                                data-score={{$item->avarage_retting}}>
-
+                                            <li class="list-group-item count_rating" data-score={{$item->avarage_retting}}>
                                             </li>
                                         </ul>
 										</div>

@@ -113,6 +113,26 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="hot_sale_status">{{_lang('Hot Sale')}}
+                        @if ($model->hot_sale_status == 1)
+                            <input type="checkbox" checked value="1" name="hot_sale_status" id="hot_sale_status" class="form-control" />
+                        @else
+                            <input type="checkbox" value="1" name="hot_sale_status" id="hot_sale_status" class="form-control" />
+                        @endif
+                    </label>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="feature_product_status">{{_lang('Featured Product')}}
+                        @if ($model->feature_product_status == 1)
+                            <input type="checkbox" checked value="1" name="feature_product_status" id="feature_product_status" class="form-control" />
+                        @else
+                            <input type="checkbox" value="1" name="feature_product_status" id="feature_product_status" class="form-control" />
+                        @endif
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
@@ -128,7 +148,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-<script src="{{ asset('js/eCommerce/home_page.js') }}"></script>
+<script src="{{ asset('js/eCommerce/home.js') }}"></script>
 <script>
     $(document).ready(function() {
 

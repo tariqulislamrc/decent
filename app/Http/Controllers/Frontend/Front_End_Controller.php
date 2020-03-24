@@ -36,8 +36,10 @@ class Front_End_Controller extends Controller{
         $slider = Slider::all();
         $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
         $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
-        $banner_fream = HomePage::orderBy('id','desc')->take(3)->get();
-        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two','banner_fream', 'products'));
+        $banner_fream     = HomePage::orderBy('id','desc')->take(3)->get();
+        $banner_fream_two = HomePage::orderBy('id','desc')->take(2)->get();
+        $featur_product   = Product::where('feature_product_status','1')->orderBy('id','desc')->take(20)->get();
+        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product'));
     }
     
     public function privacyPolicy(){

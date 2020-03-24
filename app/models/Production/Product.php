@@ -33,8 +33,11 @@ class Product extends Model
         return $this->belongsTo(ProductVariation::class, 'id', 'product_id');
     }
 
-    public function variation()
-    {
+    public function variation(){
         return $this->hasMany(Variation::class, 'product_id', 'id');
+    }
+
+    public function homePage(){
+        return $this->belongsTo('App\models\eCommerce\HomePage','id','product_id');
     }
 }
