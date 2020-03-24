@@ -143,25 +143,26 @@
                             href="{{ route('admin.production-ingredients-category.index') }}"><i
                                 class="icon fa fa-circle-o"></i> {{_lang('Ingredients Category')}}</a></li>
                 @endcan
-                @can('production_product.view')
-                    {{-- Production Product --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-product*') ? 'active':''}}"
-                                        href="{{ route('admin.production-product.index') }}"><i
-                                class="icon fa fa-circle-o"></i> {{_lang('Production Product')}}</a></li>
-                @endcan
-
                 @can('unit.view')
                     {{-- Production Unit --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-unit*') ? 'active':''}}"
                                         href="{{ route('admin.production-unit.index') }}"><i
                                 class="icon fa fa-circle-o"></i> {{_lang('Unit')}}</a></li>
                 @endcan
+
                 @can('production-raw-materials.view')
                     {{-- Production Raw Materials --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/production-raw-materials*') ? 'active':''}}"
                             href="{{ route('admin.production-raw-materials.index') }}"><i
                                 class="icon fa fa-circle-o"></i> {{_lang('Raw Materials')}}</a></li>
+                @endcan
+                
+                @can('production_product.view')
+                    {{-- Production Product --}}
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-product*') ? 'active':''}}"
+                                        href="{{ route('admin.production-product.index') }}"><i
+                                class="icon fa fa-circle-o"></i> {{_lang('Production Product')}}</a></li>
                 @endcan
                 @can('production-raw-materials.view')
                     {{-- Production Work Order --}}
