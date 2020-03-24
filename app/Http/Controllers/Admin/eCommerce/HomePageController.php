@@ -140,7 +140,13 @@ class HomePageController extends Controller{
         }
 
         $model = new HomePage;
-        $model->create($data);
+        $success = $model->create($data);
+        if ($success) {
+            $product = Product::findOrFail($request->product_id);
+            $product->hot_sale_status = $request->hot_sale_status;
+            $product->feature_product_status = $request->feature_product_status;
+            $product->save();
+        }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.home-page.index')]);
     }
 
@@ -261,7 +267,13 @@ class HomePageController extends Controller{
             $data['sale_category_image'] = $model->sale_category_image;
         }
 
-        $model->update($data);
+        $success = $model->update($data);
+        if ($success) {
+            $product = Product::findOrFail($request->product_id);
+            $product->hot_sale_status = $request->hot_sale_status;
+            $product->feature_product_status = $request->feature_product_status;
+            $product->save();
+        }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.home-page.index')]);
     }
 
@@ -271,8 +283,10 @@ class HomePageController extends Controller{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+        $model = HomePage::findOrFail($id);
+        Storage::delete(['public/eCommerce/home_page/'.$model->banner_image_one, 'public/eCommerce/home_page/'.$model->banner_image_two, 'public/eCommerce/home_page/'.$model->banner_frame_one, 'public/eCommerce/home_page/'.$model->banner_frame_two,'public/eCommerce/home_page/'.$model->tab_slider_image,'public/eCommerce/home_page/'.$model->sale_category_image]);
+        $model->delete();
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted'), 'goto' => route('admin.eCommerce.our-workspace.index')]);
     }
 }

@@ -113,6 +113,36 @@
                 </div>
 
             </div>
+
+             <div class="row">
+                <div class="col-md-3 form-group">
+            <label for="hot_sale_status">{{_lang('Hot Sale')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    @if ($model->product->hot_sale_status == 1)
+                        <input name="hot_sale_status" checked id="hot_sale_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                    @else
+                    <input name="hot_sale_status" id="hot_sale_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                    @endif
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-3 form-group">
+            <label for="feature_product_status">{{_lang('Featured Product')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    @if ($model->product->feature_product_status == 1)
+                        <input name="feature_product_status" checked id="feature_product_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                    @else
+                    <input name="feature_product_status" id="feature_product_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                    @endif
+                </label>
+            </div>
+        </div>
+            </div>
         </div>
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
@@ -128,7 +158,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-<script src="{{ asset('js/eCommerce/home_page.js') }}"></script>
+<script src="{{ asset('js/eCommerce/home.js') }}"></script>
 <script>
     $(document).ready(function() {
 
