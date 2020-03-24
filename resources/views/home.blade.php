@@ -34,6 +34,56 @@
         
     </div>
 
+    <div class="card border border-danger">
+        <div class="card-header text-center"><h4>{{_lang('Employee Section')}} </h4></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-anchor fa-3x"></i>
+                        <div class="info">
+                            <h4>{{_lang('Total Employee Category')}} </h4>
+                            <p><b>
+                            @php
+                                $category = App\Models\Employee\EmployeeCategory::get();
+                                echo count($category);
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Short Question -->
+                <div class="col-md-4">
+                    <div class="widget-small info coloured-icon"><i class="icon fa fa-university fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Employee Department</h4>
+                            <p><b>
+                            @php
+                                $users = App\Models\Employee\Department::get();
+                                echo count($users);
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+                        
+                <!-- True False -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-user-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Employee</h4>
+                            <p><b>
+                            @php
+                                $users = App\Models\Employee\Employee::get();
+                                echo count($users);
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!-- /basic initialization -->
 @stop
 

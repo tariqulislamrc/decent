@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('shipping charge'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Shipping Charge'), 'modal' => 'lg'])
 
 {{-- Header Section --}}
 @section('page.header')
