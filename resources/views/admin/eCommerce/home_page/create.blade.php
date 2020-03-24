@@ -111,19 +111,31 @@
                 </div>
 
             </div>
+            
             <div class="row">
-                <div class="col-sm-3 form-group">
-                    <label for="hot_sale_status">{{_lang('Hot Sale')}}
-                    <input type="checkbox" value="1" name="hot_sale_status" id="hot_sale_status" class="form-control" />
-                    </label>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label for="feature_product_status">{{_lang('Featured Product')}}
-                    <input type="checkbox" value="1" name="feature_product_status" id="feature_product_status" class="form-control" />
-                    </label>
-                </div>
+                <div class="col-md-3 form-group">
+            <label for="hot_sale_status">{{_lang('Hot Sale')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    <input name="hot_sale_status" id="hot_sale_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                </label>
             </div>
         </div>
+
+        <div class="col-md-3 form-group">
+            <label for="feature_product_status">{{_lang('Featured Product')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    <input name="feature_product_status" id="feature_product_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                </label>
+            </div>
+        </div>
+            </div>
+
+        </div>
+
 
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
