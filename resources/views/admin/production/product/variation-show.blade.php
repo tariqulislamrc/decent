@@ -64,6 +64,12 @@
                     <th>{{_lang('Sub Sku')}}</th>
                     <th>{{$product->product_variation->variation1->name}}</th>
                     <th>{{$product->product_variation->variation2->name}}</th>
+                    <th>
+                        {{_lang('Purchase Price')}}
+                    </th>
+                    <th>
+                        {{_lang('Sell Price')}}
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +80,8 @@
                                 <td> {{ $item->sub_sku }}</td>
                                 <td> {{ $item->value1->name }}</td>
                                 <td> {{ $item->value2->name }}</td>
+                                <td> {{ $item->default_purchase_price }}</td>
+                                <td> {{ $item->default_sell_price }}</td>
                             </tr>
                             @endforeach
             </tbody>
