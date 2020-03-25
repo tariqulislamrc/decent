@@ -28,12 +28,16 @@ class Front_End_Controller extends Controller{
         $product_id = [];
         $brand_id = get_option('default_brand');
         $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
         }
+
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
+
         $seo  = Seo::first();
         $slider = Slider::all();
+
         $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
         $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
         $banner_fream = HomePage::orderBy('id','desc')->take(3)->get();
@@ -49,9 +53,7 @@ class Front_End_Controller extends Controller{
         $products = Product::where('category_id', $id)->get();
         return view('eCommerce.category', compact('products'));
     }
-
-
-
+        
     public function account()
     {
         if (Auth::check()) {

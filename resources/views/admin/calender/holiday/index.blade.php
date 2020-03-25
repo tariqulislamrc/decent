@@ -1,12 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Holiday'), 'modal' => 'lg'])
 @push('css')
-<link rel="stylesheet" href="{{asset('css/bootstrap-tagsinput.css')}}">
 @endpush
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Holiday."><i class="fa fa-universal-access mr-4"></i> {{_lang('Holiday')}}
+        <h1 data-placement="bottom" title="Holiday."><i class="fa fa-calendar mr-4"></i> {{_lang('Holiday')}}
         </h1>
         <p>{{_lang('Create Holiday. Here you can Add, Edit & Delete The Holidays')}}</p>
     </div>
@@ -25,7 +24,7 @@
     <div class="col-md-4">
         <div class="tile">
             <div class="tile-head mb-2">
-                Add New Holiday
+                {{_lang('Add Holiday')}}
                 <hr>
             </div>
             <div class="tile-body">
@@ -34,7 +33,7 @@
                     <div class="row">
                         {{-- Calender for selecting holidays --}}
                         <div class="col-md-12 form-group">
-                            <label for="calender">{{_lang('Select Holidays')}}
+                            <label for="calender">{{_lang('Select Holidays')}} <span class="text-danger">*</span>
                             </label>
                             <input type="text" name="calender" id="holiday_calender" class="form-control date_format"
                                 placeholder="Select Date" readonly required>
@@ -42,13 +41,12 @@
 
                         {{-- Selected holidays --}}
                         <div class="col-md-12 form-group">
-
                             <input type="text" name="holiday" id="holiday" class="form-control w-100" >
                         </div>
 
                         {{-- Holiday Description --}}
                         <div class="col-md-12 form-group">
-                            <label for="name">{{_lang('Purpose')}}
+                            <label for="name">{{_lang('Purpose')}} <span class="text-danger">*</span>
                             </label>
                             <textarea required name="description" class="form-control" id=""
                                 placeholder="Purpose Of This Day"></textarea>

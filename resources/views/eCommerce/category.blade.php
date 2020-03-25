@@ -57,6 +57,7 @@
 
 								@foreach ($products as $item)
 								@php
+								dd($item);
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
 									$low = $low_price->default_sell_price;
 
