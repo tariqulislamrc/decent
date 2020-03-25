@@ -4,7 +4,7 @@
 <div class="app-title">
     <div>
         <h1 data-placement="bottom" title="Home Page"><i class="fa fa-universal-access mr-4"></i>
-            {{_lang('Hpme Page')}}</h1>
+            {{_lang('Home Page')}}</h1>
         <p>{{_lang('Add Home Page Image')}}</p>
     </div>
     <ul class="app-breadcrumb breadcrumb">
@@ -107,11 +107,35 @@
                 {{-- tab_slider_image_alt --}}
                 <div class="col-md-3 form-group">
                     <label for="tab_slider_image_alt">{{_lang('Tab slider image alt')}}</label>
-                    <input type="text"  name="tab_slider_image_alt" id="tab_slider_image_alt" class="form-control" />
+                    <input type="text" name="tab_slider_image_alt" id="tab_slider_image_alt" class="form-control" />
                 </div>
 
             </div>
+            
+            <div class="row">
+                <div class="col-md-3 form-group">
+            <label for="hot_sale_status">{{_lang('Hot Sale')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    <input name="hot_sale_status" id="hot_sale_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                </label>
+            </div>
         </div>
+
+        <div class="col-md-3 form-group">
+            <label for="feature_product_status">{{_lang('Featured Product')}}
+            </label>
+            <div class="toggle lg">
+                <label>
+                    <input name="feature_product_status" id="feature_product_status" type="checkbox" value="1"><span class="button-indecator"></span>
+                </label>
+            </div>
+        </div>
+            </div>
+
+        </div>
+
 
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}

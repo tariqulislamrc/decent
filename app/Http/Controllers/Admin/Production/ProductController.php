@@ -336,6 +336,8 @@ class ProductController extends Controller
         $variations = $request->variation;
         $pv = $variations['varitaion_template_id'];
         $sub_sku = $variations['sub_sku'];
+        $purchase_price = $variations['default_purchase_price'];
+        $sell_price = $variations['default_sell_price'];
         $variation_value = $variations['variation_value_id'];
 
         // ProductVariation Insert
@@ -355,6 +357,8 @@ class ProductController extends Controller
             $variation->product_variation_id = $id;
             $variation->product_id = $product_id;
             $variation->sub_sku = $sub_sku[$i];
+            $variation->default_purchase_price = $purchase_price[$i];
+            $variation->default_sell_price = $sell_price[$i];
 
             $variation->variation_value_id =  $variation_value[$i][0];
             $variation->variation_value_id_2 =  $variation_value[$i][1];
@@ -378,6 +382,8 @@ class ProductController extends Controller
         $variations = $request->variation;
         $pv = $variations['varitaion_template_id'];
         $sub_sku = $variations['sub_sku'];
+        $purchase_price = $variations['default_purchase_price'];
+        $sell_price = $variations['default_sell_price'];
         $variation_value = $variations['variation_value_id'];
         $id = $request->product_variation_id;
 
@@ -386,6 +392,8 @@ class ProductController extends Controller
             $variation->product_variation_id = $id;
             $variation->product_id = $product_id;
             $variation->sub_sku = $sub_sku[$i];
+            $variation->default_purchase_price = $purchase_price[$i];
+            $variation->default_sell_price = $sell_price[$i];
 
             if ($variation_value[$i][0] == Null) {
                 throw ValidationException::withMessages(['message' => 'Color Field Is Required']);
