@@ -19,7 +19,9 @@ var _componentDatefPicker = function() {
     $('.date').datepicker({
         dateFormat: "yy-mm-dd",
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        changeMonth: true,
+		changeYear: true,
     });
 
 };

@@ -1,5 +1,6 @@
 <?php
 
+use App\models\Client;
 use App\models\employee\Department;
 use App\models\employee\Designation;
 use App\models\employee\Employee;
@@ -614,6 +615,103 @@ function current_shift($id) {
 	}
 
 	return $name;
+}
+
+// find client name using client id
+function get_client_name($id) {
+	$client = Client::where('id', $id)->first();
+	if($client) {
+		$name = $client->name;
+	} else {
+		$name = 'No Name Found';
+	}
+
+	return $name;
+}
+
+// find client phone using client id
+function get_client_phone($id) {
+	$client = Client::where('id', $id)->first();
+	if($client) {
+		$name = $client->mobile;
+	} else {
+		$name = 'No Phone Found';
+	}
+
+	return $name;
+}
+
+// find client email using client id
+function get_client_email($id) {
+	$client = Client::where('id', $id)->first();
+	if($client) {
+		$name = $client->email;
+	} else {
+		$name = 'No Email Found';
+	}
+
+	return $name;
+}
+
+// find client address using client id
+function get_client_address($id) {
+	$client = Client::where('id', $id)->first();
+	if($client) {
+		
+		if($client->address != '' ) {
+			$address = $client->address ;
+		} else {
+			$address = ' ';
+		}
+
+		if($client->post_code != '' ) {
+			$post_code = $client->post_code ;
+		} else {
+			$post_code = ' ';
+		}
+
+		if($client->city != '' ) {
+			$city = $client->city ;
+		} else {
+			$city = ' ';
+		}
+
+		if($client->state != '' ) {
+			$state = $client->state ;
+		} else {
+			$state = ' ';
+		}
+
+		if($client->country != '' ) {
+			$country = $client->country ;
+		} else {
+			$country = ' ';
+		}
+
+		$name = $address . ', ' . $post_code . ', '. $city . ', '. $state . ', '. $country;
+
+	} else {
+		$name = 'No Address Found';
+	}
+
+	return $name;
+}
+
+// find client city using client id
+function get_client_city($id) {
+	$client = Client::where('id', $id)->first();
+	if($client) {
+		$name = $client->city;
+	} else {
+		$name = 'No Email Found';
+	}
+
+	return $name;
+}
+
+function getIp(){
+    $ip = Request::ip();
+	return $ip;
 }
 
 // Sadik Work Stop

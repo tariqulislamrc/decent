@@ -462,6 +462,12 @@
         <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('E-Commerce')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
 
+                {{-- All Ecommerce page main banner --}}
+                @can('page_banner.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Page Banner')}}</a></li>
+                @endcan
+
+
                 @can('role.view')
                     {{-- Add Slider  --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}" href="{{ route('admin.eCommerce.slider.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a></li>
@@ -524,6 +530,11 @@
                 @can('role.view')
                     {{--Seo --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
+                @endcan
+
+                {{--Ecommerce Orders --}}
+                @can('ecommerce_order.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
                 @endcan
 
             </ul>
@@ -660,4 +671,6 @@
         </ul>
     </li>
 
+    {{-- Ecommerce Report --}}
+    <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}" href="{{ route('admin.report.eCommerce-report.index') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('eCommerce Report')}}</span></a></li>
 @endif

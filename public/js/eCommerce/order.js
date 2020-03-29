@@ -9,8 +9,8 @@
 
 // Setup module
 // ------------------------------
-var emran = '';
-var DatatableSelect = function () {
+// var emran="";
+var DatatableSelect = function() {
 
 
     //
@@ -18,36 +18,15 @@ var DatatableSelect = function () {
     //
 
     // Basic Datatable examples
-    var _componentDatatableSelect = function () {
+    var _componentDatatableSelect = function() {
         if (!$().DataTable) {
             console.warn('Warning - datatables.min.js is not loaded.');
             return;
         }
 
         // Setting datatable defaults
-        $.extend($.fn.dataTable.defaults, {
-            autoWidth: false,
-            responsive: true,
-            columnDefs: [{
-                orderable: false,
-                width: 100,
-                targets: [2]
-            }],
-            dom: '<"datatable-header"fl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
-            language: {
-                search: '<span>Filter:</span> _INPUT_',
-                searchPlaceholder: 'Type to filter...',
-                lengthMenu: '<span>Show:</span> _MENU_',
-                paginate: {
-                    'first': 'First',
-                    'last': 'Last',
-                    'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;',
-                    'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'
-                }
-            }
-        });
 
-        emran = $('.content_managment_table').DataTable({
+        $('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -71,40 +50,16 @@ var DatatableSelect = function () {
                 extend: 'print',
                 className: 'btn btn-primary glyphicon glyphicon-print'
             }],
-            columnDefs: [{
-                orderable: false,
-                targets: [2]
-            }],
 
-            order: [0, 'desc'],
-            processing: true,
-            serverSide: true,
-
-            ajax: $('.content_managment_table').data('url'),
-            columns: [
-                // { data: 'checkbox', name: 'checkbox' },
-                {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                }, {
-                    data: 'name',
-                    name: 'name'
-                }, {
-                    data: 'description',
-                    name: 'description'
-                }, {
-                    data: 'action',
-                    name: 'action'
-                }
-            ]
+            order: [0, 'asc']
 
         });
 
 
     };
 
-    var _componentRemoteModalLoad = function () {
-        $(document).on('click', '#content_managment', function (e) {
+    var _componentRemoteModalLoad = function() {
+        $(document).on('click', '#content_managment', function(e) {
             e.preventDefault();
             //open modal
             $('#modal_remote').modal('toggle');
@@ -119,13 +74,16 @@ var DatatableSelect = function () {
                     type: 'Get',
                     dataType: 'html'
                 })
-                .done(function (data) {
+                .done(function(data) {
                     $('.modal-body').html(data).fadeIn(); // load response
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
+                    _componentSelect2Normal();
+                    _componentDropFile();
+                    _componenteditor();
                     _modalFormValidation();
                 })
-                .fail(function (data) {
+                .fail(function(data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
                     $('#modal-loader').hide();
                 });
@@ -139,12 +97,14 @@ var DatatableSelect = function () {
     //
 
     return {
-        init: function () {
+        init: function() {
             _componentDatatableSelect();
             _componentRemoteModalLoad();
             _componentSelect2Normal();
-            _componentDatePicker();
+            // _codmponentDatefPicker();
             _formValidation();
+            _componenteditor();
+            _classformValidation();
         }
     }
 }();
@@ -153,6 +113,6 @@ var DatatableSelect = function () {
 // Initialize module
 // ------------------------------
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     DatatableSelect.init();
 });

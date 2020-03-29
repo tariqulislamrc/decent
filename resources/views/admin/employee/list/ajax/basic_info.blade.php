@@ -82,7 +82,7 @@
                     <label for="nationality">{{_lang('Nationality')}} 
                     </label>
                     <input type="text" name="nationality" id="nationality" class="form-control"
-                    placeholder="Enter Employee Nationality"  value="{{$model->nationality}}">
+                    placeholder="Enter Employee Nationality"  value="{{$model->nationality != '' ? $model->nationality : 'Bangladeshi'}}">
                 </div>   
         
                 {{-- Mother Tongue --}}
@@ -90,7 +90,7 @@
                     <label for="mother_tongue">{{_lang('Mother Tongue')}}
                     </label>
                     <input type="text" name="mother_tongue" id="mother_tongue" class="form-control"
-                    placeholder="Enter Employee Mother Tongue"  value="{{$model->mother_tongue}}">
+                    placeholder="Enter Employee Mother Tongue"  value="{{$model->mother_tongue != '' ? $model->mother_tongue : 'Bengoly'}}">
                 </div>   
         
         

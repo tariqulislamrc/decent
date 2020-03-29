@@ -16,6 +16,7 @@ use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
 use App\models\eCommerce\HomePage;
 use App\models\eCommerce\ProductRating;
+use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +28,18 @@ class Front_End_Controller extends Controller{
 
         $product_id = [];
         $brand_id = get_option('default_brand');
+        // dd($brand_id);
         $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
         }
+
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
+
         $seo  = Seo::first();
         $slider = Slider::all();
+
         $banner_image_one = HomePage::where('banner_image_one_check',1)->orderBy('id','desc')->first();
         $banner_image_two = HomePage::where('banner_image_two_check',1)->orderBy('id','desc')->first();
         $banner_fream     = HomePage::orderBy('id','desc')->take(3)->get();
@@ -55,9 +61,7 @@ class Front_End_Controller extends Controller{
         $products = Product::where('category_id', $id)->get();
         return view('eCommerce.category', compact('products'));
     }
-
-
-
+        
     public function account()
     {
         if (Auth::check()) {
@@ -153,5 +157,44 @@ class Front_End_Controller extends Controller{
             $product_model->save();
         }
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => route('product-details', $request->product_id)]);
+    }
+
+    // add_into_wishlist
+    public function add_into_wishlist(Request $request) {
+        $find = Wishlist::where('ip', $request->ip)->where('product_id', $request->id)->first();
+        if($find) {
+            return response()->json(['success' => true, 'status' => 'warning', 'message' => _lang('Product Already added into your wishlist')]);
+        } else {
+            $model = new Wishlist;
+            $model->ip = $request->ip;
+            $model->product_id = $request->id;
+            $model->save();
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Product added into your wishlist')]);
+        }
+    }
+
+    // wishlist
+    public function wishlist() {
+        $ip = getIp();
+        $product_id = [];
+
+        $wishlists = Wishlist::where('ip', $ip)->get();
+        foreach($wishlists as $wishlist) {
+            $product_id[] = $wishlist->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->get();
+
+        return view('eCommerce.wishlist', compact('products'));
+    }
+
+    // delete_into_wishlist
+    public function delete_into_wishlist(Request $request) {
+        $find = Wishlist::where('ip', $request->ip)->where('product_id', $request->id)->first();
+        if($find) {
+            $find->delete();
+        }
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Product Removed from your wishlist') , 'load' => true]);
     }
 }

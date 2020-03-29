@@ -147,7 +147,7 @@ class EmployeeListController extends Controller
        $emp_designation_model -> save();
 
        activity()->log('Created an Employee - ' . $request->name);
-       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.employee-list.index')]);
+       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
 
    }
 

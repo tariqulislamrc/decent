@@ -7,15 +7,15 @@
             @csrf
             <div class="row">
                 {{-- Employee Designation Name --}}
-                <div class="col-md-12 form-group">
+                <div class="col-md-6 form-group">
                     <label for="name">{{_lang('Designation Name')}} <span class="text-danger">*</span>
                     </label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Designation Name"
+                    <input autocomplete="off" type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Designation Name"
                         required>
                 </div>
         
                 {{-- Category --}}
-                <div class="col-md-12 form-group">
+                <div class="col-md-6 form-group">
                     <label for="name">{{_lang('Category')}} <span class="text-danger">*</span>
                     </label>
                     <select data-parsley-errors-container="#parsley_add_designation_catagory" data-placeholder="Please Select One" name="employee_category_id" id="employee_category_id" class="form-control select" required>
