@@ -213,4 +213,8 @@ class DepertmentReportController extends Controller
       }
 
 
+    //   ecommerce_report
+    public function ecommerce_report () {
+
+    }
 }

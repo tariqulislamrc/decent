@@ -40,9 +40,7 @@ Route::get('blog',function(){
 	return view('eCommerce.blog');
 })->name('blog');
 
-Route::get('wishlist',function(){
-	return view('eCommerce.wishlist');
-})->name('wishlist');
+Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
 
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
@@ -59,6 +57,8 @@ Route::get('product-list',function(){
 Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
+Route::get('wishlist-add', 'Frontend\Front_End_Controller@add_into_wishlist')->name('add_into_wishlist');
+Route::get('wishlist-delete', 'Frontend\Front_End_Controller@delete_into_wishlist')->name('delete_into_wishlist');
 Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
 Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
 Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
@@ -507,6 +507,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('terams-conditions/index','TeramsConditionsController@index')->name('terams-conditions.index');
 		Route::post('terams-conditions/store','TeramsConditionsController@store')->name('terams-conditions.store');
 
+		// eCommerce Order
+		Route::get('orders/index', 'OrderController@index')->name('order.index');
+		Route::post('orders/change_ship_address', 'OrderController@change_ship_address')->name('order.change_ship_address');
+		Route::get('orders/pdf/{id}', 'OrderController@pdf')->name('order.pdf');
+		Route::get('orders/change-status', 'OrderController@change_status')->name('order.change_status');
+		Route::get('orders/sort-order', 'OrderController@sort_order')->name('order.sort_order');
+		Route::get('orders/sort-order-date-wise', 'OrderController@sort_order_date_wise')->name('order.sort_order_date_wise');
+		Route::get('orders/show/{id}', 'OrderController@show')->name('order.show');
+
+		// page-banner
+		Route::resource('page-banner', 'PageBannerController');
+
 	});
 
 	//Sms Marketing:::::::::::::::::::
@@ -616,9 +628,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::post('product/report-details','DepertmentReportController@get_product_report_details')->name('get_product_report_details');
 
            Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
-           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
+           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('ecommerce_report.pdf');
 
-        });
+		});
+		
+		Route::get('eCommerce-report','DepertmentReportController@ecommerce_report')->name('eCommerce-report.index');
+		Route::get('eCommerce-report-date-wise','DepertmentReportController@ecommerce_report_date_wise')->name('ecommerce_report_date_wise');
+		Route::get('eCommerce-report/pdf/{$date}', function() {
+			dd('hello world');
+		})->name('ecommerce_report.pdf');
+
 	 });
 
 	});

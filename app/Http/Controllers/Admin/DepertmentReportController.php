@@ -12,6 +12,8 @@ use App\models\depertment\Depertment;
 use App\models\depertment\DepertmentStore;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
+use App\models\Production\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -276,5 +278,40 @@ class DepertmentReportController extends Controller
         }
 
     return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Reported Generated'),'load'=>true]);
+    }
+
+    //   ecommerce_report
+    public function ecommerce_report () {
+        $models = Transaction::where('created_at', Carbon::today())->where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->get();
+        return view('admin.report.ecommerce.report',compact('models'));
+    }
+
+    // ecommerce_report_date_wise
+    public function ecommerce_report_date_wise(Request $request) {
+        $date = $request->start;
+        $ex = explode('to', $date);
+        $start = $ex[0];
+        $end = trim($ex[1]);
+
+        $start_date = formatDate($start);
+        $end_date = formatDate($end);
+        
+        $models = Transaction::where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
+        return view('admin.report.eCommerce.data', compact('models', 'start_date', 'end_date', 'date'));
+    }
+
+    // ecommerce_report_pdf
+    public function ecommerce_report_pdf($date) {
+        dd($date);
+        // $ex = explode('to', $date);
+        // $start = $ex[0];
+        // $end = trim($ex[1]);
+
+        // $start_date = formatDate($start);
+        // $end_date = formatDate($end);
+        
+        // $models = Transaction::where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
+
+        // dd($models);
     }
 }

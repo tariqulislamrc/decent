@@ -64,6 +64,12 @@ Breadcrumbs::for('employee-category', function ($trail) {
     $trail->push('Employee Category', route('admin.employee-category.index'));
 });
 
+// Home > eCommerce Order List
+Breadcrumbs::for('ecommerce-ordeer-list', function ($trail) {
+    $trail->parent('home');
+    $trail->push('eCommerce-Order-List', route('admin.eCommerce.order.index'));
+});
+
 // Home > Employee Shift
 Breadcrumbs::for('employee-shift', function ($trail) {
     $trail->parent('home');

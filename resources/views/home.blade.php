@@ -17,20 +17,6 @@
 <!-- Basic initialization -->
 
     <div class="row">
-        {{-- User Count Card --}}
-        <div class="col-md-3">
-            <div class="widget-small danger coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                <div class="info">
-                    <h4>Total User</h4>
-                    <p><b>
-                    @php
-                        $users = App\User::get();
-                        echo count($users) - 1;
-                    @endphp
-                    </b></p>
-                </div>
-            </div>
-        </div>
         
     </div>
 
@@ -76,6 +62,101 @@
                                 $users = App\Models\Employee\Employee::get();
                                 echo count($users);
                             @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border border-danger mt-3">
+        <div class="card-header text-center"><h4>{{_lang('eCommerce Section')}} </h4></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-calendar-plus-o fa-3x"></i>
+                        <div class="info">
+                            <h4>{{_lang('Today Sale')}} </h4>
+                            <p><b>
+                            @php
+                                $count = App\models\Production\Transaction::where('created_at', Carbon\Carbon::today())->where('ecommerce_status', '!=', null)->sum('net_total');
+                                echo (get_option('currency') ? get_option('currency') : 'BDT' ). ' '. $count;
+                                echo '<br>';
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Short Question -->
+                <div class="col-md-4">
+                    <div class="widget-small info coloured-icon"><i class="icon fa fa-calendar-check-o fa-3x"></i>
+                        <div class="info">
+                            <h4>This Month's Sales</h4>
+                            <p><b>
+                            @php
+                                $count = App\models\Production\Transaction::whereMonth('created_at', date('m'))->where('ecommerce_status', '!=', null)->sum('net_total');
+                                echo (get_option('currency') ? get_option('currency') : 'BDT' ). ' '. $count;
+                                echo '<br>';
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+                        
+                <!-- True False -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-calendar fa-3x"></i>
+                        <div class="info">
+                            <h4>This Year's Sales</h4>
+                            <p><b>
+                            @php
+                                $count = App\models\Production\Transaction::whereYear('created_at', date('Y'))->where('ecommerce_status', '!=', null)->sum('net_total');
+                                echo (get_option('currency') ? get_option('currency') : 'BDT' ). ' '. $count;
+                                echo '<br>';
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- True False -->
+                <div class="col-md-4">
+                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-archive fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Products</h4>
+                            <p><b>
+                            @php
+                                $count = App\models\Production\Product::where('status', 'Active')->where('title', '!=', null)->get();
+                                echo count($count);
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- True False -->
+                <div class="col-md-4">
+                    <div class="widget-small info coloured-icon"><i class="icon fa fa-user fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Customers</h4>
+                            <p><b>
+                            @php
+                                $count = App\models\Client::get();
+                                echo count($count);
+                            @endphp
+                            </b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- True False -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Newsletter SUBSCRIBER</h4>
+                            <p><b>
+                            
                             </b></p>
                         </div>
                     </div>

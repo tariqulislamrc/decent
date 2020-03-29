@@ -177,11 +177,14 @@ class CartController extends Controller
         $invoice_no = $code_prefix . $uniqu_id;
 
         $payment = new Transaction();
+        $payment->client_id = $request->client_id;
         $payment->invoice_no = $invoice_no;
         $payment->sub_total = $request->sub_total;
         $payment->net_total = $request->total;
-        $payment->order_notes = $request->order_note;
+        $payment->sell_note = $request->order_note;
+        $payment->sale_type = 'debit';
         $payment->payment_status = 'cash_on_delivery';
+        $payment->reference_no = rand(1, 100000000);
 
         if($request->checkbox == 'on'){
             $payment->shipping_status = 'On';
@@ -191,9 +194,9 @@ class CartController extends Controller
             $payment->address = $request->foraddress;
             $payment->city = $request->forcity;
         }
+        $payment->ecommerce_status = 'pending';
         $payment->save();
         $transaction_id = $payment->id;
-
 
         for ($i = 0; $i < count($request->product_id); $i++) {
 

@@ -57,7 +57,6 @@
 
 								@foreach ($products as $item)
 								@php
-								dd($item);
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
 									$low = $low_price->default_sell_price;
 
@@ -80,7 +79,17 @@
 													</ul> --}}
 													<ul class="links">
 														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
+														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
+														@php
+															$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+														@endphp	
+														@if ($check)
+															<i class="fa fa-heart" aria-hidden="true"></i>
+														@else 	
+															<i class="fa fa-heart-o" aria-hidden="true"></i>
+														@endif
+														
+														</a></li>
 														{{-- <li><a href="#"><i class="icomoon icon-exchange"></i></a></li> --}}
 													</ul>
 												</div>
@@ -112,5 +121,36 @@
 				</div>
 			</main><!-- mt main end here -->
 	<!-- footer of the Page -->
+@endpush
+
+@push('scripts')
+<script>
+	$(document).on('click', '.heart', function() {
+		var id = $(this).data('id');
+		var ip = '{{getIp()}}';
+		var url = $(this).data('url');
+		
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+		
+		$.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                id: id, ip: ip
+            },
+			beforeSend: function() {
+                $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
+            }, 
+            success: function (data) {
+                if(data.status == 'success') {
+                    toastr.success(data.message);
+                }
+				if(data.status == 'warning') {
+                    toastr.warning(data.message);
+                }
+            }
+        });
+	})
+</script>
 @endpush
 	
