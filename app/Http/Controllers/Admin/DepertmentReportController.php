@@ -302,16 +302,18 @@ class DepertmentReportController extends Controller
 
     // ecommerce_report_pdf
     public function ecommerce_report_pdf($date) {
-        dd($date);
-        // $ex = explode('to', $date);
-        // $start = $ex[0];
-        // $end = trim($ex[1]);
-
-        // $start_date = formatDate($start);
-        // $end_date = formatDate($end);
+        $date = base64_decode($date);
         
-        // $models = Transaction::where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
+        $ex = explode('to', $date);
+        $start = $ex[0];
+        $end = trim($ex[1]);
 
-        // dd($models);
+        $start_date = formatDate($start);
+        $end_date = formatDate($end);
+        
+        $models = Transaction::where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
+
+        return view('admin.report.eCommerce.pdf', compact('models', 'start_date', 'end_date'));
+
     }
 }

@@ -22,14 +22,19 @@
         <div class="col-md-12">
             <div class="tile">
                 <h4 class="tile-title">
-                    {{_lang('Sort Order List Usign Order Status')}}
+                    {{_lang('Search Order List Report')}}
                 </h4>
                 <div class="tile-body">
                 
-                    <input data-url="{{route('admin.report.ecommerce_report_date_wise')}}" type="text" class="form-control mt-3" id="date" autocomplete="off" >
+                    <input placeholder="Select Your Custom Date" data-url="{{route('admin.report.ecommerce_report_date_wise')}}" type="text" class="form-control mt-3" id="date" autocomplete="off" >
 
                     <div class="text-center" id="show_loader" style="display:none;">
                         <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    </div>
+
+                    <div class="text-justify my-2 col-md-12 mx-auto border p-3 border-primary">
+                        <strong>For Searching Ecommerce Order Report, click on the input field in the top of this container. </strong>
+                        <strong class="text-danger">Seems You Want to find data for this date (2020-04-05), then you must have to search your start date to (2020-04-06). Moreover If you want to today's report you have to select tomorrow date.</strong> <strong class="text-info">Basically when you come to this page, yyou can see only today's data that is available.</strong> <strong>When You make custom search, if there is at least 1 data available then you can get an INVOICE PRINT button, that can make AN INVOICE for you.</strong>
                     </div>
 
                 </div>

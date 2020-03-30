@@ -1,7 +1,12 @@
 <h6 class="text-center"> From - {{$start_date}} To - {{$end_date}} </h6>
-<div class="my-2 mx-auto col-md-4">
-    <a href=" {{ route('admin.report.ecommerce_report.pdf',$date)}} " target="blank"><button type="button" class="btn btn-primary btn-block">Print An Invoice</button></a>
+
+@if (count($models) > 0)
+<div class="my-4 mx-auto col-md-4">
+    <a href=" {{ route('admin.report.ecommerce_report.pdf',base64_encode($date))}} " target="blank"><button type="button" class="btn btn-primary btn-block">Print An Invoice</button></a>
 </div>
+@endif
+
+
 <table class="table table-hover table-bordered content_managment_table">
     <thead>
         <tr>
