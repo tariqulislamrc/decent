@@ -139,13 +139,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="paid">{{ _lang('Paid') }} </label>
-                                    <input type="text" class="form-control" name="paid" id="paid">
+                                    <input type="text" class="form-control paid" name="paid" id="paid">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="due">{{ _lang('Due') }} </label>
+                                    <input type="text" class="form-control due" name="due" id="due" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="paid">{{ _lang('Method') }} </label>
                                     <select name="method" class="form-control method">
@@ -423,6 +429,7 @@ $("#item").on('click', '.btn_remove', function() {
 
         $(".net_total").val(net_total);
         $(".net_total").text(net_total);
+        $(".paid").val(net_total);
         var change_amount =calculate_balance_due(net_total);
         $('.change_return_span').text(change_amount);
         $('#due').val(change_amount);
