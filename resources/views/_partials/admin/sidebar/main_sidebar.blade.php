@@ -621,14 +621,56 @@
            href="https://fontawesome.com/v4.7.0/icons/"><i class="app-menu__icon fa fa-font-awesome"></i><span
                 class="app-menu__label">{{_lang('Font Awosome')}}</span></a></li>
 
+
+                
+            {{-- Account Section--}}
+        <li class="treeview {{ Request::is('admin/accounting*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Accounting')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                @can('expenseCategory.view')
+                    {{-- Expense Category--}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/accounting/account*') ? 'active':''}}"
+                           href="{{ route('admin.accounting.account.index') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Account List')}}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                    {{-- payment accunt --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/accounting/payment/account') ? 'active':''}}"
+                           href="{{ route('admin.accounting.payment_account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Payment Account')}}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                    {{-- payment accunt --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/accounting/cashflow') ? 'active':''}}"
+                           href="{{ route('admin.accounting.cashflow') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Cashflow')}}
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+
 @endif
 <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
-       href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
-            class="app-menu__label">{{_lang('Report')}}</span></a></li>
+       href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span class="app-menu__label">{{_lang('Report')}}</span></a></li>
 @if (Request::is('admin/report*'))
     <li class="treeview {{ Request::is('admin/report/depertment*') ? ' is-expanded' : '' }}">
-        <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-desc"
-                                                                     aria-hidden="true"></i>
+        <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-desc" aria-hidden="true"></i>
             <span class="app-menu__label">{{_lang('Department Report')}}</span>
             <i class="treeview-indicator fa fa-angle-right"></i>
         </a>

@@ -14,7 +14,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             {{ Form::label('paid', _lang('Paid')) }}
-                                            {{ Form::text('paid', null, ['class' => 'form-control input_number', 'id'=>'paid', 'placeholder' => _lang('Paid')]) }}
+                                            {{ Form::text('paid', null, ['class' => 'form-control paid', 'id'=>'paid', 'placeholder' => _lang('Paid')]) }}
                                         </div>
                                         
                                     </div>
