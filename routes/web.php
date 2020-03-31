@@ -517,6 +517,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('orders/show/{id}', 'OrderController@show')->name('order.show');
 
 		// page-banner
+		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');
 		Route::resource('page-banner', 'PageBannerController');
 
 	});

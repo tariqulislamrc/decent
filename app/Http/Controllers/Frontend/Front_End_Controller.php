@@ -15,6 +15,7 @@ use App\models\eCommerce\OurTeam;
 use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
 use App\models\eCommerce\HomePage;
+use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
@@ -58,8 +59,9 @@ class Front_End_Controller extends Controller{
     }
 
     public function category_product($id){
+        $banner = PageBanner::where('page_name', 'Category')->first();
         $products = Product::where('category_id', $id)->get();
-        return view('eCommerce.category', compact('products'));
+        return view('eCommerce.category', compact('products','banner'));
     }
         
     public function account()
@@ -85,7 +87,8 @@ class Front_End_Controller extends Controller{
     }
 
     public function contactUs(){
-        return view('eCommerce.contact');
+        $banner = PageBanner::where('page_name','Contact')->first();
+        return view('eCommerce.contact', compact('banner'));
     }
 
     public function contact(Request $request){
@@ -102,6 +105,7 @@ class Front_End_Controller extends Controller{
     }
 
     public function product(){
+        $banner = PageBanner::where('page_name', 'Product')->first();
         $product_id = [];
         $brand_id = get_option('default_brand');
         $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
@@ -110,7 +114,7 @@ class Front_End_Controller extends Controller{
         }
         $products = Product::whereIn('id', $product_id)->get();
         $category = Category::with('product')->get();
-        return view('eCommerce.product_grid_view', compact('category', 'products'));
+        return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
 
     public function product_details($id){
@@ -175,6 +179,7 @@ class Front_End_Controller extends Controller{
 
     // wishlist
     public function wishlist() {
+        $banner = PageBanner::where('page_name', 'Wishlist')->first();
         $ip = getIp();
         $product_id = [];
 
@@ -185,7 +190,7 @@ class Front_End_Controller extends Controller{
 
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->get();
 
-        return view('eCommerce.wishlist', compact('products'));
+        return view('eCommerce.wishlist', compact('products','banner'));
     }
 
     // delete_into_wishlist

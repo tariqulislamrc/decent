@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\models\eCommerce\Coupon;
 use App\models\Production\Product;
 use App\models\Client;
+use App\models\eCommerce\PageBanner;
 use App\models\inventory\TransactionSellLine;
 use App\models\Production\Transaction;
 use App\models\Production\VariationBrandDetails;
@@ -53,12 +54,13 @@ class CartController extends Controller
 
     public function show_cart()
     {
+        $banner = PageBanner::where('page_name', 'Cart')->first();
         $cart_total =  Cart::getContent();
         
         if (count($cart_total) > 0) {
             Session::put('coupon', null);
             $models = Cart::getContent();
-            return view('eCommerce.shopping-cart', compact('models'));
+            return view('eCommerce.shopping-cart', compact('models', 'banner'));
         }else{
             return redirect()->back()->with('error', 'The Cart is Empty.');  
         }
@@ -135,11 +137,12 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        $banner = PageBanner::where('page_name', 'Checkout')->first();
         if (auth('client')->check() == true) {
             $user = auth('client')->user('clients_id');
             $client = Client::findOrFail($user->clients_id);
             $models = Cart::getContent();
-            return view('eCommerce.checkout', compact('models', 'client'));
+            return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
         }
