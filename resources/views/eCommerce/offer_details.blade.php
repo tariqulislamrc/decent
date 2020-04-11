@@ -66,7 +66,8 @@
                             </ul> --}}
                             <!-- Breadcrumbs of the Page end -->
 
-                            <h2 class="text-uppercase">{{$product->name}}</h2>
+                            <h2 class="text-uppercase">{{$model->heading}}</h2>
+                            <p>{{$model->sub_heading}}</p>
 
                             <!-- Rank Rating of the Page -->
                             <div class="rank-rating">
@@ -84,9 +85,9 @@
                                     {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                                 </li>
                                 {{-- <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li> --}}
-                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$product->id}}" class="heart" style="cursor:pointer;">
                                     @php
-                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $product->id)->first();
                                     @endphp	
                                     @if ($check)
                                         <i class="fa fa-heart" aria-hidden="true"></i>
@@ -95,25 +96,27 @@
                                     @endif
                                     ADD TO WISHLIST</a></li>
                             </ul>
+                            @php
+                                $variation = '';
+                            @endphp
+                            @foreach ($product->variation as $item)
+                                @php
+                                    $variation .= $item->id;
+                                    $variation_name = $item->name;
+                                @endphp
+                            @endforeach
+                            <div style="text-align: center;
+                            font-size: 22px;
+                            font-weight: bold;" class="col-md-12">Variation : {{$variation_name}}</div>
+
                             <div class="txt-wrap">
                                 {{$product->short_description}}
                             </div>
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose Variation</label>
-                                <div class="col-md-8">
-                                    <select name="variation" required class="form-control select"
-                                        data-placeholder="Select Variation" id="get_price"
-                                        data-url='{{route('get-price')}}'>
-                                        <option value="">Select Variation</option>
-                                        @foreach ($product->variation as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                             <div class="text-holder row">
-                                <input type="hidden" name="price" value="" id="product_price">
-                                <div class="col-md-6"><span class="price" id="price"></span></div>
+                                <input type="hidden" name="variation" value="{{$variation}}">
+                                <input type="hidden" name="price" value="{{$model->new_price}}" id="product_price">
+                                <div class="col-md-6"><span class="price" id="price" >৳ <del> {{$model->old_price}}</del> </span></div>
+                                <div class="col-md-6"><span class="price" id="price">৳ {{$model->new_price}}</span></div>
                                 <div class="col-md-6 text-muted" id="qty"></div>
 
                             </div>

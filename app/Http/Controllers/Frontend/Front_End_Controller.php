@@ -136,10 +136,8 @@ class Front_End_Controller extends Controller{
     public function offer_details($uuid){
         // offer
         $model = EcommerceOffer::where('uuid',$uuid)->firstOrFail();
-        
         // product
         $product = Product::with('photo_details', 'variation')->where('id',$model->product_id)->first();
-        
         $product_rating = ProductRating::where('product_id',$model->product_id)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
@@ -148,6 +146,7 @@ class Front_End_Controller extends Controller{
         }else{
             $avarage_rating = 0;
         }
+        // dd($product);
         return view('eCommerce.offer_details', compact('model', 'product','product_rating','avarage_rating','total_row'));
     }
 
