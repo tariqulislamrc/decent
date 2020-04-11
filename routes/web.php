@@ -20,17 +20,22 @@ Route::get('/', 'Frontend\Front_End_Controller@index');
 
 Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
 	Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
+	Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
+	Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
+	Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
+	Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
 
 	// check_user_name_is_exist_or_not
 	Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
 	// check_email_is_exist_or_not
 	Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
+	Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 });
 
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
-
+Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
 Route::get('account', 'Frontend\Front_End_Controller@account')->name('account');
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
@@ -459,6 +464,22 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
+
+		// eCommerce-offer
+		Route::get('eCommerce-offer/datatable','eCommerceOfferController@datatable')->name('eCommerce-offer.datatable');
+		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');
+		Route::resource('eCommerce-offer', 'eCommerceOfferController');
+
+		// feature-product
+		Route::get('feature-product/datatable','FeatureProductController@datatable')->name('feature-product.datatable');
+		Route::get('feature-product/status', 'FeatureProductController@status')->name('feature-product.change_status');
+		Route::resource('feature-product', 'FeatureProductController');
+
+		// hotsale-product
+		Route::get('hotsale-product/datatable','HotSaleProductController@datatable')->name('hotsale-product.datatable');
+		Route::get('hotsale-product/status', 'HotSaleProductController@status')->name('hotsale-product.change_status');
+		Route::resource('hotsale-product', 'HotSaleProductController');
+
 		// All home page image route
 		Route::get('home-page/datatable','HomePageController@datatable')->name('home-page.datatable');
 		Route::resource('home-page','HomePageController');
