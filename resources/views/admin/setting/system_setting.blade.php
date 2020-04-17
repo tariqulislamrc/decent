@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-body">
-                    <div class="bs-component">
+                    <div pclass="bs-component">
 
                         <!-- Tab panes -->
                         {!! Form::open(['route' => 'admin.setting', 'id' => 'content_form','files' => true, 'method' => 'POST']) !!}

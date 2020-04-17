@@ -15,9 +15,9 @@ class CanInstall
      */
     public function handle($request, Closure $next)
     {
-		if(env('APP_INSTALLED',false) == true){
-			return $next($request);
-		}
-		return redirect('/installs');
+      if(env('APP_INSTALLED',false) == true){
+        return $next($request);
+      }
+		  return redirect('/installs');
     }
 }

@@ -1,16 +1,18 @@
+// 
+var _componentDatePicker = function () {
+    $(".take_date").dateDropper({
+        dropWidth: 200,
+        dropPrimaryColor: "#1abc9c",
+        dropBorder: "1px solid #1abc9c"
+    });
+}
+
 var _componentSelect2Normal = function() {
 
-    $('.select').select2({width:'100%'});
+    $('.select').select2();
 };
 
-var _componentDatePicker = function() {
-$('.date').datepicker({
-    format: "dd/mm/yyyy",
-    autoclose: true,
-    todayHighlight: true
-});
 
-};
 
 // $('.date').attr('readonly', true);
 
@@ -93,10 +95,9 @@ var _formValidation = function() {
             dataType: 'JSON',
             success: function(data) {
                 if (data.status == 'danger') {
-                    toastr.error(data.message);
-
+                    notify(data.message, 'danger');
                 } else {
-                    toastr.success(data.message);
+                    notify(data.message, 'success');
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
@@ -141,12 +142,11 @@ var _formValidation = function() {
                             });
                         }
                         // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
-                        toastr.error(value);
+                        notify(value, 'danger');
                         i++;
                     });
                 } else {
-                    toastr.warning(jsonValue.message);
-
+                    notify(jsonValue.message, 'danger');
                 }
                 _componentSelect2Normal();
                 $('#submit').show();
