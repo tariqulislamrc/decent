@@ -13,4 +13,9 @@ class Expense extends Model
     {
         return $this->belongsTo(ExpenseCategory::class,'expense_category_id','id');
     }
+
+     public function investment()
+    {
+        return $this->belongsTo('App\models\account\InvestmentAccount','investment_account_id','id');
+    }
 }

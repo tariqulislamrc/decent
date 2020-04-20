@@ -85,20 +85,17 @@ var DatatableSelect = function() {
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
                 {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                }, {
-                    data: 'date',
-                    name: 'date'
+                    data: 'name',
+                    name: 'name'
                 },{
-                    data: 'category',
-                    name: 'category'
+                    data: 'account_number',
+                    name: 'account_number'
                 },{
-                    data: 'account',
-                    name: 'account'
+                    data: 'note',
+                    name: 'note'
                 },{
-                    data: 'amount',
-                    name: 'amount'
+                    data: 'balance',
+                    name: 'balance'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -131,6 +128,7 @@ var DatatableSelect = function() {
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _componentSelect2Normal();
+                    _componentDatefPicker();
                     _modalFormValidation();
                 })
                 .fail(function(data) {

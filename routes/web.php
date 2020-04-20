@@ -649,6 +649,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
         Route::post('getLinkAccount','AccountController@postLinkAccount')->name('postLinkAccount');
         Route::get('cashflow','AccountController@cashflow')->name('cashflow');
 	  	Route::resource('account','AccountController');
+
+	  	Route::get('investment/get/{id}','InvestmentController@getInvest')->name('investment.getInvest');
+	  	Route::post('investment/get','InvestmentController@postInvest')->name('investment.postInvest');
+	  	Route::resource('investment','InvestmentController');
 	  });
 
 	});

@@ -662,6 +662,17 @@
                         </a>
                     </li>
                 @endcan
+
+                   @can('expenseCategory.view')
+                    {{-- payment accunt --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/accounting/investment') ? 'active':''}}"
+                           href="{{ route('admin.accounting.investment.index') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('InvestmentAccount')}}
+                        </a>
+                    </li>
+                @endcan
             </ul>
         </li>
 

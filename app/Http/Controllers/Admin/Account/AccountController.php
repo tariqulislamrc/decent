@@ -136,7 +136,7 @@ class AccountController extends Controller
                             ->with(['transaction', 'transaction.client'])
                             ->select(['type', 'amount', 'operation_date',
                                 'sub_type', 'transfer_transaction_id',
-                                DB::raw('(SELECT SUM(IF(AT.type="Credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.account_id  =account_transactions.account_id AND AT.deleted_at IS NULL) as balance'),
+                                DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.account_id  =account_transactions.account_id AND AT.deleted_at IS NULL) as balance'),
                                 'transaction_id',
                                 'account_transactions.id'
                                 ])
@@ -155,13 +155,13 @@ class AccountController extends Controller
 
             return DataTables::of($accounts)
                             ->addColumn('debit', function ($row) {
-                                if ($row->type == 'Debit') {
+                                if ($row->type == 'debit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '';
                             })
                             ->addColumn('credit', function ($row) {
-                                if ($row->type == 'Credit') {
+                                if ($row->type == 'credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '';
@@ -177,10 +177,10 @@ class AccountController extends Controller
                                 if (!empty($row->sub_type)) {
                                     $details = _lang($row->sub_type);
                                     if (in_array($row->sub_type, ['fund_transfer', 'deposit']) && !empty($row->transfer_transaction)) {
-                                        if ($row->type == 'Credit') {
-                                            $details .= ' ( ' . __('account.from') .': ' . $row->transfer_transaction->account->name . ')';
+                                        if ($row->type == 'credit') {
+                                            $details .= ' ( ' . _lang('Account from') .': ' . $row->transfer_transaction->account->name . ')';
                                         } else {
-                                            $details .= ' ( ' . __('account.to') .': ' . $row->transfer_transaction->account->name . ')';
+                                            $details .= ' ( ' . _lang('Account to') .': ' . $row->transfer_transaction->account->name . ')';
                                         }
                                     }
                                 } else {
@@ -312,7 +312,7 @@ class AccountController extends Controller
         )
             ->whereNull('AT.deleted_at')
             ->where('accounts.id', $id)
-            ->select('accounts.*', DB::raw("SUM( IF(AT.type='Credit', amount, -1 * amount) ) as balance"))
+            ->select('accounts.*', DB::raw("SUM( IF(AT.type='credit', amount, -1 * amount) ) as balance"))
             ->first();
 
         return $account;
