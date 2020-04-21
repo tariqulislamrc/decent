@@ -109,7 +109,7 @@ class InvestmentController extends Controller
          if ($request->ajax()) {
              $q =AccountTransaction::query();
 
-          if (!empty(request()->input('type'))) {
+           if (!empty(request()->input('type'))) {
                 $q=$q->where('type', request()->input('type'));
             }
             $start_date = request()->input('start_date');
@@ -133,7 +133,13 @@ class InvestmentController extends Controller
                                     return '<span class="badge badge-info">Deposit</span">';
                                 }
                                 elseif($row->sub_type == 'expense')
-                                return '<span class="badge badge-danger">Expense</span">';
+                                {
+                                    return '<span class="badge badge-danger">Expense</span">';
+                                }
+                                else
+                                {
+                                    return '<span class="badge badge-success">Intial Investment</span">';
+                                }
                             })
                   ->addColumn('debit', function ($row) {
                                 if ($row->type == 'debit') {

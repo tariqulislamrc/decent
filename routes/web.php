@@ -636,6 +636,13 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('eCommerce-report','DepertmentReportController@ecommerce_report')->name('eCommerce-report.index');
 		Route::get('eCommerce-report-date-wise','DepertmentReportController@ecommerce_report_date_wise')->name('ecommerce_report_date_wise');
 	 	Route::get('eCommerce-report/pdf/{id}', 'DepertmentReportController@ecommerce_report_pdf')->name('ecommerce_report.pdf');
+
+	 	Route::group(['as' => 'expense.', 'prefix' => 'expense','namespace' => 'Report'], function () {
+           Route::get('/','ExpenseReportController@index')->name('index');
+           Route::post('/','ExpenseReportController@get_expense_report')->name('get_expense_report');
+           Route::get('account','ExpenseReportController@account')->name('account');
+           Route::post('account','ExpenseReportController@get_expense_account_report')->name('get_expense_account_report');
+	 	});
 	});
 
 

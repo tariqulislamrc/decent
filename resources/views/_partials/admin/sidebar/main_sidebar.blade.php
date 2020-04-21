@@ -726,4 +726,86 @@
 
     {{-- Ecommerce Report --}}
     <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}" href="{{ route('admin.report.eCommerce-report.index') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('eCommerce Report')}}</span></a></li>
+
+        <li class="treeview {{ Request::is('admin/report/expense*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Expense Report')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                @can('expenseCategory.view')
+                    {{-- Expense Category--}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.index') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Expense Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Expense Account Report')}}
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+
+        <li class="treeview {{ Request::is('admin/report/selling*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Selling Report')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                @can('expenseCategory.view')
+                    {{-- Expense Category--}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.index') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sales Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sales Payment Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                    @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sales Due Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                    @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
+                           href="{{ route('admin.report.expense.account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sales Return Report')}}
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
 @endif

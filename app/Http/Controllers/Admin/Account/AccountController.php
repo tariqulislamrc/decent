@@ -602,7 +602,7 @@ class AccountController extends Controller
                             ->with(['transaction', 'transaction.client'])
                             ->select(['type', 'amount', 'operation_date',
                                 'sub_type', 'transfer_transaction_id',
-                                DB::raw('(SELECT SUM(IF(AT.type="Credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.deleted_at IS NULL) as balance'),
+                                DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.deleted_at IS NULL) as balance'),
                                 'transaction_id',
                                 'account_transactions.id',
                                 'A.name as account_name'
@@ -626,14 +626,14 @@ class AccountController extends Controller
 
             return DataTables::of($accounts)
                             ->addColumn('debit', function ($row) {
-                                if ($row->type == 'Debit') {
+                                if ($row->type == 'debit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
 
                                 }
                                
                             })
                             ->addColumn('credit', function ($row) {
-                                if ($row->type == 'Credit') {
+                                if ($row->type == 'credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                
@@ -649,7 +649,7 @@ class AccountController extends Controller
                                 if (!empty($row->sub_type)) {
                                     $details = _lang( $row->sub_type);
                                     if (in_array($row->sub_type, ['fund_transfer', 'deposit']) && !empty($row->transfer_transaction)) {
-                                        if ($row->type == 'Credit') {
+                                        if ($row->type == 'credit') {
                                             $details .= ' ( ' . _lang('Form') .': ' . $row->transfer_transaction->account->name . ')';
                                         } else {
                                             $details .= ' ( ' . _lang('To') .': ' . $row->transfer_transaction->account->name . ')';
