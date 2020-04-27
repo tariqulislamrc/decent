@@ -643,6 +643,17 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::get('account','ExpenseReportController@account')->name('account');
            Route::post('account','ExpenseReportController@get_expense_account_report')->name('get_expense_account_report');
 	 	});
+
+	 	Route::group(['as' => 'selling.', 'prefix' => 'selling','namespace' => 'Report'], function () {
+	 		Route::get('sales','SalesReportController@index')->name('sales');
+	 		Route::post('sales','SalesReportController@get_sales_report')->name('get_sales_report');
+	 		Route::get('sales-payment','SalesReportController@sales_payment')->name('sales_payment');
+	 		Route::post('sales-payment','SalesReportController@sales_payment_report')->name('sales_payment_report');
+	 		Route::get('sales-due','SalesReportController@sales_due')->name('sales_due');
+	 		Route::post('sales-due','SalesReportController@sales_due_report')->name('sales_due_report');
+	 		Route::get('sale-return','SalesReportController@sale_return')->name('sale_return');
+	 		Route::post('sale-return','SalesReportController@sale_return_report')->name('sale_return_report');
+	 	});
 	});
 
 

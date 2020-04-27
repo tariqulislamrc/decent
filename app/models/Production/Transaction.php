@@ -46,6 +46,11 @@ class Transaction extends Model
         return $this->hasMany(Transaction::class, 'return_parent_id');
     }
 
+    public function return_trans()
+    {
+        return $this->belongsTo(Transaction::class, 'return_parent_id');
+    }
+
     public function created_person()
     {
         return $this->belongsTo('App\User', 'created_by');

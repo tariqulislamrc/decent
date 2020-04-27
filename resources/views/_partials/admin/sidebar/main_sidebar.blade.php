@@ -766,8 +766,8 @@
                 @can('expenseCategory.view')
                     {{-- Expense Category--}}
                     <li class="mt-1">
-                        <a class="treeview-item {{Request::is('admin/report/expense') ? 'active':''}}"
-                           href="{{ route('admin.report.expense.index') }}">
+                        <a class="treeview-item {{Request::is('admin/report/selling/sales') ? 'active':''}}"
+                           href="{{ route('admin.report.selling.sales') }}">
                             <i class="icon fa fa-circle-o"></i>
                             {{_lang('Sales Report')}}
                         </a>
@@ -777,8 +777,8 @@
                 @can('expenseCategory.view')
                     {{-- Expense --}}
                     <li class="mt-1">
-                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
-                           href="{{ route('admin.report.expense.account') }}">
+                        <a class="treeview-item {{Request::is('admin/report/selling/sales-payment') ? 'active':''}}"
+                           href="{{ route('admin.report.selling.sales_payment') }}">
                             <i class="icon fa fa-circle-o"></i>
                             {{_lang('Sales Payment Report')}}
                         </a>
@@ -788,8 +788,8 @@
                     @can('expenseCategory.view')
                     {{-- Expense --}}
                     <li class="mt-1">
-                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
-                           href="{{ route('admin.report.expense.account') }}">
+                        <a class="treeview-item {{Request::is('admin/report/selling/sales-due') ? 'active':''}}"
+                           href="{{ route('admin.report.selling.sales_due') }}">
                             <i class="icon fa fa-circle-o"></i>
                             {{_lang('Sales Due Report')}}
                         </a>
@@ -799,8 +799,8 @@
                     @can('expenseCategory.view')
                     {{-- Expense --}}
                     <li class="mt-1">
-                        <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
-                           href="{{ route('admin.report.expense.account') }}">
+                        <a class="treeview-item {{Request::is('admin/report/selling/sale-return') ? 'active':''}}"
+                           href="{{ route('admin.report.selling.sale_return') }}">
                             <i class="icon fa fa-circle-o"></i>
                             {{_lang('Sales Return Report')}}
                         </a>

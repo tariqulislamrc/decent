@@ -17,6 +17,11 @@ class TransactionPayment extends Model
     
     public function client()
     {
-        return $this->belongsTo('App\models\Client');
+        return $this->belongsTo('App\models\Client','client_id','id');
+    }
+
+      public function self_payment()
+    {
+        return $this->hasMany(TransactionPayment::class, 'transaction_id', 'id');
     }
 }
