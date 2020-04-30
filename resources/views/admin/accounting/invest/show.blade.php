@@ -1,13 +1,13 @@
-@extends('layouts.app', ['title' => _lang('Details Account'), 'modal' => 'lg'])
-{{-- Header Section --}}
+@extends('layouts.app', ['title' => _lang('Investment Details Account'), 'modal' => 'lg'])
 @push('admin.css')
     <link rel="stylesheet" href="{{asset('backend/css/picker/daterangepicker.css')}}">
 @endpush
+{{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Account."><i class="fa fa-universal-access mr-4"></i> {{_lang('Account')}}</h1>
-        <p>{{_lang('Details Account.')}}</p>
+        <h1 data-placement="bottom" title="Account."><i class="fa fa-universal-access mr-4"></i> {{_lang('Investment Account')}}</h1>
+        <p>{{_lang('Investment Details Account.')}}</p>
     </div>
 </div>
 @stop
@@ -26,15 +26,15 @@
                                 <table class="table">
                                     <tr>
                                         <th>{{ _lang('Account Name') }}: </th>
-                                        <td>{{$account->name}}</td>
+                                        <td>{{$investment->name}}</td>
                                     </tr>
                                     <tr>
                                         <th>{{ _lang('Account No') }}:</th>
-                                        <td>{{$account->account_number}}</td>
+                                        <td>{{$investment->account_number}}</td>
                                     </tr>
                                     <tr>
                                         <th>{{ _lang('Balance') }}:</th>
-                                        <td><span id="account_balance"></span></td>
+                                        <td><span id="account_balance">{{ $balance }}</span></td>
                                     </tr>
                                 </table>
                             </div>
@@ -51,7 +51,7 @@
                                     <div class="form-group">
                                         {!! Form::label('transaction_date_range', _lang('Date Range') . ':') !!}
                                         <div class="input-group">
-                                            {!! Form::text('transaction_date_range', null, ['class' => 'form-control', 'readonly', 'placeholder' => _lang('Date Range')]) !!}
+                                            {!! Form::text('transaction_date_range', null, ['class' => 'form-control', 'readonly','id'=>'transaction_date_range','placeholder' => _lang('Date Range')]) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -81,10 +81,15 @@
                                                 <th>{{ _lang('Description') }}</th>
                                                 <th>{{ _lang('Credit') }}</th>
                                                 <th>{{ _lang('Debit') }}</th>
-                                                <th>{{ _lang('Balance') }}</th>
-                                                <th>{{ _lang('Action') }}</th>
                                             </tr>
                                         </thead>
+                                        <tfoot>
+                                            <tr class="bg-gray">
+                                                <td colspan="2">{{ _lang('Total') }}</td>
+                                                <td><span id="footer_total_credit"></span></td>
+                                                <td><span id="footer_total_debit"></span></td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 @endcan
@@ -110,17 +115,12 @@
 <script src="{{ asset('backend/js/picker/moment-timezone-with-data.min.js') }}"></script>
 <script>
         $(document).ready(function(){
-        update_account_balance();
         
         // Account Book
         account_book = $('#account_book').DataTable({
                         processing: true,
                         serverSide: true,
-                        ajax: '{{route('admin.accounting.account.show',$account->id)}}',
-                          columnDefs: [{
-                                orderable: false,
-                                targets: [5]
-                            }],
+                        ajax: '{{route('admin.accounting.investment.show',$investment->id)}}',
 
                         order: [0, 'asc'],
                         "searching": false,
@@ -128,13 +128,14 @@
                             {data: 'operation_date', name: 'operation_date'},
                             {data: 'sub_type', name: 'sub_type'},
                             {data: 'credit', name: 'amount'},
-                            {data: 'debit', name: 'amount'},
-                            {data: 'balance', name: 'balance'},
-                            {data: 'action', name: 'action'}
+                            {data: 'debit', name: 'amount'}
                         ],
+                        "fnDrawCallback": function (oSettings) {
+                             $('#footer_total_credit').text(sum_table_col($('#account_book'), 'credit'));
+                             $('#footer_total_debit').text(sum_table_col($('#account_book'), 'debit'));
+                        }
                     });
     });
-
 
         $('#transaction_date_range').daterangepicker(
             $("#transaction_date_range").on('apply.daterangepicker',function(start,end){
@@ -146,36 +147,51 @@
                 }
                 var transaction_type = $('select#transaction_type').val();
                 console.log(transaction_type);
-                account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
+                account_book.ajax.url( '{{route('admin.accounting.investment.show',$investment->id)}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
                 
             })
         );
 
         $('#transaction_type').change( function(){
-              var start = '';
+                var start = '';
                 var end = '';
                 if($('#transaction_date_range').val()){
                     start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
                     end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
                 }
             var transaction_type = $('select#transaction_type').val();
-            account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
+               account_book.ajax.url( '{{route("admin.accounting.investment.show",[$investment->id])}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
         });
 
         $('#transaction_date_range').on('cancel.daterangepicker', function(ev, picker) {
             $('#transaction_date_range').val('');
-            account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}').load();
+            account_book.ajax.url( '{{route("admin.accounting.investment.show",[$investment->id])}}' ).load();
         });
 
-    function update_account_balance(argument) {
-        $('span#account_balance').html('<i class="fa fa-refresh fa-spin"></i>');
-        $.ajax({
-            url: '{{route('admin.accounting.getAccountBalance',$account->id)}}',
-            dataType: "json",
-            success: function(data){
-                $('span#account_balance').text(data.balance);
+
+    function sum_table_col(table, class_name) {
+    var sum = 0;
+    table
+        .find('tbody')
+        .find('tr')
+        .each(function() {
+            if (
+                parseFloat(
+                    $(this)
+                        .find('.' + class_name)
+                        .data('orig-value')
+                )
+            ) {
+                sum += parseFloat(
+                    $(this)
+                        .find('.' + class_name)
+                        .data('orig-value')
+                );
             }
         });
-    }
+
+    return sum;
+}
+
 </script>
 @endpush

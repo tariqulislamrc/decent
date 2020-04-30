@@ -30,6 +30,7 @@
                                 <th>{{_lang('id')}}</th>
                                 <td>{{ _lang('Date') }}</td>
                                 <th>{{_lang('Category')}}</th>
+                                <th>{{_lang('Account')}}</th>
                                 <th>{{_lang('Amount')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>

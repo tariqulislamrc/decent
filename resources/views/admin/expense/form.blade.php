@@ -14,6 +14,12 @@ $route = 'admin.expense.ex.';
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
+          {{ Form::label('investment_account_id', _lang('Investment Account') , ['class' => 'col-form-label']) }}
+          {!! Form::select('investment_account_id', $investment, null, ['class' => 'form-control select', 'required' ]); !!}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
           {{ Form::label('expense_category_id', _lang('Expense Category') , ['class' => 'col-form-label required']) }}
           <select name="expense_category_id" id="expense_category_id" class="form-control select" >
             <option value="">Select</option>
@@ -23,6 +29,7 @@ $route = 'admin.expense.ex.';
           </select>
         </div>
       </div>
+
       <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('amount', _lang('Amount') , ['class' => 'col-form-label']) }}

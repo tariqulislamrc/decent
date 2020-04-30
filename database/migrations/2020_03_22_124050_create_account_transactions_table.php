@@ -17,8 +17,10 @@ class CreateAccountTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->integer('investment_account_id')->nullable();
+            $table->integer('expense_id')->nullable();
             $table->enum('type', ['Debit', 'Credit']);
-            $table->enum('sub_type', ['opening_balance', 'fund_transfer', 'deposit','withdraw'])->nullable();
+            $table->enum('sub_type', ['opening_balance', 'fund_transfer', 'deposit','withdraw','expense'])->nullable();
             $table->double('amount', 10, 2);
             $table->string('reff_no')->nullable();
             $table->dateTime('operation_date');

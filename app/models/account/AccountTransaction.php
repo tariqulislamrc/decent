@@ -22,6 +22,10 @@ class AccountTransaction extends Model
         return $this->belongsTo(Account::class, 'account_id');
     }
 
+  public function user(){
+        return $this->belongsTo('App\User','created_by','id');
+   }
+
         /**
      * Creates new account transaction
      * @return obj
@@ -30,7 +34,8 @@ class AccountTransaction extends Model
     {
         $transaction_data = [
             'amount' => $data['amount'],
-            'account_id' => $data['account_id'],
+            'account_id' => !empty($data['account_id'])?$data['account_id']:null,
+            'investment_account_id' => !empty($data['investment_account_id'])?$data['investment_account_id']:null,
             'type' => $data['type'],
             'sub_type' => !empty($data['sub_type']) ? $data['sub_type'] : null,
             'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : Carbon::now(),

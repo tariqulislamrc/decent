@@ -128,6 +128,7 @@ var DatatableSelect = function() {
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _componentSelect2Normal();
+                      _componentDatefPicker();
                     _modalFormValidation();
                 })
                 .fail(function(data) {
