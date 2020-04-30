@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\EcommerceOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PrivacyPolicy;
@@ -38,6 +39,8 @@ class Front_End_Controller extends Controller{
 
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
 
+        $general_products = Product::OrderBy('id', 'desc')->take(4)->get();
+
         $seo  = Seo::first();
         $slider = Slider::all();
 
@@ -46,11 +49,10 @@ class Front_End_Controller extends Controller{
         $banner_fream     = HomePage::orderBy('id','desc')->take(3)->get();
         $banner_fream_two = HomePage::orderBy('id','desc')->take(2)->get();
         $featur_product   = Product::where('feature_product_status','1')->orderBy('id','desc')->take(20)->get();
-        $footer_featur_product   = Product::where('feature_product_status','1')->orderBy('id','desc')->take(3)->get();
-        $hot_sale   = Product::where('hot_sale_status','1')->orderBy('id','desc')->take(3)->get();
-        $latest_product   = Product::orderBy('id','desc')->take(20)->get();
-        //dd($latest_product);
-        return view('eCommerce.index',compact('seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product'));
+        $footer_featur_product   = Product::where('feature_product_status','1')->orderBy('id','desc')->take(4)->get();
+        $hot_sale   = Product::where('hot_sale_status','1')->orderBy('id','desc')->take(4)->get();
+        $latest_product   = Product::orderBy('id','desc')->take(4)->get();
+        return view('eCommerce.index',compact('general_products', 'seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product'));
     }
     
     public function privacyPolicy(){
@@ -60,8 +62,9 @@ class Front_End_Controller extends Controller{
 
     public function category_product($id){
         $banner = PageBanner::where('page_name', 'Category')->first();
-        $products = Product::where('category_id', $id)->get();
-        return view('eCommerce.category', compact('products','banner'));
+        $products = Product::where('category_id', $id)->paginate(15);
+        $category = Category::with('product')->get();
+        return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
         
     public function account()
@@ -112,7 +115,7 @@ class Front_End_Controller extends Controller{
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
         }
-        $products = Product::whereIn('id', $product_id)->get();
+        $products = Product::whereIn('id', $product_id)->paginate(15);
         $category = Category::with('product')->get();
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
@@ -128,6 +131,23 @@ class Front_End_Controller extends Controller{
         }
         $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model','product_rating','avarage_rating','total_row'));
+    }
+
+    public function offer_details($uuid){
+        // offer
+        $model = EcommerceOffer::where('uuid',$uuid)->firstOrFail();
+        // product
+        $product = Product::with('photo_details', 'variation')->where('id',$model->product_id)->first();
+        $product_rating = ProductRating::where('product_id',$model->product_id)->get();
+        $avarage = $product_rating->sum('rating');
+        $total_row = $product_rating->count();
+        if ($total_row>0) {
+            $avarage_rating = ($avarage / $total_row);
+        }else{
+            $avarage_rating = 0;
+        }
+        // dd($product);
+        return view('eCommerce.offer_details', compact('model', 'product','product_rating','avarage_rating','total_row'));
     }
 
     

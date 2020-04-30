@@ -8,13 +8,13 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 text-center">
-								<h1>CHAIRS</h1>
+								<h1>Product's List</h1>
 								<!-- Breadcrumbs of the Page -->
 								<nav class="breadcrumbs">
 									<ul class="list-unstyled">
-										<li><a href="index.html">Home <i class="fa fa-angle-right"></i></a></li>
-										<li><a href="product-detail.html">Products <i class="fa fa-angle-right"></i></a></li>
-										<li>Chairs</li>
+										<li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
+										<li><a href="{{route('product')}} ">Products <i class="fa fa-angle-right"></i></a></li>
+										<li>Product List</li>
 									</ul>
 								</nav><!-- Breadcrumbs of the Page end -->
 							</div>
@@ -38,82 +38,49 @@
 										</a>
 									</li>
 									@endforeach
-								</ul><!-- category list end here -->
-							</section><!-- shop-widget of the Page end here -->
-							<!-- shop-widget of the Page start here -->
+								</ul>
+							</section>
+
 							<section class="shop-widget">
 								<h2>HOT SALE</h2>
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Egon Wooden Chair</a></strong>
-											<ul class="mt-stars">
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-o"></i></li>
-											</ul>
+								@php
+									$hot_sale   = App\models\Production\Product::where('hot_sale_status','1')->orderBy('id','desc')->take(4)->get();
+								@endphp
+								@foreach ($hot_sale as $hot_sale_item)
+									@php
+										$find_price =  App\models\Production\Variation::where('product_id', $hot_sale_item->id)->get();
+										if(count($find_price) > 0) {
+											$total_product_variation = count($find_price);
+											$price = 0;
+											foreach($find_price as $row) {
+												$default_price = $row['default_sell_price'];
+												$price = $price + $default_price;
+											}
+									
+											$per_product_price = round($price / $total_product_variation) ;
+											
+										}
+									@endphp
+									<div class="mt-product4 mt-paddingbottom20">
+										<div class="img">
+											<a href="{{route('product-details',$hot_sale_item->id)}}"><img src="{{isset($hot_sale_item->photo)?asset('storage/product/'.$hot_sale_item->photo):''}}"></a>
 										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
-									</div>
-								</div><!-- mt product4 end here -->
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Oyo Cantilever Chair</a></strong>
+										<div class="text">
+											<div class="frame">
+												<strong><a href="{{route('product-details',$hot_sale_item->id)}}">{{$hot_sale_item->name}}</a></strong>
+												<ul class="mt-stars">
+													<li class="list-group-item count_rating" data-score={{$hot_sale_item->avarage_retting}}>
+												</ul>
+											</div>
+											<span class="price">৳ {{$per_product_price}} </span>
 										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
 									</div>
-								</div><!-- mt product4 end here -->
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Kurve Chair</a></strong>
-											<ul class="mt-stars">
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star"></i></li>
-												<li><i class="fa fa-star-o"></i></li>
-											</ul>
-										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
-									</div>
-								</div><!-- mt product4 end here -->
-								<!-- mt product4 start here -->
-								<div class="mt-product4 mt-paddingbottom20">
-									<div class="img">
-										<a href="product-detail.html"><img src="http://placehold.it/80x80" alt="image description"></a>
-									</div>
-									<div class="text">
-										<div class="frame">
-											<strong><a href="product-detail.html">Marvelous Wooden Chair</a></strong>
-										</div>
-										<del class="off">$75,00</del>
-										<span class="price">$55,00</span>
-									</div>
-								</div><!-- mt product4 end here -->
-							</section><!-- shop-widget of the Page end here -->
-						</aside><!-- sidebar of the Page end here -->
+								@endforeach									
+							</section>
+						</aside>
 						<div class="col-xs-12 col-sm-8 col-md-9 wow fadeInRight" data-wow-delay="0.4s">
-							<!-- mt shoplist header start here -->
 							<header class="mt-shoplist-header">
-								<!-- btn-box start here -->
-								<div class="btn-box">
+								{{-- <div class="btn-box">
 									<ul class="list-inline">
 										<li>
 											<a href="#" class="drop-link">
@@ -131,14 +98,15 @@
 										<li><a class="mt-viewswitcher" href="{{route('product')}}"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
 										<li><a class="mt-viewswitcher" href="{{route('product-list')}}"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
 									</ul>
-								</div><!-- btn-box end here -->
+								</div><!-- btn-box end here --> --}}
 								<!-- mt-textbox start here -->
-								<div class="mt-textbox">
+								{{-- <div class="mt-textbox">
 									<p>Showing  <strong>1–9</strong> of  <strong>65</strong> results</p>
 									<p>View   <a href="#">9</a> / <a href="#">18</a> / <a href="#">27</a> / <a href="#">All</a></p>
-								</div><!-- mt-textbox end here -->
+								</div><!-- mt-textbox end here --> --}}
 							</header><!-- mt shoplist header end here -->
 							<!-- mt productlisthold start here -->
+							@if (count($products) > 0)
 							<ul class="mt-productlisthold list-inline">
 
 								@foreach ($products as $item)
@@ -193,15 +161,12 @@
 								</li>
 								@endforeach
 							</ul><!-- mt productlisthold end here -->
-							<!-- mt pagination start here -->
-							<nav class="mt-pagination">
-								<ul class="list-inline">
-									<li><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-								</ul>
-							</nav><!-- mt pagination end here -->
+							{{ $products->links('eCommerce.paginate') }}
+							@else 
+
+								<div id="NoProductFound">No Product Found For This Category</div>
+
+							@endif
 						</div>
 					</div>
 				</div>

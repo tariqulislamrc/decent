@@ -30,7 +30,7 @@
 	<link rel="stylesheet" href="{{asset('frontend')}}/css/responsive.css">
 	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
 	<link href="{{asset('backend/css/parsley.css')}}" rel="stylesheet">
-	@stack('admin.css')
+	@stack('css')
 	@if (isset($seo))
 	{{$seo->google_analytics}}
 	{{$seo->bing_analytics}}
@@ -89,5 +89,47 @@
 	<script src="{{asset('frontend')}}/js/main.js"></script>
 	
 	@stack('scripts')
+	<script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        $(document).ready(function() {
+            /*
+            * For Logout
+            */
+            $(document).on('click', '#logout', function(e) {
+                e.preventDefault();
+                $(this).html('Please Wait...');
+                var url = $(this).data('url');
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: false, // The content type used when sending data to the server.
+                    cache: false, // To unable request pages to be cached
+                    processData: false,
+                    dataType: 'JSON',
+                    success: function(data) {
+                        toastr.success(data.message);
+
+                        setTimeout(function() {
+                            window.location.href = data.goto;
+                        }, 2000);
+                    },
+                    error: function(data) {
+                        var jsonValue = $.parseJSON(data.responseText);
+                        const errors = jsonValue.errors
+                        var i = 0;
+                        $.each(errors, function(key, value) {
+                            toastr.success(value);
+                            i++;
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

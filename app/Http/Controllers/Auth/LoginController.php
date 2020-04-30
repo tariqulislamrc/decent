@@ -159,7 +159,7 @@ class LoginController extends Controller {
      * @return mixed
      */
     protected function loggedOut(Request $request) {
-    return response()->json(['message' => 'Successfully Logout', 'goto' => route('login')]);
+        return response()->json(['message' => 'Successfully Logout', 'goto' => url('/')]);
     }
 
 	protected function guard()

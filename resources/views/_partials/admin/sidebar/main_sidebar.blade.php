@@ -462,11 +462,25 @@
         <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('E-Commerce')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
 
+                {{-- eCommerce Offer  --}}
+                @can('eCommerce_offer.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('eCommerce Offer')}}</a></li>
+                @endcan
+
+                {{-- Featured Product  --}}
+                @can('featured_product.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.feature-product.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Feature Product')}}</a></li>
+                @endcan
+
+                {{-- Hot sale Product  --}}
+                @can('hotsale_product.view')
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Hot Sale Product')}}</a></li>
+                @endcan
+
                 {{-- All Ecommerce page main banner --}}
                 @can('page_banner.view')
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Page Banner')}}</a></li>
                 @endcan
-
 
                 @can('role.view')
                     {{-- Add Slider  --}}

@@ -15,6 +15,7 @@ class CreateProductStatusProductTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->string('hot_sale_status')->nullable()->after('tek_marks');
+            $table->string('hot_sale_price')->nullable()->after('hot_sale_status');
             $table->string('feature_product_status')->nullable()->after('hot_sale_status');
         });
     }

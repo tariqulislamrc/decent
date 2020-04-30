@@ -1,33 +1,36 @@
 @extends('eCommerce.layouts.app')
 @push('admin.css')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 @push('seo_section')
-<meta name="title" content="{{$model->seo_title}}">
-<meta name="keyword" content="{{$model->keyword}}">
-<meta name="description" content="{{$model->meta_description}}">
-
+    <meta name="title" content="{{$product->seo_title}}">
+    <meta name="keyword" content="{{$product->keyword}}">
+    <meta name="description" content="{{$product->meta_description}}">
 @endpush
 @push('main')
-<!-- mt main start here -->
+
 <main id="mt-main">
-    <!-- Mt Product Detial of the Page -->
     <section class="mt-product-detial wow fadeInUp" data-wow-delay="0.4s">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <!-- Slider of the Page -->
                     <div class="slider">
+                        
                         <!-- Comment List of the Page -->
                         <ul class="list-unstyled comment-list">
-                            <li><a href="#"><i class="fa fa-heart"></i>27</a></li>
-                            <li><a href="#"><i class="fa fa-comments"></i>{{$total_row}}</a></li>
-                            <li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>
+                            <li><a href="#"><i class="fa fa-heart"></i>
+                                @php
+                                    $check = App\models\eCommerce\Wishlist::where('product_id', $product->id)->get();
+                                    echo count($check);
+                                @endphp
+                            </a></li>
+                            {{-- <li><a href="#"><i class="fa fa-comments"></i>{}</a></li> --}}
                         </ul>
                         <!-- Comment List of the Page end -->
+                        
                         <!-- Product Slider of the Page -->
                         <div class="product-slider">
-                            @foreach ($model->photo_details as $item)
+                            @foreach ($product->photo_details as $item)
                             <div class="slide">
                                 <img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/610x490'}}"
                                     alt="image descrption">
@@ -35,9 +38,10 @@
                             @endforeach
                         </div>
                         <!-- Product Slider of the Page end -->
+                        
                         <!-- Pagg Slider of the Page -->
                         <ul class="list-unstyled slick-slider pagg-slider">
-                            @foreach ($model->photo_details as $item)
+                            @foreach ($product->photo_details as $item)
                             <li>
                                 <div class="img"><img
                                         src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/105x105'}}"
@@ -51,16 +55,20 @@
                     <!-- Detail Holder of the Page -->
                     <form action="{{route('shopping-cart-add')}}" method="post" id="content_form">
                         @csrf
-                        <input type="hidden" name="id" value="{{$model->id}}">
-                        <input type="hidden" name="name" value="{{$model->name}}">
+                        <input type="hidden" name="id" value="{{$product->id}}">
+                        <input type="hidden" name="name" value="{{$product->name}}">
                         <div class="detial-holder">
+                            
                             <!-- Breadcrumbs of the Page -->
-                            <ul class="list-unstyled breadcrumbs">
+                            {{-- <ul class="list-unstyled breadcrumbs">
                                 <li><a href="#">Chairs <i class="fa fa-angle-right"></i></a></li>
                                 <li>Products</li>
-                            </ul>
+                            </ul> --}}
                             <!-- Breadcrumbs of the Page end -->
-                            <h2 class="text-uppercase">{{$model->name}}</h2>
+
+                            <h2 class="text-uppercase">{{$model->heading}}</h2>
+                            <p>{{$model->sub_heading}}</p>
+
                             <!-- Rank Rating of the Page -->
                             <div class="rank-rating">
                                 <ul class="ratting-area" style="padding-left: 0px;">
@@ -70,15 +78,16 @@
                                 <span class="total-price">Reviews ({{$total_row}})</span>
                             </div>
                             <!-- Rank Rating of the Page end -->
+
                             <ul class="list-unstyled list">
                                 <li>
                                     <div class="addthis_inline_share_toolbox"></div>
                                     {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                                 </li>
-                                <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li>
-                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                {{-- <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li> --}}
+                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$product->id}}" class="heart" style="cursor:pointer;">
                                     @php
-                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $product->id)->first();
                                     @endphp	
                                     @if ($check)
                                         <i class="fa fa-heart" aria-hidden="true"></i>
@@ -87,25 +96,27 @@
                                     @endif
                                     ADD TO WISHLIST</a></li>
                             </ul>
+                            @php
+                                $variation = '';
+                            @endphp
+                            @foreach ($product->variation as $item)
+                                @php
+                                    $variation .= $item->id;
+                                    $variation_name = $item->name;
+                                @endphp
+                            @endforeach
+                            <div style="text-align: center;
+                            font-size: 22px;
+                            font-weight: bold;" class="col-md-12">Variation : {{$variation_name}}</div>
+
                             <div class="txt-wrap">
-                                {{$model->short_description}}
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose Variation</label>
-                                <div class="col-md-8">
-                                    <select name="variation" required class="form-control select"
-                                        data-placeholder="Select Variation" id="get_price"
-                                        data-url='{{route('get-price')}}'>
-                                        <option value="">Select Variation</option>
-                                        @foreach ($model->variation as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{$product->short_description}}
                             </div>
                             <div class="text-holder row">
-                                <input type="hidden" name="price" value="" id="product_price">
-                                <div class="col-md-6"><span class="price" id="price"></span></div>
+                                <input type="hidden" name="variation" value="{{$variation}}">
+                                <input type="hidden" name="price" value="{{$model->new_price}}" id="product_price">
+                                <div class="col-md-6"><span class="price" id="price" >৳ <del> {{$model->old_price}}</del> </span></div>
+                                <div class="col-md-6"><span class="price" id="price">৳ {{$model->new_price}}</span></div>
                                 <div class="col-md-6 text-muted" id="qty"></div>
 
                             </div>
@@ -141,10 +152,10 @@
                     </ul>
                     <div class="tab-content">
                         <div id="tab1">
-                            {!!$model->product_description!!}
+                            {!!$product->product_description!!}
                         </div>
                         <div id="tab2">
-                            {{$model->information}}
+                            {{$product->information}}
                         </div>
                         <div id="tab3">
                             <div class="product-comment">
@@ -210,7 +221,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             @php
-                                $cat_id = $model->category_id;
+                                $cat_id = $product->category_id;
                                 $related = App\models\Production\Product::where('category_id', $cat_id)->inRandomOrder()->take(5)->get();
                             @endphp
                             @foreach ($related as $item)

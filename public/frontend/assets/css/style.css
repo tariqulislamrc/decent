@@ -1826,3 +1826,9 @@ body {
 	}
 
 }
+
+
+#mt-footer .nav-widget-1 {
+    width: 45.3%;
+    float: left;
+}

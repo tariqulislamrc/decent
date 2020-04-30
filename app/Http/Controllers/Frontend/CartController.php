@@ -21,7 +21,6 @@ class CartController extends Controller
 {
     public function add_cart(Request $request)
     {
-
         $request->validate([
             'variation' => 'required',
             'qty' => 'required'

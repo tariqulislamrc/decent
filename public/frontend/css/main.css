@@ -3256,7 +3256,7 @@ a:hover {
 }
 
 #mt-footer .nav-widget-1 {
-	width: 33.3%;
+	width: 44.3%;
 	float: left;
 }
 
@@ -12640,4 +12640,14 @@ ul.ratting-area {
 
 li.list-group-item.count_rating {
     width: 200px !important;
+}
+
+
+#NoProductFound {
+	text-align: center;
+	border: 1px solid yellow;
+	font-size: 25px;
+	background: #FFF3CD;
+	padding: 5px 10px;
+	margin-top: 20px;
 }
