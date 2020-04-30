@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\employee\Employee;
 use App\models\employee\EmployeeSalary;
+use App\models\employee\PayHead;
+use App\models\employee\PayrollDetail;
 use App\models\employee\Payrolls;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
@@ -39,7 +41,7 @@ class PayrollController extends Controller
                     return $output;
                 })
                 ->editColumn('payroll_period', function ($document) {
-                    return carbonDate(Carbon::parse($document->start_date)) . ' - '. carbonDate(Carbon::parse($document->end_date)) ;
+                    return formatDate($document->start_date) . ' - '. formatDate($document->end_date);
                 })
                 ->editColumn('net_salary', function ($document) {
                     $usd = get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT';
@@ -90,14 +92,13 @@ class PayrollController extends Controller
 
         $end_date = $request->end_date;
 
-        $salary = EmployeeSalary::where('employee_id', $emploee_id)->orderBy('created_at')->first();
+        $salary = EmployeeSalary::where('employee_id', $emploee_id)->where('date_effective', '<=', $start_date)->orderBy('created_at', 'desc')->first();
 
         if($salary) {
 
             $date_of_effective = $salary->date_effective;
 
-
-            if(strtotime($date_of_effective) < strtotime($request->start_date)) {
+            if(strtotime($date_of_effective) <= strtotime($request->start_date)) {
                 
                 $html = view('admin.employee.payroll.payroll.step_two', compact('salary', 'start_date', 'end_date'))->render();
 
@@ -125,6 +126,9 @@ class PayrollController extends Controller
      */
     public function store(Request $request)
     {
+        $earning_amount = 0;
+        $deduction_amount = 0;
+
         $request->validate([
             'employee_id'       =>      'required',
             'employee_salary_id'       =>      'required',
@@ -135,18 +139,48 @@ class PayrollController extends Controller
         ]);
         $uuid =  Str::uuid()->toString();
 
+        $count = count($request->pay_head);
+        for($i = 0; $i < $count; $i++) {
+            $pay_head_id = $request->pay_head[$i];
+            $pay_head = PayHead::where('id', $pay_head_id)->first();
+            if($pay_head->type == 'Earning') {
+                $amount = $request->amount[$i];
+                $earning_amount = $earning_amount + $amount;
+            } else {
+                $amount = $request->amount[$i];
+                $deduction_amount = $deduction_amount + $amount;
+            }
+        }
+        
+        $total = $earning_amount - $deduction_amount;
+        if($total < 0) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Total Amount is must be greater then 0')]);
+        }
+        $per_day_calculation_basis = $total / $request->total_present;
+        
         $model = new Payrolls;
         $model->uuid = $uuid;
         $model->employee_id = $request->employee_id;
         $model->employee_salary_id = $request->employee_salary_id;
         $model->start_date = $request->start_date;
         $model->end_date = $request->end_date;
-        $model->per_day_calculation_basis = $request->per_day_calculation_basis;
-        $model->total = $request->total;
+        $model->per_day_calculation_basis = $per_day_calculation_basis;
+        $model->total = $total;
         $model->paid = 0;
         $model->payment_status = 'Due';
         $model->remarks = $request->remarks;
         $model->save();
+        $id = $model->id; 
+
+        for ($i = 0; $i < $count; $i++) {
+            $pay_head_id = $request->pay_head[$i];
+            $amount = $request->amount[$i];
+            $item = new PayrollDetail;
+            $item->payroll_id = $id;
+            $item->pay_head_id = $pay_head_id;
+            $item->amount = $amount;
+            $item->save();
+        }
 
         // Activity Log
         activity()->log('Created a Employee Payroll- ');

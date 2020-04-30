@@ -4,9 +4,9 @@
             <div class="col-xs-12">
                 <!-- mt logo start here -->
                 {{-- <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset(get_option('logo')?'storage/logo/'.get_option('logo'):'favicon.png')}}"></a></div> --}}
-                <div class="mt-logo"><a href="{{route('f')}}"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
+                <div class="mt-logo"><a href="{{url('/')}}"><img alt="schon" src="{{asset('frontend')}}/images/mt-logo.png"></a></div>
                 <span class="tel"> +1 (555) 333 22 11</span>
-                <a href="{{route('shopping-cart-show')}}">
+                <a id='card_check' href="{{route('shopping-cart-show')}}">
                 <div class="mt-sh-cart2">
                     <span class="icon-handbag"></span>
                     <span id="cart_total">{{get_option('currency')}} {{\Cart::getTotal()}}</span>
@@ -16,7 +16,11 @@
                 <!-- mt nav box start here -->
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
-                        <li><a href="{{route('account')}}">My Account</a></li>
+                        @if (auth('client')->check())
+                            <li><a href="{{ route('member.dashboard') }} ">Dashboard / {{auth('client')->user()->id}}</a></li>
+                        @else
+                            <li><a href="{{route('login')}}">My Account</a></li>
+                        @endif
                         <li><a href="{{route('shopping-checkout')}}">Checkout</a></li>
                         <li><a href="{{route('wishlist')}}">Wishlist</a></li>
                     </ul>
@@ -25,7 +29,7 @@
                         <!-- navigation start here -->
                         <nav id="nav">
                             <ul>
-                                <li><a href="{{route('f')}}">Home</a></li>
+                                <li><a href="{{url('/')}}">Home</a></li>
                                 <li><a href="{{route('product')}}">Product</a></li>
                                 <li><a href="{{route('blog')}}">Blog</a></li>
                                 <li><a href="{{route('about')}}">About</a></li>

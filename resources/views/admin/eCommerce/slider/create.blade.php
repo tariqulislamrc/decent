@@ -28,12 +28,12 @@
                         <input type="text" name="title_heading" id="title_heading" class="form-control" placeholder="Title Heading" required>
                     </div>
 
-                    {{-- Product  Title Heading --}}
+                    {{-- slider_image --}}
                     <div class="col-md-6 form-group">
-                        <label for="slider_image">{{_lang('Slider Image')}} <span class="text-danger">*</span> </label>
+                        <label for="slider_image">{{_lang('Slider Image (765x580)')}} <span class="text-danger">*</span> </label>
                         <input type="file" name="slider_image" id="slider_image" class="form-control" required>
                     </div>
-                    {{-- Note For coupon --}}
+                    {{-- Short Description --}}
                     <div class="col-md-12 form-group">
                         <label for="short_description">{{_lang('Short Description')}}</label>
                         <textarea name="short_description" class="form-control" id="" placeholder="short_description"></textarea>

@@ -42,6 +42,12 @@
                     <th>{{$product->product_variation->variation1->name}}</th>
                     <th>{{$product->product_variation->variation2->name}}</th>
                     <input type="hidden" name="product_variation_id" value="{{$product->product_variation->id}}">
+                    <th>
+                        {{_lang('Purchase Price')}}
+                    </th>
+                    <th>
+                        {{_lang('Sell Price')}}
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +58,8 @@
                                 <td> {{ $item->sub_sku }}</td>
                                 <td> {{ $item->value1->name }}</td>
                                 <td> {{ $item->value2->name }}</td>
+                                <td> {{ $item->default_purchase_price }}</td>
+                                <td> {{ $item->default_sell_price }}</td>
                             </tr>
                             @endforeach
             </tbody>
@@ -81,6 +89,12 @@
                                     {{ $item->name }}
                                 </th>
                                 @endforeach
+                                <th>
+                                    {{_lang('Purchase Price')}}
+                                </th>
+                                <th>
+                                    {{_lang('Sell Price')}}
+                                </th>
                                 <th width="10%">
                                     <a data-placement="bottom" id="addVariation" title="Add More Variation Product" type="button" class="btn btn-success text-light" data-url="{{ route('admin.production-product.variation_add', $model->id) }}"><i class="fa fa-plus-square mr-2"
                                             aria-hidden="true"></i></i>{{_lang('Add')}}</a>
@@ -103,6 +117,14 @@
                                     </select> 
                                 </td>
                                 @endforeach
+                                
+                                <td>
+                                    <input type="text" name="variation[default_purchase_price][0]" class="form-control" value="">
+                                </td>
+                                <td>
+                                    <input type="text" name="variation[default_sell_price][0]" class="form-control" value="">
+                                </td>
+
                                 <td>
                                     <button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
                                 </td>

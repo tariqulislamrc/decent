@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'username', 'phone', 'status'
     ];
 
     /**
@@ -63,15 +63,27 @@ class User extends Authenticatable
         return $profile;
     }
 
-/*    public function getNameWithEmailAttribute()
-    {
-        $profile = $this->getProfile();
+// /*    public function getNameWithEmailAttribute()
+//     {
+//         $profile = $this->getProfile();
 
-        return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
-    }*/
+//         return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
+//     }*/
 
-    public function client()
-    {
-        return $this->hasOne('App\models\Client');
-    }
+//     public function client()
+//     {
+//         return $this->hasOne('App\models\Client');
+//     }
+
+    public function getNameAttribute() {
+		$profile = $this->getProfile();
+		return ($profile->first_name ? $profile->first_name : '') . ($profile->middle_name ? ' ' . $profile->middle_name : '') . ($profile->last_name ? ' ' . $profile->last_name : '');
+	}
+
+	public function getNameWithEmailAttribute() {
+		$profile = $this->getProfile();
+
+		return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
+	}
+
 }

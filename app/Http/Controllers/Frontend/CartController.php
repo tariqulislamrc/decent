@@ -6,8 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\Coupon;
 use App\models\Production\Product;
+use App\models\Client;
+use App\models\eCommerce\PageBanner;
+use App\models\inventory\TransactionSellLine;
+use App\models\Production\Transaction;
 use App\models\Production\VariationBrandDetails;
 use Cart;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use View;
 use Session;
 
@@ -48,9 +54,17 @@ class CartController extends Controller
 
     public function show_cart()
     {
-        Session::put('coupon',null); 
-        $models = Cart::getContent();
-        return view('eCommerce.shopping-cart', compact('models'));
+        $banner = PageBanner::where('page_name', 'Cart')->first();
+        $cart_total =  Cart::getContent();
+        
+        if (count($cart_total) > 0) {
+            Session::put('coupon', null);
+            $models = Cart::getContent();
+            return view('eCommerce.shopping-cart', compact('models', 'banner'));
+        }else{
+            return redirect()->back()->with('error', 'The Cart is Empty.');  
+        }
+        
 
     }
 
@@ -110,31 +124,100 @@ class CartController extends Controller
 
     public function store_cart(Request $request)
     {
-        $models = Cart::getContent();
-        Session::put('total', $request->total_hidden);
-        Session::put('coupon', $request->coupon_amt);
+        if (auth('client')->check() == true) {
+            $models = Cart::getContent();
+            Session::put('total', $request->total_hidden);
+            Session::put('coupon', $request->coupon_amt);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
+        } else {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+        }
     }
 
     public function checkout(Request $request)
     {
-        $models = Cart::getContent();
-        return view('eCommerce.checkout', compact('models'));
+        $banner = PageBanner::where('page_name', 'Checkout')->first();
+        if (auth('client')->check() == true) {
+            $user = auth('client')->user('clients_id');
+            $client = Client::findOrFail($user->clients_id);
+            $models = Cart::getContent();
+            return view('eCommerce.checkout', compact('models', 'client','banner'));
+        } else {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+        }
     }
 
     public function store_checkout(Request $request)
     {
-        
         $request->validate([
-            'first_name' => 'required',
+            'name' => 'required',
             'last_name' => 'required',
-            'company' => 'required',
             'address' => 'required',
             'city' => 'required',
             'state' => 'required',
             'email' => 'required',
-            'phone' => 'required'
+            'mobile' => 'required'
         ]);
+
+        $client = Client::findOrFail($request->client_id);
+        $client->name = $request->name;
+        $client->last_name = $request->last_name;
+        $client->company_name = $request->company_name;
+        $client->address = $request->address;
+        $client->city = $request->city;
+        $client->state = $request->state;
+        $client->post_code = $request->post_code;
+        $client->email = $request->email;
+        $client->mobile = $request->mobile;
+        $client->save();
+
+
+        $code_prefix = get_option('invoice_code_prefix');
+        $code_digits = get_option('digits_invoice_code');
+        $uniqu_id = generate_id('purchase', false);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+        $invoice_no = $code_prefix . $uniqu_id;
+
+        $payment = new Transaction();
+        $payment->client_id = $request->client_id;
+        $payment->invoice_no = $invoice_no;
+        $payment->sub_total = $request->sub_total;
+        $payment->net_total = $request->total;
+        $payment->sell_note = $request->order_note;
+        $payment->sale_type = 'debit';
+        $payment->payment_status = 'cash_on_delivery';
+        $payment->reference_no = rand(1, 100000000);
+
+        if($request->checkbox == 'on'){
+            $payment->shipping_status = 'On';
+            $payment->full_name = $request->forname;
+            $payment->email = $request->foremail;
+            $payment->phone = $request->forphone;
+            $payment->address = $request->foraddress;
+            $payment->city = $request->forcity;
+        }
+        $payment->ecommerce_status = 'pending';
+        $payment->save();
+        $transaction_id = $payment->id;
+
+        for ($i = 0; $i < count($request->product_id); $i++) {
+
+            $transaction = new TransactionSellLine();
+            $transaction->transaction_id = $transaction_id;
+            $transaction->client_id = $request->client_id;
+            $transaction->product_id = $request->product_id[$i];
+            $transaction->variation_id = $request->variation_id[$i];
+            $transaction->quantity = $request->quantity[$i];
+            $transaction->unit_price  = $request->price[$i];
+            $total = ($request->quantity[$i]) * ($request->price[$i]);
+            $transaction->total = $total;
+            $transaction->save();
+        }
+
+        generate_id('purchase', true);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Order Complete Successfuly')]);
+
     }
 }

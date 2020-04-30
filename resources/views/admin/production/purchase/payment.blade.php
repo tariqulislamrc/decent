@@ -8,8 +8,8 @@
             <div class="col-md-4">
                 <div class="well">
                     <strong>Purchase By
-                    </strong>:{{$model->employee->name}}<br>
-                    <strong>Brand: </strong>{{$model->brand->name}}
+                    </strong>:{{$model->employee?$model->employee->name:''}}<br>
+                    <strong>Brand: </strong>{{$model->brand?$model->brand->name:''}}
                 </div>
             </div>
             <div class="col-md-4">

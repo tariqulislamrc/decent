@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTransactionTypeToTransactionsTable extends Migration
+class AddAccountIdToTransactionPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddTransactionTypeToTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-//            $table->string('transaction_type')->nullable()->after('type');
+        Schema::table('transaction_payments', function (Blueprint $table) {
+            $table->integer('account_id')->nullable()->after('type');
+            $table->integer('parent_id')->nullable()->after('account_id');
         });
     }
 
@@ -25,8 +26,8 @@ class AddTransactionTypeToTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['transaction_type']);
+        Schema::table('transaction_payments', function (Blueprint $table) {
+            //
         });
     }
 }

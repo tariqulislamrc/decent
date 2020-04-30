@@ -64,6 +64,17 @@ Breadcrumbs::for('employee-category', function ($trail) {
     $trail->push('Employee Category', route('admin.employee-category.index'));
 });
 
+// Home > eCommerce Order List
+Breadcrumbs::for('ecommerce-ordeer-list', function ($trail) {
+    $trail->parent('home');
+    $trail->push('eCommerce-Order-List', route('admin.eCommerce.order.index'));
+});
+
+// Home > Employee Shift
+Breadcrumbs::for('employee-shift', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Employee Shift', route('admin.employee-shift.index'));
+});
 
 // Home > Employee Category
 Breadcrumbs::for('employee-attendance-type', function ($trail) {
@@ -464,4 +475,22 @@ Breadcrumbs::for('shipping-charge', function ($trail) {
 Breadcrumbs::for('slider', function ($trail) {
     $trail->parent('home');
     $trail->push('Slider', route('admin.eCommerce.slider.index'));
+});
+
+
+// Home > Home Page Image
+Breadcrumbs::for('eCommerce.home-page', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.index'));
+});
+
+// Home > Home Page Image Create
+Breadcrumbs::for('home-page-create', function ($trail) {
+    $trail->parent('eCommerce.home-page');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.create'));
+});
+// Home > Home Page Image Create
+Breadcrumbs::for('home-page-edit', function ($trail) {
+    $trail->parent('eCommerce.home-page');
+    $trail->push('Page Image', route('admin.eCommerce.home-page.index'));
 });

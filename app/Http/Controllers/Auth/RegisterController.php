@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -20,6 +25,7 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
+    // eCommerce.account
 
     use RegistersUsers;
 
@@ -28,7 +34,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,8 +56,12 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
@@ -63,10 +73,79 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+
+        $model = new Client;
+        $model->type        =       'customer';
+        $model->name        =       $data['name'];
+        $model->last_name   =       $data['last_name'];
+        $model->user_name   =       $data['username'];
+        $model->address     =       $data['address'];
+        $model->email       =       $data['email'];
+        $model->mobile      =       $data['phone'];
+        $model->tek_marks   =       'Created Client from Frontend';
+        $model->save();
+        $id = $model->id;
+
+        $data['id'] = $id;
+        $uuid =  Str::uuid()->toString();
+
+
+        $item = new User;
+        $item->clients_id = $id;
+        $item->name = $data['name'];
+        $item->surname = $data['last_name'];
+        $item->first_name = $data['name'];
+        $item->last_name = $data['last_name'];
+        $item->username = $data['username'];
+        $item->email = $data['email'];
+        $item->phone = $data['phone'];
+        $item->status = 'activated';
+        $item->uuid = $uuid;
+        $item->password = Hash::make($data['password']);
+        $item->save();
+
+        return $item;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return response()->json(['message' => trans('auth.logged_in'), 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+
+        // return $this->registered($request, $user)
+        //                 ?: redirect($this->redirectPath());
+    }
+
+        /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        //
+    }
+
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('client');
     }
 }

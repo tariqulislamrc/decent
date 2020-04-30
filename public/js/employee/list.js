@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran = '';
 var DatatableSelect = function () {
 
 
@@ -47,7 +47,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+        emran = $('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -96,8 +96,8 @@ var DatatableSelect = function () {
                     data: 'status',
                     name: 'status'
                 }, {
-                    data: 'date_of_birth',
-                    name: 'date_of_birth'
+                    data: 'shift',
+                    name: 'shift'
                 }, {
                     data: 'contact_number',
                     name: 'contact_number'
@@ -162,9 +162,9 @@ var DatatableSelect = function () {
             _componentDatatableSelect();
             _componentRemoteModalLoad();
             _componentSelect2Normal();
-            _componentDatePicker();
+            // _componentDatePicker();
             _formValidation();
-            _componentDatePicker();
+            // _componentDatePicker();
         }
     }
 }();

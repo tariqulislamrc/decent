@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Employee Payroll Initialization'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Employee Payroll Initialization'), 'modal' => 'xl'])
 
 {{-- Header Section --}}
 @section('page.header')

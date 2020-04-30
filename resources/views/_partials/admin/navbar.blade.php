@@ -45,7 +45,7 @@
         
                 <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fa fa-user fa-lg"></i> Profile</a></li>
         
-                <li><a class="dropdown-item" href="" id="logout" data-url='{{ route('logout') }}'><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                <li><a class="dropdown-item" href="" id="logout" data-url='{{ route('admin.logout') }}'><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
         
             </ul>
         

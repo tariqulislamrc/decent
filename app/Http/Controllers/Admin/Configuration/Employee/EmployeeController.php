@@ -39,7 +39,7 @@ class EmployeeController extends Controller
     public function Department_store(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required|unique:departments|max:255',
+            'name' => 'required|min:3|unique:departments,name,NULL,id,deleted_at,NULL',
             'description' => '',
         ]);
 

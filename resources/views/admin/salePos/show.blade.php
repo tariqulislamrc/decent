@@ -18,7 +18,7 @@
                     <div class="card card-box border border-primary">
                         <div class="card-body">
                             <div class="text-center">
-                                <i class="fa fa-file-powerpoint-o fa-4x" aria-hidden="true"></i>
+                                <i class="fa fa-user fa-4x" aria-hidden="true"></i>
                                 <h4 class="card-title">{{ _lang('Client Details') }}</h4>
                             </div>
                             
@@ -34,7 +34,7 @@
                     <div class="card card-box border border-primary">
                         <div class="card-body">
                             <div class="text-center">
-                                <i class="fa fa-file-powerpoint-o fa-4x" aria-hidden="true"></i>
+                                <i class="fa fa-inbox fa-4x" aria-hidden="true"></i>
                                 <h4 class="card-title">{{ _lang('Sale Details') }}</h4>
                             </div>
                             
@@ -68,24 +68,23 @@
                                 @endphp
                                 <span><b>{{ _lang('Return') }}: </b>{{ $return }}</span> <br>
                                 @endif
-                                 @if($model->net_total - $model->paid > 0)
+                                @if($model->net_total - $model->paid > 0)
                                 <span><b>{{ _lang('Due') }}</b> : {{ $model->net_total- $model->payment->sum('amount') }}</span>
-                                 @endif
+                                @endif
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-
-                <div class="row">
-      <div class="col-md-12">
-        @if($model->return == 1)
-          <div class="well" style="background-color: rgba(255, 222, 160, 0.25);">
-            This Sale has return item 
-          </div>
-        @endif
-      </div>
-    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @if($model->return == 1)
+                    <div class="well" style="background-color: rgba(255, 222, 160, 0.25);">
+                        This Sale has return item
+                    </div>
+                    @endif
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -101,7 +100,7 @@
                                     <a class="nav-link" data-toggle="pill" href="#menu2">{{ _lang('Make Payment') }}</a>
                                 </li>
                                 @if($model->return == 1)
-                                 <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" data-toggle="pill" href="#menu3">{{ _lang('Return Details') }}</a>
                                 </li>
                                 @endif
@@ -117,10 +116,11 @@
                                 <div id="menu2" class="container tab-pane fade"><br>
                                     @include('admin.salePos.partials.make_payment')
                                 </div>
-
+                                 @if($model->return == 1)
                                 <div id="menu3" class="container tab-pane fade"><br>
                                     @include('admin.salePos.partials.return_item_list')
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script>
-$('select').select2();
+    $('select').select2();
 _componentDatefPicker();
 $(document).on('change','.method',function(){
     var method =$(".method").val();
@@ -147,5 +147,9 @@ $(document).on('change','.method',function(){
     }
 });
  _formValidation();
+
+   function myFunction(url) {
+    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=1400,height=400");
+    }
 </script>
 @endpush

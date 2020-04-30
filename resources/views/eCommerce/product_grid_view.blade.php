@@ -4,7 +4,7 @@
 	 <!-- mt main start here -->
 			<main id="mt-main">
 				<!-- Mt Contact Banner of the Page -->
-				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url(http://placehold.it/1920x205);">
+				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x205'}});">
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 text-center">
@@ -32,7 +32,7 @@
 								<ul class="list-unstyled category-list">
 									@foreach ($category as $item)
 									<li>
-										<a href="#">
+										<a href="{{route('category-product',$item->id)}}">
 											<span class="name">{{$item->name}}</span>
 										<span class="num">{{count($item->product)}}</span>
 										</a>
@@ -142,6 +142,14 @@
 							<ul class="mt-productlisthold list-inline">
 
 								@foreach ($products as $item)
+								@php
+									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
+									$low = $low_price->default_sell_price;
+
+									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
+									$high = $high_price->default_sell_price;
+									
+								@endphp
 								<li>
 									<!-- mt product1 large start here -->
 									<div class="mt-product1 large">
@@ -157,7 +165,17 @@
 													</ul> --}}
 													<ul class="links">
 														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
-														<li><a href="#"><i class="icomoon icon-heart-empty"></i></a></li>
+														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
+															@php
+																$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+															@endphp	
+															@if ($check)
+																<i class="fa fa-heart" aria-hidden="true"></i>
+															@else 	
+																<i class="fa fa-heart-o" aria-hidden="true"></i>
+															@endif
+															
+															</a></li>
 														{{-- <li><a href="#"><i class="icomoon icon-exchange"></i></a></li> --}}
 													</ul>
 												</div>
@@ -165,7 +183,11 @@
 										</div>
 										<div class="txt">
 											<strong class="title"><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
-											<span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
+											@if ($low == $high)
+												<span class="price">{{get_option('currency')}} <span>{{$low}}</span></span>
+											@else
+												<span class="price">{{get_option('currency')}} <span>{{$low .' - '. $high}}</span></span>
+											@endif
 										</div>
 									</div><!-- mt product1 center end here -->
 								</li>
@@ -185,5 +207,35 @@
 				</div>
 			</main><!-- mt main end here -->
 	<!-- footer of the Page -->
+@endpush
+@push('scripts')
+<script>
+	$(document).on('click', '.heart', function() {
+		var id = $(this).data('id');
+		var ip = '{{getIp()}}';
+		var url = $(this).data('url');
+		
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+		
+		$.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                id: id, ip: ip
+            },
+			beforeSend: function() {
+                $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
+            }, 
+            success: function (data) {
+                if(data.status == 'success') {
+                    toastr.success(data.message);
+                }
+				if(data.status == 'warning') {
+                    toastr.warning(data.message);
+                }
+            }
+        });
+	})
+</script>
 @endpush
 	

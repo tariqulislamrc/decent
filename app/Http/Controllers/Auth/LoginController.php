@@ -3,40 +3,54 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Auth;
+use Session;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class LoginController extends Controller {
-    /*
-            |--------------------------------------------------------------------------
-            | Login Controller
-            |--------------------------------------------------------------------------
-            |
-            | This controller handles authenticating users for the application and
-            | redirecting them to your home screen. The controller uses a trait
-            | to conveniently provide its functionality to your applications.
-            |
-    */
+	/*
+		        |--------------------------------------------------------------------------
+		        | Login Controller
+		        |--------------------------------------------------------------------------
+		        |
+		        | This controller handles authenticating users for the application and
+		        | redirecting them to your home screen. The controller uses a trait
+		        | to conveniently provide its functionality to your applications.
+		        |
+	*/
 
-    use AuthenticatesUsers;
+	use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
+	/**
+	 * Where to redirect users after login.
+	 *
+	 * @var string
+	 */
+	protected $redirectTo = '/member/dashboard';
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		$this->middleware('guest:client')->except('logout');
+	}
+
+	    /**
+     * Show the application's login form.
      *
-     * @var string
+     * @return \Illuminate\Http\Response
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('guest')->except('logout');
+    public function showLoginForm(Request $request)
+    {
+        return view('eCommerce.account');
     }
-
     /**
      * Log the user out of the application.
      *
@@ -96,7 +110,7 @@ class LoginController extends Controller {
      */
     protected function sendLoginResponse(Request $request) {
         $request->session()->regenerate();
-
+        
         $this->clearLoginAttempts($request);
 
         return $this->authenticated($request, $this->guard()->user())
@@ -123,6 +137,7 @@ class LoginController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendFailedLoginResponse(Request $request) {
+        
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);
@@ -146,4 +161,10 @@ class LoginController extends Controller {
     protected function loggedOut(Request $request) {
     return response()->json(['message' => 'Successfully Logout', 'goto' => route('login')]);
     }
+
+	protected function guard()
+    {
+        return Auth::guard('client');
+    }
+
 }

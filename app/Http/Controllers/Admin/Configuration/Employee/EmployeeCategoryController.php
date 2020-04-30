@@ -51,8 +51,9 @@ class EmployeeCategoryController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required|unique:employee_categories|max:255',
+            'name' => 'required|min:1|unique:employee_categories,name,NULL,id,deleted_at,NULL',
             'description' => '',
+            
         ]);
 
         $model = new EmployeeCategory;

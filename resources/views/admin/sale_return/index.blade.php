@@ -125,5 +125,8 @@ $('.select').select2();
             ]
 
         });
+ function myFunction(url) {
+    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=1400,height=400");
+}
 </script>
 @endpush

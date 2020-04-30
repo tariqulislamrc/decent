@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrderNotesToTransactionsTable extends Migration
+class AddClientIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddOrderNotesToTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('order_notes')->nullable()->after('transaction_note');
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('clients_id')->nullable()->after('id');
         });
     }
 
@@ -25,8 +25,8 @@ class AddOrderNotesToTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['order_notes']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['clients_id']);
         });
     }
 }

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- set the encoding of your site -->
 	<meta charset="utf-8">
 	<!-- set the viewport width and initial-scale on mobile devices -->
@@ -85,6 +87,7 @@
 	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 	<script src="{{asset('frontend')}}/js/main.js"></script>
+	
 	@stack('scripts')
 </body>
 </html>

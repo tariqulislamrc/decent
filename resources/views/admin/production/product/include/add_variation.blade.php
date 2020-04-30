@@ -14,6 +14,12 @@
     </td>
     @endforeach
     <td>
+        <input type="text" name="variation[default_purchase_price][{{$row}}]" class="form-control" value="">
+    </td>
+    <td>
+        <input type="text" name="variation[default_sell_price][{{$row}}]" class="form-control" value="">
+    </td>
+    <td>
         <button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
     </td>
 </tr>

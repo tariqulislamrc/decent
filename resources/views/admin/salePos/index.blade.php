@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Sale List'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Sale List'), 'modal' => 'xl'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
@@ -15,7 +15,7 @@
         <div class="tile">
             <h3 class="tile-title">
             @can('production_purchase.create')
-            <a data-placement="bottom" title="Create New Sale" type="button" class="btn btn-info" href ="{{ route('admin.sale.pos.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('create')}}</a>
+            <a data-placement="bottom" title="Create New Sale" type="button" class="btn btn-info" href ="{{ route('admin.sale.pos.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Sale')}}</a>
             @endcan
             </h3>
             <div class="card">
@@ -180,6 +180,39 @@
         emran.ajax.reload();
       });
 
-       $('select').select2();
+       $('.select').select2();
+
+     $(document).on('click', '#content_managment', function(e) {
+            e.preventDefault();
+            //open modal
+            $('#modal_remote').modal('toggle');
+            // it will get action url
+            var url = $(this).data('url');
+            // leave it blank before ajax call
+            $('.modal-body').html('');
+            // load ajax loader
+            $('#modal-loader').show();
+            $.ajax({
+                    url: url,
+                    type: 'Get',
+                    dataType: 'html'
+                })
+                .done(function(data) {
+                    $('.modal-body').html(data).fadeIn(); // load response
+                    $('#modal-loader').hide();
+                    $('#branch_no').focus();
+                    $('.select').select2();
+                    _modalClassFormValidation();
+                    _modalFormValidation();
+                })
+                .fail(function(data) {
+                    $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
+                    $('#modal-loader').hide();
+                });
+        });
+
+ function myFunction(url) {
+    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=1400,height=400");
+    }
 </script>
 @endpush

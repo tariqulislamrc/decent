@@ -58,6 +58,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        
         $data = $request->validate([
             'team_name' => 'required|unique:our_teams|max:255',
             'team_designation' => 'required|unique:our_teams|max:255',

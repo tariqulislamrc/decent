@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RedirectSecureIfRequired
 {
@@ -14,13 +15,21 @@ class RedirectSecureIfRequired
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        if (\App::environment('production') && get_option('enable_https')) {
-            \Request::setTrustedProxies([$request->getClientIp()], Request::HEADER_X_FORWARDED_ALL);
-            if (!$request->isSecure()) {
-                return redirect()->secure($request->getRequestUri());
-            }
+        switch ($guard) {
+            
+            case 'client':
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/client/dashboard');
+                }
+                break;
+
+            default:
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/home');
+                }
+                break;
         }
 
         return $next($request);

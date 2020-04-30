@@ -20,6 +20,21 @@
                     <input type="text" name="name" id="name" class="form-control"
                     placeholder="Enter Name" required value="{{$model->name}}">
                 </div>
+
+                {{-- Shift --}}
+                <div class="col-md-6 form-group">
+                    <label for="shift">{{_lang('Shift')}} <span class="text-danger">*</span>
+                    </label>
+                    @php
+                        $shifts = App\Models\Employee\EmployeeShift::where('status', 1)->get();
+                    @endphp
+                    <select name="shift" id="shift" class="form-control select" data-placeholder="Select Shift" required>
+                        <option value="">{{_lang('Select Shift')}}</option>
+                        @foreach ($shifts as $item)
+                            <option {{$item->id == $model->shift_id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
         
                 {{-- Date Of Birth --}}
                 <div class="col-md-6 form-group">
@@ -67,7 +82,7 @@
                     <label for="nationality">{{_lang('Nationality')}} 
                     </label>
                     <input type="text" name="nationality" id="nationality" class="form-control"
-                    placeholder="Enter Employee Nationality"  value="{{$model->nationality}}">
+                    placeholder="Enter Employee Nationality"  value="{{$model->nationality != '' ? $model->nationality : 'Bangladeshi'}}">
                 </div>   
         
                 {{-- Mother Tongue --}}
@@ -75,7 +90,7 @@
                     <label for="mother_tongue">{{_lang('Mother Tongue')}}
                     </label>
                     <input type="text" name="mother_tongue" id="mother_tongue" class="form-control"
-                    placeholder="Enter Employee Mother Tongue"  value="{{$model->mother_tongue}}">
+                    placeholder="Enter Employee Mother Tongue"  value="{{$model->mother_tongue != '' ? $model->mother_tongue : 'Bengoly'}}">
                 </div>   
         
         

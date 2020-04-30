@@ -46,7 +46,7 @@
                                 <th>{{_lang('Code')}}</th>
                                 <th>{{_lang('Name')}}</th>
                                 <th>{{_lang('Status')}}</th>
-                                <th>{{_lang('Date Of Birth')}}</th>
+                                <th>{{_lang('Shift')}}</th>
                                 <th>{{_lang('Contact No')}}</th>
                                 <th>{{_lang('Department')}}</th>
                                 <th>{{_lang('Designation')}}</th>

@@ -49,5 +49,7 @@
     </div>
 </div>
 @else
-  <h1 class="no-due">No Due</h1>
+ <div class="alert alert-success text-light">
+  <strong>{{ _lang('This Transection has No Due') }}</strong>.
+</div>
 @endif

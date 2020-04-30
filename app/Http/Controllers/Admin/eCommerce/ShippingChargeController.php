@@ -57,7 +57,7 @@ class ShippingChargeController extends Controller
         $data['created_by']=Auth::user()->id;
         $model = new ShippingCharge;
         $model->create($data);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Create Successfuly'), 'goto' => route('admin.eCommerce.shipping-charge.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Create Successfuly')]);
     }
 
     /**
@@ -96,9 +96,9 @@ class ShippingChargeController extends Controller
             'shipping_charge' => 'required',
             'note' => '',
         ]);
-        $data['updated_by']=Auth::user()->id;
+        $data['updated_by']= Auth::user()->id;
         $model->update($data);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Update Successfuly'), 'goto' => route('admin.eCommerce.shipping-charge.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Update Successfuly')]);
     }
 
     /**
@@ -110,6 +110,6 @@ class ShippingChargeController extends Controller
     public function destroy($id){
         $model = ShippingCharge::findOrFail($id);
         $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Deleted Successfuly'), 'goto' => route('admin.eCommerce.shipping-charge.index')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Deleted Successfuly')]);
     }
 }

@@ -14,11 +14,24 @@
 /* ====================================================
 		Frontend Route
 ==========================================================*/
-Route::get('f','Frontend\Front_End_Controller@index')->name('f');
+
+
+Route::get('/', 'Frontend\Front_End_Controller@index');
+
+Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
+	Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
+
+	// check_user_name_is_exist_or_not
+	Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
+	// check_email_is_exist_or_not
+	Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
+
+});
 
 Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 
+Route::get('account', 'Frontend\Front_End_Controller@account')->name('account');
 Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
@@ -27,19 +40,13 @@ Route::get('blog',function(){
 	return view('eCommerce.blog');
 })->name('blog');
 
-Route::get('wishlist',function(){
-	return view('eCommerce.wishlist');
-})->name('wishlist');
+Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
 
-Route::get('cart',function(){
-	return view('eCommerce.shopping-cart');
-})->name('cart');
 
 Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
+Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
 
-Route::get('account',function(){
-	return view('eCommerce.account');
-})->name('account');
+
 
 Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
 
@@ -50,6 +57,8 @@ Route::get('product-list',function(){
 Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
+Route::get('wishlist-add', 'Frontend\Front_End_Controller@add_into_wishlist')->name('add_into_wishlist');
+Route::get('wishlist-delete', 'Frontend\Front_End_Controller@delete_into_wishlist')->name('delete_into_wishlist');
 Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
 Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
 Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
@@ -62,9 +71,12 @@ Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopp
 ==========================================================*/
 Route::group(['middleware' => ['install']], function () {
 
-Route::get('/', function() {
-	return view('welcome');
-})->middleware('frontend.website.enabled');
+
+Route::get('admin/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
+Route::post('admin/login', 'Admin\Auth\LoginController@login')->name('admin.login');
+Route::post('admin/logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
+
+
 Auth::routes();
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 	//ui:::::::::::::::::::
@@ -87,6 +99,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		//:::::::::::::::::::::::::::::Employee Category::::::::::::::::::::::::::::::::::::
 		Route::get('employee-category-datatable', 'Configuration\Employee\EmployeeCategoryController@datatable')->name('category.datatable');
 		Route::resource('employee-category', 'Configuration\Employee\EmployeeCategoryController');
+
+		// ::::::::::::::::::::::::::::::  Employee Shift ::::::::::::::::::::::::::::::::::::::
+		Route::get('employee-shift-datatable', 'Configuration\Employee\EmployeeShiftController@datatable')->name('shift.datatable');
+		Route::resource('employee-shift', 'Configuration\Employee\EmployeeShiftController');
 
 		//:::::::::::::::::::::::::::::Employee leave type:::::::::::::::::::::::::::::::
 		Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
@@ -238,6 +254,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('/ajax/login_info', 'UserController@login_info')->name('ajax.login_info');
 			Route::any('/employee-details/login_info/{id}', 'UserController@set_login_info')->name('employee-details.login_info');
 
+
+			
 
 		// Production Route Start
 
@@ -434,13 +452,17 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('email-history','SendMailController@history')->name('email_history');
     	Route::get('email-history/{id}','SendMailController@history_view')->name('email_history_view');
     	Route::post('client-send-mail','SendMailController@client_send_mail')->name('client_send_mail');
+    	Route::post('transaction/email','SendMailController@transaction_email')->name('transaction_email');
     	Route::resource('sendmail', 'SendMailController');
 	});
 
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
-		// All Coupons route
+		// All home page image route
+		Route::get('home-page/datatable','HomePageController@datatable')->name('home-page.datatable');
+		Route::resource('home-page','HomePageController');
+		// All slider route
 		Route::get('slider/datatable','SliderController@datatable')->name('slider.datatable');
 		Route::resource('slider','SliderController');
 		// All Coupons route
@@ -473,9 +495,30 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('contact-msg/datatable', 'ContactMessageController@datatable')->name('contact-msg.datatable');
 		Route::resource('contact-msg','ContactMessageController');
 
+
+		//Contact message route
+		Route::get('product-rating/index', 'ProductRatingController@rating_index')->name('product-rating.index');
+		Route::get('product-rating/datatable', 'ProductRatingController@datatable')->name('product-rating.datatable');
+		Route::get('product-rating/status/{id}', 'ProductRatingController@status')->name('product-rating.status');
+		Route::any('product-rating/status_change/{id}', 'ProductRatingController@status_change')->name('product-rating.status_change');
+		Route::delete('product-rating/destroy/{id}', 'ProductRatingController@destroy')->name('product-rating.destroy');
+
 		//Terams and Condition route
     	Route::get('terams-conditions/index','TeramsConditionsController@index')->name('terams-conditions.index');
 		Route::post('terams-conditions/store','TeramsConditionsController@store')->name('terams-conditions.store');
+
+		// eCommerce Order
+		Route::get('orders/index', 'OrderController@index')->name('order.index');
+		Route::post('orders/change_ship_address', 'OrderController@change_ship_address')->name('order.change_ship_address');
+		Route::get('orders/pdf/{id}', 'OrderController@pdf')->name('order.pdf');
+		Route::get('orders/change-status', 'OrderController@change_status')->name('order.change_status');
+		Route::get('orders/sort-order', 'OrderController@sort_order')->name('order.sort_order');
+		Route::get('orders/sort-order-date-wise', 'OrderController@sort_order_date_wise')->name('order.sort_order_date_wise');
+		Route::get('orders/show/{id}', 'OrderController@show')->name('order.show');
+
+		// page-banner
+		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');
+		Route::resource('page-banner', 'PageBannerController');
 
 	});
 
@@ -485,7 +528,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::get('get_number_list/{type}','SendSmsController@get_number_list');
     	Route::get('sms-history/datatable','SendSmsController@history_table')->name('sms_history_datatable');
     	Route::get('sms-history','SendSmsController@history')->name('sms_history');
-    		Route::post('client-send-sms','SendSmsController@client_send_sms')->name('client_send_sms');
+    	Route::post('client-send-sms','SendSmsController@client_send_sms')->name('client_send_sms');
+    	Route::post('transaction/sms','SendSmsController@transaction_sms')->name('transaction_sms');
 		Route::resource('sendsms', 'SendSmsController');
 
 	});
@@ -549,8 +593,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	    Route::get('/pos/get-product-suggestion', 'SalePOsController@getProductSuggestion');
 	 	    Route::get('pos/get_variation_product','SalePOsController@get_variation_product')->name('get_variation_product');
 	 	    Route::get('pos/scannerappend1','SalePOsController@scannerappend1');
+	 	    Route::get('pos/view/{id}','SalePOsController@view')->name('pos.view');
 	 	    Route::get('pos/printpayment/{id}','SalePOsController@printpayment')->name('pos.printpayment');
 	 	    Route::get('pos/print/{id}','SalePOsController@pos_print')->name('pos.print');
+	 	    Route::get('pos/get-notification/{id}','SalePOsController@notification')->name('get_notification');
+	 	    Route::get('pos/payment/{id}','SalePOsController@payment')->name('pos.payment');
+	 	    Route::get('add','SalePOsController@sale_add')->name('add');
 	 		Route::resource('pos','SalePOsController');
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
@@ -558,6 +606,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 });
     //Payment 
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
+
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
 
           Route::get('/',function(){
@@ -580,10 +629,27 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::post('product/report-details','DepertmentReportController@get_product_report_details')->name('get_product_report_details');
 
            Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
-           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
+           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('ecommerce_report.pdf');
 
-        });
-	 });
+		});
+		
+		Route::get('eCommerce-report','DepertmentReportController@ecommerce_report')->name('eCommerce-report.index');
+		Route::get('eCommerce-report-date-wise','DepertmentReportController@ecommerce_report_date_wise')->name('ecommerce_report_date_wise');
+	 	Route::get('eCommerce-report/pdf/{id}', 'DepertmentReportController@ecommerce_report_pdf')->name('ecommerce_report.pdf');
+	});
+
+
+	  Route::group(['as' => 'accounting.', 'prefix' => 'accounting','namespace' => 'Account'], function () {
+        Route::get('getAccountBalance/{id}','AccountController@getAccountBalance')->name('getAccountBalance');
+        Route::get('account/getDeposit/{id}','AccountController@getDeposit')->name('account.getDeposit');
+        Route::post('account/getDeposit','AccountController@postDeposit')->name('account.postDeposit');
+        Route::delete('account/closed/{id}','AccountController@close')->name('account_closed');
+        Route::get('payment/account','AccountController@payment_account')->name('payment_account');
+        Route::get('getLinkAccount/{id}','AccountController@getLinkAccount')->name('getLinkAccount');
+        Route::post('getLinkAccount','AccountController@postLinkAccount')->name('postLinkAccount');
+        Route::get('cashflow','AccountController@cashflow')->name('cashflow');
+	  	Route::resource('account','AccountController');
+	  });
 
 	});
 

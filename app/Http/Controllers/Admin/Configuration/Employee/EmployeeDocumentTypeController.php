@@ -50,7 +50,7 @@ class EmployeeDocumentTypeController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required|unique:employee_document_types|max:255',
+            'name' => 'required|min:3|unique:employee_document_types,name,NULL,id,deleted_at,NULL',
             'description' => '',
         ]);
 

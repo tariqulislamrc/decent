@@ -40,7 +40,7 @@ class EmployeeSalaryStructureController extends Controller
                     return $document->payroll_template->name ;
                 })
                 ->editColumn('date_effective', function ($document) {
-                    return carbonDate($document->date_effective);
+                    return formatDate($document->date_effective);
                 })
                 ->editColumn('net_salary', function ($document) {
                     $usd = get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT';
@@ -176,9 +176,9 @@ class EmployeeSalaryStructureController extends Controller
                         }
                     }
 
-                    if($category == 'user_defined') {
-                        return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. User Defind is not working at this moment . Contact with Sadik')]);
-                    }
+                    // if($category == 'user_defined') {
+                    //     return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. User Defind is not working at this moment . Contact with Sadik')]);
+                    // }
                     
                     if($category == 'production') {
                         return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. On Production is not working at this moment . Contact with Sadik')]);
@@ -279,8 +279,15 @@ class EmployeeSalaryStructureController extends Controller
                 if($template_model->category == 'computation') {
                     $item->amount = $x[$i -1];
                 } else {
-                    $item->amount = $amount;
+                    
+                    if($amount == NULL) {
+                        $item->amount = $amount;
+                    } else {
+                        $item->amount = $amount;
+                    }
+
                 }
+                
                 $item->save();
             }
             
