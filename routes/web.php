@@ -362,12 +362,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 			Route::get('client/customers','ClientController@customers');
 			Route::post('client/customers','ClientController@quick_add')->name('client.quick_add');
-			Route::resource('client', 'ClientController');
+		    Route::resource('client', 'ClientController');
 
 		// Production Route End
 
 		//:::::::::::::::::::::::::::::Employee Payhead::::::::::::::::::::::::::::::::::::
 		// Route::resource('employee-payhead', 'Configuration\Employee\EmployeePayHeadController');
+
+		//::::::::Product list
+		Route::get('product-list','Production\ProductController@finalproduct_list')->name('product_list');	
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');
@@ -673,6 +676,21 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('sale-return','SalesReportController@sale_return')->name('sale_return');
 	 		Route::post('sale-return','SalesReportController@sale_return_report')->name('sale_return_report');
 	 	});
+
+	 	Route::group(['as' => 'purchasing.', 'prefix' => 'purchasing','namespace' => 'Report'], function () {
+	 		Route::get('purchase','PurchaseReportController@index')->name('purchase');
+	 		Route::post('purchase','PurchaseReportController@get_purchase_report')->name('get_purchase_report');
+	 		Route::get('purchase-payment','PurchaseReportController@purchase_payment')->name('purchase_payment');
+	 		Route::post('purchase-payment','PurchaseReportController@purchase_payment_report')->name('purchase_payment_report');
+	 		Route::get('purchase-due','PurchaseReportController@purchase_due')->name('purchase_due');
+	 		Route::post('purchase-due','PurchaseReportController@purchase_due_report')->name('purchase_due_report');
+	 	});
+
+	 	//product-report
+	 	Route::get('product-report','Production\ProductController@product_report')->name('product_report');
+	 	Route::post('product-report','Production\ProductController@product_report_print')->name('product_report_print');
+	 	Route::get('purchase-sale','Report\SalesReportController@purchase_sale')->name('purchase_sale');
+	 	Route::get('customer','Report\ReportController@getCustomerSuppliers')->name('getCustomerSuppliers');
 	});
 
 

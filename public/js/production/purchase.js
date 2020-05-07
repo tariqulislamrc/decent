@@ -162,7 +162,7 @@ var DatatableSelect = function () {
             _componentDatatableSelect();
             _componentRemoteModalLoad();
             _componentSelect2Normal();
-            _componentDatePicker();
+            _componentDatefPicker();
             _formValidation();
         }
     }

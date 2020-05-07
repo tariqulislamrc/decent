@@ -115,7 +115,7 @@
                                 </td>
 
                                 <td>
-                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$provariation_idduc_titem->qty}}">
+                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$produc_titem->qty}}">
                                 </td>
                                 <td>
                                     <input type="text" name="price[]" class="form-control price" value="{{$produc_titem->price}}">

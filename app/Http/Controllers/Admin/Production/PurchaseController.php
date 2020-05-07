@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Production;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\employee\Employee;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\Purchase;
@@ -12,6 +10,9 @@ use App\models\Production\RawMaterial;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\WorkOrder;
+use App\models\employee\Employee;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,11 +31,11 @@ class PurchaseController extends Controller
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $document = Transaction::all();
+            $document = Transaction::where('transaction_type','Purchase')->get();
             return DataTables::of($document)
                 ->addIndexColumn()
                 ->editColumn('purchase_by', function ($document) {
-                    return $document->employee->name;
+                    return $document->employee?$document->employee->name:'';
                 })
                 ->editColumn('brand_id', function ($document) {
                     return $document->brand? $document->brand->name:'';
@@ -80,7 +81,12 @@ class PurchaseController extends Controller
         $models = Employee::all();
         $workorders = WorkOrder::where('status', '=', 'requisition')->get();
         $uniqu_id = generate_id('purchase', false);
-        return view('admin.production.purchase.create', compact('models', 'workorders','type'));
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
+        
+        $ref_no = $ym.'/P-'.ref($row);
+        return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no'));
     }
 
     /**
@@ -93,14 +99,23 @@ class PurchaseController extends Controller
     {
         $request->validate([
             'purchase_by' => 'required',
+            'purchase_date' => 'required',
             'status' => 'required',
-            'invoice_no' => 'unique:transactions',
+            'invoice_no' => 'nullable|unique:transactions',
+            'reference_no' => 'nullable|unique:transactions',
         ]);
 
         $code_prefix = get_option('invoice_code_prefix');
         $code_digits = get_option('digits_invoice_code');
-        $uniqu_id = generate_id('purchase', false);
+        $uniqu_id = generate_id('Purchase', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
+
+
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
+        
+        $ref_no = $ym.'/P-'.ref($row);
         
         if($request->invoice_no){
             $invoice_no = $request->invoice_no;
@@ -130,7 +145,7 @@ class PurchaseController extends Controller
         $model->reference_no = $request->reference_no;
         $model->invoice_no = $invoice_no;
         $model->date = $request->purchase_date;
-        $model->type = 'debit';
+        $model->type = 'Debit';
         $model->transaction_type = 'Purchase';
         $model->work_order_id = $wo_id;
         $model->brand_id = $brand_id;
@@ -182,7 +197,7 @@ class PurchaseController extends Controller
         }
 
 
-        if ($request->payment) {
+        if ($request->payment>0) {
             $payment = new TransactionPayment;
             $payment->transaction_id = $id;
             $payment->method = $request->method;
@@ -190,12 +205,12 @@ class PurchaseController extends Controller
             $payment->transaction_no = $request->transaction_no;
             $payment->amount = $request->payment;
             $payment->note = $request->payment_note;
-            $payment->type = $type;
+            $payment->type = 'Debit';
             $payment->created_by = auth()->user()->id;
             $payment->save();
         }
 
-        generate_id('purchase', true);
+        generate_id('Purchase', true);
 
         // Activity Log
         activity()->log('Created a Purchase - ' . Auth::user()->id);
@@ -240,7 +255,7 @@ class PurchaseController extends Controller
         $payment->transaction_no = $request->transaction_no;
         $payment->amount = $request->paid_amount;
         $payment->note = $request->payment_note;
-        $payment->type = $type;
+        $payment->type = 'Debit';
         $payment->created_by = auth()->user()->id;
         $payment->save();
 

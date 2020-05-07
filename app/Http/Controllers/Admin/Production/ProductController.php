@@ -471,7 +471,7 @@ class ProductController extends Controller
    public function product_list(Request $request)
    {
         if ($request->ajax()) {
-            $brand_id = $request->get('brand_id')?:1;
+            $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
 
             $check_qty = false;
@@ -521,5 +521,180 @@ class ProductController extends Controller
             return json_encode($result);
 
    }
+}
+
+public function finalproduct_list(Request $request)
+{
+        if ($request->ajax()) {
+            $brand_id = $request->get('brand_id')?:get_option('default_brand');
+            $term = $request->get('term');
+
+            $check_qty = false;
+
+        $products = Product::leftJoin(
+            'variations',
+            'products.id',
+            '=',
+            'variations.product_id'
+        )
+        ->leftjoin('variation_brand_details AS VBD',
+             function ($join) use ($brand_id) {
+                $join->on('variations.id', '=', 'VBD.variation_id');
+                     //Include Location
+                                if (!empty($brand_id)) {
+                                    $join->where(function ($query) use ($brand_id) {
+                                        $query->where('VBD.brand_id', '=', $brand_id);
+                                        //Check null to show products even if no quantity is available in a location.
+                                        //TODO: Maybe add a settings to show product not available at a location or not.
+                                        $query->orWhereNull('VBD.brand_id');
+                                    });
+                                    ;
+                                }
+          });
+        if (!empty($term)) {
+        $products->where(function ($query) use ($term) {
+            $query->where('products.name', 'like', '%' . $term . '%');
+            $query->orWhere('articel', 'like', '%' . $term . '%');
+            $query->orWhere('prefix', 'like', '%' . $term . '%');
+            $query->orWhere('sub_sku', 'like', '%' . $term . '%');
+           
+        });
+        }
+           $products = $products->select(
+                'products.id as product_id',
+                'products.name as pro_name',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'VBD.qty_available as qty',
+                'variations.default_sell_price as selling_price',
+                'variations.sub_sku as sku',
+                'VBD.brand_id as brand_id',
+                'products.photo as image'
+            );
+            $document = $products->orderBy('VBD.qty_available', 'desc')
+                        ->get();
+                 return DataTables::of($document)
+                ->addIndexColumn()
+                ->editColumn('product_name', function ($document) {
+                    return $document->pro_name;
+                })
+                ->editColumn('variation', function ($document) {
+                    return $document->variation? $document->variation : null;
+                })
+                ->editColumn('sku', function ($document) {
+                    return $document->sku;
+
+                })
+                 ->editColumn('qty', function ($document) {
+                    return $document->qty;
+
+                })
+                 ->editColumn('selling_price', function ($document) {
+                    return $document->selling_price;
+
+                })
+              
+               ->rawColumns(['product_name', 'variation','sku','qty','selling_price'])->make(true);            
+         }
+         return view('admin.production.product.product_list');               
+    
+}
+
+
+public function product_report(Request $request)
+{
+           $brand_id = $request->get('brand_id')?:get_option('default_brand');
+            $term = $request->get('term');
+
+            $check_qty = false;
+
+        $products = Product::leftJoin(
+            'variations',
+            'products.id',
+            '=',
+            'variations.product_id'
+        )
+        ->leftjoin('variation_brand_details AS VBD',
+             function ($join) use ($brand_id) {
+                $join->on('variations.id', '=', 'VBD.variation_id');
+                     //Include Location
+                                if (!empty($brand_id)) {
+                                    $join->where(function ($query) use ($brand_id) {
+                                        $query->where('VBD.brand_id', '=', $brand_id);
+                                        //Check null to show products even if no quantity is available in a location.
+                                        //TODO: Maybe add a settings to show product not available at a location or not.
+                                        $query->orWhereNull('VBD.brand_id');
+                                    });
+                                    
+                                }
+          });
+           $products = $products->select(
+                'products.id as product_id',
+                'products.name as pro_name',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'VBD.qty_available as qty',
+                'variations.default_sell_price as selling_price',
+                'variations.sub_sku as sku',
+                'VBD.brand_id as brand_id',
+                'products.photo as image'
+            );
+            $products = $products->orderBy('VBD.qty_available', 'desc')
+                        ->get();
+    return view('admin.report.product.product_report',compact('products'));          
+}
+
+public function product_report_print(Request $request)
+{
+            $brand_id = $request->get('brand_id')?:get_option('default_brand');
+            $term = $request->get('product');
+            $explode =explode('/',$term);
+            $product_id =$explode[0];
+            $variation_id =isset($explode[1])?$explode[1]:'';
+            $check_qty = false;
+
+        $products = Product::leftJoin(
+            'variations',
+            'products.id',
+            '=',
+            'variations.product_id'
+        )
+        ->leftjoin('variation_brand_details AS VBD',
+             function ($join) use ($brand_id) {
+                $join->on('variations.id', '=', 'VBD.variation_id');
+                     //Include Location
+                                if (!empty($brand_id)) {
+                                    $join->where(function ($query) use ($brand_id) {
+                                        $query->where('VBD.brand_id', '=', $brand_id);
+                                        //Check null to show products even if no quantity is available in a location.
+                                        //TODO: Maybe add a settings to show product not available at a location or not.
+                                        $query->orWhereNull('VBD.brand_id');
+                                    });
+                                    
+                                }
+          });
+         if ($term=='All') {
+             $products=$products;
+         }
+         else{
+
+           $products =$products->where('products.id',$product_id);
+           $products =$products->where('VBD.variation_id',$variation_id);
+         }
+           $products = $products->select(
+                'products.id as product_id',
+                'products.name as pro_name',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'VBD.qty_available as qty',
+                'variations.default_sell_price as selling_price',
+                'variations.sub_sku as sku',
+                'VBD.brand_id as brand_id',
+                'products.photo as image',
+                'variations.default_purchase_price as default_purchase_price'
+            );
+            $products = $products->orderBy('VBD.qty_available', 'desc')
+                        ->get();  
+            return view('admin.report.product.product_report_print',compact('products'));        
 }
 }

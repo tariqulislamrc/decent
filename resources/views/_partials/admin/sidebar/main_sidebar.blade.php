@@ -191,6 +191,12 @@
     @endcan
 
 
+    {{-- Product --}}
+    @can('product.view')
+        <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/product-list*') ? ' active' : '' }}" href="{{ route('admin.product_list') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Product List')}}</span></a></li>
+    @endcan
+
+
     @can('expense.view')
         {{-- Expense Section--}}
         <li class="treeview {{ Request::is('admin/department*') ? ' is-expanded' : '' }}">
@@ -822,4 +828,51 @@
                 @endcan
             </ul>
         </li>
+
+           <li class="treeview {{ Request::is('admin/report/purchasing*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Purchase Report')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                @can('expenseCategory.view')
+                    {{-- Expense Category--}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/purchasing/sales') ? 'active':''}}"
+                           href="{{ route('admin.report.purchasing.purchase') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Purchase Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-payment') ? 'active':''}}"
+                           href="{{ route('admin.report.purchasing.purchase_payment') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Purchase Payment Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+                    @can('expenseCategory.view')
+                    {{-- Expense --}}
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-due') ? 'active':''}}"
+                           href="{{ route('admin.report.purchasing.purchase_due') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Purchase Due Report')}}
+                        </a>
+                    </li>
+                @endcan
+
+            </ul>
+        </li>
+        <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}" href="{{ route('admin.report.product_report') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Product Report')}}</span></a></li>
+
+          <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a></li>
+
+          <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a></li>
 @endif

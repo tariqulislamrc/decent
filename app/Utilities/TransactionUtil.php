@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\DB;
 class TransactionUtil
 {
   
-  public function createSellTransaction($input,$user_id,$ref_no){
+  public function createSellTransaction($input,$user_id,$ref_no,$invoice_no=null){
 
   	$transaction = Transaction::create([
   		'client_id'=>$input['client_id']?:1,
   		'date'=>$input['date'],
   		'type'=>'Credit',
+      'invoice_no'=>$invoice_no,
   		'reference_no'=>$ref_no,
   		'transaction_type'=>'Sale',
       'sale_type'=>$input['sale_type'],

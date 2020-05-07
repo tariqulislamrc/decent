@@ -132,10 +132,21 @@ class SalePOsController extends Controller
         $row = Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
         
         $ref_no = $ym.'/S-'.ref($row);
+
+        $code_prefix = get_option('invoice_code_prefix');
+        $code_digits = get_option('digits_invoice_code');
+        $uniqu_id = generate_id('purchase', false);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+
+        if($request->invoice_no){
+            $invoice_no = $request->invoice_no;
+        }else{
+            $invoice_no = $code_prefix . $uniqu_id;
+        }
        
         $variations =$request->variation;
         if (isset($variations)) {
-        $transaction = $this->transactionUtil->createSellTransaction($input,$user_id,$ref_no);
+        $transaction = $this->transactionUtil->createSellTransaction($input,$user_id,$ref_no,$invoice_no);
         $sale_line =$this->transactionUtil->createSellLines($transaction,$variations);
 
 
@@ -236,7 +247,7 @@ class SalePOsController extends Controller
     {
          if ($request->ajax()) {
             $category_id = $request->get('category_id');
-            $brand_id = $request->get('brand_id')?:1;
+            $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
 
             $check_qty = false;
@@ -276,6 +287,10 @@ class SalePOsController extends Controller
                     $query->orWhere('products.sub_category_id', $category_id);
                 });
           }
+           // $products->where(function ($query) use ($brand_id) {
+           //          $query->where('VBD.brand_id', $brand_id);
+                    
+           //      });
            $products = $products->select(
                 'products.id as product_id',
                 'products.name',
@@ -376,4 +391,5 @@ class SalePOsController extends Controller
         $model =Transaction::find($id);
         return view('admin.salePos.partials.makepayment_modal',compact('model')); 
     }
+
 }

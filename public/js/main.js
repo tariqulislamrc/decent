@@ -1,6 +1,6 @@
 // 
 var _componentDatePicker = function () {
-    $(".take_date").dateDropper({
+    $(".take_date").datepicker({
         dropWidth: 200,
         dropPrimaryColor: "#1abc9c",
         dropBorder: "1px solid #1abc9c"
@@ -11,6 +11,20 @@ var _componentSelect2Normal = function() {
 
     $('.select').select2();
 };
+
+function __highlight(value, obj) {
+    obj.removeClass('text-success').removeClass('text-danger');
+    if (value > 0) {
+        obj.addClass('text-success');
+    } else if (value < 0) {
+        obj.addClass('text-danger');
+    }
+}
+
+//Return the font-awesome html based on class value
+function __fa_awesome($class = 'fa-refresh fa-spin fa-fw ') {
+    return '<i class="fa ' + $class + '"></i>';
+}
 
 
 

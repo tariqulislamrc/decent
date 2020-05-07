@@ -1,9 +1,9 @@
-@extends('layouts.report', ['title' => _lang('Sales Due Report'),'report_title'=>_lang('Sales Due Report')])
+@extends('layouts.report', ['title' => _lang('Purchase Report'),'report_title'=>_lang('Purchase Report')])
 @section('content')
 <div class="container-fluid px-4 pt-4">
     <div class="row">
         <div class="col-md-6">
-            <p class="h5 text-uppercase"><b>{{ _lang('Sales Due Report') }}: </b> {{ _lang('Date Wise') }} </p>
+            <p class="h5 text-uppercase"><b>{{ _lang('Purchase Report') }}: </b> {{ _lang('Date Wise') }} </p>
             <p><b>{{ _lang('Date Range') }}: </b> {{ formatDate($sDate) }} <b>To</b>{{ formatDate($eDate) }} </p>
         </div>
         <div class="col-md-6 text-right">
@@ -18,14 +18,13 @@
             <thead>
                 <tr>
                     <th scope="col">{{ _lang('Ref No') }}</th>
-                    <th scope="col">{{ _lang('Client') }}</th>
+                    <th scope="col">{{ _lang('Employee') }}</th>
                     <th scope="col">{{ _lang('Product') }}</th>
                     <th scope="col">{{ _lang('Payment Status') }}</th>
-                    <th scope="col">{{ _lang('Sold By') }}</th>
+                    <th scope="col">{{ _lang('Purchase By') }}</th>
                     <th scope="col">{{ _lang('Date') }}</th>
                     <th scope="col">{{ _lang('Net Total') }}</th>
                     <th scope="col">{{ _lang('Paid') }}</th>
-                    <th scope="col">{{ _lang('Due') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,17 +34,17 @@
                 @foreach ($result as $element)
                 <tr>
                     <th>{{ $element->reference_no }}</th>
-                    <th>{{ $element->client?$element->client->name:'' }}</th>
+                    <th>{{ $element->employee?$element->employee->name:'' }}</th>
                     <td>
                         <ol>
-                            @foreach($element->sell_lines as $sells)
+                            @foreach($element->purchase as $pur)
                                 <li>
                                     @php 
-                                        $total_quantity = $total_quantity + $sells->quantity;
+                                        $total_quantity = $total_quantity + $pur->qty;
                                     @endphp
-                                    {{ $sells->product->name }}-{{$sells->variation->name}}
+                                    {{ $pur->product->name }}-{{$pur->material->name}}
                                     (   
-                                      {{$sells->quantity}} 
+                                      {{$pur->qty}} 
                                     )
                                 </li>
                             @endforeach
@@ -64,11 +63,7 @@
                     </td>
                     <td>
                         {{ $element->payment->sum('amount') }}
-                        @if ($element->return==true)
-                           <br> <span class="badge badge-info">Sale Return</span>
-                        @endif
                     </td>
-                    <th>{{ $element->net_total-$element->payment->sum('amount') }}</th>
                 </tr>
                 @endforeach
             </tbody>
@@ -118,18 +113,10 @@
                     {{number_format($result->sum('paid'),2)}}
                 </td>
             </tr>
-               <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
-                <td style="text-align: right;">
-                    <b>{{_lang('Total Due')}} :</b>
-                </td>
-                <td>
-                    {{number_format($result->sum('due'),2)}}
-                </td>
-            </tr>
 
             <tr style="background-color: #F8F9F9;border: 1px solid #ddd;">
                 <td style="text-align: right;">
-                    <b>{{_lang('Sale Qty')}} :</b>
+                    <b>{{_lang('Purchase Qty')}} :</b>
                 </td>
                 <td>{{$total_quantity}}</td>
             </tr>

@@ -12,6 +12,7 @@
             Time : {{ date('H:i') }}</p>
         </div>
     </div>
+
     <div class="row mt-2 px-4">
         <div class="page-header-space"></div>
         <table class="table table-bordered table-striped">

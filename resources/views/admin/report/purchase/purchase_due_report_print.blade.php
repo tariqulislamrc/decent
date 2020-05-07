@@ -1,9 +1,9 @@
-@extends('layouts.report', ['title' => _lang('Sales Due Report'),'report_title'=>_lang('Sales Due Report')])
+@extends('layouts.report', ['title' => _lang('Purchase Due Report'),'report_title'=>_lang('Purchase Due Report')])
 @section('content')
 <div class="container-fluid px-4 pt-4">
     <div class="row">
         <div class="col-md-6">
-            <p class="h5 text-uppercase"><b>{{ _lang('Sales Due Report') }}: </b> {{ _lang('Date Wise') }} </p>
+            <p class="h5 text-uppercase"><b>{{ _lang('Purchase Due Report') }}: </b> {{ _lang('Date Wise') }} </p>
             <p><b>{{ _lang('Date Range') }}: </b> {{ formatDate($sDate) }} <b>To</b>{{ formatDate($eDate) }} </p>
         </div>
         <div class="col-md-6 text-right">
@@ -35,17 +35,17 @@
                 @foreach ($result as $element)
                 <tr>
                     <th>{{ $element->reference_no }}</th>
-                    <th>{{ $element->client?$element->client->name:'' }}</th>
+                    <th>{{ $element->employee?$element->employee->name:'' }}</th>
                     <td>
                         <ol>
-                            @foreach($element->sell_lines as $sells)
+                            @foreach($element->purchase as $pur)
                                 <li>
                                     @php 
-                                        $total_quantity = $total_quantity + $sells->quantity;
+                                        $total_quantity = $total_quantity + $pur->qty;
                                     @endphp
-                                    {{ $sells->product->name }}-{{$sells->variation->name}}
+                                    {{ $pur->product->name }}-{{$pur->material->name}}
                                     (   
-                                      {{$sells->quantity}} 
+                                      {{$pur->qty}} 
                                     )
                                 </li>
                             @endforeach
@@ -64,9 +64,6 @@
                     </td>
                     <td>
                         {{ $element->payment->sum('amount') }}
-                        @if ($element->return==true)
-                           <br> <span class="badge badge-info">Sale Return</span>
-                        @endif
                     </td>
                     <th>{{ $element->net_total-$element->payment->sum('amount') }}</th>
                 </tr>
