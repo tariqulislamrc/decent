@@ -7,6 +7,8 @@ use App\User;
 use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
+use App\models\account\Account;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -213,6 +215,39 @@ class SalesReportController extends Controller
     }
 
 
+    public function trail_balance(Request $request)
+    {
+            if (request()->ajax()) {
+
+            $end_date = !empty(request()->input('end_date')) ?request()->input('end_date') : \Carbon::now()->format('Y-m-d');
+
+            $purchase_details = $this->getPurchaseTotals(
+                null,
+                $end_date
+            );
+            $sell_details = $this->getSellTotals(
+                null,
+                $end_date
+            );
+
+            $account_details = $this->getAccountBalance($end_date);
+
+            // $capital_account_details = $this->getAccountBalance($business_id, $end_date, 'capital');
+
+            $output = [
+                'supplier_due' => $purchase_details['purchase_due'],
+                'customer_due' => $sell_details['invoice_due'],
+                'account_balances' => $account_details,
+                'capital_account_details' => null
+            ];
+
+            return $output;
+        }
+
+        return view('admin.report.trial_balance'); 
+    }
+
+
        /**
      * Gives the total purchase amount for a business within the date range passed
      *
@@ -395,6 +430,38 @@ class SalesReportController extends Controller
         }
         
         return $output;
+    }
+
+
+    /**
+     * Retrives account balances.
+     * @return Obj
+     */
+    private function getAccountBalance($end_date, $account_type = 'others')
+    {
+        $query = Account::leftjoin(
+            'account_transactions as AT',
+            'AT.account_id',
+            '=',
+            'accounts.id'
+        )
+                                // ->NotClosed()
+                                ->whereNull('AT.deleted_at')
+                                ->whereDate('AT.operation_date', '<=', $end_date);
+
+        // if ($account_type == 'others') {
+        //    $query->NotCapital();
+        // } elseif ($account_type == 'capital') {
+        //     $query->where('account_type', 'capital');
+        // }
+
+        $account_details = $query->select(['name',
+                                        DB::raw("SUM( IF(AT.type='credit', amount, -1*amount) ) as balance")])
+                                ->groupBy('accounts.id')
+                                ->get()
+                                ->pluck('balance', 'name');
+
+        return $account_details;
     }
 
 }

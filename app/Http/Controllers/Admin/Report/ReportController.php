@@ -74,4 +74,5 @@ class ReportController extends Controller
 
         return view('admin.report.customer');
     }
+
 }

@@ -690,6 +690,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	Route::get('product-report','Production\ProductController@product_report')->name('product_report');
 	 	Route::post('product-report','Production\ProductController@product_report_print')->name('product_report_print');
 	 	Route::get('purchase-sale','Report\SalesReportController@purchase_sale')->name('purchase_sale');
+	 	Route::get('trail-balance','Report\SalesReportController@trail_balance')->name('trail_balance');
 	 	Route::get('customer','Report\ReportController@getCustomerSuppliers')->name('getCustomerSuppliers');
 	});
 

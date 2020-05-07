@@ -875,4 +875,7 @@
           <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a></li>
 
           <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a></li>
+
+
+          <li><a class="app-menu__item {{ Request::is('admin/report/trail-balance') ? ' active' : '' }}" href="{{ route('admin.report.trail_balance') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Trail Balance')}}</span></a></li>
 @endif
