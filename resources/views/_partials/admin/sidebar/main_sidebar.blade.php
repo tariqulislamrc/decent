@@ -748,7 +748,7 @@
     <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}" href="{{ route('admin.report.eCommerce-report.index') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('eCommerce Report')}}</span></a></li>
 
         <li class="treeview {{ Request::is('admin/report/expense*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-certificate" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Expense Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
@@ -778,7 +778,7 @@
         </li>
 
         <li class="treeview {{ Request::is('admin/report/selling*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-dropbox" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Selling Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
@@ -830,7 +830,7 @@
         </li>
 
            <li class="treeview {{ Request::is('admin/report/purchasing*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-heartbeat" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Purchase Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
@@ -870,12 +870,15 @@
 
             </ul>
         </li>
-        <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}" href="{{ route('admin.report.product_report') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Product Report')}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}" href="{{ route('admin.report.product_report') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('Product Report')}}</span></a></li>
 
-          <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a></li>
+          <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-puzzle-piece"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a></li>
 
-          <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a></li>
+          <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a></li>
 
 
-          <li><a class="app-menu__item {{ Request::is('admin/report/trail-balance') ? ' active' : '' }}" href="{{ route('admin.report.trail_balance') }}"><i class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('Trail Balance')}}</span></a></li>
+          <li><a class="app-menu__item {{ Request::is('admin/report/trail-balance') ? ' active' : '' }}" href="{{ route('admin.report.trail_balance') }}"><i class="app-menu__icon fa fa-user-secret"></i><span class="app-menu__label">{{_lang('Trail Balance')}}</span></a></li>
+
+          <li><a class="app-menu__item {{ Request::is('admin/report/monthly') ? ' active' : '' }}" href="{{ route('admin.report.monthly_report') }}"><i class="app-menu__icon fa fa-sun-o"></i><span class="app-menu__label">{{_lang('Monthly Report')}}</span></a></li>
+          <li><a class="app-menu__item {{ Request::is('admin/report/yearly') ? ' active' : '' }}" href="{{ route('admin.report.yearly_report') }}"><i class="app-menu__icon fa fa-adjust"></i><span class="app-menu__label">{{_lang('Yearly Report')}}</span></a></li>
 @endif

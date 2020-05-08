@@ -116,10 +116,10 @@
             url: "{{route('admin.report.trail_balance')}}?end_date=" + end_date,
             dataType: "json",
             success: function(result){
-                $('span#supplier_due').text(result.supplier_due);
+                $('span#supplier_due').text(result.supplier_due.toFixed(2));
                 $('input#hidden_supplier_due').val(result.supplier_due);
 
-                $('span#customer_due').text(result.customer_due);
+                $('span#customer_due').text(result.customer_due.toFixed(2));
                 $('input#hidden_customer_due').val(result.customer_due);
 
                 var account_balances = result.account_balances;
@@ -149,8 +149,8 @@
                     total_credit += parseFloat($(this).val());
                 });
 
-                $('span#total_debit').text(total_debit);
-                $('span#total_credit').text(total_credit);
+                $('span#total_debit').text(total_debit.toFixed(2));
+                $('span#total_credit').text(total_credit.toFixed(2));
             }
         });
     }

@@ -692,6 +692,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 	Route::get('purchase-sale','Report\SalesReportController@purchase_sale')->name('purchase_sale');
 	 	Route::get('trail-balance','Report\SalesReportController@trail_balance')->name('trail_balance');
 	 	Route::get('customer','Report\ReportController@getCustomerSuppliers')->name('getCustomerSuppliers');
+	 	Route::get('monthly','Report\ReportController@monthly_report')->name('monthly_report');
+	 	Route::get('yearly','Report\ReportController@yearly_report')->name('yearly_report');
 	});
 
 

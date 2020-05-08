@@ -44,7 +44,7 @@ var _componentDatefPicker = function() {
 
 var _componentMonthPicker = function() {
     $('.month').datepicker({
-        format: "mm",
+        dateFormat: "yy-mm",
         viewMode: "months",
         minViewMode: "months"
     });
@@ -54,7 +54,7 @@ var _componentMonthPicker = function() {
 
 var _componentYearPicker = function() {
     $('.year').datepicker({
-        format: "yyyy",
+        dateFormat: "yy",
         viewMode: "years",
         minViewMode: "years"
     });
