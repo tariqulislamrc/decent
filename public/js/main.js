@@ -1,12 +1,3 @@
-// 
-var _componentDatePicker = function () {
-    $(".take_date").dateDropper({
-        dropWidth: 200,
-        dropPrimaryColor: "#1abc9c",
-        dropBorder: "1px solid #1abc9c"
-    });
-}
-
 var _componentSelect2Normal = function() {
 
     $('.select').select2();
@@ -68,16 +59,16 @@ var _componentDropFile = function() {
  * Form Validation
  */
 
-var _formValidation = function() {
+var _formValidation = function () {
     if ($('#content_form').length > 0) {
-        $('#content_form').parsley().on('field:validated', function() {
+        $('#content_form').parsley().on('field:validated', function () {
             var ok = $('.parsley-error').length === 0;
             $('.bs-callout-info').toggleClass('hidden', !ok);
             $('.bs-callout-warning').toggleClass('hidden', ok);
         });
     }
 
-    $('#content_form').on('submit', function(e) {
+    $('#content_form').on('submit', function (e) {
         e.preventDefault();
         $('#submit').hide();
         $('#submiting').show();
@@ -93,16 +84,17 @@ var _formValidation = function() {
             cache: false, // To unable request pages to be cached
             processData: false,
             dataType: 'JSON',
-            success: function(data) {
+            success: function (data) {
                 if (data.status == 'danger') {
-                    notify(data.message, 'danger');
+                    toastr.error(data.message);
+
                 } else {
-                    notify(data.message, 'success');
+                    toastr.success(data.message);
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
                     if (data.goto) {
-                        setTimeout(function() {
+                        setTimeout(function () {
 
                             window.location.href = data.goto;
                         }, 500);
@@ -111,25 +103,29 @@ var _formValidation = function() {
                     if (data.window) {
                         $('#content_form')[0].reset();
                         window.open(data.window, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
-                        setTimeout(function() {
+                        setTimeout(function () {
                             window.location.href = '';
                         }, 1000);
                     }
 
                     if (data.load) {
-                        setTimeout(function() {
+                        setTimeout(function () {
 
                             window.location.href = "";
                         }, 2500);
                     }
+
+                    if (typeof(emran) != "undefined" && emran !== null) {
+                        emran.ajax.reload(null, false);
+                    }
                 }
             },
-            error: function(data) {
+            error: function (data) {
                 var jsonValue = $.parseJSON(data.responseText);
                 const errors = jsonValue.errors;
                 if (errors) {
                     var i = 0;
-                    $.each(errors, function(key, value) {
+                    $.each(errors, function (key, value) {
                         const first_item = Object.keys(errors)[i]
                         const message = errors[first_item][0];
                         if ($('#' + first_item).length > 0) {
@@ -142,11 +138,12 @@ var _formValidation = function() {
                             });
                         }
                         // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
-                        notify(value, 'danger');
+                        toastr.error(value);
                         i++;
                     });
                 } else {
-                    notify(jsonValue.message, 'danger');
+                    toastr.warning(jsonValue.message);
+
                 }
                 _componentSelect2Normal();
                 $('#submit').show();
@@ -155,6 +152,7 @@ var _formValidation = function() {
         });
     });
 };
+
 
 
 

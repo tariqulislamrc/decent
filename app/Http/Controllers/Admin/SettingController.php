@@ -23,7 +23,7 @@ class SettingController extends Controller
   	   	 	$validator = Validator::make($request->all(), [
 			'logo' => 'mimes:jpeg,bmp,png,jpg|max:2000',
 			'favicon' => 'mimes:jpeg,bmp,png,jpg|max:2000',
-		       ]);
+		    ]);
 
 	        if ($validator->fails()) {
                 return response()->json(['success' => false, 'status' => 'danger', 'message' => $validator->errors()]);
