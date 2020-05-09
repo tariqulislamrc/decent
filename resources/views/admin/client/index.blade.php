@@ -24,10 +24,12 @@
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.client.datatable') }}">
                         <thead>
                             <tr>
-                                <th>{{_lang('id')}}</th>
                                 <th>{{_lang('Name')}}</th>
                                 <th>{{_lang('Mobile')}}</th>
+                                <th>{{_lang('Address')}}</th>
                                 <th>{{_lang('Email')}}</th>
+                                <th>{{_lang('Sale Due')}}</th>
+                                <th>{{_lang('Return Due')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>

@@ -9,6 +9,7 @@ use App\models\Production\TransactionPayment;
 use App\models\email\EmailTemolate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,12 +27,33 @@ class ClientController extends Controller
 
     public function datatable(Request $request){
        if ($request->ajax()) {
-            $document = Client::all();
+            $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
+                    ->select('clients.name','clients.email', 'state', 'country', 'landmark', 'mobile', 'clients.id',
+                        DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
+                        DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
+                        DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as total_sell_return"),
+                        DB::raw("SUM(IF(t.transaction_type = 'sale_return', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as sell_return_paid"),
+                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
+                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
+                        )
+                    ->groupBy('clients.id');;
             return DataTables::of($document)
                 ->addIndexColumn()
+                 ->editColumn(
+                'landmark',
+                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
+                  )
+                    ->addColumn(
+                'due',
+                '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
+                )
+               ->addColumn(
+                'return_due',
+                '<span class="display_currency return_due" data-orig-value="{{$total_sell_return - $sell_return_paid}}" data-currency_symbol=true data-highlight=false>{{$total_sell_return - $sell_return_paid }}</span>'
+                )
                 ->addColumn('action', function ($model) {
                     return view('admin.client.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+                })->rawColumns(['action','landmark','due','return_due'])->make(true);
         }
     }
 
@@ -108,7 +130,19 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+              $contact = Client::where('clients.id', $id)
+                            ->join('transactions AS t', 'clients.id', '=', 't.client_id')
+                            ->select(
+                                DB::raw("SUM(IF(t.transaction_type = 'Purchase', net_total, 0)) as total_purchase"),
+                                DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
+                                DB::raw("SUM(IF(t.transaction_type = 'Purchase', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as purchase_paid"),
+                                DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
+                                DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
+                                DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid"),
+                                'clients.*'
+                            )->first();
+        return view('admin.client.show')
+             ->with(compact('contact'));
     }
 
     /**

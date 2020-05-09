@@ -363,6 +363,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('client/customers','ClientController@customers');
 			Route::post('client/customers','ClientController@quick_add')->name('client.quick_add');
 		    Route::resource('client', 'ClientController');
+		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
+		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
 
 		// Production Route End
 
