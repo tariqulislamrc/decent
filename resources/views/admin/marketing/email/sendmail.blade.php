@@ -4,6 +4,15 @@ $route = 'admin.emailmarketing.template.';
 @extends('layouts.app', ['title' => _lang('Email Template Create'),'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
+
+<style>
+
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+    background-color: #e4e2e2;
+    margin: 0px 6px;
+}
+</style>
 <div class="app-title">
   <div>
     <h1 data-placement="bottom" title="Sendmail."><i class="fa fa-universal-access mr-4"></i>
@@ -61,7 +70,7 @@ $route = 'admin.emailmarketing.template.';
               </div>
             </div>
           </div>
-        <div class="form-group col-md-12" align="right">
+        <div class="form-group col-md-12 mt-3" align="right">
            <button type="submit" class="btn btn-primary py-2" id="submit">{{_lang('Send')}}<i class="fa fa-envelope-o px-1" aria-hidden="true"></i></button>
               <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
@@ -126,7 +135,7 @@ $route = 'admin.emailmarketing.template.';
             </div>
           </div>
         </div>
-        <div class="form-group col-md-12" align="right">
+        <div class="form-group col-md-12 mt-3" align="right">
            <button type="submit" class="btn btn-primary btn-lg p-2" id="submit">{{_lang('Send')}}<i class="fa fa-envelope-o px-1" aria-hidden="true"></i></button>
               <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>

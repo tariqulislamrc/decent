@@ -26,7 +26,7 @@
                         <div class="alert alert-danger">
                             <ul>
                                 @if(!empty($not_linked_payments))
-                                <li>{!! $not_linked_payments ._lang('Payment Not Link to Any account') !!} <a href="">{{ _lang('Details') }}</a></li>
+                                <li>{!! $not_linked_payments ._lang('Payment Not Link to Any account') !!} <a href="{{ route('admin.accounting.payment_account') }}">{{ _lang('Details') }}</a></li>
                                 @endif
                             </ul>
                         </div>

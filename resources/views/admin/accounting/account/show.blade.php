@@ -1,5 +1,8 @@
 @extends('layouts.app', ['title' => _lang('Details Account'), 'modal' => 'lg'])
 {{-- Header Section --}}
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/picker/daterangepicker.css')}}">
+@endpush
 @section('page.header')
 <div class="app-title">
     <div>
@@ -102,6 +105,9 @@
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
+<script src="{{ asset('backend/js/moment.min.js') }}"></script>
+<script src="{{ asset('backend/js/picker/daterangepicker.js') }}"></script>
+<script src="{{ asset('backend/js/picker/moment-timezone-with-data.min.js') }}"></script>
 <script>
         $(document).ready(function(){
         update_account_balance();
@@ -129,9 +135,36 @@
                     });
     });
 
+
+        $('#transaction_date_range').daterangepicker(
+            $("#transaction_date_range").on('apply.daterangepicker',function(start,end){
+                var start = '';
+                var end = '';
+                if($('#transaction_date_range').val()){
+                    start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                    end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                }
+                var transaction_type = $('select#transaction_type').val();
+                console.log(transaction_type);
+                account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
+                
+            })
+        );
+
         $('#transaction_type').change( function(){
+              var start = '';
+                var end = '';
+                if($('#transaction_date_range').val()){
+                    start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                    end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                }
             var transaction_type = $('select#transaction_type').val();
-            account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}?type=' + transaction_type ).load();
+            account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
+        });
+
+        $('#transaction_date_range').on('cancel.daterangepicker', function(ev, picker) {
+            $('#transaction_date_range').val('');
+            account_book.ajax.url( '{{route("admin.accounting.account.show",[$account->id])}}').load();
         });
 
     function update_account_balance(argument) {

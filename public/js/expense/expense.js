@@ -94,6 +94,9 @@ var DatatableSelect = function() {
                     data: 'category',
                     name: 'category'
                 },{
+                    data: 'account',
+                    name: 'account'
+                },{
                     data: 'amount',
                     name: 'amount'
                 }, {

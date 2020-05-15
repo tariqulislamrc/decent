@@ -22,7 +22,7 @@
 			<div class="col-md-12">
 				<div class="form-group">
 					{{ Form::label('operation_date', _lang('Date') , ['class' => 'col-form-label']) }}
-					{{ Form::text('operation_date', null, ['class' => 'form-control', 'id'=>'operation_date', 'placeholder' => _lang('Date'),'required'=>'','autofocus'=>true]) }}
+					{{ Form::text('operation_date', date('Y-m-d'), ['class' => 'form-control date', 'id'=>'operation_date', 'placeholder' => _lang('Date'),'required'=>'','autofocus'=>true]) }}
 				</div>
 			</div>
 			<div class="col-md-12">

@@ -33,7 +33,7 @@
                                         <h2>{{_lang('Warning')}} </h2>
                                         <h4>{{_lang("Look Like You didn't set Some more Required Information")}} </h4>
                                         <p>{{_lang("Look Lijje You didn't set the Employee Code Prefix & Employee Code Digit. IF You don't set this 2 value, you can not add employee. If you want to add Employee, Please Set the value by clicking the below Link")}} </p>
-                                        <p><a href="{{route('admin.module.setting')}}">{{_lang('Click Here to Set The Value')}} </a></p>
+                                        <p><a class="bg-info rounded px-2 text-light py-1" href="{{route('admin.module.setting')}}">{{_lang('Click Here to Set The Value')}} </a></p>
                                   </blockquote>
                                 </div>
                             </div>

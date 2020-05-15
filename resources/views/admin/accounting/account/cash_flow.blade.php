@@ -1,5 +1,8 @@
 @extends('layouts.app', ['title' => _lang('Account Cashflow'), 'modal' => 'lg'])
 {{-- Header Section --}}
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/picker/daterangepicker.css')}}">
+@endpush
 @section('page.header')
 <div class="app-title">
   <div>
@@ -26,8 +29,8 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  {!! Form::label('date_filter', _lang('Date Range') . ':') !!}
-                  {!! Form::text('date_range', null, ['placeholder' => _lang('Date Range'), 'class' => 'form-control', 'id' => 'date_filter', 'readonly']); !!}
+                  {!! Form::label('transaction_date_range', _lang('Date Range') . ':') !!}
+                  {!! Form::text('date_range', null, ['placeholder' => _lang('Date Range'), 'class' => 'form-control', 'id' => 'transaction_date_range', 'readonly']); !!}
                 </div>
               </div>
               <div class="col-sm-4">
@@ -70,9 +73,25 @@
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
+<script src="{{ asset('backend/js/moment.min.js') }}"></script>
+<script src="{{ asset('backend/js/picker/daterangepicker.js') }}"></script>
+<script src="{{ asset('backend/js/picker/moment-timezone-with-data.min.js') }}"></script>
 <script>
 $('.select').select2();
-        $(document).ready(function(){
+  $(document).ready(function(){
+            $('#transaction_date_range').daterangepicker({
+              autoUpdateInput:false,
+            });
+            $("#transaction_date_range").on('apply.daterangepicker',function(start,end){
+                var start = '';
+                var end = '';
+                if($('#transaction_date_range').val()){
+                    start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                    end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                }
+                cash_flow_table.ajax.reload();
+                
+            })
     $.extend($.fn.dataTable.defaults, {
            autoWidth: false,
            responsive: true,
@@ -108,10 +127,18 @@ $('.select').select2();
                         serverSide: true,
                             "ajax": {
                               "url": $('.content_managment_table').data('url'),
-                              "data": function ( d ) {  
+                                "data": function ( d ) {
+                                  var start = '';
+                                  var end = '';
+                                  if($('#transaction_date_range').val() != ''){
+                                      start = $('#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                                      end = $('#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                                  }
+                                  
                                   d.account_id = $('#account_id').val();
                                   d.type = $('#transaction_type').val();
-                              
+                                  d.start_date = start,
+                                  d.end_date = end
                               }
                           },
                           columnDefs: [{
