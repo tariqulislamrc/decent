@@ -150,7 +150,7 @@
                                 class="icon fa fa-circle-o"></i> {{_lang('Unit')}}</a></li>
                 @endcan
 
-                @can('production-raw-materials.view')
+                @can('raw_material.view')
                     {{-- Production Raw Materials --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/production-raw-materials*') ? 'active':''}}"
@@ -164,14 +164,17 @@
                                         href="{{ route('admin.production-product.index') }}"><i
                                 class="icon fa fa-circle-o"></i> {{_lang('Production Product')}}</a></li>
                 @endcan
-                @can('production-raw-materials.view')
+                @can('workorder.view')
                     {{-- Production Work Order --}}
-                    <li class="mt-1"><a
+                    <li class="mt-1">
+                        <a
                             class="treeview-item {{Request::is('admin/production-work-order*') ? 'active':''}}"
                             href="{{ route('admin.production-work-order.index') }}"><i
-                                class="icon fa fa-circle-o"></i> {{_lang('Work Order')}}</a></li>
-                @endcan
-                @can('production_wop_materials.view')
+                                class="icon fa fa-circle-o"></i> {{_lang('Work Order')}}
+                            </a>
+                    </li>
+                    @endcan
+                    @can('production_wop_materials.view')
                     {{-- Production wop Materials --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/production-wop-materials*') ? 'active':''}}"
@@ -179,7 +182,7 @@
                                 class="icon fa fa-circle-o"></i> {{_lang('WOP Materials')}}</a></li>
                 @endcan
 
-                @can('production_purchase.view')
+                @can('purchase.view')
                     {{-- Production Purchase --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/production-purchase*') ? 'active':''}}"
@@ -192,21 +195,20 @@
 
 
     {{-- Product --}}
-    @can('product.view')
+    @can('production_product.view')
         <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/product-list*') ? ' active' : '' }}" href="{{ route('admin.product_list') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Product List')}}</span></a></li>
     @endcan
 
 
-    @can('expense.view')
+    @can('production_department.view')
         {{-- Expense Section--}}
         <li class="treeview {{ Request::is('admin/department*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart"
-                                                                         aria-hidden="true"></i>
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pie-chart" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Department')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
+                @can('production_department.view')
                     {{-- Expense Category--}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/department') ? 'active':''}}"
@@ -217,7 +219,7 @@
                     </li>
                 @endcan
 
-                @can('expenseCategory.view')
+                @can('submit_product_to_department.view')
                     {{-- Expense --}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/department/report/create') ? 'active':''}}"
@@ -227,7 +229,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('expenseCategory.view')
+                @can('submit_material_to_department.view')
                     {{-- Expense --}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/department/report/material*') ? 'active':''}}"
@@ -241,17 +243,15 @@
         </li>
     @endcan
 
-    @can('expense.view')
-        {{-- Expense Section--}}
+    @can('store_request.view')
         <li class="treeview {{ Request::is('admin/request*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-archive"
-                                                                         aria-hidden="true"></i>
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-archive" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Store')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+                @can('store_request.view')
+       
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/request') ? 'active':''}}"
                            href="{{ route('admin.request.index') }}">
@@ -259,10 +259,7 @@
                             {{_lang('All Request')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- Expense --}}
+           
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/request/create') ? 'active':''}}"
                            href="{{ route('admin.request.create') }}">
@@ -339,12 +336,10 @@
 
     @can('client.view')
         {{-- Database Backup --}}
-        <li><a class="app-menu__item {{ Request::is('admin/client') ? ' active' : '' }}"
-               href="{{ route('admin.client.index') }}"><i class="app-menu__icon fa fa-user-o"></i><span
-                    class="app-menu__label">{{_lang('Client')}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('admin/client') ? ' active' : '' }}" href="{{ route('admin.client.index') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Client')}}</span></a></li>
     @endcan
 
-
+       @can('sale_pos.view')
         <li class="treeview {{ Request::is('admin/sale*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Sale Pos')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
@@ -379,21 +374,20 @@
                 </li>
             </ul>
         </li>
+        @endcan
 
         @can('language.view')
         {{-- Language --}}
         <li><a class="app-menu__item {{ Request::is('admin/language*') ? ' active' : '' }}"
-               href="{{ route('admin.language') }}"><i class="app-menu__icon fa fa-language"
-                                                       aria-hidden="true"></i><span
-                    class="app-menu__label">{{_lang('language')}}</span></a></li>
-    @endcan
+               href="{{ route('admin.language') }}"><i class="app-menu__icon fa fa-language" aria-hidden="true"></i><span class="app-menu__label">{{_lang('language')}}</span></a></li>
+       @endcan
 
-    @can('user.view')
+      @can('user.view')
         {{-- User Section--}}
-        <li class="treeview {{ Request::is('admin/user*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
-                                                                                       data-toggle="treeview"><i
-                    class="app-menu__icon fa fa-user-times"></i><span
-                    class="app-menu__label">{{_lang('role_and_permission')}}</span><i
+        <li class="treeview {{ Request::is('admin/user*') ? ' is-expanded' : '' }}">
+             <a class="app-menu__item" href="#" data-toggle="treeview">
+                <i class="app-menu__icon fa fa-address-book"></i><span
+                    class="app-menu__label">{{_lang('Role & Permission')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 @can('role.view')
@@ -415,155 +409,123 @@
         </li>
     @endcan
 
-    @can('marketing.view')
-        {{-- User Section--}}
+    @can('email_marketing.view')
+
         <li class="treeview {{ Request::is('admin/emailmarketing*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview">
                 <i class="app-menu__icon fa fa-envelope"></i><span
                     class="app-menu__label">{{_lang('Email Marketing')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                @can('role.view')
-                    {{-- Role & Permission --}}
+
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/emailmarketing/template*') ? 'active':''}}"
                             href="{{ route('admin.emailmarketing.template.index') }}"><i
                                 class="icon fa fa-circle-o"></i>
                             {{_lang('Email Template')}}</a></li>
-                @endcan
 
-                @can('user.view')
-                    {{-- User --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/emailmarketing/media*') ?'active':''}}"
                             href="{{ route('admin.emailmarketing.media.index') }}"><i
                                 class="icon fa fa-circle-o"></i>{{_lang('Media')}}</a>
                     </li>
-                @endcan
 
-                @can('user.view')
-                    {{-- User --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/emailmarketing/sendmail/create') ?'active':''}}"
-                            href="{{ route('admin.emailmarketing.sendmail.create') }}"><i
-                                class="icon fa fa-circle-o"></i>{{_lang('Send Mail')}}</a>
+                            href="{{ route('admin.emailmarketing.sendmail.create') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Send Mail')}}</a>
                     </li>
-                @endcan
-
-                @can('user.view')
-                    {{-- User --}}
+   
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/emailmarketing/email-history') ?'active':''}}"
-                            href="{{ route('admin.emailmarketing.email_history') }}"><i
-                                class="icon fa fa-circle-o"></i>{{_lang('Email History')}}</a>
+                            href="{{ route('admin.emailmarketing.email_history') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Email History')}}</a>
                     </li>
-                @endcan
             </ul>
         </li>
     @endcan
 
 
-    @can('eCommerce.view')
+    @can('Ecommerce.view')
         {{-- eCommerce Section--}}
         <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('E-Commerce')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
 
                 {{-- eCommerce Offer  --}}
-                @can('eCommerce_offer.view')
+                
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('eCommerce Offer')}}</a></li>
-                @endcan
+              
 
                 {{-- Featured Product  --}}
-                @can('featured_product.view')
+              
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.feature-product.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Feature Product')}}</a></li>
-                @endcan
+              
 
                 {{-- Hot sale Product  --}}
-                @can('hotsale_product.view')
+          
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Hot Sale Product')}}</a></li>
-                @endcan
+              
 
                 {{-- All Ecommerce page main banner --}}
-                @can('page_banner.view')
+         
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Page Banner')}}</a></li>
-                @endcan
-
-                @can('role.view')
+               
                     {{-- Add Slider  --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}" href="{{ route('admin.eCommerce.slider.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a></li>
-                @endcan
-
-                @can('role.view')
+               
                     {{-- Home Page Image  --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}" href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li>
-                @endcan
-
-                @can('role.view')
+           
                     {{-- Add Coupons --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
-                @endcan
-
-                @can('role.view')
+            
                     {{-- Add Coupons --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}" href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
-                @endcan
-
-                @can('role.view')
+             
                     {{--Privacy Policy--}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
-                @endcan
-
-                @can('role.view')
+              
                     {{--about us --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('About Us')}}</a></li>
-                @endcan
-
-                @can('role.view')
+            
                     {{--Our Team--}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
                                         href="{{ route('admin.eCommerce.our-team.index') }}"><i
                                 class="icon fa fa-circle-o"></i>{{_lang('Our Team')}}</a></li>
-                @endcan
-                @can('role.view')
+              
                     {{--Our workspace--}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}"
                             href="{{ route('admin.eCommerce.our-workspace.index') }}"><i
                                 class="icon fa fa-circle-o"></i>{{_lang('Our Workspac')}}</a></li>
-                @endcan
+             
 
-                @can('role.view')
+            
                     {{--Contact Message --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
-                @endcan
+             
 
-                @can('role.view')
+               
                     {{--Product Rating --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}" href="{{ route('admin.eCommerce.product-rating.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Product Rating')}}</a></li>
-                @endcan
-
-                @can('role.view')
+          
                     {{--Term and Condition --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
-                @endcan
+         
 
-                @can('role.view')
                     {{--Seo --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
-                @endcan
+
 
                 {{--Ecommerce Orders --}}
-                @can('ecommerce_order.view')
+    
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
-                @endcan
 
             </ul>
         </li>
     @endcan
 
 
-    @can('expense.view')
-        {{-- Expense Section--}}
+    @can('sms_marketing.view')
+
         <li class="treeview {{ Request::is('admin/smsmerketing*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-commenting"
                                                                          aria-hidden="true"></i>
@@ -571,8 +533,7 @@
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/smsmerketing/sendsms*') ? 'active':''}}"
                            href="{{ route('admin.smsmerketing.sendsms.create') }}">
@@ -580,10 +541,7 @@
                             {{_lang('Send Sms')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- Expense --}}
+    
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/smsmerketing/sms-history') ? 'active':''}}"
                            href="{{ route('admin.smsmerketing.sms_history') }}">
@@ -591,7 +549,7 @@
                             {{_lang('Sms History')}}
                         </a>
                     </li>
-                @endcan
+              
             </ul>
         </li>
     @endcan
@@ -605,7 +563,7 @@
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
+               
                     {{-- Expense Category--}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/expense/category') ? 'active':''}}"
@@ -614,9 +572,9 @@
                             {{_lang('Expense Category')}}
                         </a>
                     </li>
-                @endcan
+             
 
-                @can('expenseCategory.view')
+         
                     {{-- Expense --}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}"
@@ -625,7 +583,7 @@
                             {{_lang('Expense')}}
                         </a>
                     </li>
-                @endcan
+                
             </ul>
         </li>
     @endcan
@@ -642,7 +600,7 @@
                 class="app-menu__label">{{_lang('Font Awosome')}}</span></a></li>
 
 
-                
+        @can('accounting.view')         
             {{-- Account Section--}}
         <li class="treeview {{ Request::is('admin/accounting*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
@@ -650,8 +608,7 @@
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+           
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/accounting/account*') ? 'active':''}}"
                            href="{{ route('admin.accounting.account.index') }}">
@@ -659,9 +616,9 @@
                             {{_lang('Account List')}}
                         </a>
                     </li>
-                @endcan
+            
 
-                @can('expenseCategory.view')
+           
                     {{-- payment accunt --}}
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/accounting/payment/account') ? 'active':''}}"
@@ -670,10 +627,8 @@
                             {{_lang('Payment Account')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- payment accunt --}}
+        
+   
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/accounting/cashflow') ? 'active':''}}"
                            href="{{ route('admin.accounting.cashflow') }}">
@@ -681,10 +636,9 @@
                             {{_lang('Cashflow')}}
                         </a>
                     </li>
-                @endcan
+       
 
-                   @can('expenseCategory.view')
-                    {{-- payment accunt --}}
+       
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/accounting/investment') ? 'active':''}}"
                            href="{{ route('admin.accounting.investment.index') }}">
@@ -692,14 +646,17 @@
                             {{_lang('InvestmentAccount')}}
                         </a>
                     </li>
-                @endcan
+            
             </ul>
         </li>
+        @endcan
 
 @endif
 <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
-       href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span class="app-menu__label">{{_lang('Report')}}</span></a></li>
+       href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span class="app-menu__label">{{_lang('Report')}}</span></a>
+</li>
 @if (Request::is('admin/report*'))
+@can('report.store_department') 
     <li class="treeview {{ Request::is('admin/report/depertment*') ? ' is-expanded' : '' }}">
         <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-desc" aria-hidden="true"></i>
             <span class="app-menu__label">{{_lang('Department Report')}}</span>
@@ -743,18 +700,20 @@
             </li>
         </ul>
     </li>
-
+    @endcan
+    @can('report.ecommerce') 
     {{-- Ecommerce Report --}}
-    <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}" href="{{ route('admin.report.eCommerce-report.index') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('eCommerce Report')}}</span></a></li>
-
+    <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}" href="{{ route('admin.report.eCommerce-report.index') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('eCommerce Report')}}</span></a>
+    </li>
+    @endcan
+    @can('report.expense') 
         <li class="treeview {{ Request::is('admin/report/expense*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-certificate" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Expense Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+               
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/expense') ? 'active':''}}"
                            href="{{ route('admin.report.expense.index') }}">
@@ -762,10 +721,7 @@
                             {{_lang('Expense Report')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- Expense --}}
+           
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
                            href="{{ route('admin.report.expense.account') }}">
@@ -773,18 +729,18 @@
                             {{_lang('Expense Account Report')}}
                         </a>
                     </li>
-                @endcan
+            
             </ul>
         </li>
-
+  @endcan
+  @can('report.selling') 
         <li class="treeview {{ Request::is('admin/report/selling*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-dropbox" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Selling Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+           
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/selling/sales') ? 'active':''}}"
                            href="{{ route('admin.report.selling.sales') }}">
@@ -792,10 +748,7 @@
                             {{_lang('Sales Report')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- Expense --}}
+              
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/selling/sales-payment') ? 'active':''}}"
                            href="{{ route('admin.report.selling.sales_payment') }}">
@@ -803,10 +756,7 @@
                             {{_lang('Sales Payment Report')}}
                         </a>
                     </li>
-                @endcan
-
-                    @can('expenseCategory.view')
-                    {{-- Expense --}}
+               
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/selling/sales-due') ? 'active':''}}"
                            href="{{ route('admin.report.selling.sales_due') }}">
@@ -814,10 +764,7 @@
                             {{_lang('Sales Due Report')}}
                         </a>
                     </li>
-                @endcan
-
-                    @can('expenseCategory.view')
-                    {{-- Expense --}}
+               
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/selling/sale-return') ? 'active':''}}"
                            href="{{ route('admin.report.selling.sale_return') }}">
@@ -825,18 +772,18 @@
                             {{_lang('Sales Return Report')}}
                         </a>
                     </li>
-                @endcan
+               
             </ul>
         </li>
-
+      @endcan
+      @can('report.purchase') 
            <li class="treeview {{ Request::is('admin/report/purchasing*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-heartbeat" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Purchase Report')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
-                @can('expenseCategory.view')
-                    {{-- Expense Category--}}
+             
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/purchasing/sales') ? 'active':''}}"
                            href="{{ route('admin.report.purchasing.purchase') }}">
@@ -844,10 +791,7 @@
                             {{_lang('Purchase Report')}}
                         </a>
                     </li>
-                @endcan
-
-                @can('expenseCategory.view')
-                    {{-- Expense --}}
+               
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-payment') ? 'active':''}}"
                            href="{{ route('admin.report.purchasing.purchase_payment') }}">
@@ -855,10 +799,7 @@
                             {{_lang('Purchase Payment Report')}}
                         </a>
                     </li>
-                @endcan
-
-                    @can('expenseCategory.view')
-                    {{-- Expense --}}
+                
                     <li class="mt-1">
                         <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-due') ? 'active':''}}"
                            href="{{ route('admin.report.purchasing.purchase_due') }}">
@@ -866,19 +807,101 @@
                             {{_lang('Purchase Due Report')}}
                         </a>
                     </li>
-                @endcan
-
+               
             </ul>
         </li>
-        <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}" href="{{ route('admin.report.product_report') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('Product Report')}}</span></a></li>
+        @endcan
+        @can('report.product') 
+        <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}" href="{{ route('admin.report.product_report') }}"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">{{_lang('Product Report')}}</span></a>
+        </li>
+        @endcan
+        @can('report.purchase_sale') 
+          <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-puzzle-piece"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a>
+          </li>
+         @endcan
+         @can('report.customer') 
+          <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a>
+          </li>
+         @endcan
+         @can('report.trail_balance') 
+          <li><a class="app-menu__item {{ Request::is('admin/report/trail-balance') ? ' active' : '' }}" href="{{ route('admin.report.trail_balance') }}"><i class="app-menu__icon fa fa-user-secret"></i><span class="app-menu__label">{{_lang('Trail Balance')}}</span></a>
+          </li>
+          @endcan
+          @can('report.monthly') 
+          <li><a class="app-menu__item {{ Request::is('admin/report/monthly') ? ' active' : '' }}" href="{{ route('admin.report.monthly_report') }}"><i class="app-menu__icon fa fa-sun-o"></i><span class="app-menu__label">{{_lang('Monthly Report')}}</span></a>
+          </li>
+          @endcan
+          @can('report.yearly') 
+          <li><a class="app-menu__item {{ Request::is('admin/report/yearly') ? ' active' : '' }}" href="{{ route('admin.report.yearly_report') }}"><i class="app-menu__icon fa fa-adjust"></i><span class="app-menu__label">{{_lang('Yearly Report')}}</span></a>
+          </li>
+          @endcan
 
-          <li><a class="app-menu__item {{ Request::is('admin/report/purchase-sale') ? ' active' : '' }}" href="{{ route('admin.report.purchase_sale') }}"><i class="app-menu__icon fa fa-puzzle-piece"></i><span class="app-menu__label">{{_lang('Purchase Sale')}}</span></a></li>
 
-          <li><a class="app-menu__item {{ Request::is('admin/report/customer') ? ' active' : '' }}" href="{{ route('admin.report.getCustomerSuppliers') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Customer Report')}}</span></a></li>
-
-
-          <li><a class="app-menu__item {{ Request::is('admin/report/trail-balance') ? ' active' : '' }}" href="{{ route('admin.report.trail_balance') }}"><i class="app-menu__icon fa fa-user-secret"></i><span class="app-menu__label">{{_lang('Trail Balance')}}</span></a></li>
-
-          <li><a class="app-menu__item {{ Request::is('admin/report/monthly') ? ' active' : '' }}" href="{{ route('admin.report.monthly_report') }}"><i class="app-menu__icon fa fa-sun-o"></i><span class="app-menu__label">{{_lang('Monthly Report')}}</span></a></li>
-          <li><a class="app-menu__item {{ Request::is('admin/report/yearly') ? ' active' : '' }}" href="{{ route('admin.report.yearly_report') }}"><i class="app-menu__icon fa fa-adjust"></i><span class="app-menu__label">{{_lang('Yearly Report')}}</span></a></li>
 @endif
+
+@role('Super Admin')
+        <li class="treeview {{ Request::is('super-admin*') ? ' is-expanded' : '' }}">
+            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle" aria-hidden="true"></i>
+                <span class="app-menu__label">{{_lang('Super Admin')}}</span><i
+                    class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/product') ? 'active':''}}"
+                           href="{{ route('super_admin.product') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Product')}}
+                        </a>
+                    </li>
+
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/client') ? 'active':''}}"
+                           href="{{ route('super_admin.client') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Client')}}
+                        </a>
+                    </li>
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/sells') ? 'active':''}}"
+                           href="{{ route('super_admin.sells') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sells')}}
+                        </a>
+                    </li>
+
+                       <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/sell-return') ? 'active':''}}"
+                           href="{{ route('super_admin.sell_return') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Sell Return')}}
+                        </a>
+                    </li>
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/purchase') ? 'active':''}}"
+                           href="{{ route('super_admin.purchase') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Purchase')}}
+                        </a>
+                    </li>
+
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/expense') ? 'active':''}}"
+                           href="{{ route('super_admin.expense') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Expense')}}
+                        </a>
+                    </li>
+
+
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('super-admin/account') ? 'active':''}}"
+                           href="{{ route('super_admin.account') }}">
+                            <i class="icon fa fa-circle-o"></i>
+                            {{_lang('Account')}}
+                        </a>
+                    </li>
+     
+            </ul>
+        </li>
+    @endrole

@@ -65,9 +65,7 @@ $route = 'admin.emailmarketing.template.';
         </div>
       <div class="form-group col-md-12" align="right">
           <button type="submit" class="btn btn-primary py-2" id="">{{_lang('Send')}}<i class="fa fa-envelope-o px-1" aria-hidden="true"></i></button>
-          <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
-          <img src="{{ asset('ajaxloader.gif') }}" width="80px">
-          </button>
+          <button type="button" class="btn btn-info" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
       </div>
       {!! Form::close() !!}
         
@@ -125,9 +123,7 @@ $route = 'admin.emailmarketing.template.';
         </div>
         <div class="form-group col-md-12" align="right">
             <button type="submit" class="btn btn-primary btn-lg p-2" id="submit">{{_lang('Send')}}<i class="fa fa-envelope-o px-1" aria-hidden="true"></i></button>
-            <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
-             <img src="{{ asset('ajaxloader.gif') }}" width="80px">
-           </button>
+            <button type="button" class="btn btn-info" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
         {!! Form::close() !!}
       </div>

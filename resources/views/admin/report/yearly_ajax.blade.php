@@ -27,9 +27,15 @@
                                 <td>{{ ovarallreport('Purchase',null,null,null,$key,$year)->sum('total_paid') }}</td>
                                 <td>{{ ovarallreport('Purchase',null,null,null,$key,$year)->sum('net_total') - ovarallreport('Purchase',null,null,null,$key,$year)->sum('total_paid') }}</td>
                                 <td>
+                                    @role('Super Admin')
                                     @php
                                         $expense=App\models\Expense\Expense::whereMonth('date',$key)->whereYear('date',$year)->sum('amount');
                                     @endphp
+                                    @else
+                                     @php
+                                        $expense=App\models\Expense\Expense::whereMonth('date',$key)->whereYear('date',$year)->where('hidden',false)->sum('amount');
+                                    @endphp
+                                    @endrole
                                     {{ $expense }}
                                 </td>
                             </tr>
@@ -45,9 +51,15 @@
                             <td>{{ ovarallreport('Purchase',null,null,null,null,$year)->sum('total_paid') }}</td>
                             <td>{{ ovarallreport('Purchase',null,null,null,null,$year)->sum('net_total') - ovarallreport('Purchase',null,null,null,null,$year)->sum('total_paid') }}</td>
                              <td>
+                                @role('Super Admin')
                                     @php
                                         $expense_key=App\models\Expense\Expense::whereYear('date',$year)->sum('amount');
                                     @endphp
+                                   @else
+                                    @php
+                                        $expense_key=App\models\Expense\Expense::whereYear('date',$year)->where('hidden',false)->sum('amount');
+                                    @endphp
+                                 @endrole   
                                     {{ $expense_key }}
                              </td>
                         </tr>

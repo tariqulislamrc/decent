@@ -5,7 +5,7 @@
         <div class="col-md-12">
           <div class="profile">
             <div class="info"><img class="user-img" src="{{auth()->user()->image? asset('storage/user/photo/'.auth()->user()->image):'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg'}}">
-              <h4>{{auth()->user()->name?auth()->user()->name:'John Doe'}}</h4>
+              <h4>{{auth()->user()->email?auth()->user()->email:'John Doe'}}</h4>
               <p>{{getUserRoleName(auth()->user()->id)?getUserRoleName(auth()->user()->id):'Admin'}}</p>
             </div>
             <div class="cover-image"></div>
@@ -75,7 +75,7 @@
                   <div class="form-group">
                   {{ Form::label('name', _lang('name') , ['class' => 'col-form-label']) }}
 
-                  {{ Form::text('name', $user->name, ['class' => 'form-control', 'placeholder' => _lang('name')]) }}
+                  {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => _lang('name')]) }}
                 </div>
               </div>
 
@@ -89,8 +89,8 @@
                 </div>
              </div>
             <div class="text-right">
-              <button type="submit" class="btn btn-primary"  id="submit">{{_lang('update_profile')}}<i class="icon-arrow-right14 position-right"></i></button>
-              <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+              <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Update Profile')}}<i class="icon-arrow-right14 position-right"></i></button>
+              <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
 
              </div>
            <fieldset class="mb-3" id="form_field">
@@ -120,8 +120,8 @@
               </div>
              </div>
             <div class="text-right">
-              <button type="submit" class="btn btn-primary"  id="submit">{{_lang('change_password')}}<i class="icon-arrow-right14 position-right"></i></button>
-              <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+              <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Change Password')}}<i class="icon-arrow-right14 position-right"></i></button>
+              <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
 
              </div>
            </fieldset>

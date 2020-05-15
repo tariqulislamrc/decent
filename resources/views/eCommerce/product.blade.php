@@ -49,6 +49,6 @@
     </div>
     <div class="txt">
         <strong class="title">{{$item->name}}</strong>
-        <span class="price">৳ <span>{{$per_product_price ? $per_product_price : ''}}</span></span>
+        <span class="price">৳ <span>{{isset($per_product_price) ? $per_product_price : ''}}</span></span>
     </div>
 </div>

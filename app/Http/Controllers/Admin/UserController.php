@@ -55,7 +55,13 @@ class UserController extends Controller
 		if ($request->isMethod('get')) {
 			// return to the create page
 			$roles = Role::where('name', '!=', config('system.default_role.admin'))->get()->pluck('name', 'id')->prepend('Select Role...', '');
-			return view('admin.user.create', compact('roles'));
+			$all_user =User::where('employee_id','!=',null)->get();
+			$employee_id=[];
+			foreach ($all_user as  $user) {
+			  $employee_id[]=$user->employee_id;
+			}
+			$employies=Employee::whereNotIn('id',$employee_id)->pluck('name','id');
+			return view('admin.user.create', compact('roles','employies'));
 		} else {
 			// validating the data
 			$validator = $request->validate([
@@ -69,6 +75,7 @@ class UserController extends Controller
 
 			// Create new User
 			$user = new User;
+			$user->employee_id=$request->employee_id;
 			$user->surname = $request->surname;
 			$user->first_name = $request->first_name;
 			$user->last_name = $request->last_name;
@@ -77,6 +84,8 @@ class UserController extends Controller
 			$user->username = $request->username;
 			$user->password = Hash::make($request->password);
 			$user->status = 'activated';
+			$user->uuid = Str::uuid();
+			$user->user_type = 'Employee';
 			$user->save();
 
 			// Assign the role for this user
@@ -148,6 +157,7 @@ class UserController extends Controller
 			$user->username = $request->username;
 			$user->password = Hash::make($request->password);
 			$user->status = 'activated';
+			$user->save();
 
 			$role_id = $request->input('role');
 			$user_role = $user->roles->first();
@@ -188,7 +198,8 @@ class UserController extends Controller
 	// login_info
 	public function login_info(Request $request) {
 		$id = $request->model_id;
-		return view('admin.employee.list.ajax.login_info', compact('id'));
+		$roles = Role::where('name', '!=', config('system.default_role.admin'))->get();
+		return view('admin.employee.list.ajax.login_info', compact('id','roles'));
 	}
 
 	// set_login_info
@@ -210,14 +221,30 @@ class UserController extends Controller
 				$user->password = Hash::make($request->password);
 				$user->status = 'activated';
 				$user->save();
+
+				$role_id = $request->input('role');
+				$user_role = $user->roles->first();
+
+				if ($user_role->id != $role_id) {
+					$user->removeRole($user_role->name);
+
+					$role = Role::findOrFail($role_id);
+					$user->assignRole($role->name);
+				}
 			} else {
 				$user = new User;
+				$user->employee_id=$id;
+				$user->user_type='Employee';
 				$user->username = $request->username;
 				$user->email = $request->email;
 				$user->password = Hash::make($request->password);
 				$user->status = 'activated';
+				$user->uuid = Str::uuid();
 				$user->save();
-
+				// Assign the role for this user
+				$role_id = $request->input('role');
+				$role = Role::findOrFail($role_id);
+				$user->assignRole($role->name);
 				$user_id = $user->id;
 				$model = Employee::findOrFail($id);
 				$model->user_id = $user_id;

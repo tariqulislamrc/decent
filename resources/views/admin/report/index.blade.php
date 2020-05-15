@@ -71,6 +71,59 @@
         </div>
     </div>
 </div>
+
+    <div class="row mt-1">
+              <div class="col-md-4 mx-auto">
+        <div class="card card-box border border-primary">
+            <div class="card-body text-center">
+                <i class="fa fa-registered fa-4x" aria-hidden="true"></i>
+                <h4 class="card-title">{{ _lang('Purchase Sale') }}</h4>
+                <a href="{{ route('admin.report.purchase_sale') }}" class="btn btn-primary btn-sm">{{ _lang('Go to Report') }}</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-4 mx-auto">
+        <div class="card card-box border border-primary">
+            <div class="card-body text-center">
+                <i class="fa fa-registered fa-4x" aria-hidden="true"></i>
+                <h4 class="card-title">{{ _lang('Customer Report') }}</h4>
+                <a href="{{ route('admin.report.getCustomerSuppliers') }}" class="btn btn-primary btn-sm">{{ _lang('Go to Report') }}</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-4 mx-auto">
+        <div class="card card-box border border-primary">
+            <div class="card-body text-center">
+                <i class="fa fa-registered fa-4x" aria-hidden="true"></i>
+                <h4 class="card-title">{{ _lang('Trail Balance') }}</h4>
+                <a href="{{ route('admin.report.trail_balance') }}" class="btn btn-primary btn-sm">{{ _lang('Go to Report') }}</a>
+            </div>
+        </div>
+    </div>
+    </div>
+     <div class="row mt-2">
+            <div class="col-md-6">
+        <div class="card card-box border border-primary">
+            <div class="card-body text-center">
+                <i class="fa fa-registered fa-4x" aria-hidden="true"></i>
+                <h4 class="card-title">{{ _lang('Monthly Report') }}</h4>
+                <a href="{{ route('admin.report.monthly_report') }}" class="btn btn-primary btn-sm">{{ _lang('Go to Report') }}</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-6">
+        <div class="card card-box border border-primary">
+            <div class="card-body text-center">
+                <i class="fa fa-registered fa-4x" aria-hidden="true"></i>
+                <h4 class="card-title">{{ _lang('Yearly Report') }}</h4>
+                <a href="{{ route('admin.report.yearly_report') }}" class="btn btn-primary btn-sm">{{ _lang('Go to Report') }}</a>
+            </div>
+        </div>
+    </div>
+     </div>
 <!-- /basic initialization -->
 @stop
 {{-- Script Section --}}

@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('production_brand.create')
+                    @can('store_request.create')
                         <a href="{{ route('admin.request.create') }}" data-placement="bottom" title="Send Store Request" class="btn btn-info"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('Send Store Request')}}</a>
                     @endcan
                 </h3>

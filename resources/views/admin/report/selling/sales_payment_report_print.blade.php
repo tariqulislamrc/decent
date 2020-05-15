@@ -26,7 +26,11 @@
 
                 @foreach ($result as $element)
                 <tr>
-                    <th>{{ $element->transaction->reference_no }} <br>{{ _lang('Total Amt') }} ({{ $element->transaction->net_total }}) </th>
+                    <th>{{ $element->transaction->reference_no }} 
+                        @can('view_sale.sale_price')
+                        <br>{{ _lang('Total Amt') }} ({{ $element->transaction->net_total }})
+                        @endcan 
+                    </th>
                     <td>{{ $element->client->name }} </td>
                  @php
                     $payments =App\models\Production\TransactionPayment::where('transaction_id',$element->transaction_id)->whereBetween('payment_date',[$sDate,$eDate])->get();
@@ -38,7 +42,9 @@
                          <tr>
                              <td style="width: 30%">{{ $payment->payment_date }}</td>
                              <td style="width: 30%">{{ $payment->method }}</td>
+                             @can('view_sale.sale_paid')
                              <td style="width: 40%">{{ $payment->amount }}</td>
+                             @endcan
                          </tr>
                     @endforeach
                      <tr>

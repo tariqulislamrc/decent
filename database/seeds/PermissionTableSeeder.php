@@ -204,6 +204,166 @@ public function run() {
 			['name' => 'designation.update'],
 			['name' => 'designation.delete'],
 
+			// Production
+			['name' => 'production.view'],
+
+			['name' => 'production_category.view'],
+			['name' => 'production_category.create'],
+			['name' => 'production_category.update'],
+			['name' => 'production_category.delete'],
+
+			['name' => 'production_brands.view'],
+			['name' => 'production_brands.create'],
+			['name' => 'production_brands.update'],
+			['name' => 'production_brands.delete'],
+
+			['name' => 'production_variation.view'],
+			['name' => 'production_variation.create'],
+			['name' => 'production_variation.update'],
+			['name' => 'production_variation.delete'],
+
+			['name' => 'production_ingredients.view'],
+			['name' => 'production_ingredients.create'],
+			['name' => 'production_ingredients.update'],
+			['name' => 'production_ingredients.delete'],
+
+			['name' => 'unit.view'],
+			['name' => 'unit.create'],
+			['name' => 'unit.update'],
+			['name' => 'unit.delete'],
+
+			['name' => 'raw_material.view'],
+			['name' => 'raw_material.create'],
+			['name' => 'raw_material.update'],
+			['name' => 'raw_material.delete'],
+
+			['name' => 'production_product.view'],
+			['name' => 'production_product.create'],
+			['name' => 'production_product.update'],
+			['name' => 'production_product.delete'],
+
+			['name' => 'workorder.view'],
+			['name' => 'workorder.create'],
+			['name' => 'workorder.update'],
+			['name' => 'workorder.delete'],
+
+			['name' => 'production_wop_materials.view'],
+			['name' => 'production_wop_materials.create'],
+			['name' => 'production_wop_materials.update'],
+			['name' => 'production_wop_materials.delete'],
+
+			['name' => 'purchase.view'],
+			['name' => 'purchase.create'],
+			['name' => 'purchase.update'],
+			['name' => 'purchase.delete'],
+
+			['name' => 'production_department.view'],
+			['name' => 'production_department.create'],
+			['name' => 'production_department.update'],
+			['name' => 'production_department.delete'],
+
+			['name' => 'submit_product_to_department.view'],
+			['name' => 'submit_product_to_department.create'],
+			['name' => 'submit_product_to_department.update'],
+			['name' => 'submit_product_to_department.delete'],
+
+			['name' => 'submit_material_to_department.view'],
+			['name' => 'submit_material_to_department.create'],
+			['name' => 'submit_material_to_department.update'],
+			['name' => 'submit_material_to_department.delete'],
+
+			['name' => 'store_request.view'],
+			['name' => 'store_request.create'],
+			['name' => 'store_request.update'],
+			['name' => 'store_request.delete'],
+
+			['name' => 'client.view'],
+			['name' => 'client.create'],
+			['name' => 'client.update'],
+			['name' => 'client.delete'],
+
+			['name' => 'sale_pos.view'],
+			['name' => 'sale_pos.create'],
+			['name' => 'sale_pos.update'],
+			['name' => 'sale_pos.delete'],
+
+			['name' => 'transaction_payment.view'],
+			['name' => 'transaction_payment.create'],
+			['name' => 'transaction_payment.update'],
+			['name' => 'transaction_payment.delete'],
+
+			['name' => 'email_marketing.view'],
+			['name' => 'email_marketing.create'],
+			['name' => 'email_marketing.update'],
+			['name' => 'email_marketing.delete'],
+
+			['name' => 'sms_marketing.view'],
+			['name' => 'sms_marketing.create'],
+			['name' => 'sms_marketing.update'],
+			['name' => 'sms_marketing.delete'],
+
+			['name' => 'Ecommerce.view'],
+			['name' => 'Ecommerce.create'],
+			['name' => 'Ecommerce.update'],
+			['name' => 'Ecommerce.delete'],
+
+			['name' => 'expense.view'],
+			['name' => 'expense.create'],
+			['name' => 'expense.update'],
+			['name' => 'expense.delete'],
+
+			['name' => 'report.store_department'],
+			['name' => 'report.ecommerce'],
+			['name' => 'report.expense'],
+			['name' => 'report.selling'],
+			['name' => 'report.purchase'],
+			['name' => 'report.product'],
+			['name' => 'report.purchase_sale'],
+			['name' => 'report.customer'],
+			['name' => 'report.trail_balance'],
+			['name' => 'report.monthly'],
+			['name' => 'report.yearly'],
+
+			['name' => 'accounting.view'],
+			['name' => 'accounting.create'],
+			['name' => 'accounting.update'],
+			['name' => 'accounting.delete'],
+
+			//hide show
+
+            ['name' => 'view_product.qty'],
+			['name' => 'view_product.sale_price'],
+			['name' => 'view_product.cost_price'],
+
+
+            ['name' => 'view_sale.qty'],
+			['name' => 'view_sale.sale_price'],
+			['name' => 'view_sale.sale_discount'],
+			['name' => 'view_sale.sale_tax'],
+			['name' => 'view_sale.shipping_charge'],
+			['name' => 'view_sale.sale_paid'],
+			['name' => 'view_sale.sale_due'],
+			['name' => 'view_sale.return_amt'],
+
+			['name' => 'view_purchase.qty'],
+			['name' => 'view_purchase.price'],
+			['name' => 'view_purchase.discount'],
+			['name' => 'view_purchase.tax'],
+			['name' => 'view_purchase.shipping-charge'],
+			['name' => 'view_purchase.paid'],
+			['name' => 'view_purchase.due'],
+
+			['name' => 'view_raw_material.price'],
+
+			['name' => 'view_client.sale_due'],
+			['name' => 'view_client.sale_return_due'],
+			['name' => 'view_client.purchase_due'],
+
+			['name' => 'view_account.credit'],
+			['name' => 'view_account.debit'],
+			['name' => 'view_account.balance'],
+
+			['name' => 'view_expense.amount'],
 
 		];
 

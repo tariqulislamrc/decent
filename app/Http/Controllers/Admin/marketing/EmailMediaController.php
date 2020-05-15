@@ -16,6 +16,9 @@ class EmailMediaController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.marketing.email.media.index');
     }
 
@@ -41,6 +44,9 @@ class EmailMediaController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.marketing.email.media.form');
     }
 
@@ -52,6 +58,9 @@ class EmailMediaController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'title'=>'required|max:250',
             'path'=>'required|mimes:jpeg,bmp,png,jpg|max:2000',
@@ -70,6 +79,9 @@ class EmailMediaController extends Controller
 
     public function import_media()
     {
+        if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models =EmailMedia::all();
         return view('admin.marketing.email.media.import_media',compact('models'));
     }
@@ -93,6 +105,9 @@ class EmailMediaController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('email_marketing.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =EmailMedia::find($id);
         return view('admin.marketing.email.media.form',compact('model'));
     }
@@ -106,6 +121,9 @@ class EmailMediaController extends Controller
      */
     public function update(Request $request, $id)
     {
+         if (!auth()->user()->can('email_marketing.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'title'=>'required|max:250',
             'path'=>'nullable|mimes:jpeg,bmp,png,jpg|max:2000',
@@ -139,6 +157,9 @@ class EmailMediaController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('email_marketing.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
       $model = EmailMedia::findOrFail($id);
         if ($model->path) {
             $image_path = public_path() . '/storage/marketing/media/' . $model->path;

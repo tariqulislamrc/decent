@@ -17,6 +17,9 @@ class ReportController extends Controller
      */
     public function getCustomerSuppliers(Request $request)
     {
+         if (!auth()->user()->can('report.customer')) {
+            abort(403, 'Unauthorized action.');
+         }
 
         //Return the details in ajax call
         if ($request->ajax()) {
@@ -36,6 +39,10 @@ class ReportController extends Controller
                     'clients.name',
                     'clients.id'
                 );
+
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $contacts->where('clients.hidden',false);
+        }
             return Datatables::of($contacts)
                 ->editColumn('name', function ($row) {
                     $name = $row->name;
@@ -77,6 +84,9 @@ class ReportController extends Controller
  
  public function monthly_report(Request $request)
  {
+     if (!auth()->user()->can('report.monthly')) {
+            abort(403, 'Unauthorized action.');
+         }
    if ($request->ajax()) {
 	   	$date =$request->month;
 	   	$ex =explode('-', $date);
@@ -94,10 +104,13 @@ class ReportController extends Controller
 
   public function yearly_report(Request $request)
  {
-   if ($request->ajax()) {
+     if (!auth()->user()->can('report.yearly')) {
+            abort(403, 'Unauthorized action.');
+         }
+     if ($request->ajax()) {
 	   	$year =$request->year;
         return view('admin.report.yearly_ajax',compact('year'));
-   }
+     }
         $year =date('Y');
         return view('admin.report.yearly',compact('year'));
  }

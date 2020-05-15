@@ -19,6 +19,7 @@ class CreateAccountTransactionsTable extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->integer('investment_account_id')->nullable();
             $table->integer('expense_id')->nullable();
+            $table->string('acc_type')->nullable();
             $table->enum('type', ['Debit', 'Credit']);
             $table->enum('sub_type', ['opening_balance', 'fund_transfer', 'deposit','withdraw','expense'])->nullable();
             $table->double('amount', 10, 2);

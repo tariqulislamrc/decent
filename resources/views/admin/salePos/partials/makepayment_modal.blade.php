@@ -42,7 +42,7 @@
             <div class="row mt-2">
                 <div class="col-md-6 mx-auto text-center">
                     <button type="submit" class="btn btn-primary btn-lg w-100" id="submit">{{ _lang('Payment') }}</button>
-                    <button type="button" class="btn btn-link" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <img src="{{ asset('ajaxloader.gif') }}" width="80"></button>
+                    <button type="button" class="btn btn-primary btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                 </div>
             </div>
         </form>

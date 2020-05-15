@@ -18,11 +18,17 @@
                 <tr>
                     <th scope="col">{{ _lang('Product') }}</th>
                     <th scope="col">{{ _lang('Variation') }}</th>
+                    @can('view_product.cost_price')
                     <th scope="col">{{ _lang('Cost Price') }}</th>
+                    @endcan
+                    @can('view_product.sale_price')
                     <th scope="col">{{ _lang('Sale Price') }}</th>
+                    @endcan
+                    @can('view_product.qty')
                     <th scope="col">{{ _lang('Sale Qty') }}</th>
                     <th scope="col">{{ _lang('Return Qty') }}</th>
                     <th scope="col">{{ _lang('Stock') }}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -30,8 +36,13 @@
                   <tr>
                       <td>{{ $element->pro_name }}</td>
                       <td>{{ $element->variation }}</td>
+                      @can('view_product.cost_price')
                       <td>{{ $element->default_purchase_price }}</td>
+                      @endcan
+                      @can('view_product.sale_price')
                       <td>{{ $element->selling_price }}</td>
+                      @endcan
+                      @can('view_product.qty')
                       <td>
                           @php
                               $sale =App\models\inventory\TransactionSellLine::where('product_id',$element->product_id)->where('variation_id',$element->variation_id)->get();
@@ -40,6 +51,7 @@
                       </td>
                       <td>{{ $sale->sum('quantity_returned') }}</td>
                       <td>{{ $element->qty }}</td>
+                      @endcan
                   </tr>
                 @endforeach
             </tbody>

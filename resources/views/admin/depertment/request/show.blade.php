@@ -42,9 +42,13 @@
                   {{ $store->status }}
                 </td>
                 <td>
+                  @can('store_request.update')
                   <a href="{{route('admin.request.edit',$store->id)}}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-check-circle" aria-hidden="true"></i></a>
+                  @endcan
+                  @can('store_request.delete')
                   <button id="delete_item" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"
                   data-placement="bottom"><i class="fa fa-trash"></i></button>
+                  @endcan
                 </td>
               </tr>
               @endforeach

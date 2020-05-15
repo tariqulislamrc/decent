@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('production_brand.create')
+                    @can('email_marketing.create')
                         <a href="{{ route('admin.emailmarketing.template.create') }}" class="btn btn-info"> <i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
                     @endcan
                 </h3>

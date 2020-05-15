@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
+use App\models\Production\Brand;
 use App\models\Production\Category;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\ProductPhoto;
-use App\models\Production\RawMaterial;
-use App\models\Production\VariationTemplate;
 use App\models\Production\ProductVariation;
+use App\models\Production\RawMaterial;
 use App\models\Production\Variation;
+use App\models\Production\VariationTemplate;
 use App\models\Production\VariationTemplateDetails;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\ValidationException;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -28,6 +29,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('production_product.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.product.index');
     }
 
@@ -67,6 +71,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('production_product.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $categorys = Category::where('parent_id', 0)->select('id', 'name')->get();
         $models = RawMaterial::all();
         $code_prefix = get_option('production_code_prefix');
@@ -86,6 +93,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('production_product.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'code' => 'required',
             'name' => 'required',
@@ -156,6 +166,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('production_product.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product = Product::with('material')->findOrFail($id);
         return view('admin.production.product.show', compact('product'));
     }
@@ -168,6 +181,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('production_product.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product = Product::with('material')->findOrFail($id);
         // dd($product);
         $categorys = Category::where('parent_id', 0)->select('id', 'name')->get();
@@ -190,6 +206,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('production_product.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->articel) {
             $articel = $request->articel;
         } else {
@@ -254,6 +273,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('production_product.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = Product::findOrFail($id);
         $name = $type->name;
 
@@ -287,6 +309,7 @@ class ProductController extends Controller
 
     public function product_add(Request $request)
     {
+
         $product = $request->product;
         $unit = $request->unit;
         $unit_price = $request->unit_price;
@@ -321,6 +344,9 @@ class ProductController extends Controller
 
     public function variation_add($id)
     {
+        if (!auth()->user()->can('production_product.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $row = request()->row;
         $model = Product::findOrFail($id);
         $variations = VariationTemplate::all();
@@ -329,6 +355,9 @@ class ProductController extends Controller
 
     public function variation_store(Request $request)
     {
+        if (!auth()->user()->can('production_product.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             // 'variation_value_id' => 'required',
         ]);
@@ -378,6 +407,9 @@ class ProductController extends Controller
 
     public function variation_store_more(Request $request)
     {
+        if (!auth()->user()->can('production_product.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product_id = $request->product_id;
         $variations = $request->variation;
         $pv = $variations['varitaion_template_id'];
@@ -505,6 +537,9 @@ class ProductController extends Controller
            
         });
         }
+         if (!auth()->user()->hasRole('Super Admin')) {
+                $products->where('variations.hidden',false);
+            }
            $products = $products->select(
                 'products.id as product_id',
                 'products.name',
@@ -525,6 +560,9 @@ class ProductController extends Controller
 
 public function finalproduct_list(Request $request)
 {
+    if (!auth()->user()->can('production_product.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->ajax()) {
             $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
@@ -560,6 +598,16 @@ public function finalproduct_list(Request $request)
            
         });
         }
+        if (!empty($brand_id)) {
+            $products->where('VBD.brand_id', $brand_id);
+        }
+          $category_id = request()->get('category_id', null);
+            if (!empty($category_id)) {
+                $products->where('products.category_id', $category_id);
+            }
+            if (!auth()->user()->hasRole('Super Admin')) {
+                $products->where('variations.hidden',false);
+            }
            $products = $products->select(
                 'products.id as product_id',
                 'products.name as pro_name',
@@ -581,28 +629,43 @@ public function finalproduct_list(Request $request)
                 ->editColumn('variation', function ($document) {
                     return $document->variation? $document->variation : null;
                 })
-                ->editColumn('sku', function ($document) {
+                ->editColumn('f_sku', function ($document) {
                     return $document->sku;
+                  
 
                 })
-                 ->editColumn('qty', function ($document) {
-                    return $document->qty;
+                 ->editColumn('f_qty', function ($document) {
+                  if (auth()->user()->can("view_product.qty")) {
+                     return $document->qty;
+                  }else
+                  {
+                    return 'N/A';
+                  }
 
                 })
                  ->editColumn('selling_price', function ($document) {
+                   if (auth()->user()->can("view_product.sale_price")) {
                     return $document->selling_price;
+                  }else{
+                    return 'N/A';
+                  }
 
                 })
               
-               ->rawColumns(['product_name', 'variation','sku','qty','selling_price'])->make(true);            
+               ->rawColumns(['product_name', 'variation','f_sku','f_qty','selling_price'])->make(true);            
          }
-         return view('admin.production.product.product_list');               
+         $brands=Brand::pluck('name', 'id');
+         $categories=Category::pluck('name', 'id');
+         return view('admin.production.product.product_list',compact('brands','categories'));               
     
 }
 
 
 public function product_report(Request $request)
 {
+     if (!auth()->user()->can('report.product')) {
+            abort(403, 'Unauthorized action.');
+         }
            $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
 
@@ -628,6 +691,10 @@ public function product_report(Request $request)
                                     
                                 }
           });
+
+          if (!auth()->user()->hasRole('Super Admin')) {
+                $products->where('variations.hidden',false);
+            }
            $products = $products->select(
                 'products.id as product_id',
                 'products.name as pro_name',
@@ -681,6 +748,9 @@ public function product_report_print(Request $request)
            $products =$products->where('products.id',$product_id);
            $products =$products->where('VBD.variation_id',$variation_id);
          }
+         if (!auth()->user()->hasRole('Super Admin')) {
+                $products->where('variations.hidden',false);
+            }
            $products = $products->select(
                 'products.id as product_id',
                 'products.name as pro_name',

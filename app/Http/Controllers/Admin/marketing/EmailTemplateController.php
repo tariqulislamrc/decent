@@ -19,6 +19,9 @@ class EmailTemplateController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       return view('admin.marketing.email.template.index');
     }
 
@@ -41,6 +44,9 @@ class EmailTemplateController extends Controller
      */
     public function create()
     {
+         if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        return view('admin.marketing.email.template.form');
     }
 
@@ -52,6 +58,9 @@ class EmailTemplateController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        $validator = $request->validate([
             'template'=>'required',
         ]);
@@ -96,6 +105,9 @@ class EmailTemplateController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =EmailTemolate::find($id);
         return view('admin.marketing.email.template.show',compact('model'));
     }
@@ -108,6 +120,9 @@ class EmailTemplateController extends Controller
      */
     public function edit($id)
     {
+         if (!auth()->user()->can('email_marketing.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =EmailTemolate::find($id);
         return view('admin.marketing.email.template.form',compact('model'));
     }
@@ -121,6 +136,9 @@ class EmailTemplateController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('email_marketing.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'template'=>'required',
         ]);
@@ -165,6 +183,9 @@ class EmailTemplateController extends Controller
      */
     public function destroy($id)
     {
+      if (!auth()->user()->can('email_marketing.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
       $model =EmailTemolate::find($id)->delete();
       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
     }

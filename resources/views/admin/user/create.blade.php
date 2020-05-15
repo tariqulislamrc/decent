@@ -21,6 +21,15 @@
             {!! Form::open(['route' => 'admin.user.create', 'id'=>'content_form','files' => true, 'method' => 'POST']) !!}
                 <fieldset class="mb-3" id="form_field">
                     <div class="row">
+                        <div class="col-md-9 mx-auto">
+                             <div class="form-group">
+                            {{ Form::label('employee_id', _lang('Employee') , ['class' => 'col-form-label required']) }}
+                                {!! Form::select('employee_id', $employies, null, ['class' => 'form-control select','id'=>'employee_id', 'data-placeholder' => 'Select A employee','required'=>'', 'data-parsley-errors-container' => '#parsley_division_error_area']); !!}
+                                <span id="parsley_division_error_area"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         {{-- Prefix --}}
                         <div class="col-md-2">
                             <div class="form-group">

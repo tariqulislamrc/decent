@@ -17,6 +17,9 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('raw_material.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.raw_materials.index');
     }
 
@@ -40,18 +43,27 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('raw_material.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = Unit::all();
         return view('admin.production.raw_materials.create',compact('models'));
     }
 
     public function remort_material()
     {
+        if (!auth()->user()->can('raw_material.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = Unit::all();
         return view('admin.production.raw_materials.quickmodal',compact('models'));
     }
 
     public function addremort_material(Request $request)
     {
+        if (!auth()->user()->can('raw_material.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'unit_id' => 'required',
             'name' => 'required',
@@ -87,6 +99,9 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        if (!auth()->user()->can('raw_material.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'unit_id' => 'required',
             'name' => 'required',
@@ -135,6 +150,9 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('raw_material.update')) {
+            abort(403, 'Unauthorized action.');
+        }
          $model = RawMaterial::findOrFail($id);
          $models = Unit::all();
 
@@ -149,6 +167,9 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('raw_material.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'unit_id' => 'required',
             'name' => 'required',
@@ -186,6 +207,9 @@ class RawMaterialsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('raw_material.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = RawMaterial::findOrFail($id);
         $name = $type->name;
         $type->delete();

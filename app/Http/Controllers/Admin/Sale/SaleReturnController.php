@@ -27,8 +27,15 @@ class SaleReturnController extends Controller
     }
     public function index(Request $request)
     {
+        if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       if ($request->ajax()) {
-        $document = Transaction::orderBy('id','DESC')->where('transaction_type','Sale')->where('return',1)->get();
+        if (!auth()->user()->hasRole('Super Admin')) {
+          $document = Transaction::orderBy('id','DESC')->where('transaction_type','Sale')->where('return',1)->where('hidden',false)->get();
+        }else{
+          $document = Transaction::orderBy('id','DESC')->where('transaction_type','Sale')->where('return',1)->get();
+           }
            return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn('reference_no', function ($model) {
@@ -38,10 +45,18 @@ class SaleReturnController extends Controller
                   return $model->client?$model->client->name:'';
                  })
                  ->editColumn('sale', function ($model) {
-                  return $model->net_total;
+                    if (auth()->user()->can("view_sale.sale_price")) {
+                    return $model->net_total;
+                    }else{
+                        return 'N/A';
+                    }
                  })
                 ->editColumn('return', function ($model) {
-                  return $model->return_parent->sum('net_total');
+                    if (auth()->user()->can("view_sale.return_amt")) {
+                    return $model->return_parent->sum('net_total');
+                    }else{
+                        return 'N/A';
+                    }
                  })
                 ->addColumn('action', function ($model) {
                     return view('admin.sale_return.action', compact('model'));
@@ -54,6 +69,9 @@ class SaleReturnController extends Controller
 
     public function return_sale(Request $request,$id)
     {
+        if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
        $model =Transaction::find($id);
        return view('admin.sale_return.add',compact('model'));
     }
@@ -76,6 +94,9 @@ class SaleReturnController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $transaction =Transaction::find($request->transaction_id);
         $previoussub_Total = $transaction->sub_total;
         $previousnet_Total = $transaction->net_total;
@@ -156,6 +177,9 @@ class SaleReturnController extends Controller
      */
     public function show($id)
     {
+    if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       $model =Transaction::find($id);
       return view('admin.sale_return.show',compact('model'));
     }

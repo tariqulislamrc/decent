@@ -23,6 +23,9 @@ class TransactionPaymentController extends Controller
    public function sales_payment(Request $request)
 
    {
+     if (!auth()->user()->can('transaction_payment.view')) {
+            abort(403, 'Unauthorized action.');
+        }
    	   $validator = $request->validate([
             'payment_date'=>'required',
             'amount'=>'required|numeric',
@@ -66,6 +69,9 @@ class TransactionPaymentController extends Controller
      */
     public function getPayClientDue($client_id)
     {
+        if (!auth()->user()->can('transaction_payment.view')) {
+            abort(403, 'Unauthorized action.');
+        }
 
         if (request()->ajax()) {
 
@@ -158,6 +164,9 @@ class TransactionPaymentController extends Controller
      */
     public function postPayClientDue(Request  $request)
     {
+        if (!auth()->user()->can('transaction_payment.create')) {
+            abort(403, 'Unauthorized action.');
+        }
            $validator = $request->validate([
             'payment_date'=>'required',
             'amount'=>'required|numeric',

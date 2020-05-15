@@ -58,6 +58,9 @@ class SendSmsController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('sms_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.marketing.sms.sendsms');
     }
 
@@ -69,6 +72,9 @@ class SendSmsController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('sms_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $message =$request->message;
         if ($request->sms_identifier == 'sms_number') {
           $validator = $request->validate([
@@ -180,6 +186,9 @@ class SendSmsController extends Controller
 
     public function history_table(Request $request)
     {
+        if (!auth()->user()->can('sms_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->ajax()) {
             $document = Smslog::orderBy('id','DESC')->get();
             return DataTables::of($document)
@@ -199,6 +208,9 @@ class SendSmsController extends Controller
 
     public function client_send_sms(Request $request)
     {
+        if (!auth()->user()->can('sms_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'mobile'=>'required',
             'message'=>'required',
@@ -210,6 +222,9 @@ class SendSmsController extends Controller
 
     public function transaction_sms(Request $request)
     {
+        if (!auth()->user()->can('sms_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'mobile'=>'required',
             'message'=>'required',

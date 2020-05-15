@@ -16,6 +16,9 @@ class SalesReportController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client =Client::all();
     	$users =User::all();
 
@@ -26,6 +29,9 @@ class SalesReportController extends Controller
     public function get_sales_report(Request $request)
 
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client_id =$request->client_id;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
@@ -49,12 +55,18 @@ class SalesReportController extends Controller
             $q=$q->whereBetween('date',[$sDate,$eDate]);
         }
         $q =$q->where('transaction_type','Sale');
+         if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+            }
         $result=$q->get();
         return view('admin.report.selling.sales_report_print',compact('result','sDate','eDate'));
     }
 
     public function sales_payment()
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client =Client::all();
     	$refs =Transaction::where('transaction_type','Sale')->select('reference_no','id')->get();
     	return view('admin.report.selling.sales_payment',compact('client','refs'));
@@ -63,6 +75,9 @@ class SalesReportController extends Controller
 
     public function sales_payment_report(Request $request)
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client_id =$request->client_id;
         $transaction_id =$request->transaction_id;
         $sDate =$request->sDate;
@@ -92,6 +107,9 @@ class SalesReportController extends Controller
 
     public function sales_due()
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client =Client::all();
     	$users =User::all();
     	return view('admin.report.selling.sales_due',compact('client','users'));
@@ -99,6 +117,9 @@ class SalesReportController extends Controller
 
     public function sales_due_report(Request $request)
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$client_id =$request->client_id;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
@@ -122,6 +143,9 @@ class SalesReportController extends Controller
             $q=$q->whereBetween('date',[$sDate,$eDate]);
         }
         $q =$q->where('transaction_type','Sale');
+         if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+            }
         $result=$q->get();
         return view('admin.report.selling.sales__due_report_print',compact('result','sDate','eDate'));
     }
@@ -129,6 +153,9 @@ class SalesReportController extends Controller
 
     public function sale_return()
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$refs =Transaction::where('transaction_type','Sale')
     	                           ->where('return',true)
     	                           ->get();
@@ -139,6 +166,9 @@ class SalesReportController extends Controller
 
     public function sale_return_report(Request $request)
     {
+         if (!auth()->user()->can('report.selling')) {
+            abort(403, 'Unauthorized action.');
+        }
         $client_id =$request->client_id;
         $transaction_id =$request->transaction_id;
         $user_id =$request->user_id;
@@ -169,12 +199,18 @@ class SalesReportController extends Controller
             $q=$q->whereBetween('date',[$sDate,$eDate]);
         }
         $q =$q->where('transaction_type','sale_return');
+         if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+            }
         $result=$q->groupBy('return_parent_id')->select('return_parent_id','client_id')->get();
         return view('admin.report.selling.sales__return_report_print',compact('result','sDate','eDate')); 
     }
 
     public function purchase_sale(Request $request)
     {
+         if (!auth()->user()->can('report.purchase_sale')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->ajax()) {
             $start_date = $request->get('start_date');
             $end_date = $request->get('end_date');
@@ -217,6 +253,9 @@ class SalesReportController extends Controller
 
     public function trail_balance(Request $request)
     {
+        if (!auth()->user()->can('report.trail_balance')) {
+            abort(403, 'Unauthorized action.');
+         }
             if (request()->ajax()) {
 
             $end_date = !empty(request()->input('end_date')) ?request()->input('end_date') : \Carbon::now()->format('Y-m-d');
@@ -267,6 +306,7 @@ class SalesReportController extends Controller
                             'shipping_charges'
                         )
                         ->groupBy('transactions.id');
+                       
 
         if (!empty($start_date) && !empty($end_date)) {
             $query->whereBetween(DB::raw('date(date)'), [$start_date, $end_date]);
@@ -274,6 +314,10 @@ class SalesReportController extends Controller
 
         if (empty($start_date) && !empty($end_date)) {
             $query->whereDate('date', '<=', $end_date);
+        }
+
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('hidden',false);
         }
 
         $purchase_details = $query->get();
@@ -321,6 +365,10 @@ class SalesReportController extends Controller
             $query->where('transactions.created_by', $created_by);
         }
 
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('hidden',false);
+        }
+
         $sell_details = $query->get();
 
         $output['total_sell_inc_tax'] = $sell_details->sum('net_total');
@@ -365,6 +413,10 @@ class SalesReportController extends Controller
         //Filter by created_by
         if (!empty($created_by)) {
             $query->where('transactions.created_by', $created_by);
+        }
+
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('transactions.hidden',false);
         }
 
         if (in_array('purchase_return', $transaction_types)) {
@@ -448,7 +500,10 @@ class SalesReportController extends Controller
                                 // ->NotClosed()
                                 ->whereNull('AT.deleted_at')
                                 ->whereDate('AT.operation_date', '<=', $end_date);
-
+                                // ->where('AT.hidden',false);
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('AT.hidden',false);
+        }
         // if ($account_type == 'others') {
         //    $query->NotCapital();
         // } elseif ($account_type == 'capital') {
@@ -459,7 +514,9 @@ class SalesReportController extends Controller
                                         DB::raw("SUM( IF(AT.type='credit', amount, -1*amount) ) as balance")])
                                 ->groupBy('accounts.id')
                                 ->get()
+                                
                                 ->pluck('balance', 'name');
+
 
         return $account_details;
     }

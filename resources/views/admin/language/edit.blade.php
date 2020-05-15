@@ -33,7 +33,7 @@
                         @can('language.update')
                             <div class="text-right mt-2">
                                 <button data-placement="bottom" title="Update The Translation For This Language" type="submit" class="btn btn-primary"  id="submit">{{_lang('translation')}}<i class="icon-arrow-right14 position-right"></i></button>
-                                <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{ _lang('processing') }} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                                <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{ _lang('processing') }}<i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                             </div>
                         @endcan
                     {!!Form::close()!!}

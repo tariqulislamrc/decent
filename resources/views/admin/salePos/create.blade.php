@@ -157,7 +157,7 @@
 	    //Show product list.
     get_product_suggestion_list(
         $('select#category_id').val(),
-        $('select#brand_id').val(),
+        $('select#brand_id').val()
     );
 
 	$('div#product_list_body').on('scroll', function() {

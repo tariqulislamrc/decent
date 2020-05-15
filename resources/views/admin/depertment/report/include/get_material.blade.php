@@ -24,10 +24,14 @@
               {{ $store->store_request->sum('qty') }}
             </td>
             <td>
+              @can('store_request.view')
               <a href="{{ route('admin.report.approve_request',$store->id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('View') }}
               </a>
+              @endcan
+              @can('store_request.delete')
               <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.mainrequest.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
               </a>
+              @endcan
             </td>
           </tr>
           @endforeach

@@ -175,7 +175,6 @@ function updatePurchaseSell(start_date=null,end_date=null) {
         dataType: 'json',
         data: data,
         success: function(data) {
-            console.log(data.purchase);
             $('.total_purchase').html(
                 (data.purchase.total_purchase_exc_tax)
             );

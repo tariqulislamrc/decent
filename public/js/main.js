@@ -109,9 +109,9 @@ var _formValidation = function() {
             dataType: 'JSON',
             success: function(data) {
                 if (data.status == 'danger') {
-                    notify(data.message, 'danger');
+                     toastr.error(data.message);
                 } else {
-                    notify(data.message, 'success');
+                    toastr.success(data.message);
                     $('#submit').show();
                     $('#submiting').hide();
                     $('#content_form')[0].reset();
@@ -156,11 +156,11 @@ var _formValidation = function() {
                             });
                         }
                         // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
-                        notify(value, 'danger');
+                        toastr.error(value);
                         i++;
                     });
                 } else {
-                    notify(jsonValue.message, 'danger');
+                    toastr.error(jsonValue.message);
                 }
                 _componentSelect2Normal();
                 $('#submit').show();
@@ -921,7 +921,7 @@ $(document).on('click', '#change_status', function(e) {
                 processData: false,
                 dataType: 'JSON',
                 success: function(data) {
-                    toastr.success(data.message, data.color);
+                    toastr.success(data.message);
                     if (typeof(emran) != "undefined" && emran !== null) {
                         emran.ajax.reload(null, false);
                     }
@@ -987,4 +987,38 @@ var _componentRemoteModalLoadAfterAjax = function () {
             });
     });
 };
+
+/*
+ * For Status Change
+ */
+$(document).on('click', '#change_hidden', function(e) {
+    e.preventDefault();
+    var row = $(this).data('id');
+    var url = $(this).data('url');
+    var model = $(this).data('table');
+
+
+    $('#status_' + row).hide();
+    $('#status_loading_' + row).show();
+      $.ajax({
+                url: url,
+                method: 'Put',
+                data: {model:model},
+                success: function(data) {
+                    toastr.success(data.message);
+                    if (typeof(emran) != "undefined" && emran !== null) {
+                        emran.ajax.reload(null, false);
+                    }
+
+                    if (data.load) {
+                        setTimeout(function() {
+
+                            window.location.href = "";
+                        }, 500);
+                    }
+
+                },
+
+            });
+});
 

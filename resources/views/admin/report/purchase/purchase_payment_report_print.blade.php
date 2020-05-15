@@ -19,14 +19,20 @@
                 <tr>
                     <th scope="col" style="width: 15%">{{ _lang('Ref No') }}</th>
                     <th scope="col" style="width: 15%">{{ _lang('Client') }}</th>
+                    @can('view_purchase.paid')
                     <th scope="col" style="width: 70%">{{ _lang('Payment') }}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
 
                 @foreach ($result as $element)
                 <tr>
-                    <th>{{ $element->transaction->reference_no }} <br>{{ _lang('Total Amt') }} ({{ $element->transaction->net_total }}) </th>
+                    <th>{{ $element->transaction->reference_no }}
+                        @can('view_purchase.price')
+                     <br>{{ _lang('Total Amt') }} ({{ $element->transaction->net_total }}) 
+                     @endcan
+                    </th>
                     <td>{{ $element->employee?$element->employee->name:'' }} </td>
                  @php
                     $payments =App\models\Production\TransactionPayment::where('transaction_id',$element->transaction_id)->whereBetween('payment_date',[$sDate,$eDate])->get();
@@ -38,13 +44,17 @@
                          <tr>
                              <td style="width: 30%">{{ $payment->payment_date }}</td>
                              <td style="width: 30%">{{ $payment->method }}</td>
+                             @can('view_purchase.paid')
                              <td style="width: 40%">{{ $payment->amount }}</td>
+                             @endcan
                          </tr>
                     @endforeach
+                    @can('view_purchase.paid')
                      <tr>
                          <td colspan="2">{{ _lang('Total Payment') }}</td>
                          <td>{{ $payments->sum('amount') }}</td>
                      </tr>
+                     @endcan
                      </tbody>
                     </table>
                 </td>

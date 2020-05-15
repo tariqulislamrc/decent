@@ -20,6 +20,9 @@ class AccountController extends Controller
      */
     public function index()
     {
+     if (!auth()->user()->can('accounting.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if (request()->ajax()) {
           $accounts = Account::leftjoin('account_transactions as AT', function ($join) {
                 $join->on('AT.account_id', '=', 'accounts.id');
@@ -69,7 +72,9 @@ class AccountController extends Controller
      */
     public function create()
     {
-        
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $account_types = Account::accountTypes();
 
         return view('admin.accounting.account.form')
@@ -84,6 +89,9 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         if (request()->ajax()) {
                 $input = $request->only(['name', 'account_number', 'note']);
                 $user_id = auth()->user()->id;
@@ -99,6 +107,7 @@ class AccountController extends Controller
                     $ob_transaction_data = [
                         'amount' =>$opening_bal,
                         'account_id' => $account->id,
+                        'acc_type'=>'account',
                         'type' => 'Credit',
                         'sub_type' => 'opening_balance',
                         'operation_date' => Carbon::now(),
@@ -120,7 +129,7 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-     if (!auth()->user()->can('account.access')) {
+     if (!auth()->user()->can('accounting.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -200,7 +209,9 @@ class AccountController extends Controller
                             ->editColumn('action', function ($row) {
                                 $action = '';
                                 if ($row->sub_type == 'fund_transfer' || $row->sub_type == 'deposit') {
+                                     if (auth()->user()->can("accounting.delete")) {
                                     $action = '<button type="button" class="btn btn-danger btn-xs delete_account_transaction" id="delete_item" data-url="' . action('Admin\Account\AccountController@destroy', [$row->id]) . '"><i class="fa fa-trash"></i> ' . _lang('Delete') . '</button>';
+                                 }
                                 }
                                 return $action;
                             })
@@ -223,6 +234,9 @@ class AccountController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('accounting.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $account_types = Account::accountTypes();
         $model =Account::find($id);
 
@@ -238,6 +252,9 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('accounting.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->ajax()) {
         try{
             $input = $request->only(['name', 'account_number', 'note']);
@@ -264,7 +281,7 @@ class AccountController extends Controller
      */
     public function destroy($id)
     {
-       if (!auth()->user()->can('account.access')) {
+       if (!auth()->user()->can('accounting.delete')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -326,7 +343,7 @@ class AccountController extends Controller
      */
     public function getDeposit($id)
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
         
@@ -351,7 +368,7 @@ class AccountController extends Controller
      */
     public function close($id)
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
         
@@ -380,7 +397,7 @@ class AccountController extends Controller
      */
     public function postDeposit(Request $request)
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -398,6 +415,7 @@ class AccountController extends Controller
                 $credit_data = [
                     'amount' => $amount,
                     'account_id' => $account_id,
+                    'acc_type'=>'account',
                     'type' => 'Credit',
                     'sub_type' => 'deposit',
                     'operation_date' => $request->input('operation_date'),
@@ -435,7 +453,7 @@ class AccountController extends Controller
      */
     public function payment_account()
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -477,9 +495,10 @@ class AccountController extends Controller
                         return $row->payment_date;
                     })
                     ->addColumn('action', function ($row) {
+                         if (auth()->user()->can("accounting.update")) {
                         $action = '<button type="button" class="btn btn-info 
                         btn-sm" id="content_managment" data-url="' .route('admin.accounting.getLinkAccount',$row->payment_id) .'" data-container=".view_modal">' . _lang('Link Account') .'</button>';
-                        
+                        }
                         return $action;
                     })
                     ->addColumn('account', function ($row) {
@@ -537,7 +556,7 @@ class AccountController extends Controller
      */
     public function getLinkAccount($id)
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -557,7 +576,7 @@ class AccountController extends Controller
      */
     public function postLinkAccount(Request $request)
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.create')) {
             abort(403, 'Unauthorized action.');
         }
             if (request()->ajax()) {
@@ -588,7 +607,7 @@ class AccountController extends Controller
      */
     public function cashflow()
     {
-        if (!auth()->user()->can('account.access')) {
+        if (!auth()->user()->can('accounting.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -602,13 +621,14 @@ class AccountController extends Controller
                             ->with(['transaction', 'transaction.client'])
                             ->select(['type', 'amount', 'operation_date',
                                 'sub_type', 'transfer_transaction_id',
-                                DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.deleted_at IS NULL) as balance'),
+                                DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.acc_type="account" AND AT.deleted_at IS NULL) as balance'),
                                 'transaction_id',
                                 'account_transactions.id',
                                 'A.name as account_name'
                                 ])
                              ->groupBy('account_transactions.id')
-                             ->orderBy('account_transactions.operation_date', 'desc');
+                             ->orderBy('account_transactions.operation_date', 'desc')->get();
+                             
             if (!empty(request()->input('type'))) {
                 $accounts->where('type', request()->input('type'));
             }

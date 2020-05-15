@@ -115,6 +115,12 @@ function toWord($word) {
 	return $word;
 }
 
+function tounderscore($text) {
+	$text = str_replace(' ', '_', $text);
+	$text = str_replace(' ', '_', $text);
+	return $text;
+}
+
 function tospane($data) {
 	$per = explode('.', $data);
 	return toWord($per[1]);
@@ -781,7 +787,10 @@ function getIp(){
 
         if (!empty($year) && !empty($month)) {
             $query->whereMonth('date', $month)->whereYear('date', $year);
-        }               
+        } 
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('hidden',false);
+        }              
       
 
         $trans_details = $query->get();

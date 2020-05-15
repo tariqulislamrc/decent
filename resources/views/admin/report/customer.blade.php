@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tfoot>
-                <tr class="bg-gray font-17 footer-total text-center">
+                <tr class="bg-gray footer-total" style="font-size: 16px">
                     <td><strong>{{ _lang('Total') }}:</strong></td>
                     <td><span class="display_currency" id="footer_total_purchase" data-currency_symbol ="true"></span></td>
                     <td><span class="display_currency" id="footer_total_purchase_return" data-currency_symbol ="true"></span></td>
@@ -108,7 +108,7 @@
             { targets: [5], orderable: false, searchable: false },
             { targets: [1, 2, 3, 4], searchable: false },
         ],
-        columns: [
+   columns: [
             { data: 'name', name: 'name' },
             { data: 'total_purchase', name: 'total_purchase' },
             { data: 'total_purchase_return', name: 'total_purchase_return' },
@@ -118,29 +118,30 @@
             { data: 'due', name: 'due' },
         ],
         fnDrawCallback: function(oSettings) {
-            var total_purchase = sum_table_col($('#supplier_report_tbl'), 'total_purchase');
+            var total_purchase = sum_table_col($('#Customer'), 'total_purchase');
             $('#footer_total_purchase').text(total_purchase);
 
             var total_purchase_return = sum_table_col(
-                $('#supplier_report_tbl'),
+                $('#Customer'),
                 'total_purchase_return'
             );
             $('#footer_total_purchase_return').text(total_purchase_return);
 
-            var total_sell = sum_table_col($('#supplier_report_tbl'), 'total_invoice');
+            var total_sell = sum_table_col($('#Customer'), 'total_invoice');
             $('#footer_total_sell').text(total_sell);
 
-            var total_sell_return = sum_table_col($('#supplier_report_tbl'), 'total_sell_return');
+            var total_sell_return = sum_table_col($('#Customer'), 'total_sell_return');
             $('#footer_total_sell_return').text(total_sell_return);
 
             var total_opening_bal_due = sum_table_col(
-                $('#supplier_report_tbl'),
+                $('#Customer'),
                 'opening_balance_due'
             );
             $('#footer_total_opening_bal_due').text(total_opening_bal_due);
 
-            var total_due = sum_table_col($('#supplier_report_tbl'), 'total_due');
+            var total_due = sum_table_col($('#Customer'), 'total_due');
             $('#footer_total_due').text(total_due);
+
         },
     });
 

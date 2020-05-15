@@ -13,6 +13,32 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+    <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                         <div class="col-sm-4">
+                            <div class="form-group">
+                                {!! Form::label('brand_id', _lang('Brand').':') !!}
+                                {!! Form::select('brand_id', $brands, null, ['placeholder' =>
+                                _lang('All'),'class' => 'form-control select']); !!}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                {!! Form::label('category_id', _lang('Category').':') !!}
+                                {!! Form::select('category_id', $categories, null, ['class' => 'form-control select','placeholder' =>
+                                _lang('All')]); !!}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {!! Form::label('term',_lang('Search Key').':') !!}
+                              {{ Form::text('term', null, ['class' => 'form-control', 'id'=>'term', 'placeholder' => _lang('Search Key'),'required'=>'']) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 <div class="tile">
     <div class="tile-body">
         <div class="card">
@@ -100,7 +126,14 @@ $('.select').select2();
             order: [0, 'asc'],
             processing: true,
             serverSide: true,
-            ajax: $('.content_managment_table').data('url'),
+            ajax: { 
+            url: $('.content_managment_table').data('url'),
+            data: function(d) {
+                d.brand_id = $('select#brand_id').val();
+                d.category_id = $('select#category_id').val();
+                d.term = $('input#term').val();
+            },
+          },
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
                {
@@ -113,11 +146,11 @@ $('.select').select2();
                     data: 'variation',
                     name: 'variation'
                 }, {
-                    data: 'sku',
-                    name: 'sku'
+                    data: 'f_sku',
+                    name: 'f_sku'
                 }, {
-                    data: 'qty',
-                    name: 'qty'
+                    data: 'f_qty',
+                    name: 'f_qty'
                 }, {
                     data: 'selling_price',
                     name: 'selling_price'
@@ -125,5 +158,17 @@ $('.select').select2();
             ]
 
         });
+
+
+      $('select#brand_id, select#category_id').on(
+        'change',
+        function() {
+            emran.ajax.reload();
+        }
+    );
+      $('input#term').on('blur',function(){
+          emran.ajax.reload();
+      })
+
 </script>
 @endpush

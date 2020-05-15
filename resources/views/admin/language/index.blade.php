@@ -19,7 +19,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            @can('language.can')
+            @can('language.create')
                 <h3 class="tile-title">
                     <button data-placement="bottom" title="Create New Language" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.language.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                 </h3>
@@ -38,10 +38,14 @@
                             <tr>
                                 <td>{{ ucwords($language) }}</td>
                                 <td>
+                                    @can('language.update')
                                     <a data-placement="bottom" title="Translate {{$language}} Language" href="{{ route('admin.language.edit',$language) }}" class="btn btn-info"><i class="icon-pencil7"></i>{{_lang('translate')}}</a>
+                                    @endcan
                                 </td>
                                 <td>
+                                    @can('language.delete')
                                     <a href="" data-placement="bottom" title="Delete {{$language}} Language For Forever" class="btn btn-danger" id="delete_item" data-id ="{{$language}}" data-url="{{route('admin.language.delete',$language) }}">{{_lang('trash')}}</a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

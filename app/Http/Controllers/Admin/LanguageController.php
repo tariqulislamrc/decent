@@ -12,6 +12,9 @@ class LanguageController extends Controller
 {
     public function index(Request $request)
    	{
+   		if (!auth()->user()->can('language.view')) {
+            abort(403, 'Unauthorized action.');
+        }
 		// return to the index file
    		if ($request->isMethod('get')) {
       		return view('admin.language.index');
@@ -20,6 +23,9 @@ class LanguageController extends Controller
 
   	public function create(Request $request)
   	{
+  		if (!auth()->user()->can('language.create')) {
+            abort(403, 'Unauthorized action.');
+        }
   		if ($request->isMethod('get')) {
 			// return to the create file
 			return view('admin.language.create');
@@ -66,6 +72,9 @@ class LanguageController extends Controller
 	// Edit Language File
   	public function edit(Request $request,$id="")
   	{
+  		if (!auth()->user()->can('language.update')) {
+            abort(403, 'Unauthorized action.');
+        }
   	 	if ($request->isMethod('get')) {
   	 		if(file_exists(resource_path() . "/language/$id.php")){
 				require (resource_path() . "/language/$id.php");
@@ -77,6 +86,9 @@ class LanguageController extends Controller
 	// Update The Languate File
   	public function update(Request $request,$id)
     {
+    	if (!auth()->user()->can('language.update')) {
+            abort(403, 'Unauthorized action.');
+        }
 		// Set the Time Limit
         @ini_set('max_execution_time', 0);
 		@set_time_limit(0);
@@ -107,6 +119,9 @@ class LanguageController extends Controller
 	// Delete The Language File
     public function delete($id)
     {
+    	if (!auth()->user()->can('language.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         if(file_exists(resource_path() . "/language/$id.php")){
 			unlink(resource_path() . "/language/$id.php");
 

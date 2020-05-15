@@ -29,4 +29,11 @@ class TransactionPayment extends Model
     {
         return $this->hasMany(TransactionPayment::class, 'transaction_id', 'id');
     }
+
+    public function free_trans()
+    {
+    
+         return $this->transaction->where('hidden',false);
+        
+    }
 }

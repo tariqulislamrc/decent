@@ -3,12 +3,13 @@
 namespace App\Utilities;
 
 use Artisan;
-use Config;
-use \App\User;
-use \App\Setting;
-use DB;
 use Carbon\Carbon;
+use Config;
+use DB;
 use File;
+use Illuminate\Support\Str;
+use \App\Setting;
+use \App\User;
 
 /**
  * Class Installer
@@ -212,6 +213,8 @@ class Installer
             'phone' => $phone,
             'user_type' => 'Admin',
 			'image' => 'profile.png',
+            'uuid'=>Str::uuid();
+            'status'=>'activated';
 			'created_at' => date('Y-m-d H:i:s'),
 			'updated_at' => date('Y-m-d H:i:s'),
         ]);

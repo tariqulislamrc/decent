@@ -31,7 +31,7 @@ var DatatableSelect = function() {
             columnDefs: [{
                 orderable: false,
                 width: 100,
-                targets: [4]
+                targets: [6]
             }],
             dom: '<"datatable-header"fl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
               language: {
@@ -74,14 +74,21 @@ var DatatableSelect = function() {
             }],
             columnDefs: [{
                 orderable: false,
-                targets: [4]
+                targets: [6]
             }],
 
             order: [0, 'asc'],
             processing: true,
             serverSide: true,
+            ajax: { 
+            url: $('.content_managment_table').data('url'),
+            data: function(d) {
+                d.investment_account_id = $('select#investment_account_id').val();
+                d.employee_id = $('select#employee_id').val();
+                d.expense_category_id = $('select#expense_category_id').val();
+            },
+          },
 
-            ajax: $('.content_managment_table').data('url'),
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
                 {
@@ -94,11 +101,14 @@ var DatatableSelect = function() {
                     data: 'category',
                     name: 'category'
                 },{
+                    data: 'employee',
+                    name: 'employee'
+                },{
                     data: 'account',
                     name: 'account'
                 },{
-                    data: 'amount',
-                    name: 'amount'
+                    data: 'e_amount',
+                    name: 'e_amount'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -109,6 +119,13 @@ var DatatableSelect = function() {
 
 
     };
+
+      $('select#investment_account_id, select#employee_id, select#expense_category_id').on(
+        'change',
+        function() {
+            emran.ajax.reload();
+        }
+    );
 
     var _componentRemoteModalLoad = function() {
         $(document).on('click', '#content_managment', function(e) {

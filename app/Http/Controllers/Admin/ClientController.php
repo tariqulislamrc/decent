@@ -22,13 +22,16 @@ class ClientController extends Controller
      */
     public function index()
     {
+      if (!auth()->user()->can('client.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.client.index');
     }
 
     public function datatable(Request $request){
        if ($request->ajax()) {
             $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
-                    ->select('clients.name','clients.email', 'state', 'country', 'landmark', 'mobile', 'clients.id',
+                    ->select('clients.name','clients.email', 'state', 'country', 'landmark', 'mobile', 'clients.id','t.hidden as hidden',
                         DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
                         DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as total_sell_return"),
@@ -36,16 +39,22 @@ class ClientController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
                         )
-                    ->groupBy('clients.id');;
+              
+                    ->groupBy('clients.id');
+                    if (!auth()->user()->hasRole('Super Admin')) {
+                        $document->where('clients.hidden',false);
+                    }
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn(
                 'landmark',
                 '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
+                
                   )
                     ->addColumn(
                 'due',
                 '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
+                  
                 )
                ->addColumn(
                 'return_due',
@@ -65,6 +74,9 @@ class ClientController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('client.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.client.form');
     }
 
@@ -76,6 +88,9 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('client.create')) {
+            abort(403, 'Unauthorized action.');
+        }
          $validator = $request->validate([
             'name'=>'required',
             'mobile'=>'required',
@@ -108,6 +123,9 @@ class ClientController extends Controller
 
     public function quick_add(Request $request)
     {
+        if (!auth()->user()->can('client.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'name'=>'required',
             'mobile'=>'required',
@@ -130,6 +148,9 @@ class ClientController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('client.view')) {
+            abort(403, 'Unauthorized action.');
+        }
               $contact = Client::where('clients.id', $id)
                             ->join('transactions AS t', 'clients.id', '=', 't.client_id')
                             ->select(
@@ -153,6 +174,9 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('client.update')) {
+            abort(403, 'Unauthorized action.');
+        }
            $model =Client::find($id);
             $ob_transaction =  Transaction::where('client_id', $id)
                                             ->where('transaction_type', 'opening_balance')
@@ -179,6 +203,9 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('client.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'name'=>'required',
             'mobile'=>'required',
@@ -239,6 +266,9 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
+     if (!auth()->user()->can('client.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
      $count = Transaction::where('client_id', $id)
                          ->count();
     if ($count == 0) {                  
@@ -256,6 +286,9 @@ class ClientController extends Controller
 
     public function email($id)
     {
+        if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Client::find($id);
         $templates = EmailTemolate::pluck('name','id');
         return view('admin.client.mail',compact('model','templates'));
@@ -263,6 +296,9 @@ class ClientController extends Controller
 
     public function sms($id)
     {
+        if (!auth()->user()->can('sms_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Client::find($id);
         return view('admin.client.sms',compact('model'));
     }

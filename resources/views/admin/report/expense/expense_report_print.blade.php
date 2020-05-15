@@ -22,7 +22,9 @@
                     <th scope="col">{{ _lang('Expense Reason') }}</th>
                     <th scope="col">{{ _lang('Expense By') }}</th>
                     <th scope="col">{{ _lang('Date') }}</th>
+                    @can('view_expense.amount')
                     <th scope="col">{{ _lang('Amount') }}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -38,9 +40,11 @@
                     <td>
                         {{ formatDate($element->date) }}
                     </td>
+                    @can('view_expense.amount')
                     <td>
                         {{ $element->amount }}
                     </td>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>

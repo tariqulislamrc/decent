@@ -32,6 +32,18 @@ $route = 'admin.expense.ex.';
 
       <div class="col-md-12">
         <div class="form-group">
+          {{ Form::label('employee_id', _lang('Expense For') , ['class' => 'col-form-label']) }}
+             <select name="employee_id" id="employee_id" class="form-control select" >
+            <option value="">None</option>
+            @foreach ($employeis as $employee)
+            <option {{ isset($model)?$model->employee_id==$employee->id?'selected':'':'' }} value="{{ $employee->id }}">{{ $employee->name }}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group">
           {{ Form::label('amount', _lang('Amount') , ['class' => 'col-form-label']) }}
           {{ Form::text('amount', null, ['class' => 'form-control input_number', 'id'=>'amount', 'placeholder' => _lang('Amount'),'required'=>'','autofocus'=>true]) }}
         </div>
@@ -55,7 +67,7 @@ $route = 'admin.expense.ex.';
       <div class="col-md-6 mx-auto text-center">
         
         {{ Form::submit(isset($model) ? _lang('Update'):_lang('Create'), ['class' => 'btn btn-primary btn-lg w-100 ', 'id' => 'submit']) }}
-        <button type="button" class="btn btn-link" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <img src="{{ asset('ajaxloader.gif') }}" width="80"></button>
+        <button type="button" class="btn btn-primary btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
       </div>
     </div>
     {!! Form::close() !!}

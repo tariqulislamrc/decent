@@ -20,12 +20,17 @@
                     <th scope="col">{{ _lang('Transection Sub Type') }}</th>
                     <th scope="col">{{ _lang('Date') }}</th>
                     <th scope="col">{{ _lang('Account By') }}</th>
+                    @can('view_account.credit')
                     @if ($transaction_type=='All' || $transaction_type=='credit')
                     <th scope="col">{{ _lang('Credit') }}</th>
                     @endif
+                    @endcan
+
+                    @can('view_account.debit')
                     @if ($transaction_type=='All' || $transaction_type=='debit')
                     <th scope="col">{{ _lang('Debit') }}</th>
                     @endif
+                    @endcan
                    
                 </tr>
             </thead>
@@ -40,6 +45,7 @@
                         {{ $element->user->email }}
                         
                     </td>
+                   @can('view_account.credit')
                    @if ($transaction_type=='All' || $transaction_type=='credit')
                        <td>
                            @if ($element->type=='credit')
@@ -47,7 +53,9 @@
                            @endif
                        </td>
                    @endif
+                   @endcan
 
+                   @can('view_account.debit')
                    @if ($transaction_type=='All' || $transaction_type=='debit')
                        <td>
                             @if ($element->type=='debit')
@@ -55,6 +63,7 @@
                            @endif
                        </td>
                    @endif
+                   @endcan
                   
                 </tr>
                 @endforeach
@@ -62,12 +71,16 @@
             <tfoot>
                 <tr>
                     <th colspan="3">{{ _lang('Total') }}</th>
+                    @can('view_account.credit')
                     @if ($transaction_type=='All' || $transaction_type=='credit')
                     <td>{{ number_format($result->where('type','credit')->sum('amount'),2) }}</td>
                     @endif
+                    @endcan
+                    @can('view_account.debit')
                     @if ($transaction_type=='All' || $transaction_type=='debit')
                     <td>{{ number_format($result->where('type','debit')->sum('amount'),2) }}</td>
                     @endif
+                    @endcan
                 </tr>
             </tfoot>
     

@@ -23,9 +23,15 @@
                     <th scope="col">{{ _lang('Payment Status') }}</th>
                     <th scope="col">{{ _lang('Sold By') }}</th>
                     <th scope="col">{{ _lang('Date') }}</th>
+                    @can('view_sale.sale_price')
                     <th scope="col">{{ _lang('Net Total') }}</th>
+                    @endcan
+                    @can('view_sale.sale_paid')
                     <th scope="col">{{ _lang('Paid') }}</th>
+                    @endcan
+                    @can('view_sale.sale_due')
                     <th scope="col">{{ _lang('Due') }}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -59,15 +65,20 @@
                     <td>
                         {{ formatDate($element->date) }}
                     </td>
+                    @can('view_sale.sale_price')
                     <td>
                         {{ $element->net_total }}
                     </td>
+                    @endcan
+                    @can('view_sale.sale_paid')
                     <td>
                         {{ $element->payment->sum('amount') }}
                         @if ($element->return==true)
                            <br> <span class="badge badge-info">Sale Return</span>
                         @endif
                     </td>
+                    @endcan
+                    @can('view_sale.sale_due')
                     <th>{{ $element->net_total-$element->payment->sum('amount') }}</th>
                 </tr>
                 @endforeach
@@ -75,6 +86,7 @@
         </table>
             <table style="width: 50%; font-weight: bold;" align="right" class="table table-bordered visible-lg">
 
+              @can('view_sale.sale_discount')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{ _lang('Discount Amt')}} :</b>
@@ -83,7 +95,8 @@
                     {{number_format($result->sum('discount_amount'),2)}}
                 </td>
             </tr>
-
+            @endcan
+            @can('view_sale.sale_tax')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Total Tax')}} :</b>
@@ -92,7 +105,8 @@
                     {{number_format($result->sum('tax'))}} 
                 </td>
             </tr>
-
+            @endcan
+            @can('view_sale.shipping_charge')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Shipping Charge')}} :</b>
@@ -101,6 +115,8 @@
                     {{number_format($result->sum('shipping_charges'))}} 
                 </td>
             </tr>
+            @endcan
+            @can('view_sale.sale_price')
 
               <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
@@ -110,6 +126,8 @@
                     {{number_format($result->sum('net_total'),2)}}
                 </td>
             </tr>
+            @endcan
+            @can('view_sale.sale_paid')
               <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Total Paid')}} :</b>
@@ -118,6 +136,8 @@
                     {{number_format($result->sum('paid'),2)}}
                 </td>
             </tr>
+            @endcan
+            @can('view_sale.sale_due')
                <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Total Due')}} :</b>
@@ -126,13 +146,15 @@
                     {{number_format($result->sum('due'),2)}}
                 </td>
             </tr>
-
+            @endcan
+            @can('view_sale.qty')
             <tr style="background-color: #F8F9F9;border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Sale Qty')}} :</b>
                 </td>
                 <td>{{$total_quantity}}</td>
             </tr>
+            @endcan
 
             
         </table>

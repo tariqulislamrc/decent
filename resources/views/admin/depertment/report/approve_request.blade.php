@@ -79,9 +79,9 @@
               <tfoot>
               <tr>
                 <td colspan="7">
-                  <button type="submit" class="btn btn-primary" id="">{{_lang('Send & Submit Report')}}<i class="fa fa-share-square-o" aria-hidden="true"></i></button>
-                  <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
-                  <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                  <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Report')}}<i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+                  <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
+                  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                 </td>
               </tr>
               </tfoot>

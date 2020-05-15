@@ -19,6 +19,9 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('production_brands.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.brand.index');
     }
 
@@ -40,6 +43,9 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('production_brands.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.brand.create');
     }
 
@@ -50,6 +56,10 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
+        if (!auth()->user()->can('production_brands.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required|unique:brands|max:255',
             'owner_name' => 'required',
@@ -76,11 +86,17 @@ class BrandsController extends Controller
 
     public function remort_modal()
     {
+      if (!auth()->user()->can('production_brands.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.brand.quickmodal');
     }
 
    public function addremort_modal(Request $request)
     {
+     if (!auth()->user()->can('production_brands.create')) {
+            abort(403, 'Unauthorized action.');
+        }
      $request->validate([
             'name' => 'required|unique:brands|max:255',
             'owner_name' => 'required',
@@ -119,6 +135,9 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('production_brands.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Brand::findOrFail($id);
         return view('admin.production.brand.edit',compact('model'));
     }
@@ -131,6 +150,10 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+
+        if (!auth()->user()->can('production_brands.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =  Brand::findOrFail($id);
          $request->validate([
             'name' => ['required',Rule::unique('brands')->ignore($model->id)],
@@ -161,6 +184,9 @@ class BrandsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('production_brands.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = Brand::findOrFail($id);
         $name = $type->name;
         $type->delete();
@@ -171,6 +197,9 @@ class BrandsController extends Controller
 
   public function email($id)
     {
+        if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Brand::find($id);
         $templates = EmailTemolate::pluck('name','id');
         return view('admin.production.brand.mail',compact('model','templates'));
@@ -178,6 +207,9 @@ class BrandsController extends Controller
 
     public function sms($id)
     {
+        if (!auth()->user()->can('sms_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Brand::find($id);
         return view('admin.production.brand.sms',compact('model'));
     }

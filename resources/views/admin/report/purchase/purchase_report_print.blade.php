@@ -23,8 +23,12 @@
                     <th scope="col">{{ _lang('Payment Status') }}</th>
                     <th scope="col">{{ _lang('Purchase By') }}</th>
                     <th scope="col">{{ _lang('Date') }}</th>
+                    @can('view_purchase.price')
                     <th scope="col">{{ _lang('Net Total') }}</th>
+                    @endcan
+                    @can('view_purchase.paid')
                     <th scope="col">{{ _lang('Paid') }}</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -58,18 +62,22 @@
                     <td>
                         {{ formatDate($element->date) }}
                     </td>
+                    @can('view_purchase.price')
                     <td>
                         {{ $element->net_total }}
                     </td>
+                    @endcan
+                    @can('view_purchase.paid')
                     <td>
                         {{ $element->payment->sum('amount') }}
                     </td>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>
         </table>
             <table style="width: 50%; font-weight: bold;" align="right" class="table table-bordered visible-lg">
-
+            @can('view_purchase.discount')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{ _lang('Discount Amt')}} :</b>
@@ -78,7 +86,9 @@
                     {{number_format($result->sum('discount_amount'),2)}}
                 </td>
             </tr>
-
+            @endcan
+            
+            @can('view_purchase.tax')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Total Tax')}} :</b>
@@ -87,7 +97,9 @@
                     {{number_format($result->sum('tax'))}} 
                 </td>
             </tr>
-
+            @endcan
+            
+            @can('view_purchase.shipping-charge')
             <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Shipping Charge')}} :</b>
@@ -96,7 +108,9 @@
                     {{number_format($result->sum('shipping_charges'))}} 
                 </td>
             </tr>
-
+            @endcan
+            
+            @can('view_purchase.price')
               <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Net Total')}} :</b>
@@ -105,6 +119,8 @@
                     {{number_format($result->sum('net_total'),2)}}
                 </td>
             </tr>
+            @endcan
+            @can('view_purchase.paid')
               <tr style="background-color: #F8F9F9; border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Total Paid')}} :</b>
@@ -113,13 +129,16 @@
                     {{number_format($result->sum('paid'),2)}}
                 </td>
             </tr>
-
+            @endcan
+            
+            @can('view_purchase.qty')
             <tr style="background-color: #F8F9F9;border: 1px solid #ddd;">
                 <td style="text-align: right;">
                     <b>{{_lang('Purchase Qty')}} :</b>
                 </td>
                 <td>{{$total_quantity}}</td>
             </tr>
+            @endcan
 
             
         </table>

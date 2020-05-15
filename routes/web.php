@@ -372,7 +372,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		// Route::resource('employee-payhead', 'Configuration\Employee\EmployeePayHeadController');
 
 		//::::::::Product list
-		Route::get('product-list','Production\ProductController@finalproduct_list')->name('product_list');	
+		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');	
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');
@@ -716,6 +716,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  });
 
 	});
+
+  Route::group(['as' => 'super_admin.', 'prefix' => 'super-admin','namespace' => 'Admin'], function () {
+  		Route::get('product','SuperAdminController@product')->name('product');
+  		Route::get('client','SuperAdminController@client')->name('client');
+  		Route::get('sells','SuperAdminController@sells')->name('sells');
+  		Route::get('sell-return','SuperAdminController@sell_return')->name('sell_return');
+  		Route::get('sell-return-hide/{id}','SuperAdminController@sell_return_hide')->name('sell_return_hide');
+  		Route::get('purchase','SuperAdminController@purchase')->name('purchase');
+  		Route::get('expense','SuperAdminController@expense')->name('expense');
+  		Route::get('account','SuperAdminController@account')->name('account');
+  		Route::put('hidden/{value}/{id}','SuperAdminController@hidden')->name('hidden');
+  });
 
 Route::get('/home', 'HomeController@index')->name('home');
 

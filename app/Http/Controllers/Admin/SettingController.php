@@ -16,6 +16,9 @@ class SettingController extends Controller
 
     public function index(Request $request)
     {
+     if (!auth()->user()->hasRole('Super Admin')) {
+        abort(403, 'Unauthorized action.');
+      }
         if ($request->isMethod('get')) {
             $brand = Brand::all();
             return view('admin.setting.index',compact('brand'));

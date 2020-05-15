@@ -78,89 +78,100 @@
 <script src="{{ asset('backend/js/picker/moment-timezone-with-data.min.js') }}"></script>
 <script>
 $('.select').select2();
-  $(document).ready(function(){
-            $('#transaction_date_range').daterangepicker({
-              autoUpdateInput:false,
-            });
-            $("#transaction_date_range").on('apply.daterangepicker',function(start,end){
+$(document).ready(function() {
+    $('#transaction_date_range').daterangepicker({
+        autoUpdateInput: false,
+    });
+    $("#transaction_date_range").on('apply.daterangepicker', function(start, end) {
+        var start = '';
+        var end = '';
+        if ($('#transaction_date_range').val()) {
+            start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+        }
+        cash_flow_table.ajax.reload();
+
+    })
+    $.extend($.fn.dataTable.defaults, {
+        autoWidth: false,
+        responsive: true,
+        columnDefs: [{
+            orderable: false,
+            width: 100,
+            targets: [5]
+        }],
+        dom: '<"datatable-header"fl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
+        language: {
+            search: '<span>Filter:</span> _INPUT_',
+            searchPlaceholder: 'Type to filter...',
+            lengthMenu: '<span>Show:</span> _MENU_',
+            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> ',
+            paginate: {
+                'first': 'First',
+                'last': 'Last',
+                'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;',
+                'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'
+            }
+        }
+    });
+    // Account Book
+    cash_flow_table = $('.content_managment_table').DataTable({
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        dom: 'Bfrtip',
+        processing: true,
+        serverSide: true,
+        "ajax": {
+            "url": $('.content_managment_table').data('url'),
+            "data": function(d) {
                 var start = '';
                 var end = '';
-                if($('#transaction_date_range').val()){
-                    start = $('input#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
-                    end = $('input#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                if ($('#transaction_date_range').val() != '') {
+                    start = $('#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                    end = $('#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
                 }
-                cash_flow_table.ajax.reload();
-                
-            })
-    $.extend($.fn.dataTable.defaults, {
-           autoWidth: false,
-           responsive: true,
-           columnDefs: [{
-               orderable: false,
-               width: 100,
-               targets: [5]
-           }],
-           dom: '<"datatable-header"fl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
-           language: {
-               search: '<span>Filter:</span> _INPUT_',
-               searchPlaceholder: 'Type to filter...',
-               lengthMenu: '<span>Show:</span> _MENU_',
-               processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> ',
-               paginate: {
-                   'first': 'First',
-                   'last': 'Last',
-                   'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;',
-                   'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'
-               }
-           }
-       });
-            // Account Book
-        cash_flow_table = $('.content_managment_table').DataTable({
-               responsive: {
-               details: {
-                   type: 'column',
-                   target: 'tr'
-               }
-           },
-           dom: 'Bfrtip',
-                        processing: true,
-                        serverSide: true,
-                            "ajax": {
-                              "url": $('.content_managment_table').data('url'),
-                                "data": function ( d ) {
-                                  var start = '';
-                                  var end = '';
-                                  if($('#transaction_date_range').val() != ''){
-                                      start = $('#transaction_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
-                                      end = $('#transaction_date_range').data('daterangepicker').endDate.format('YYYY-MM-DD');
-                                  }
-                                  
-                                  d.account_id = $('#account_id').val();
-                                  d.type = $('#transaction_type').val();
-                                  d.start_date = start,
-                                  d.end_date = end
-                              }
-                          },
-                          columnDefs: [{
-                                orderable: false,
-                                targets: [5]
-                            }],
 
-                        order: [0, 'asc'],
-                        "searching": false,
-                        columns: [
-                            {data: 'operation_date', name: 'operation_date'},
-                             {data: 'account_name', name: 'account_name'},
-                            {data: 'sub_type', name: 'sub_type'},
-                            {data: 'credit', name: 'amount'},
-                            {data: 'debit', name: 'amount'},
-                            {data: 'balance', name: 'balance'},
-                        ],
-                    });
+                d.account_id = $('#account_id').val();
+                d.type = $('#transaction_type').val();
+                d.start_date = start,
+                    d.end_date = end
+            }
+        },
+        columnDefs: [{
+            orderable: false,
+            targets: [5]
+        }],
+
+        order: [0, 'asc'],
+        "searching": false,
+        columns: [{
+            data: 'operation_date',
+            name: 'operation_date'
+        }, {
+            data: 'account_name',
+            name: 'account_name'
+        }, {
+            data: 'sub_type',
+            name: 'sub_type'
+        }, {
+            data: 'credit',
+            name: 'amount'
+        }, {
+            data: 'debit',
+            name: 'amount'
+        }, {
+            data: 'balance',
+            name: 'balance'
+        }, ],
     });
+});
 
-       $('#transaction_type, #account_id').change( function(){
-            cash_flow_table.ajax.reload();
-        });
+$('#transaction_type, #account_id').change(function() {
+    cash_flow_table.ajax.reload();
+});
 </script>
 @endpush

@@ -1,4 +1,4 @@
-      <div class="table-responsive">
+   <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -28,9 +28,16 @@
                                 <td>{{ ovarallreport('Purchase',null,null,$date)->sum('total_paid') }}</td>
                                 <td>{{ ovarallreport('Purchase',null,null,$date)->sum('net_total') - ovarallreport('Purchase',null,null,$date)->sum('total_paid') }}</td>
                                 <td>
+                                    @role('Super Admin')
                                     @php
                                         $expense=App\models\Expense\Expense::whereDate('date',$date)->sum('amount');
                                     @endphp
+                                    @else
+                                     @php
+                                        $expense=App\models\Expense\Expense::whereDate('date',$date)->where('hidden',false)->sum('amount');
+                                    @endphp
+                                    @endrole
+                                   
                                     {{ $expense }}
                                 </td>
                             </tr>
@@ -45,10 +52,16 @@
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('net_total') }}</td>
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('total_paid') }}</td>
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('net_total') - ovarallreport('Purchase',null,null,null,$month)->sum('total_paid') }}</td>
-                             <td>
+                             <td> 
+                                @role('Super Admin')
                                     @php
                                         $expense_month=App\models\Expense\Expense::whereMonth('date',$month)->sum('amount');
                                     @endphp
+                                    @else
+                                     @php
+                                        $expense_month=App\models\Expense\Expense::whereMonth('date',$month)->where('hidden',false)->sum('amount');
+                                    @endphp
+                                 @endrole   
                                     {{ $expense_month }}
                              </td>
                         </tr>

@@ -13,6 +13,9 @@ class PurchaseReportController extends Controller
 {
     public function index()
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$employee =Employee::all();
     	$users =User::all();
 
@@ -22,6 +25,9 @@ class PurchaseReportController extends Controller
     public function get_purchase_report(Request $request)
 
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$purchase_by =$request->purchase_by;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
@@ -45,6 +51,9 @@ class PurchaseReportController extends Controller
             $q=$q->whereBetween('date',[$sDate,$eDate]);
         }
         $q =$q->where('transaction_type','Purchase');
+        if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+        }
         $result=$q->get();
         return view('admin.report.purchase.purchase_report_print',compact('result','sDate','eDate'));
     }
@@ -52,14 +61,25 @@ class PurchaseReportController extends Controller
 
     public function purchase_payment()
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
         $employee =Employee::all();
-        $refs =Transaction::where('transaction_type','Purchase')->select('reference_no','id')->get();
+        if (!auth()->user()->hasRole('Super Admin')) {
+         $refs =Transaction::where('transaction_type','Purchase')->select('reference_no','id')->where('hidden',false)->get();
+        }else{
+
+         $refs =Transaction::where('transaction_type','Purchase')->select('reference_no','id')->get();
+        }
         return view('admin.report.purchase.purchase_payment',compact('employee','refs'));
     }
 
 
     public function purchase_payment_report(Request $request)
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
         $employee_id =$request->employee_id;
         $transaction_id =$request->transaction_id;
         $sDate =$request->sDate;
@@ -89,6 +109,9 @@ class PurchaseReportController extends Controller
 
     public function purchase_due()
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
         $employee =Employee::all();
         $users =User::all();
         return view('admin.report.purchase.purchase_due',compact('employee','users'));
@@ -96,6 +119,9 @@ class PurchaseReportController extends Controller
 
     public function purchase_due_report(Request $request)
     {
+        if (!auth()->user()->can('report.purchase')) {
+            abort(403, 'Unauthorized action.');
+        }
         $purchase_by =$request->purchase_by;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
@@ -119,6 +145,10 @@ class PurchaseReportController extends Controller
             $q=$q->whereBetween('date',[$sDate,$eDate]);
         }
         $q =$q->where('transaction_type','Purchase');
+
+        if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+        }
         $result=$q->get();
         return view('admin.report.purchase.purchase_due_report_print',compact('result','sDate','eDate'));
     }

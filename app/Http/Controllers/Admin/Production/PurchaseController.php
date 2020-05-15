@@ -25,13 +25,40 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return view('admin.production.purchase.index');
+        if (!auth()->user()->can('purchase.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $employeis =Employee::pluck('name','id');
+        return view('admin.production.purchase.index',compact('employeis'));
     }
 
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $document = Transaction::where('transaction_type','Purchase')->get();
+            $document = Transaction::query();
+              if (request()->has('employee_id')) {
+                $employee_id = request()->get('employee_id');
+                if (!empty($employee_id)) {
+                    $document=$document->where('purchase_by', $employee_id);
+                }
+            }
+
+              if (request()->has('status')) {
+                $status = request()->get('status');
+                if (!empty($status)) {
+                    $document=$document->where('status', $status);
+                }
+            }
+              if (request()->has('payment_status')) {
+                $payment_status = request()->get('payment_status');
+                if (!empty($payment_status)) {
+                    $document=$document->where('payment_status', $payment_status);
+                }
+            }
+             if (!auth()->user()->hasRole('Super Admin')) {
+                $document=$document->where('hidden',false);
+            }
+            $document =$document->where('transaction_type','Purchase')->get();
             return DataTables::of($document)
                 ->addIndexColumn()
                 ->editColumn('purchase_by', function ($document) {
@@ -49,6 +76,13 @@ class PurchaseController extends Controller
                         return '<span class="badge badge-info">' . 'Ordered' . '</span>';
                     }
                 })
+                ->editColumn('total', function ($document) {
+                    if (auth()->user()->can("view_purchase.price")) {
+                        return $document->net_total;
+                    }else{
+                        return 'N/A';
+                    }
+                })
                 ->editColumn('payment_status', function ($document) {
                     if ($document->payment_status == 'Paid') {
                         return '<span class="badge badge-success">' . 'Paid' . '</span>';
@@ -60,7 +94,7 @@ class PurchaseController extends Controller
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.purchase.action', compact('model'));
-                })->rawColumns(['action','status', 'payment_status'])->make(true);
+                })->rawColumns(['action','status', 'payment_status','total'])->make(true);
         }
     }
 
@@ -72,11 +106,15 @@ class PurchaseController extends Controller
 
     public function request()
     {
+
         return view('admin.production.purchase.request_prev');
     }
 
     public function create(Request $request)
     {
+        if (!auth()->user()->can('purchase.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = $request->type;
         $models = Employee::all();
         $workorders = WorkOrder::where('status', '=', 'requisition')->get();
@@ -97,6 +135,9 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('purchase.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'purchase_by' => 'required',
             'purchase_date' => 'required',
@@ -242,6 +283,9 @@ class PurchaseController extends Controller
 
     public function add_payment(Request $request, $id)
     {
+        if (!auth()->user()->can('purchase.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->due_amount > 0) {
             $type = 'Partial';
         }else if($request->due_amount == 0){
@@ -280,6 +324,9 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('purchase.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Transaction::findOrFail($id);
         return view('admin.production.purchase.edit', compact('model'));
     }
@@ -293,7 +340,9 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+      if (!auth()->user()->can('purchase.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Transaction::findOrFail($id);
         $model->reference_no = $request->reference_no;
         $model->date = $request->purchase_date;
@@ -349,6 +398,9 @@ class PurchaseController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('purchase.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = Transaction::where('wo_id', $id)->delete();
         $type = TransactionPayment::where('transaction_id', $id)->delete();
         $type = Purchase::where('transaction_id', $id)->delete();
