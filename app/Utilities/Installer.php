@@ -213,8 +213,8 @@ class Installer
             'phone' => $phone,
             'user_type' => 'Admin',
 			'image' => 'profile.png',
-            'uuid'=>Str::uuid();
-            'status'=>'activated';
+            'uuid'=>Str::uuid(),
+            'status'=>'activated',
 			'created_at' => date('Y-m-d H:i:s'),
 			'updated_at' => date('Y-m-d H:i:s'),
         ]);
