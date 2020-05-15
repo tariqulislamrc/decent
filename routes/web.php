@@ -362,12 +362,17 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 			Route::get('client/customers','ClientController@customers');
 			Route::post('client/customers','ClientController@quick_add')->name('client.quick_add');
-			Route::resource('client', 'ClientController');
+		    Route::resource('client', 'ClientController');
+		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
+		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
 
 		// Production Route End
 
 		//:::::::::::::::::::::::::::::Employee Payhead::::::::::::::::::::::::::::::::::::
 		// Route::resource('employee-payhead', 'Configuration\Employee\EmployeePayHeadController');
+
+		//::::::::Product list
+		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');	
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');
@@ -673,6 +678,24 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('sale-return','SalesReportController@sale_return')->name('sale_return');
 	 		Route::post('sale-return','SalesReportController@sale_return_report')->name('sale_return_report');
 	 	});
+
+	 	Route::group(['as' => 'purchasing.', 'prefix' => 'purchasing','namespace' => 'Report'], function () {
+	 		Route::get('purchase','PurchaseReportController@index')->name('purchase');
+	 		Route::post('purchase','PurchaseReportController@get_purchase_report')->name('get_purchase_report');
+	 		Route::get('purchase-payment','PurchaseReportController@purchase_payment')->name('purchase_payment');
+	 		Route::post('purchase-payment','PurchaseReportController@purchase_payment_report')->name('purchase_payment_report');
+	 		Route::get('purchase-due','PurchaseReportController@purchase_due')->name('purchase_due');
+	 		Route::post('purchase-due','PurchaseReportController@purchase_due_report')->name('purchase_due_report');
+	 	});
+
+	 	//product-report
+	 	Route::get('product-report','Production\ProductController@product_report')->name('product_report');
+	 	Route::post('product-report','Production\ProductController@product_report_print')->name('product_report_print');
+	 	Route::get('purchase-sale','Report\SalesReportController@purchase_sale')->name('purchase_sale');
+	 	Route::get('trail-balance','Report\SalesReportController@trail_balance')->name('trail_balance');
+	 	Route::get('customer','Report\ReportController@getCustomerSuppliers')->name('getCustomerSuppliers');
+	 	Route::get('monthly','Report\ReportController@monthly_report')->name('monthly_report');
+	 	Route::get('yearly','Report\ReportController@yearly_report')->name('yearly_report');
 	});
 
 
@@ -693,6 +716,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  });
 
 	});
+
+  Route::group(['as' => 'super_admin.', 'prefix' => 'super-admin','namespace' => 'Admin'], function () {
+  		Route::get('product','SuperAdminController@product')->name('product');
+  		Route::get('client','SuperAdminController@client')->name('client');
+  		Route::get('sells','SuperAdminController@sells')->name('sells');
+  		Route::get('sell-return','SuperAdminController@sell_return')->name('sell_return');
+  		Route::get('sell-return-hide/{id}','SuperAdminController@sell_return_hide')->name('sell_return_hide');
+  		Route::get('purchase','SuperAdminController@purchase')->name('purchase');
+  		Route::get('expense','SuperAdminController@expense')->name('expense');
+  		Route::get('account','SuperAdminController@account')->name('account');
+  		Route::put('hidden/{value}/{id}','SuperAdminController@hidden')->name('hidden');
+  });
 
 Route::get('/home', 'HomeController@index')->name('home');
 

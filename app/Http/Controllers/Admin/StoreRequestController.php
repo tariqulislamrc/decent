@@ -25,6 +25,9 @@ class StoreRequestController extends Controller
      */
     public function index()
     {
+      if (!auth()->user()->can('store_request.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.depertment.request.index');
     }
 
@@ -56,6 +59,9 @@ class StoreRequestController extends Controller
      */
     public function create()
     {
+     if (!auth()->user()->can('store_request.create')) {
+            abort(403, 'Unauthorized action.');
+        }
       $depertments =Depertment::select('id','name')->get();
       return view('admin.depertment.request.create',compact('depertments'));
     }
@@ -74,6 +80,9 @@ class StoreRequestController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('store_request.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validate=$request->validate([
                 'request_date'=>'required',
 
@@ -114,6 +123,9 @@ class StoreRequestController extends Controller
      */
     public function show($id)
     {
+         if (!auth()->user()->can('store_request.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =DepertmentStore::findOrFail($id);
         return view('admin.depertment.request.show',compact('model'));
 
@@ -127,6 +139,9 @@ class StoreRequestController extends Controller
      */
     public function edit($id)
     {
+         if (!auth()->user()->can('store_request.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =StoreRequest::findOrFail($id);
         $approve_item =$model->approve_store_item->sum('qty');
         return view('admin.depertment.request.edit',compact('model','approve_item'));
@@ -141,6 +156,9 @@ class StoreRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
+         if (!auth()->user()->can('store_request.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =StoreRequest::findOrFail($id);
         $approve_item =$model->approve_store_item->sum('qty');
         if ($request->qty ==0) {
@@ -182,6 +200,9 @@ class StoreRequestController extends Controller
      */
     public function destroy($id)
     {
+         if (!auth()->user()->can('store_request.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =StoreRequest::find($id)->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
     }
@@ -212,11 +233,17 @@ class StoreRequestController extends Controller
 
     public function request($id)
     {
+     if (!auth()->user()->can('store_request.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        return view('admin.depertment.request.request_prev',compact('id')); 
     }
 
     public function request_form($type,$id)
     {
+      if (!auth()->user()->can('store_request.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        $depert =Depertment::findOrFail($id);
 
         return view('admin.depertment.request.request',compact('depert','type'));  

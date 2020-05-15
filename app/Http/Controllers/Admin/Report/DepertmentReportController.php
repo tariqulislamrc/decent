@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 class DepertmentReportController extends Controller
 {
       public function product_report(){
+        if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+        }
        $orders =WorkOrder::all();
        $depertments =Depertment::all();
        $users =User::all();
@@ -24,6 +27,9 @@ class DepertmentReportController extends Controller
 
       public function get_product_report(Request $request)
       {
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+        }
       	$depertment_id =$request->depertment_id;
       	$work_order_id =$request->work_order_id;
       	$user_id =$request->user_id;
@@ -62,11 +68,17 @@ class DepertmentReportController extends Controller
 
       public function get_dept_store_request(Request $request)
       {
+        if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =DepertmentStore::where('depertment_id',$request->depertment_id)->get();
         return response()->json($model);
       }
 
       public function raw_material_report(){
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+          }
              $depertments =Depertment::all();
              $users =User::all();
               return view('admin.report.depertment.material_report',compact('depertments','users'));
@@ -74,6 +86,9 @@ class DepertmentReportController extends Controller
 
       public function get_rawmaterial_report(Request $request)
       {
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+          }
             $depertment_id =$request->depertment_id;
             $depertment_store_id =$request->depertment_store_id;
             $user_id =$request->user_id;
@@ -105,6 +120,9 @@ class DepertmentReportController extends Controller
       }
 
       public function store_material_report(){
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+           }
              $depertments =Depertment::all();
              $users =User::all();
               return view('admin.report.depertment.store_material_report',compact('depertments','users'));
@@ -112,6 +130,9 @@ class DepertmentReportController extends Controller
 
       public function get_storematerial_report(Request $request)
       {
+        if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+        }
         $depertment_id =$request->depertment_id;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
@@ -139,6 +160,9 @@ class DepertmentReportController extends Controller
 
       public function product_report_details()
       {
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+          }
             $orders =WorkOrder::all();
             $depertments =Depertment::all();
             $users =User::all();
@@ -147,6 +171,9 @@ class DepertmentReportController extends Controller
 
       public function get_product_report_details(Request $request)
       {
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+          }
             $depertment_id =$request->depertment_id;
             $work_order_id =$request->work_order_id;
             $user_id =$request->user_id;
@@ -182,6 +209,9 @@ class DepertmentReportController extends Controller
 
 
       public function raw_material_report_details(){
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+           }
              $depertments =Depertment::all();
              $users =User::all();
               return view('admin.report.depertment.material_report_details',compact('depertments','users'));
@@ -189,6 +219,9 @@ class DepertmentReportController extends Controller
 
       public function get_rawmaterial_report_details(Request $request)
       {
+         if (!auth()->user()->can('report.store_department')) {
+            abort(403, 'Unauthorized action.');
+          }
             $depertment_id =$request->depertment_id;
             $depertment_store_id =$request->depertment_store_id;
             $user_id =$request->user_id;

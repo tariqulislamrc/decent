@@ -17,6 +17,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+      if (!auth()->user()->can('production_ingredients.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.ingredients.index');
     }
 
@@ -39,6 +42,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
+      if (!auth()->user()->can('production_ingredients.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.ingredients.create');
     }
 
@@ -49,6 +55,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        if (!auth()->user()->can('production_ingredients.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required|unique:ingredients_categories|max:255',
             'description' => '',
@@ -93,6 +102,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('production_ingredients.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = IngredientsCategory::findOrFail($id);
         return view('admin.production.ingredients.edit',compact('model'));
     }
@@ -105,6 +117,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('production_ingredients.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =  IngredientsCategory::findOrFail($id);
          $request->validate([
             'name' => ['required',Rule::unique('ingredients_categories')->ignore($model->id)],
@@ -136,6 +151,9 @@ class IngredientsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('production_ingredients.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = IngredientsCategory::findOrFail($id);
         $name = $type->name;
         $type->delete();

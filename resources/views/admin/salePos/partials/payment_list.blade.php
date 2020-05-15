@@ -4,7 +4,9 @@
     <tr>
       <th>{{ _lang('Date') }}</th>
       <th>{{ _lang('Method') }}</th>
+      @can('view_sale.sale_paid')
       <th>{{ _lang('Amount') }}</th>
+      @endcan
       <th>{{ _lang('Note') }}</th>
       <th>{{ _lang('Action') }}</th>
     </tr>
@@ -14,7 +16,9 @@
     <tr>
       <td>{{ $pay->payment_date }}</td>
       <td>{{ $pay->method }}</td>
+      @can('view_sale.sale_paid')
       <td>{{ $pay->amount }}</td>
+      @endcan
       <td>{{ $pay->note }}</td>
       <td>
         <a onclick="myFunction('{{ route('admin.sale.pos.printpayment',$pay->id)}}')" class="btn btn-info"><i class="fa fa-print" aria-hidden="true"></i>Print</a>

@@ -9,8 +9,17 @@
         </div>
 
         <div class="row">
+            <div class="form-group col-md-12">
+                <label for="">{{_lang('User Role')}}</label> 
+                  <select name="role" class="form-control select" id="role">
+                      <option value="">Select Role</option>
+                      @foreach ($roles as $role)
+                          <option value="{{ $role->id }}">{{ $role->name }}</option>
+                      @endforeach
+                  </select>
+            </div>
             {{-- Email --}}
-            <div class="form-group col-md-6">
+             <div class="form-group col-md-6">
                 <label for="">{{_lang('Email')}}</label> 
                 <input readonly type="text" name="email" id="email" placeholder="Email" class="form-control">
             </div>

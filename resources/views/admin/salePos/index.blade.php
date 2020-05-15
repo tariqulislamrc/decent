@@ -14,7 +14,7 @@
     <div class="col-md-12">
         <div class="tile">
             <h3 class="tile-title">
-            @can('production_purchase.create')
+            @can('sale_pos.create')
             <a data-placement="bottom" title="Create New Sale" type="button" class="btn btn-info" href ="{{ route('admin.sale.pos.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Sale')}}</a>
             @endcan
             </h3>

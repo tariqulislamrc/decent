@@ -6,17 +6,19 @@ use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\VariationBrandDetails;
 use App\models\inventory\TransactionSellLine;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class TransactionUtil
 {
   
-  public function createSellTransaction($input,$user_id,$ref_no){
+  public function createSellTransaction($input,$user_id,$ref_no,$invoice_no=null){
 
   	$transaction = Transaction::create([
   		'client_id'=>$input['client_id']?:1,
   		'date'=>$input['date'],
   		'type'=>'Credit',
+      'invoice_no'=>$invoice_no,
   		'reference_no'=>$ref_no,
   		'transaction_type'=>'Sale',
       'sale_type'=>$input['sale_type'],
@@ -166,6 +168,79 @@ class TransactionUtil
                 ->total_paid;
 
         return $total_paid;
+    }
+
+
+       /**
+     * Pay contact due at once
+     *
+     * @param obj $parent_payment, string $type
+     *
+     * @return void
+     */
+    public function payAtOnce($parent_payment, $type)
+    {
+        //Get all unpaid transaction for the contact
+        $types = ['opening_balance', $type];
+        
+        if ($type == 'purchase_return') {
+            $types = [$type];
+        }
+
+        $due_transactions = Transaction::where('client_id', $parent_payment->client_id)
+                                ->whereIn('transaction_type', $types)
+                                ->where('payment_status', '!=', 'paid')
+                                ->orderBy('date', 'asc')
+                                ->get();
+        $total_amount = $parent_payment->amount;
+        $tranaction_payments = [];
+        if ($due_transactions->count()) {
+            foreach ($due_transactions as $transaction) {
+                if ($total_amount > 0) {
+                    $total_paid = $this->getTotalPaid($transaction->id);
+                    $due = $transaction->net_total - $total_paid;
+
+                    $now = Carbon::now()->toDateTimeString();
+
+                    $array = [
+                            'transaction_id' => $transaction->id,
+                            'method' => $parent_payment->method,
+                            'transaction_no' => $parent_payment->transaction_no,
+                            'type' => $parent_payment->type,
+                            'payment_date' => $parent_payment->payment_date,
+                            'created_by' => $parent_payment->created_by,
+                            'client_id' => $parent_payment->client_id,
+                            'parent_id' => $parent_payment->id,
+                            'created_at' => $now,
+                            'updated_at' => $now
+                        ];
+
+                    if ($due <= $total_amount) {
+                        $array['amount'] = $due;
+                        $tranaction_payments[] = $array;
+
+                        //Update transaction status to paid
+                        $transaction->payment_status = 'paid';
+                        $transaction->save();
+
+                        $total_amount = $total_amount - $due;
+                    } else {
+                        $array['amount'] = $total_amount;
+                        $tranaction_payments[] = $array;
+
+                        //Update transaction status to partial
+                        $transaction->payment_status = 'partial';
+                        $transaction->save();
+                        break;
+                    }
+                }
+            }
+
+            //Insert new transaction payments
+            if (!empty($tranaction_payments)) {
+                TransactionPayment::insert($tranaction_payments);
+            }
+        }
     }
 
 }

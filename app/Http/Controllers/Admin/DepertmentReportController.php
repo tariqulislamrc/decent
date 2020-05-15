@@ -37,6 +37,9 @@ class DepertmentReportController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('submit_product_to_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $orders =WorkOrder::all();
         $depertments =Depertment::all();
         return view('admin.depertment.report.product_report',compact('orders','depertments'));
@@ -45,6 +48,10 @@ class DepertmentReportController extends Controller
 
     public function get_variation_product(Request $request)
     {
+         if (!auth()->user()->can('submit_product_to_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $depertments =Depertment::select('id','name')->get()->except($request->depertment);
         $variations =VariationTemplate::all();
         $depert_name =Depertment::find($request->depertment);
@@ -76,6 +83,9 @@ class DepertmentReportController extends Controller
      */
     public function store(Request $request)
     {
+       if (!auth()->user()->can('submit_product_to_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $validator = $request->validate([
             'qty.*'=>'nullable|integer',
@@ -157,8 +167,8 @@ class DepertmentReportController extends Controller
            
             $brand_id =WorkOrder::find($request->work_order_id)->brand_id;
             $product_variation_id =Variation::find($request->variation_id[$i])->product_variation_id;
-
-            $variation_exit =VariationBrandDetails::where('product_id',1)
+             //branddetails product_id[$i] age 1 cilo....
+            $variation_exit =VariationBrandDetails::where('product_id',$product_id[$i])
                                         ->where('variation_id',$request->variation_id[$i])
                                         ->where('brand_id',$brand_id)
                                         ->first();
@@ -186,7 +196,7 @@ class DepertmentReportController extends Controller
         }
 
 
-    return response()->json(['success' => true, 'status' => 'success', 'message' => 'Payment Successfully.', 'load' => true]);
+    return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully.', 'load' => true]);
     }
 
     /**
@@ -236,6 +246,10 @@ class DepertmentReportController extends Controller
 
     public function material()
     {
+         if (!auth()->user()->can('submit_material_to_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $depertments =Depertment::all();
         return view('admin.depertment.report.material',compact('depertments'));
     }
@@ -254,6 +268,9 @@ class DepertmentReportController extends Controller
 
     public function material_store(Request $request)
     {
+        if (!auth()->user()->can('submit_material_to_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $total_rqt_quantity = 0;
         for ($i=0; $i <count($request->qty) ; $i++) { 
            if ($request->qty[$i]>0) {

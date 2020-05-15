@@ -18,6 +18,9 @@ class VariationController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('production_variation.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.variation.index');
     }
 
@@ -28,6 +31,9 @@ class VariationController extends Controller
      */
     public function create()
     {
+      if (!auth()->user()->can('production_variation.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.variation.create');
     }
 
@@ -71,6 +77,9 @@ class VariationController extends Controller
      */
     public function store(Request $request)
     {
+     if (!auth()->user()->can('production_variation.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required',
@@ -127,6 +136,9 @@ class VariationController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('production_variation.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = VariationTemplate::findOrFail($id);
 
         // all variation template values
@@ -144,6 +156,9 @@ class VariationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('production_variation.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'name' => 'required',
             'status' => 'required',
@@ -190,6 +205,9 @@ class VariationController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('production_variation.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = VariationTemplate::findOrFail($id);
         $model->delete();
 

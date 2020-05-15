@@ -15,6 +15,9 @@ class ExpenseCategoryController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('expense.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.expense.category.index');
     }
 
@@ -36,6 +39,9 @@ class ExpenseCategoryController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('expense.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.expense.category.form');
     }
 
@@ -47,6 +53,9 @@ class ExpenseCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('expense.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        $validator = $request->validate([
             'name'=>'required|max:250',
         ]);
@@ -78,6 +87,9 @@ class ExpenseCategoryController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('expense.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =ExpenseCategory::find($id);
         return view('admin.expense.category.form',compact('model'));
     }
@@ -91,6 +103,9 @@ class ExpenseCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('expense.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $category =ExpenseCategory::find($id);
         $category->name =$request->name;
         $category->note =$request->note;
@@ -107,6 +122,9 @@ class ExpenseCategoryController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('expense.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $category =ExpenseCategory::find($id)->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
     }

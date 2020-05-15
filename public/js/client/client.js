@@ -84,18 +84,24 @@ var DatatableSelect = function() {
             ajax: $('.content_managment_table').data('url'),
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
-                {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                }, {
+                 {
                     data: 'name',
                     name: 'name'
                 }, {
                     data: 'mobile',
                     name: 'mobile'
                 }, {
+                    data: 'landmark',
+                    name: 'landmark'
+                }, {
                     data: 'email',
                     name: 'email'
+                },{
+                    data: 'due',
+                    name: 'due'
+                },{
+                    data: 'return_due',
+                    name: 'return_due'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -129,6 +135,7 @@ var DatatableSelect = function() {
                     $('#branch_no').focus();
                     _modalFormValidation();
                     _componentSelect2Normal();
+                    _componentDatefPicker();
                 })
                 .fail(function(data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');

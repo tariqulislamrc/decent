@@ -97,7 +97,7 @@
                 </div>
                 <div class="row">
                       {{ Form::submit(_lang('Make Payment'), ['class' => 'btn btn-outline btn-success btn-round btn-wd w-100 ', 'id' => '']) }}
-                        <button type="button" class="btn btn-link" id="" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                         <button type="button" class="btn btn-primary btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>

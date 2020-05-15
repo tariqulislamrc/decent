@@ -14,8 +14,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-<form action="{{route('admin.production-purchase.store')}}" method="post" id="content_form"
-    enctype="multipart/form-data">
+<form action="{{route('admin.production-purchase.store')}}" method="post" id="content_form" enctype="multipart/form-data">
     @csrf
     <div class="card">
         <div class="card-header">
@@ -40,7 +39,7 @@
                     <label for="reference_no">{{_lang('Reference No:')}}
                     </label>
                     <input type="text" class="form-control" placeholder="Reference No" name="reference_no"
-                        id="reference_no">
+                        id="reference_no" value="{{ $ref_no }}" readonly>
                 </div>
 
                 {{-- Invoice No: --}}
@@ -57,7 +56,7 @@
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                         </div>
-                        <input type="text" class="form-control date" name="purchase_date" id="purchase_date">
+                        <input type="text" class="form-control date" name="purchase_date" id="purchase_date" value="{{ date('Y-m-d') }}">
                     </div>
                 </div>
 
@@ -65,8 +64,7 @@
                 <div class="col-md-3 form-group">
                     <label for="purchase_status">{{_lang('Purchase Status:')}}
                     </label>
-                    <select class="form-control select" data-placeholder="Select Status" name="status"
-                        class="form-control select">
+                    <select class="form-control select" data-placeholder="Select Status" name="status" id="status" class="form-control select">
                         <option value="">Select Status</option>
                         <option value="Received">{{_lang('Received')}}</option>
                         <option value="Pending">{{_lang('Pending')}}</option>
@@ -293,13 +291,12 @@
 
         </div>
 
-        <div class="form-group col-md-12" id="submit_btn" align="right">
-            {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
-                    class="icon-arrow-right14 position-right"></i></button>
-            <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
-                <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-        </div>
+                   <div class="row mt-2">
+                        <div class="col-md-6 mx-auto text-center">
+                            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('New Purchase') }}</button>
+                            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
     </div>
 
 
@@ -311,8 +308,9 @@
 @push('scripts')
 <script>
     $('.select').select2();
+    // _formValidation();
 
 </script>
-<script src="{{ asset('js/production/add_purchase.js') }}"></script>
 <script src="{{ asset('js/production/purchase.js') }}"></script>
+<script src="{{ asset('js/production/add_purchase.js') }}"></script>
 @endpush

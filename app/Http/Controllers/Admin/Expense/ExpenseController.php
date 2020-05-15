@@ -7,6 +7,7 @@ use App\models\Expense\Expense;
 use App\models\Expense\ExpenseCategory;
 use App\models\account\AccountTransaction;
 use App\models\account\InvestmentAccount;
+use App\models\employee\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -20,13 +21,41 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        return view('admin.expense.index');
+        if (!auth()->user()->can('expense.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $categories =ExpenseCategory::pluck('name', 'id');
+        $investment =InvestmentAccount::pluck('name', 'id');
+        $employeis =Employee::pluck('name', 'id');
+        return view('admin.expense.index',compact('categories','investment','employeis'));
     }
 
 
     public function datatable(Request $request){
        if ($request->ajax()) {
-           $document = Expense::orderBy('id','desc')->get();
+           $document = Expense::query();
+            if (request()->has('investment_account_id')) {
+                $investment_account_id = request()->get('investment_account_id');
+                if (!empty($investment_account_id)) {
+                    $document=$document->where('investment_account_id', $investment_account_id);
+                }
+            }
+             if (request()->has('employee_id')) {
+                $employee_id = request()->get('employee_id');
+                if (!empty($employee_id)) {
+                    $document=$document->where('employee_id', $employee_id);
+                }
+            }
+            if (request()->has('expense_category_id')) {
+                $expense_category_id = request()->get('expense_category_id');
+                if (!empty($expense_category_id)) {
+                    $document=$document->where('expense_category_id', $expense_category_id);
+                }
+            }
+            if (!auth()->user()->hasRole('Super Admin')) {
+                $document=$document->where('hidden',false);
+            }
+            $document=$document->get();
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn('date', function ($model) {
@@ -34,13 +63,23 @@ class ExpenseController extends Controller
                  })
                  ->editColumn('category', function ($model) {
                   return $model->category?$model->category->name:'';
+                 }) 
+                  ->editColumn('employee', function ($model) {
+                  return $model->employee?$model->employee->name:'None';
+                 })
+                 ->editColumn('e_amount', function ($model) {
+                    if (auth()->user()->can('view_expense.amount')) {
+                        return $model->amount;
+                    }else{
+                        return 'N/A';
+                    }
                  })
                  ->editColumn('account', function ($model) {
                   return $model->investment?$model->investment->name:'';
                  })
                 ->addColumn('action', function ($model) {
                     return view('admin.expense.action', compact('model'));
-                })->rawColumns(['action','category','date','account'])->make(true);
+                })->rawColumns(['action','category','date','account','e_amount','employee'])->make(true);
         }
     }
 
@@ -52,9 +91,13 @@ class ExpenseController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('expense.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $categories =ExpenseCategory::all();
         $investment =InvestmentAccount::pluck('name', 'id');
-        return view('admin.expense.form',compact('categories','investment'));
+        $employeis =Employee::select('name', 'id')->get();
+        return view('admin.expense.form',compact('categories','investment','employeis'));
     }
 
     /**
@@ -65,6 +108,9 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('expense.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'expense_category_id'=>'required|integer',
             'investment_account_id'=>'required|integer',
@@ -72,6 +118,7 @@ class ExpenseController extends Controller
         ]);
 
         $model =new Expense;
+        $model->employee_id =$request->employee_id;
         $model->investment_account_id =$request->investment_account_id;
         $model->expense_category_id =$request->expense_category_id;
         $model->reson =$request->reson;
@@ -102,6 +149,9 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('expense.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Expense::find($id);
         return view('admin.expense.show',compact('model'));
     }
@@ -114,10 +164,14 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('expense.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $categories =ExpenseCategory::all();
         $investment =InvestmentAccount::pluck('name', 'id');
+        $employeis =Employee::select('name', 'id')->get();
         $model =Expense::find($id);
-        return view('admin.expense.form',compact('categories','model','investment'));
+        return view('admin.expense.form',compact('categories','model','investment','employeis'));
     }
 
     /**
@@ -129,6 +183,9 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('expense.update')) {
+            abort(403, 'Unauthorized action.');
+        }
          $validator = $request->validate([
             'expense_category_id'=>'required|integer',
             'investment_account_id'=>'required|integer',
@@ -136,6 +193,7 @@ class ExpenseController extends Controller
         ]);
 
         $model =Expense::find($id);
+        $model->employee_id =$request->employee_id;
         $model->expense_category_id =$request->expense_category_id;
         $model->investment_account_id =$request->investment_account_id;
         $model->reson =$request->reson;
@@ -163,6 +221,9 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('expense.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Expense::find($id)->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
     }

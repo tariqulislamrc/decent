@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Production;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\Production\Category;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
@@ -16,6 +17,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
+       if (!auth()->user()->can('production_category.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if (request()->ajax()) {
             $id = request()->id == '#' ? 0 : request()->id;
             $models = Category::where('parent_id', $id)->select('id', 'name')->get();
@@ -49,24 +53,33 @@ class CategoryController extends Controller
      */
     public function create()
     {
+       if (!auth()->user()->can('production_category.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.category.create');
     }
 
     public function remort_add()
     {
+       if (!auth()->user()->can('production_category.create')) {
+            abort(403, 'Unauthorized action.');
+        }
          return view('admin.production.category.quick_modal'); 
     }
     
 
     public function remort_addCategory(Request $request)
     {
+       if (!auth()->user()->can('production_category.create')) {
+            abort(403, 'Unauthorized action.');
+        }
       if ($request->status) {
             $status = 1;
         }else{
             $status = 0;
         }
       $validator = $request->validate([
-            'name' => 'required|unique:employee_categories|max:255',
+            'name' => 'required|unique:categories|max:255',
             'description' => '',
         ]);
         $model = new Category;
@@ -86,13 +99,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+       if (!auth()->user()->can('production_category.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->status) {
             $status = 1;
         }else{
             $status = 0;
         }
         $validator = $request->validate([
-            'name' => 'required|unique:employee_categories|max:255',
+            'name' => 'required|unique:categories|max:255',
             'parent_id' => 'required',
             'description' => '',
         ]);
@@ -127,6 +143,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+       if (!auth()->user()->can('production_category.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         // find the data
         $model = Category::where('id', $id)->firstOrFail();
         // return
@@ -142,16 +161,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+       if (!auth()->user()->can('production_category.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->status) {
             $status = 1;
         } else {
             $status = 0;
         }
 
-        $validator = $request->validate([
-            'name' => 'required|max:255|unique:categories,name,' . $id,
-        ]);
         $model = Category::findOrFail($id);
+        $validator = $request->validate([
+            // 'name' => 'required|max:255|unique:categories,name,' . $model->id,
+            'name' => ['required', 'string', 'max:255',
+                    Rule::unique('categories', 'name')->ignore($model->id)],
+        ]);
         $model->name = $request->name;
         $model->parent_id = $request->parent_id;
         $model->description = $request->description;
@@ -171,6 +195,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+       if (!auth()->user()->can('production_category.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = Category::findOrFail($id);
         $name = $type->name;
         $type->delete();

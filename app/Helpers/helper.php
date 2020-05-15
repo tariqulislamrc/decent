@@ -1,18 +1,19 @@
 <?php
 
+use App\Models\Employee\EmployeeShift;
+use App\User;
 use App\models\Client;
+use App\models\Production\Transaction;
+use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\ApproveStoreItem;
+use App\models\depertment\MaterialReport;
+use App\models\depertment\ProductFlow;
 use App\models\employee\Department;
 use App\models\employee\Designation;
 use App\models\employee\Employee;
 use App\models\employee\EmployeeAttendance;
 use App\models\employee\EmployeeDesignation;
 use App\models\employee\EmployeeSalary;
-use App\User;
-use App\models\Production\VariationTemplateDetails;
-use App\models\depertment\ApproveStoreItem;
-use App\models\depertment\MaterialReport;
-use App\models\depertment\ProductFlow;
-use App\Models\Employee\EmployeeShift;
 use App\models\employee\IdGenerator;
 use App\models\employee\PayrollTransaction;
 
@@ -112,6 +113,12 @@ function toWord($word) {
 	$word = str_replace('-', ' ', $word);
 	$word = ucwords($word);
 	return $word;
+}
+
+function tounderscore($text) {
+	$text = str_replace(' ', '_', $text);
+	$text = str_replace(' ', '_', $text);
+	return $text;
 }
 
 function tospane($data) {
@@ -730,4 +737,74 @@ function getIp(){
 		        return $num;;
 		}
 	}
+
+	//convert english date to bangla date emran
+	function bangla_date()
+	{
+	$currentDate = date("l, F j, Y");
+	    
+	$engDATE = array(1,2,3,4,5,6,7,8,9,0, 'January', 'February', 'March','April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
+	    
+	$bangDATE = array('১','২','৩','৪','৫','৬','৭','৮','৯','০','জানুয়ারী','ফেব্রুয়ারী','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর','শনিবার','রবিবার','সোমবার','মঙ্গলবার',' বুধবার','বৃহস্পতিবার','শুক্রবার' ); 
+
+	$convertedDATE = str_replace($engDATE, $bangDATE, $currentDate); 
+
+	return $convertedDATE;
+	}
+
+
+    function ovarallreport($type, $start_date = null, $end_date = null,$date=null,$month=null, $year = null)
+    {
+        $query = Transaction::where('transaction_type', $type)
+                        ->select(
+                            'net_total',
+                            DB::raw("(net_total - tax) as total_exc_tax"),
+                            DB::raw("SUM((SELECT SUM(tp.amount) FROM transaction_payments as tp WHERE tp.transaction_id=transactions.id)) as total_paid"),
+                            DB::raw('SUM(sub_total) as total_before_tax'),
+                            'shipping_charges'
+                        )
+
+                        ->groupBy('transactions.id');
+
+        if (!empty($start_date) && !empty($end_date)) {
+            $query->whereBetween(DB::raw('date(date)'), [$start_date, $end_date]);
+        }
+
+        if (empty($start_date) && !empty($end_date)) {
+            $query->whereDate('date', '<=', $end_date);
+        }
+        if (!empty($date)) {
+            $query->whereDate('date', $date);
+        } 
+
+
+        if (!empty($month)) {
+            $query->whereMonth('date', $month);
+        }  
+        if (!empty($year)) {
+            $query->whereYear('date', $year);
+        }  
+
+        if (!empty($year) && !empty($month)) {
+            $query->whereMonth('date', $month)->whereYear('date', $year);
+        } 
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('hidden',false);
+        }              
+      
+
+        $trans_details = $query->get();
+
+        return $trans_details;
+
+        // $output['total_trans_inc_tax'] = $trans_details->sum('net_total');
+        // //$output['total_purchase_exc_tax'] = $trans_details->sum('total_exc_tax');
+        // $output['total_trans_exc_tax'] = $trans_details->sum('total_before_tax');
+        // $output['paid'] = $trans_details->sum('total_paid');
+        // $output['trans_due'] = $trans_details->sum('net_total') -
+        //                             $trans_details->sum('total_paid');
+        // $output['total_shipping_charges'] = $trans_details->sum('shipping_charges');
+  
+        // return $output;
+    }
 ?>

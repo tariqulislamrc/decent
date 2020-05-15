@@ -33,6 +33,9 @@ class SalePOsController extends Controller
 
     public function index(Request $request)
     {
+      if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       if ($request->ajax()) {
             $q=Transaction::query();
             if (!empty(request()->input('sale_type'))) {
@@ -50,6 +53,10 @@ class SalePOsController extends Controller
             if (!empty(request()->input('created_by'))) {
                 $q=$q->where('created_by',request()->input('created_by'));
             }
+
+             if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+            }
             $q =$q->where('transaction_type','Sale');
             $document =$q->get();
 
@@ -62,10 +69,18 @@ class SalePOsController extends Controller
                   return $model->client?$model->client->name:'';
                  })
                  ->editColumn('paid', function ($model) {
-                  return $model->payment()->where('type','Credit')->sum('amount');
+                    if (auth()->user()->can("view_sale.sale_paid")) {
+                    return $model->payment()->where('type','Credit')->sum('amount');
+                  }else{
+                    return 'N/A';
+                  }
                  })
                 ->editColumn('due', function ($model) {
-                  return $model->net_total-($model->payment()->where('type','Credit')->sum('amount'));
+                    if (auth()->user()->can("view_sale.sale_due")) {
+                    return $model->net_total-($model->payment()->where('type','Credit')->sum('amount'));
+                    }else{
+                        return 'N/A';
+                    }
                  })
                  ->editColumn('payment_status', function ($model) {
                    if ($model->payment_status=='paid') {
@@ -93,7 +108,10 @@ class SalePOsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    { 
+        if (!auth()->user()->can('sale_pos.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $brands =Brand::select('id','name')->get();
         $categories=Category::all();
         return view('admin.salePos.create',compact('brands','categories'));
@@ -101,6 +119,9 @@ class SalePOsController extends Controller
 
     public function sale_add()
     {
+     if (!auth()->user()->can('sale_pos.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        return view('admin.salePos.sale_add'); 
     }
 
@@ -112,6 +133,9 @@ class SalePOsController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('sale_pos.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $input = $request->except('_token','variation');
 
          if (empty($request->input('date'))) {
@@ -132,10 +156,21 @@ class SalePOsController extends Controller
         $row = Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
         
         $ref_no = $ym.'/S-'.ref($row);
+
+        $code_prefix = get_option('invoice_code_prefix');
+        $code_digits = get_option('digits_invoice_code');
+        $uniqu_id = generate_id('purchase', false);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+
+        if($request->invoice_no){
+            $invoice_no = $request->invoice_no;
+        }else{
+            $invoice_no = $code_prefix . $uniqu_id;
+        }
        
         $variations =$request->variation;
         if (isset($variations)) {
-        $transaction = $this->transactionUtil->createSellTransaction($input,$user_id,$ref_no);
+        $transaction = $this->transactionUtil->createSellTransaction($input,$user_id,$ref_no,$invoice_no);
         $sale_line =$this->transactionUtil->createSellLines($transaction,$variations);
 
 
@@ -184,6 +219,9 @@ class SalePOsController extends Controller
      */
     public function show($id)
     {
+     if (!auth()->user()->can('sale_pos.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Transaction::findOrfail($id);
         return view('admin.salePos.show',compact('model'));
     }
@@ -219,6 +257,9 @@ class SalePOsController extends Controller
      */
     public function destroy($id)
     {
+    if (!auth()->user()->can('sale_pos.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
        $transaction =Transaction::find($id);
        //Sale Related
        $transaction->sell_lines()->delete();
@@ -236,7 +277,7 @@ class SalePOsController extends Controller
     {
          if ($request->ajax()) {
             $category_id = $request->get('category_id');
-            $brand_id = $request->get('brand_id')?:1;
+            $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
 
             $check_qty = false;
@@ -276,6 +317,13 @@ class SalePOsController extends Controller
                     $query->orWhere('products.sub_category_id', $category_id);
                 });
           }
+          if (!auth()->user()->hasRole('Super Admin')) {
+                $products->where('variations.hidden',false);
+            }
+           // $products->where(function ($query) use ($brand_id) {
+           //          $query->where('VBD.brand_id', $brand_id);
+                    
+           //      });
            $products = $products->select(
                 'products.id as product_id',
                 'products.name',
@@ -367,6 +415,9 @@ class SalePOsController extends Controller
 
     public function view($id)
     {
+     if (!auth()->user()->can('sale_pos.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Transaction::find($id);
         return view('admin.salePos.partials.view',compact('model'));
     }
@@ -376,4 +427,5 @@ class SalePOsController extends Controller
         $model =Transaction::find($id);
         return view('admin.salePos.partials.makepayment_modal',compact('model')); 
     }
+
 }

@@ -43,9 +43,13 @@
 						<tr>
 							<td>{{ $loop->index+1 }}</td>
 							<td>{{ $product->product->name }}-{{$product->variation->name}}</td>
+							@can('view_sale.qty')
 							<td>{{ $product->quantity }}</td>
+							@endcan
+							@can('view_sale.sale_price')
 							<td>{{ $product->unit_price }}</td>
 							<td>{{ $product->total }}</td>
+							@endcan
 						</tr>
 						@endforeach
 					</tbody>
@@ -66,7 +70,9 @@
 								<th>#</th>
 								<th>{{ _lang('Date') }}</th>
 								<th>{{ _lang('Reference No') }}</th>
+								@can('view_sale.sale_paid')
 								<th>{{ _lang('Amount') }}</th>
+								@endcan
 								<th>{{ _lang('Payment mode') }}</th>
 								<th>{{ _lang('Payment note') }}</th>
 							</tr>
@@ -75,7 +81,9 @@
 								<td>{{ $loop->index+1 }}</td>
 								<td>{{ $pay->payment_date }}</td>
 								<td>{{ $pay->transaction_no }}</td>
+								@can('view_sale.sale_paid')
 								<td>{{ $pay->amount }}</td>
+								@endcan
 								<td>{{ $pay->method }}</td>
 								<td>{{ $pay->note }}</td>
 							</tr>
@@ -88,16 +96,21 @@
 					<div class="table-responsive">
 						<table class="table bg-gray">
 							<tbody>
+							@can('view_sale.sale_price')
 							<tr>
 								<th>{{ _lang('Total') }}: </th>
 								<td></td>
 								<td><span class="display_currency pull-right" data-currency_symbol="true">{{ $model->sub_total }}</span></td>
 							</tr>
+							@endcan
+							@can('view_sale.sale_discount')
 							<tr>
 								<th>{{ _lang('Discount') }}:</th>
 								<td><b>(-)</b></td>
 								<td><span class="pull-right">{{ $model->discount_amount }} </span></td>
 							</tr>
+							@endcan
+							@can('view_sale.sale_tax')
 							<tr>
 								<th>{{ _lang('Tax') }}:</th>
 								<td><b>(+)</b></td>
@@ -105,26 +118,35 @@
 									{{ $model->tax }}
 								</td>
 							</tr>
+							@endcan
+							@can('view_sale.shipping_charge')
 							<tr>
 								<th>{{ _lang('Shipping') }}: </th>
 								<td><b>(+)</b></td>
 								<td><span class="display_currency pull-right" data-currency_symbol="true">{{ $model->shipping_charges }}</span></td>
 							</tr>
+							@endcan
+							@can('view_sale.sale_price')
 							<tr>
 								<th>{{ _lang('Total Payable') }}: </th>
 								<td></td>
 								<td><span class="display_currency pull-right">{{ $model->net_total }}</span></td>
 							</tr>
+							@endcan
+							@can('view_sale.sale_paid')
 							<tr>
 								<th>{{ _lang('Total paid') }}:</th>
 								<td></td>
 								<td><span class="display_currency pull-right" data-currency_symbol="true">{{ $model->paid }}</span></td>
 							</tr>
+							@endcan
+							@can('view_sale.sale_due')
 							<tr>
 								<th>{{ _lang('Total remaining') }}:</th>
 								<td></td>
 								<td><span class="display_currency pull-right" data-currency_symbol="true">{{ $model->due }}</span></td>
 							</tr>
+							@endcan
 						</tbody>
 					</table>
 					</div>

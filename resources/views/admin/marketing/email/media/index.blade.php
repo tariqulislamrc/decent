@@ -16,7 +16,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('production_brand.create')
+                    @can('email_marketing.create')
                         <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.emailmarketing.media.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>

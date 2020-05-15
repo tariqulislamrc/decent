@@ -93,7 +93,7 @@ class RoleController extends Controller
 			'name' => ['required', 'max:255',
 				Rule::unique('roles', 'name')->ignore($role->id)],
 		]);
-
+        // dd($request->permissions);
 		// Update the roll & permission
 		$role->name = $request->name;
 		$role->save();

@@ -115,7 +115,7 @@
                                 </td>
 
                                 <td>
-                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$provariation_idduc_titem->qty}}">
+                                    <input type="text" name="quantity[]" class="form-control qty" id="qty_{{$key}}" value="{{$produc_titem->qty}}">
                                 </td>
                                 <td>
                                     <input type="text" name="price[]" class="form-control price" value="{{$produc_titem->price}}">
@@ -143,8 +143,8 @@
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
             <button type="submit" class="btn btn-primary" id="submit">{{_lang('Update')}}<i class="icon-arrow-right14 position-right"></i></button>
-            <button type="button" class="btn btn-link" id="submiting"
-                style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+            <button type="button" class="btn btn-info" id="submiting"
+                style="display: none;">{{_lang('Processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
     </div>
 </form>

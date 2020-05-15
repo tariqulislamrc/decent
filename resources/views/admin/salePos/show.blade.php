@@ -54,10 +54,17 @@
                             </div>
                             
                             <p class="card-text font-80pc">
+                                @can('view_sale.sale_price')
                                 <span><b>{{ _lang('Total') }}: </b>{{ $model->net_total }}</span> <br>
+                                @endcan
+
+                                @can('view_purchase.discount')
                                 @if ($model->discount)
                                 <span><b>{{ _lang('Discount Amount') }}: </b>{{ $model->discount_amount }}</span> <br>
                                 @endif
+                                @endcan
+
+                                @can('view_purchase.paid')
                                 <span><b>{{ _lang('Paid') }}</b> : {{  $model->payment->sum('amount') }}</span>
                                 @if($model->return == 1)
                                 <small>(This Sale has return item)</small> <br>
@@ -71,6 +78,7 @@
                                 @if($model->net_total - $model->paid > 0)
                                 <span><b>{{ _lang('Due') }}</b> : {{ $model->net_total- $model->payment->sum('amount') }}</span>
                                 @endif
+                                @endcan
                             </p>
                         </div>
                     </div>

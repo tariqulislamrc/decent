@@ -19,6 +19,9 @@ class WopMaterialController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('production_wop_materials.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.wop-materials.index');
     }
 
@@ -43,6 +46,9 @@ class WopMaterialController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('production_wop_materials.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = WorkOrder::where('status', '!=', 'requisition')->get();
         return view('admin.production.wop-materials.create', compact('models'));
     }
@@ -55,7 +61,9 @@ class WopMaterialController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        if (!auth()->user()->can('production_wop_materials.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'wo_id' => 'required',
             'raw_material' => 'required',
@@ -96,6 +104,9 @@ class WopMaterialController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('production_wop_materials.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = WorkOrder::with('work_order')->findOrFail($id);
         return view('admin.production.wop-materials.show', compact('models'));
     }
@@ -108,6 +119,9 @@ class WopMaterialController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('production_wop_materials.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = WorkOrder::findOrFail($id);
         return view('admin.production.wop-materials.edit', compact('models','id'));
     }
@@ -121,6 +135,9 @@ class WopMaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('production_wop_materials.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'wo_id' => 'required',
             'raw_material' => 'required',
@@ -160,6 +177,9 @@ class WopMaterialController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('production_wop_materials.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($id) {
             $type = WopMaterial::where('wo_id', $id)->delete();
         }

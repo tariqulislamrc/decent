@@ -107,7 +107,6 @@
                                         {{ Form::label('language', _lang('language') , ['class' => 'col-form-label', 'data-placeholder' => 'Select System Language']) }}
                                         <select name="language" class="form-control select">
                                             <option value="default">{{_lang('Default')}}</option>
->>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
                                         {!! load_language( get_option('language') ) !!}
                                     </select>
                                 </div>

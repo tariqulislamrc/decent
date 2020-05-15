@@ -26,8 +26,12 @@
     <tr class="table-danger">
         <th scope="col">{{ _lang('Sl') }}</th>
         <th scope="col">{{ _lang('Name') }}</th>
+        @can('view_sale.qty')
         <th scope="col-2">{{ _lang('Qty') }}</th>
+        @endcan
+        @can('view_sale.sale_price')
         <th scope="col">{{ _lang('Total') }}</th>
+        @endcan
     </tr>
 </thead>
 <tbody>
@@ -35,8 +39,12 @@
     <tr>
         <td>{{ $loop->index+1 }}</td>
         <td>{{ $element->variation->name }}-{{ $element->product->name }}</td>
+        @can('view_sale.qty')
         <td>{{ $element->quantity }}</td>
+        @endcan
+        @can('view_sale.sale_price')
         <td>{{ $element->unit_price }}</td>
+        @endcan
     </tr>
     @endforeach
     @if ($model->return==1)
@@ -45,39 +53,52 @@
     </tr>
        
     @endif
+    @can('view_sale.sale_price')
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Sub Total') }}</td>
         <td> {{ $model->sub_total }} </td>
     </tr>
+    @endcan
+    @can('view_sale.sale_discount')
     @if ($element->discount)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
         <td> {{ $model->discount_amount }} </td>
     </tr>
     @endif
-
+    @endcan
+    
+    @can('view_sale.sale_tax')
     @if ($element->tax)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
         <td> {{ $model->tax }} </td>
     </tr>
     @endif
-
+    @endcan
+    
+    @can('view_sale.shipping_charge')
     @if ($element->shipping_charges)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Shipping Charge') }}</td>
         <td> {{ $model->shipping_charges }} </td>
     </tr>
     @endif
-
+    @endcan
+    
+    @can('view_sale.sale_price')
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Net Total') }}</td>
         <td> {{ $model->net_total }} </td>
     </tr>
+    @endcan
+
+    @can('view_sale.sale_paid')
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Paid') }}</td>
         <td> {{ $model->paid }} </td>
     </tr>
+    @endcan
  
 </tbody>
 </table>

@@ -1,7 +1,33 @@
+<<<<<<< HEAD
+=======
+// 
+var _componentDatePicker = function () {
+    $(".take_date").datepicker({
+        dropWidth: 200,
+        dropPrimaryColor: "#1abc9c",
+        dropBorder: "1px solid #1abc9c"
+    });
+}
+
+>>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
 var _componentSelect2Normal = function() {
 
     $('.select').select2();
 };
+
+function __highlight(value, obj) {
+    obj.removeClass('text-success').removeClass('text-danger');
+    if (value > 0) {
+        obj.addClass('text-success');
+    } else if (value < 0) {
+        obj.addClass('text-danger');
+    }
+}
+
+//Return the font-awesome html based on class value
+function __fa_awesome($class = 'fa-refresh fa-spin fa-fw ') {
+    return '<i class="fa ' + $class + '"></i>';
+}
 
 
 
@@ -21,7 +47,7 @@ var _componentDatefPicker = function() {
 
 var _componentMonthPicker = function() {
     $('.month').datepicker({
-        format: "mm",
+        dateFormat: "yy-mm",
         viewMode: "months",
         minViewMode: "months"
     });
@@ -31,7 +57,7 @@ var _componentMonthPicker = function() {
 
 var _componentYearPicker = function() {
     $('.year').datepicker({
-        format: "yyyy",
+        dateFormat: "yy",
         viewMode: "years",
         minViewMode: "years"
     });
@@ -86,8 +112,12 @@ var _formValidation = function () {
             dataType: 'JSON',
             success: function (data) {
                 if (data.status == 'danger') {
+<<<<<<< HEAD
                     toastr.error(data.message);
 
+=======
+                     toastr.error(data.message);
+>>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
                 } else {
                     toastr.success(data.message);
                     $('#submit').show();
@@ -142,8 +172,12 @@ var _formValidation = function () {
                         i++;
                     });
                 } else {
+<<<<<<< HEAD
                     toastr.warning(jsonValue.message);
 
+=======
+                    toastr.error(jsonValue.message);
+>>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
                 }
                 _componentSelect2Normal();
                 $('#submit').show();
@@ -905,7 +939,7 @@ $(document).on('click', '#change_status', function(e) {
                 processData: false,
                 dataType: 'JSON',
                 success: function(data) {
-                    toastr.success(data.message, data.color);
+                    toastr.success(data.message);
                     if (typeof(emran) != "undefined" && emran !== null) {
                         emran.ajax.reload(null, false);
                     }
@@ -971,4 +1005,38 @@ var _componentRemoteModalLoadAfterAjax = function () {
             });
     });
 };
+
+/*
+ * For Status Change
+ */
+$(document).on('click', '#change_hidden', function(e) {
+    e.preventDefault();
+    var row = $(this).data('id');
+    var url = $(this).data('url');
+    var model = $(this).data('table');
+
+
+    $('#status_' + row).hide();
+    $('#status_loading_' + row).show();
+      $.ajax({
+                url: url,
+                method: 'Put',
+                data: {model:model},
+                success: function(data) {
+                    toastr.success(data.message);
+                    if (typeof(emran) != "undefined" && emran !== null) {
+                        emran.ajax.reload(null, false);
+                    }
+
+                    if (data.load) {
+                        setTimeout(function() {
+
+                            window.location.href = "";
+                        }, 500);
+                    }
+
+                },
+
+            });
+});
 

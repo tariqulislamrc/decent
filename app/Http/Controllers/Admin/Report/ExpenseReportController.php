@@ -14,6 +14,9 @@ class ExpenseReportController extends Controller
 {
     public function index()
     {
+      if (!auth()->user()->can('report.expense')) {
+            abort(403, 'Unauthorized action.');
+        }
        $categories =ExpenseCategory::all();
        $invest_accounts =InvestmentAccount::all();
        $users =User::all();
@@ -24,6 +27,9 @@ class ExpenseReportController extends Controller
 
     public function get_expense_report(Request $request)
     {
+        if (!auth()->user()->can('report.expense')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$expense_category_id =$request->expense_category_id;
         $investment_account_id =$request->investment_account_id;
         $user_id =$request->user_id;
@@ -52,6 +58,9 @@ class ExpenseReportController extends Controller
             if ($sDate && $eDate) {
                 $q=$q->whereBetween('date',[$sDate,$eDate]);
             }
+            if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
+            }
             $result=$q->get();
             return view('admin.report.expense.expense_report_print',compact('result','sDate','eDate'));
     }
@@ -59,6 +68,9 @@ class ExpenseReportController extends Controller
 
     public function account()
     {
+        if (!auth()->user()->can('report.expense')) {
+            abort(403, 'Unauthorized action.');
+        }
         $invest_accounts=InvestmentAccount::all();
          $users =User::all();
         return view('admin.report.expense.account',compact('invest_accounts','users'));
@@ -66,6 +78,9 @@ class ExpenseReportController extends Controller
 
     public function get_expense_account_report(Request $request)
     {
+        if (!auth()->user()->can('report.expense')) {
+            abort(403, 'Unauthorized action.');
+        }
         $investment_account_id =$request->investment_account_id;
         $transaction_type =$request->transaction_type;
         $user_id =$request->user_id;
@@ -89,6 +104,9 @@ class ExpenseReportController extends Controller
             }
             if ($sDate && $eDate) {
                 $q=$q->whereBetween('operation_date',[$sDate,$eDate]);
+            }
+            if (!auth()->user()->hasRole('Super Admin')) {
+                $q=$q->where('hidden',false);
             }
             $result=$q->get();
             $investment=InvestmentAccount::find($investment_account_id);

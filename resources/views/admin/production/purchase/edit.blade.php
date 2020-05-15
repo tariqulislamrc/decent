@@ -274,13 +274,12 @@
             </table>
         
 
-        <div class="form-group col-md-12" id="submit_btn" align="right">
-            {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Update')}}<i
-                    class="icon-arrow-right14 position-right"></i></button>
-            <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}
-                <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-        </div>
+          <div class="row mt-2">
+                        <div class="col-md-6 mx-auto text-center">
+                            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('Edit Purchase') }}</button>
+                            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
         </div>
     </div>
 

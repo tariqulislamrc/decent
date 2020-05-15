@@ -36,6 +36,7 @@ class AccountTransaction extends Model
             'amount' => $data['amount'],
             'account_id' => !empty($data['account_id'])?$data['account_id']:null,
             'investment_account_id' => !empty($data['investment_account_id'])?$data['investment_account_id']:null,
+            'acc_type' => !empty($data['acc_type'])?$data['acc_type']:'investment',
             'type' => $data['type'],
             'sub_type' => !empty($data['sub_type']) ? $data['sub_type'] : null,
             'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : Carbon::now(),
@@ -74,6 +75,7 @@ class AccountTransaction extends Model
                 $accnt_trans_data = [
                     'amount' => $transaction_payment->amount,
                     'account_id' => $transaction_payment->account_id,
+                    'acc_type'=>'account',
                     'type' => self::getAccountTransactionType($transaction_type),
                     'operation_date' => $transaction_payment->operation_date,
                     'created_by' => $transaction_payment->created_by,

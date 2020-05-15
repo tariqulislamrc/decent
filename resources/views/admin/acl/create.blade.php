@@ -34,11 +34,11 @@
                                 <table class="table table-bordered">
                                     @foreach (split_name($permissions) as $key => $element)
                                         <tr>
-                                            <td rowspan ="{{count($element)+1}}">{!! $key !!}</td>
+                                            <td rowspan ="{{count($element)+1}}">{!! $key !!} </td>
                                             <td rowspan="{{count($element)+1}}">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input select_all" id="select_all_{{$key}}" data-id="{{$key}}">
-                                                    <label class="custom-control-label" for="select_all_{{$key}}">{{_lang('select_all')}}</label>
+                                                    <input type="checkbox" class="custom-control-input select_all" id="select_all_{{tounderscore($key)}}" data-id="{{tounderscore($key)}}">
+                                                    <label class="custom-control-label" for="select_all_{{tounderscore($key)}}">{{_lang('select_all')}}</label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -46,19 +46,25 @@
                                             <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input {{$key}}" id="{{$per}}" multiple="multiple" name="permissions[]" value="{{$per}}">
+                                                        <input type="checkbox" class="custom-control-input {{tounderscore($key)}}" id="{{$per}}" multiple="multiple" name="permissions[]" value="{{$per}}">
                                                         <label class="custom-control-label" for="{{$per}}">{{tospane($per)}}</label>
                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        @if ($key=='Accounting')
+                                           <tr>
+                                               <td colspan="3" class="text-center bg-green">{{ _lang('Visible Some Section') }}</td>
+                                           </tr>
+                                        @endif
                                     @endforeach
+                              
                                 </table>
                             </div>
                             @can('role.create')
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary"  id="submit">{{_lang('set_permission')}}<i class="icon-arrow-right14 position-right"></i></button>
-                                    <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                                    <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('processing')}}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                                 </div>
                             @endcan
                         {!!Form::close()!!}

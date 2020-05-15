@@ -22,6 +22,9 @@ class DepertmentController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       return view('admin.depertment.index');
     }
 
@@ -46,7 +49,10 @@ class DepertmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {  
+        if (!auth()->user()->can('production_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $employee = Employee::pluck('name','id');
         return view('admin.depertment.form',compact('employee'));
     }
@@ -59,6 +65,10 @@ class DepertmentController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (!auth()->user()->can('production_department.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'name'=>'required',
             'employee_id'=>'required|integer',
@@ -98,6 +108,9 @@ class DepertmentController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
       $model =Depertment::findOrFail($id);
       return view('admin.depertment.show',compact('model'));
     }
@@ -110,6 +123,9 @@ class DepertmentController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('production_department.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Depertment::findOrFail($id);
         return view('admin.depertment.form',compact('model'));
     }
@@ -123,6 +139,9 @@ class DepertmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('production_department.update')) {
+            abort(403, 'Unauthorized action.');
+        }
        $validator = $request->validate([
             'name'=>'required',
         ]);
@@ -152,6 +171,9 @@ class DepertmentController extends Controller
      */
     public function destroy($id)
     {
+      if (!auth()->user()->can('production_department.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Depertment::find($id)->forceDelete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);
     }
@@ -159,6 +181,9 @@ class DepertmentController extends Controller
 
     public function new_employee($id)
     {
+      if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
        $depert =Depertment::findOrFail($id);
        $employee_id=[];
        foreach ($depert->depertment_employee as  $value) {
@@ -170,6 +195,9 @@ class DepertmentController extends Controller
 
     public function new_employee_add(Request $request)
     {
+      if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'employee_id'=>'required|integer',
         ]);
@@ -185,6 +213,9 @@ class DepertmentController extends Controller
 
     public function employee_destroy($id)
     {
+        if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $d_emp =DepertmentEmployee::findOrFail($id);
         if ($d_emp->designation=='Head') {
            throw ValidationException::withMessages(['message' => _lang('You Can not Remove Department Head')]);
@@ -196,6 +227,9 @@ class DepertmentController extends Controller
 
     public function new_category($id)
     {
+      if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
        $depert =Depertment::findOrFail($id);
        $category_id=[];
        foreach ($depert->igcategory as  $value) {
@@ -207,6 +241,9 @@ class DepertmentController extends Controller
 
     public function new_category_add(Request $request)
     {
+         if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'ingredients_category_id'=>'required|integer',
         ]);
@@ -221,6 +258,9 @@ class DepertmentController extends Controller
 
     public function category_destroy($id)
     {
+        if (!auth()->user()->can('production_department.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $ing_category =DepertmentIgCategory::findOrFail($id);
         $ing_category->forceDelete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);

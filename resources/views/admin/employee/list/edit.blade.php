@@ -85,7 +85,7 @@
                     </div>
 
                     <div style="position: absolute;top: 55%;left: 50%;z-index:100;  display: none;" id="loader_new">
-                        <img src="{{asset('loader_new.gif')}}" alt="">
+                        <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i>
                     </div>
 
                     {{-- Qualification Information --}}
@@ -312,6 +312,7 @@
                 success: function (data) {
                     $(did).html(data);
                     $('#loader_new').fadeOut();
+                    _componentSelect2Normal();
                     _componentRemoteModalLoadAfterAjax();
                 }
             });

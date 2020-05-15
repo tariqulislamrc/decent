@@ -121,9 +121,8 @@
                 {{-- <input type="hidden" name="type[]" value=" "> --}}
                 <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
                         class="icon-arrow-right14 position-right"></i></button>
-                <button type="button" class="btn btn-link" id="submiting"
-                        style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}"
-                                                                            width="80px"></button>
+                <button type="button" class="btn btn-info" id="submiting"
+                        style="display: none;">{{_lang('Processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
             </div>
         </div>
     </form>

@@ -35,17 +35,21 @@
                                   <tr>
                                       <th>{{ _lang('Store Request') }}</th>
                                       <th>
+                                        @can('store_request.create')
                                           <a href="{{ route('admin.request.department',$model->id) }}" class="btn btn-success" target="_blank">
                                             <i class="fa fa-share-square" aria-hidden="true"></i>
                                             {{ _lang('Send Request') }}
                                           </a>
+                                          @endcan
                                       </th>
                                   </tr>
                               </thead>
                           </table>
                       </div>
                       <div class="col-md-7">
+                        @can('production_department.create')
                         <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.depertment_new_employee',$model->id) }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Employee')}}</button>
+                        @endcan
                           <table class="table table-bordered">
                               <thead>
                                   <tr>
@@ -58,7 +62,9 @@
                                          <td>{{ $element->employee->name }}</td>
                                          <td>{{ $element->designation }}</td>
                                          <td>
+                                          @can('production_department.delete')
                                              <a href="" data-id ="{{$element->id}}" data-url="{{route('admin.depertment.employee.delete',$element->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}</a>
+                                            @endcan 
                                          </td>
                                      </tr> 
                                   @endforeach
@@ -70,10 +76,12 @@
                      <div class="card-body">
                       <h3 class="border border-primary text-center py-2">Production ingredients category</h3>
                   <div class="row">
+                    @can('production_department.create')
                       <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.depertment_new_category',$model->id) }}">
                         <i class="fa fa-plus-square mr-2" aria-hidden="true"></i>
                       {{_lang('New ingredients category')}}
                     </button>
+                    @endcan
                       <table class="table table-bordered">
                           <thead>
                               <tr>
@@ -87,7 +95,9 @@
                                 <tr>
                                     <td>{{ $category->ingcategory->name }}</td>
                                      <td>
+                                      @can('production_department.create')
                                       <a href="" class="btn btn-danger btn-sm" data-id ="{{$category->id}}" data-url="{{route('admin.depertment.category.delete',$category->id)  }}" id="delete_item"><i class="fa fa-trash"></i> {{ _lang('Remove') }}</a>
+                                      @endcan
                                      </td>
                                 </tr>
                               @endforeach
@@ -122,14 +132,14 @@
                                        {{ $store->store_request->sum('qty') }}
                                      </td>
                                      <td>
-<<<<<<< HEAD
+                                      @can('store_request.create')
                                         <a href="{{ route('admin.report.approve_request',$store->id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('View') }}
-=======
-                                        <a href="{{ route('admin.department.approve_request',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('View') }}
->>>>>>> 2b3e0fa082000a0e5de81a7f6c77d88a37fd5608
-                                        </a>
+                                      @endcan
+                                      @can('store_request.delete')
+                                 
                                        <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.mainrequest.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
                                        </a>
+                                       @endcan
                                      </td>
 
                                 </tr>

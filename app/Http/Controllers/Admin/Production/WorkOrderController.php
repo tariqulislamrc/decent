@@ -28,6 +28,9 @@ class WorkOrderController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.work_order.index');
     }
 
@@ -53,6 +56,9 @@ class WorkOrderController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $brand = Brand::all();
         $models = Product::all();
         $code_prefix = get_option('work_order_code_prefix');
@@ -71,6 +77,9 @@ class WorkOrderController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'prefix' => '',
             'code' => '',
@@ -124,6 +133,9 @@ class WorkOrderController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('workorder.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = WorkOrder::findOrFail($id);
         return view('admin.production.work_order.show', compact('model'));
     }
@@ -136,6 +148,9 @@ class WorkOrderController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $brand = Brand::all();
         $model = WorkOrder::findOrFail($id);
         return view('admin.production.work_order.edit', compact('model', 'brand'));
@@ -150,6 +165,9 @@ class WorkOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'prefix' => '',
             'code' => '',
@@ -202,6 +220,9 @@ class WorkOrderController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = WorkOrder::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);

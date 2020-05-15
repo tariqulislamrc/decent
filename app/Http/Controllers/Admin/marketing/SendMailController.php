@@ -55,6 +55,9 @@ class SendMailController extends Controller
      */
     public function create()
     {
+      if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $templates = EmailTemolate::pluck('name','id');
         return view('admin.marketing.email.sendmail',compact('templates'));
     }
@@ -67,6 +70,9 @@ class SendMailController extends Controller
      */
     public function store(Request $request)
     {
+         if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
          if ($request->email_identifier == 'emails') {
           $validator = $request->validate([
             'template'=>'required',
@@ -239,6 +245,9 @@ class SendMailController extends Controller
 
     public function history()
     {
+         if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.marketing.email.mailhistory');
     }
 
@@ -271,6 +280,9 @@ class SendMailController extends Controller
 
     public function history_view($id)
     {
+        if (!auth()->user()->can('email_marketing.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =EmailHistory::find($id);
 
         return view('admin.marketing.email.mailhistory_view',compact('model'));
@@ -279,6 +291,9 @@ class SendMailController extends Controller
 
     public function client_send_mail(Request $request)
     {
+         if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
          $validator = $request->validate([
             'template'=>'required',
             'email'=>'required|email',
@@ -305,6 +320,9 @@ class SendMailController extends Controller
 
     public function transaction_email(Request $request)
     {
+         if (!auth()->user()->can('email_marketing.create')) {
+            abort(403, 'Unauthorized action.');
+        }
          $validator = $request->validate([
             'template'=>'required',
             'email'=>'required|email',

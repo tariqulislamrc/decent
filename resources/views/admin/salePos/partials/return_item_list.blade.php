@@ -12,7 +12,9 @@
     <th class="text-center">#</th>
     <th class="text-center">{{_lang('Item')}}</th>
     <th class="text-center">{{_lang('Qty')}}</th>
+    @can('view_sale.return_amt')
     <th class="text-center">{{_lang('Sub Total')}}</th>
+    @endcan
   </thead>
 <tbody>
     @foreach($model->returntransaction as $return)
@@ -20,7 +22,9 @@
       <td class="text-center">{{$loop->iteration}}</td>
       <td class="text-center">{{$return->sales->variation?$return->sales->variation->name:''}}</td>
       <td class="text-center">{{$return->return_units}}</td>
+      @can('view_sale.return_amt')
       <td class="text-center">{{$return->return_amount }}</td>
+      @endcan
     </tr>
   @endforeach
 </tbody>

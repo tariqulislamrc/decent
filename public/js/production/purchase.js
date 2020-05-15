@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran='';
 var DatatableSelect = function () {
 
 
@@ -48,7 +48,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+        emran=$('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -81,7 +81,14 @@ var DatatableSelect = function () {
             processing: true,
             serverSide: true,
 
-            ajax: $('.content_managment_table').data('url'),
+            ajax: { 
+            url: $('.content_managment_table').data('url'),
+            data: function(d) {
+                d.employee_id = $('select#employee_id').val();
+                d.status = $('select#status').val();
+                d.payment_status = $('select#payment_status').val();
+            },
+          },
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
                 {
@@ -103,8 +110,8 @@ var DatatableSelect = function () {
                     data: 'date',
                     name: 'date'
                 }, {
-                    data: 'net_total',
-                    name: 'net_total'
+                    data: 'total',
+                    name: 'total'
                 }, {
                     data: 'status',
                     name: 'status'
@@ -121,6 +128,13 @@ var DatatableSelect = function () {
 
 
     };
+
+    $('select#status, select#employee_id, select#payment_status').on(
+        'change',
+        function() {
+            emran.ajax.reload();
+        }
+    );
 
     var _componentRemoteModalLoad = function () {
         $(document).on('click', '#content_managment', function (e) {
@@ -162,7 +176,7 @@ var DatatableSelect = function () {
             _componentDatatableSelect();
             _componentRemoteModalLoad();
             _componentSelect2Normal();
-            _componentDatePicker();
+            _componentDatefPicker();
             _formValidation();
         }
     }

@@ -37,10 +37,14 @@
                                        {{ $store->qty }}
                                      </td>
                                      <td>
+                                      @can('production_department.create')
                                         <a href="{{ route('admin.department.flow',$store->id) }}" class="btn btn-success btn-sm">{{ _lang('Flow') }}
                                         </a>
+                                        @endcan
+                                        @can('production_department.delete')
                                        <a href="" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" id="delete_item" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> {{ _lang('Remove') }}
                                        </a>
+                                       @endcan
                                      </td>
 
                                 </tr>

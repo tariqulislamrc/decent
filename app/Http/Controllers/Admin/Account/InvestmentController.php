@@ -19,6 +19,9 @@ class InvestmentController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('accounting.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         if (request()->ajax()) {
           $accounts = InvestmentAccount::leftjoin('account_transactions as AT', function ($join) {
                 $join->on('AT.investment_account_id', '=', 'investment_accounts.id');
@@ -58,7 +61,9 @@ class InvestmentController extends Controller
      */
     public function create()
     {
-
+       if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.accounting.invest.form');
     }
 
@@ -70,6 +75,9 @@ class InvestmentController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         if (request()->ajax()) {
                 $input = $request->only(['name', 'account_number', 'note']);
                 $user_id = auth()->user()->id;
@@ -106,6 +114,9 @@ class InvestmentController extends Controller
      */
     public function show(Request $request,$id)
     {
+      if (!auth()->user()->can('accounting.view')) {
+            abort(403, 'Unauthorized action.');
+        }
          if ($request->ajax()) {
              $q =AccountTransaction::query();
 
@@ -173,6 +184,9 @@ class InvestmentController extends Controller
      */
     public function edit($id)
     {
+      if (!auth()->user()->can('accounting.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =InvestmentAccount::find($id);
 
         return view('admin.accounting.invest.form',compact('model'));
@@ -187,6 +201,9 @@ class InvestmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+      if (!auth()->user()->can('accounting.update')) {
+            abort(403, 'Unauthorized action.');
+        }
          if ($request->ajax()) {
          try{
             $input = $request->only(['name', 'account_number', 'note']);
@@ -213,6 +230,9 @@ class InvestmentController extends Controller
      */
     public function destroy($id)
     {
+      if (!auth()->user()->can('accounting.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model=InvestmentAccount::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
@@ -226,6 +246,9 @@ class InvestmentController extends Controller
      */
     public function getInvest(Request $request,$id)
     {
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         if ($request->ajax()) {
             $investment=InvestmentAccount::findOrFail($id);
           return view('admin.accounting.invest.investment',compact('investment'));
@@ -239,7 +262,9 @@ class InvestmentController extends Controller
      */
     public function postInvest(Request $request)
     {
-
+       if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         try {
 
             $amount = $request->input('amount');

@@ -19,6 +19,11 @@ class Expense extends Model
         return $this->belongsTo('App\models\account\InvestmentAccount','investment_account_id','id');
     }
 
+    public function employee()
+    {
+        return $this->belongsTo('App\models\employee\Employee','employee_id','id');
+    }
+
       public function user(){
         return $this->belongsTo('App\User','created_by','id');
    }

@@ -16,6 +16,9 @@ class UnitController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('unit.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.unit.index');
     }
 
@@ -37,16 +40,25 @@ class UnitController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('unit.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.unit.form');
     }
 
     public function remort_modal()
     {
+        if (!auth()->user()->can('unit.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.production.unit.quickmodal');
     }
 
     public function addremort_modal(Request $request)
     {
+        if (!auth()->user()->can('unit.create')) {
+            abort(403, 'Unauthorized action.');
+        }
        $validator = $request->validate([
             'unit'=>'required',
             'child_unit'=>'nullable',
@@ -72,6 +84,9 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('unit.create')) {
+            abort(403, 'Unauthorized action.');
+        }
         $validator = $request->validate([
             'unit'=>'required',
             'child_unit'=>'nullable',
@@ -109,6 +124,9 @@ class UnitController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('unit.update')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model =Unit::find($id);
         return view('admin.production.unit.form',compact('model'));
     }
@@ -122,6 +140,9 @@ class UnitController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('unit.update')) {
+            abort(403, 'Unauthorized action.');
+        }
       $validator = $request->validate([
             'unit'=>'required',
             'child_unit'=>'nullable',
@@ -147,6 +168,9 @@ class UnitController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('unit.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
         $unit= Unit::find($id);
         $unit->delete();
         if ($unit) {
