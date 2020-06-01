@@ -25,7 +25,7 @@
             <div class="col-md-6">
                 <div class="pr-3">
                     <p class="h5"> {{_lang('Code')}} : {{$model->prefix}}-{{$model->code}}</p>
-                    <p> {{_lang('Brand Name')}} : {{$model->brand->name?$model->brand->name:'Brand Name Empty'}}</p>
+                    <p> {{_lang('Brand Name')}} : {{$model->brand?$model->brand->name:'Brand Name Empty'}}</p>
                     <p> {{_lang('Order Type')}} : {{$model->type}} </p>
                     <p> {{_lang('Order Date')}} : {{$model->date}} </p>
                     <p> {{_lang('Delivery Date')}} : {{$model->delivery_date}} </p>

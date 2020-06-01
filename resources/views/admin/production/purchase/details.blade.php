@@ -45,20 +45,20 @@
             <div class="col-md-4">
                 <address>
                     <strong>{{_lang('Employee')}} :
-                        {{$model->employee->name}}({{$model->employee->prefix}}-{{$model->employee->code}})</strong>
+                        {{$model->employee ? $model->employee->name : ''}}({{$model->employee ? $model->employee->prefix : ''}}-{{$model->employee ? $model->employee->code : ''}})</strong>
                     <br>
-                    {{_lang('Address')}} : {{$model->employee->present_address_line_1}}<br>
-                    {{_lang('Mobile')}} : {{$model->employee->contact_number}}<br>
+                    {{_lang('Address')}} : {{$model->employee ? $model->employee->present_address_line_1 : ''}}<br>
+                    {{_lang('Mobile')}} : {{$model->employee ? $model->employee->contact_number : ''}}<br>
                 </address>
             </div>
 
             {{-- Reference No: --}}
             <div class="col-md-4">
                 <address>
-                    <strong>{{_lang('Brand')}} : {{$model->brand->name}}</strong><br>
-                    {{_lang('Owner Name')}} : {{$model->brand->owner_name}}<br>
-                    {{_lang('Mobile')}} : {{$model->brand->phone}}<br>
-                    {{_lang('Address')}} : {{$model->brand->address}}
+                    <strong>{{_lang('Brand')}} : {{$model->brand ? $model->brand->name : ''}}</strong><br>
+                    {{_lang('Owner Name')}} : {{$model->brand ? $model->brand->owner_name : ''}}<br>
+                    {{_lang('Mobile')}} : {{$model->brand? $model->brand->phone : ''}}<br>
+                    {{_lang('Address')}} : {{$model->brand? $model->brand->address : ''}}
                 </address>
             </div>
 

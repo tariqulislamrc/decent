@@ -122,7 +122,7 @@ class PurchaseController extends Controller
         $ym = Carbon::now()->format('Y/m');
 
         $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
-        
+
         $ref_no = $ym.'/P-'.ref($row);
         return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no'));
     }
@@ -155,15 +155,15 @@ class PurchaseController extends Controller
         $ym = Carbon::now()->format('Y/m');
 
         $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
-        
+
         $ref_no = $ym.'/P-'.ref($row);
-        
+
         if($request->invoice_no){
             $invoice_no = $request->invoice_no;
         }else{
             $invoice_no = $code_prefix . $uniqu_id;
         }
-        
+
         $wo_id = $request->wo_id;
 
         $brand_id = '';
@@ -181,7 +181,7 @@ class PurchaseController extends Controller
         }
 
         $model = new Transaction;
-        
+
         $model->purchase_by = $request->purchase_by;
         $model->reference_no = $request->reference_no;
         $model->invoice_no = $invoice_no;
@@ -206,8 +206,8 @@ class PurchaseController extends Controller
         $model->created_by = Auth::user()->id;
         $model->save();
         $id = $model->id;
-        
-        
+
+
         if ($wo_id) {
             $workorders = WorkOrder::findOrFail($wo_id);
             $workorders->transaction_status = 'transaction';
@@ -215,7 +215,7 @@ class PurchaseController extends Controller
         }
 
         for ($i = 0; $i < count($request->raw_material); $i++) {
-            
+
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
             $purchase->raw_material_id = $request->raw_material[$i];
@@ -231,7 +231,7 @@ class PurchaseController extends Controller
             $purchase->save();
 
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
-            
+
             $stock = $raw->stock + $request->qty[$i];
             $raw->stock = $stock;
             $raw->save();
@@ -255,7 +255,7 @@ class PurchaseController extends Controller
 
         // Activity Log
         activity()->log('Created a Purchase - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => route('admin.production-purchase.create')]);
     }
 
     /**
@@ -401,9 +401,12 @@ class PurchaseController extends Controller
         if (!auth()->user()->can('purchase.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $type = Transaction::where('wo_id', $id)->delete();
-        $type = TransactionPayment::where('transaction_id', $id)->delete();
-        $type = Purchase::where('transaction_id', $id)->delete();
+
+        $type = Transaction::where('id', $id)->delete();
+//        $type = TransactionPayment::where('transaction_id', $id)->delete();
+//        $type = Purchase::where('transaction_id', $id)->delete();
+
+        return response()->json(['message' => 'Data Deleted Success full', 'goto' => route('admin.production-purchase.index')]);
     }
 
 
@@ -522,7 +525,7 @@ class PurchaseController extends Controller
         }
         return $name;
     }
-    
+
 
     public function rawMaterial(Request $request)
     {

@@ -111,7 +111,7 @@ class WorkOrderController extends Controller
                 $line_purchase->qty = $request->quantity[$i];
                 $line_purchase->price = $request->price[$i];
                 $line_purchase->sub_total = $request->sub_total[$i];
-                $line_purchase->net_total = $request->net_total[$i];
+//                $line_purchase->net_total = $request->net_total[$i];
                 $line_purchase->status = 0;
                 $line_purchase->hidden = 0;
                 $line_purchase->tek_marks = 0;

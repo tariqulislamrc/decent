@@ -81,7 +81,7 @@ var DatatableSelect = function () {
             processing: true,
             serverSide: true,
 
-            ajax: { 
+            ajax: {
             url: $('.content_managment_table').data('url'),
             data: function(d) {
                 d.employee_id = $('select#employee_id').val();
@@ -132,7 +132,9 @@ var DatatableSelect = function () {
     $('select#status, select#employee_id, select#payment_status').on(
         'change',
         function() {
-            emran.ajax.reload();
+            if (typeof(emran.ajax) != "undefined" && emran.ajax !== null) {
+                emran.ajax.reload(null, false);
+            }
         }
     );
 

@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-=======
-// 
+
 var _componentDatePicker = function () {
     $(".take_date").datepicker({
         dropWidth: 200,
@@ -9,7 +7,6 @@ var _componentDatePicker = function () {
     });
 }
 
->>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
 var _componentSelect2Normal = function() {
 
     $('.select').select2();
@@ -112,12 +109,7 @@ var _formValidation = function () {
             dataType: 'JSON',
             success: function (data) {
                 if (data.status == 'danger') {
-<<<<<<< HEAD
                     toastr.error(data.message);
-
-=======
-                     toastr.error(data.message);
->>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
                 } else {
                     toastr.success(data.message);
                     $('#submit').show();
@@ -146,7 +138,9 @@ var _formValidation = function () {
                     }
 
                     if (typeof(emran) != "undefined" && emran !== null) {
-                        emran.ajax.reload(null, false);
+                        if (typeof(emran.ajax) != "undefined" && emran.ajax !== null) {
+                            emran.ajax.reload(null, false);
+                        }
                     }
                 }
             },
@@ -172,12 +166,8 @@ var _formValidation = function () {
                         i++;
                     });
                 } else {
-<<<<<<< HEAD
                     toastr.warning(jsonValue.message);
 
-=======
-                    toastr.error(jsonValue.message);
->>>>>>> 5964de1bf292ec8bb87a236d53f7330c26438da8
                 }
                 _componentSelect2Normal();
                 $('#submit').show();
@@ -436,8 +426,6 @@ var _modalFormValidation = function () {
             success: function (data) {
                 if (data.status == 'danger') {
                     toastr.error(data.message);
-
-
                 } else {
                     toastr.success(data.message);
                     $('#submit').show();
