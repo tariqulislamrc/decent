@@ -103,7 +103,8 @@ class Installer
         static::saveDbVariables($host, 3306, $database, $username, $password);
 
         // Try to increase the maximum execution time
-        set_time_limit(300); // 5 minutes
+        // set_time_limit(300); // 5 minutes
+        ini_set('max_execution_time', 0);
 
         // Create tables
         Artisan::call('migrate:fresh', ['--force' => true]);

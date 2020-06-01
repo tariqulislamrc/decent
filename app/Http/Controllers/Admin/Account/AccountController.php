@@ -164,13 +164,13 @@ class AccountController extends Controller
 
             return DataTables::of($accounts)
                             ->addColumn('debit', function ($row) {
-                                if ($row->type == 'debit') {
+                                if ($row->type == 'Debit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '';
                             })
                             ->addColumn('credit', function ($row) {
-                                if ($row->type == 'credit') {
+                                if ($row->type == 'Credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '';
@@ -627,14 +627,14 @@ class AccountController extends Controller
                                 'A.name as account_name'
                                 ])
                              ->groupBy('account_transactions.id')
-                             ->orderBy('account_transactions.operation_date', 'desc')->get();
+                             ->orderBy('account_transactions.operation_date', 'desc');
                              
             if (!empty(request()->input('type'))) {
                 $accounts->where('type', request()->input('type'));
             }
 
             if (!empty(request()->input('account_id'))) {
-                $accounts->where('A.id', request()->input('account_id'));
+                $accounts->where('account_transactions.account_id', request()->input('account_id'));
             }
 
             $start_date = request()->input('start_date');
@@ -646,14 +646,14 @@ class AccountController extends Controller
 
             return DataTables::of($accounts)
                             ->addColumn('debit', function ($row) {
-                                if ($row->type == 'debit') {
+                                if ($row->type == 'Debit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
 
                                 }
                                
                             })
                             ->addColumn('credit', function ($row) {
-                                if ($row->type == 'credit') {
+                                if ($row->type == 'Credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
                                
@@ -669,7 +669,7 @@ class AccountController extends Controller
                                 if (!empty($row->sub_type)) {
                                     $details = _lang( $row->sub_type);
                                     if (in_array($row->sub_type, ['fund_transfer', 'deposit']) && !empty($row->transfer_transaction)) {
-                                        if ($row->type == 'credit') {
+                                        if ($row->type == 'Credit') {
                                             $details .= ' ( ' . _lang('Form') .': ' . $row->transfer_transaction->account->name . ')';
                                         } else {
                                             $details .= ' ( ' . _lang('To') .': ' . $row->transfer_transaction->account->name . ')';

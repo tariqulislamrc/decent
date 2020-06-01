@@ -468,7 +468,7 @@ $("#item").on('click', '.btn_remove', function() {
 
         $(".net_total").val(net_total);
         $(".net_total").text(net_total);
-        $(".paid").val(net_total);
+        $(".due").val(net_total);
         var change_amount =calculate_balance_due(net_total);
         $('.change_return_span').text(change_amount);
         $('#due').val(change_amount);

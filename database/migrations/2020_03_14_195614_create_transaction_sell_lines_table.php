@@ -25,6 +25,7 @@ class CreateTransactionSellLinesTable extends Migration
             $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
             $table->unsignedBigInteger('variation_brand_detail_id')->nullable();
             $table->foreign('variation_brand_detail_id')->references('id')->on('variation_brand_details')->onDelete('cascade');
+            $table->integer('brand_id')->nullable();
             $table->decimal('quantity',8,2);
             $table->decimal('quantity_returned',8,2);
             $table->decimal('unit_price', 8, 2)->comment("Sell price excluding tax")->nullable();

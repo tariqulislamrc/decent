@@ -4,6 +4,7 @@ namespace App\Utilities;
 use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
+use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
 use App\models\inventory\TransactionSellLine;
 use Carbon\Carbon;
@@ -49,6 +50,7 @@ class TransactionUtil
   			'client_id'=>$transaction->client_id,
   			'product_id'=>$variation['product_id'],
   			'variation_id'=>$variation['variation_id'],
+        'brand_id'=>$variation['brand_id'],
   			'quantity'=>$variation['quantity'],
   			'unit_price'=>$variation['unit_price'],
   			'total'=>$variation['unit_price']*$variation['quantity'],
@@ -110,6 +112,62 @@ class TransactionUtil
     }
 
 
+
+        /**
+     * Checks if products has manage stock enabled then Updates quantity for product and its
+     * variations
+     *
+     * @param $location_id
+     * @param $product_id
+     * @param $variation_id
+     * @param $new_quantity
+     * @param $old_quantity = 0
+     * @param $number_format = null
+     * @param $uf_data = true, if false it will accept numbers in database format
+     *
+     * @return boolean
+     */
+    public function updateProductQuantity($product_id, $variation_id,$brand_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true)
+    {
+
+        $qty_difference = $new_quantity - $old_quantity;
+        
+
+        $product = Product::find($product_id);
+
+        //Check if stock is enabled or not.
+        if ($qty_difference != 0) {
+            $variation = Variation::where('id', $variation_id)
+                            ->where('product_id', $product_id)
+                            ->first();
+            
+            //Add quantity in VariationBrandDetails
+            $variation_brand_d = VariationBrandDetails::where('product_id', $product_id)
+                                    ->where('variation_id', $variation_id)
+                                     ->where('product_variation_id', $variation->product_variation_id)
+                                     ->where('brand_id', $brand_id)
+                                    ->first();
+            if (empty($variation_brand_d)) {
+                $variation_brand_d = new VariationBrandDetails();
+                $variation_brand_d->variation_id = $variation->id;
+                $variation_brand_d->product_id = $product_id;
+                $variation_brand_d->brand_id = $brand_id;
+                $variation_brand_d->product_variation_id = $variation->product_variation_id;
+                $variation_brand_d->qty_available = 0;
+            }
+
+            $variation_brand_d->qty_available +=$qty_difference;
+            $variation_brand_d->save();
+
+            //TODO: Add quantity in products table
+            // Product::where('id', $product_id)
+            //     ->increment('total_qty_available', $qty_difference);
+        }
+        
+        return true;
+    }
+
+
         /**
      * Update the payment status for purchase or sell transactions. Returns
      * the status
@@ -125,6 +183,31 @@ class TransactionUtil
             ->update(['payment_status' => $status]);
 
         return $status;
+    }
+
+
+     public function setReference($transaction_type)
+    {
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', $transaction_type)->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', $transaction_type)->withTrashed()->get()->count() + 1 : 1;
+        if ($transaction_type=='Sale') {
+          $seq ='/S-';
+        }
+        elseif ($transaction_type=='sale_return') {
+          $seq ='/SR-';
+        }
+        elseif ($transaction_type=='Purchase') {
+          $seq ='/P-';
+        }
+         elseif ($transaction_type=='purchase_return') {
+          $seq ='/PR-';
+        }
+        elseif ($transaction_type=='opening_balance') {
+          $seq ='/Open-';
+        }
+         $ref_no = $ym.$seq.ref($row);
+         return $ref_no;
     }
 
     /**
