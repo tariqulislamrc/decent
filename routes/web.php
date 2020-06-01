@@ -439,7 +439,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		 Route::patch('language/update/{id}', 'LanguageController@update')->name('language.update');
 		 Route::delete('/language/delete/{id}', 'LanguageController@delete')->name('language.delete');
 
-    Route::group(['as' => 'expense.','prefix' => 'expense','namespace' => 'expense'], function () {
+    Route::group(['as' => 'expense.','prefix' => 'expense','namespace' => 'Expense'], function () {
 
     	Route::get('category/datatable','ExpenseCategoryController@datatable')->name('category.datatable');
     	Route::resource('category', 'ExpenseCategoryController');
@@ -653,7 +653,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::post('product/report-details','DepertmentReportController@get_product_report_details')->name('get_product_report_details');
 
            Route::get('raw-material/report-details','DepertmentReportController@raw_material_report_details')->name('raw_material_report_details');
-           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('ecommerce_report.pdf');
+           Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
 
 		});
 		

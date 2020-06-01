@@ -21,7 +21,7 @@ class CreateExpensesTable extends Migration
             $table->string('reson')->nullable();
             $table->double('amount',10,2)->nullable();
             $table->text('note')->nullable();
-            $table->string('date')->nullable();
+            $table->date('date')->nullable();
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
             $table->integer('created_by')->nullable();

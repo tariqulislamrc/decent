@@ -16,6 +16,7 @@
 					<td style="width: 40%">
 						<span>{{ _lang('Discount Type') }}</span> <br>
 						<select name="discount_type" class="form-control" id="discount_type">
+							<option value="">None</option>
 							<option value="percentage">Percentage</option>
 							<option value="fixed">Fixed</option>
 						</select>

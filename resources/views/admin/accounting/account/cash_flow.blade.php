@@ -35,9 +35,9 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
-                  {!! Form::label('transaction_type', _lang('Transection Type') . ':') !!}
+                  {!! Form::label('type', _lang('Transection Type') . ':') !!}
                   <div class="input-group">
-                    {!! Form::select('transaction_type', ['' => _lang('All'),'Debit' => _lang('Debit'), 'Credit' => _lang('Credit')], '', ['class' => 'form-control select']) !!}
+                    {!! Form::select('type', ['' => _lang('All'),'Debit' => _lang('Debit'), 'Credit' => _lang('Credit')], '', ['class' => 'form-control select']) !!}
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 }
 
                 d.account_id = $('#account_id').val();
-                d.type = $('#transaction_type').val();
+                d.type = $('#type').val();
                 d.start_date = start,
                     d.end_date = end
             }
@@ -170,7 +170,7 @@ $(document).ready(function() {
     });
 });
 
-$('#transaction_type, #account_id').change(function() {
+$('#type, #account_id').change(function() {
     cash_flow_table.ajax.reload();
 });
 </script>

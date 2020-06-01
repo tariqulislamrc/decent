@@ -23,7 +23,7 @@ class SuperAdminController extends Controller
 {
    public function product(Request $request)
    {
-   	  if (!auth()->user()->hasRole('Super Admin')) {
+      if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
         if ($request->ajax()) {
@@ -80,7 +80,7 @@ class SuperAdminController extends Controller
                 'VBD.brand_id as brand_id',
                 'products.photo as image',
                 'variations.hidden as hidden',
-                'variations.id as id',
+                'variations.id as id'
             );
             $document = $products->orderBy('VBD.qty_available', 'desc')
                         ->get();
@@ -99,7 +99,7 @@ class SuperAdminController extends Controller
                 })
 
                 ->editColumn('hidden', function ($model) {
-                	$table ='variations';
+                  $table ='variations';
                     return view('superadmin.status',compact('model','table'));
                 
                 })
@@ -130,10 +130,10 @@ class SuperAdminController extends Controller
 
    public function client(Request $request)
    {
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	    if ($request->ajax()) {
+        if ($request->ajax()) {
             $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
                     ->select('clients.name','clients.email','clients.hidden', 'state', 'country', 'landmark', 'mobile', 'clients.id',
                         DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
@@ -141,10 +141,10 @@ class SuperAdminController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as total_sell_return"),
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as sell_return_paid"),
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
-                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid"),
+                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
 
                         )
-                    ->groupBy('clients.id');;
+                    ->groupBy('clients.id');
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn(
@@ -160,7 +160,7 @@ class SuperAdminController extends Controller
                 '<span class="display_currency return_due" data-orig-value="{{$total_sell_return - $sell_return_paid}}" data-currency_symbol=true data-highlight=false>{{$total_sell_return - $sell_return_paid }}</span>'
                 )
                 ->addColumn('action', function ($model) {
-                	$table ='clients';
+                  $table ='clients';
                     return view('superadmin.status', compact('model','table'));
                 })->rawColumns(['action','landmark','due','return_due'])->make(true);
         }
@@ -169,10 +169,10 @@ class SuperAdminController extends Controller
 
    public function sells(Request $request)
    {
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	 if ($request->ajax()) {
+     if ($request->ajax()) {
             $q=Transaction::query();
             if (!empty(request()->input('sale_type'))) {
                 $q=$q->where('sale_type',request()->input('sale_type'));
@@ -226,7 +226,7 @@ class SuperAdminController extends Controller
                    }
                  })
                 ->addColumn('action', function ($model) {
-                	$table ='transactions';
+                  $table ='transactions';
                     return view('superadmin.status', compact('model','table'));
                 })->rawColumns(['action','client','date','paid','due','payment_status'])->make(true);
         }
@@ -237,10 +237,10 @@ class SuperAdminController extends Controller
 
    public function sell_return(Request $request)
    {
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	      if ($request->ajax()) {
+          if ($request->ajax()) {
           $document = Transaction::orderBy('id','DESC')->where('transaction_type','Sale')->where('return',1)->get();
            return DataTables::of($document)
                 ->addIndexColumn()
@@ -280,12 +280,12 @@ class SuperAdminController extends Controller
    public function sell_return_hide(Request $request,$id)
    {
 
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
      if ($request->ajax()) {
-     	$model =Transaction::where('transaction_type','sale_return')->where('return_parent_id',$id)->get();
-     	   return DataTables::of($model)
+      $model =Transaction::where('transaction_type','sale_return')->where('return_parent_id',$id)->get();
+         return DataTables::of($model)
                 ->addIndexColumn()
                  ->editColumn('date', function ($model) {
                   return formatDate($model->date);
@@ -297,7 +297,7 @@ class SuperAdminController extends Controller
                    return $model->net_total;
                  })
                 ->addColumn('action', function ($model) {
-                	$table ='transactions';
+                  $table ='transactions';
                     return view('superadmin.status', compact('model','table'));
                 })->rawColumns(['action','client','date','total'])->make(true);
      }
@@ -307,10 +307,10 @@ class SuperAdminController extends Controller
 
    public function purchase(Request $request)
    {
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	  if ($request->ajax()) {
+      if ($request->ajax()) {
             $document = Transaction::query();
               if (request()->has('employee_id')) {
                 $employee_id = request()->get('employee_id');
@@ -366,7 +366,7 @@ class SuperAdminController extends Controller
                     }
                 })
                 ->addColumn('action', function ($model) {
-                	$table ='transactions';
+                  $table ='transactions';
                     return view('superadmin.status', compact('model','table'));
                 })->rawColumns(['action','status', 'payment_status','total'])->make(true);
         }
@@ -378,10 +378,10 @@ class SuperAdminController extends Controller
    public function expense(Request $request)
    {
 
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	    if ($request->ajax()) {
+        if ($request->ajax()) {
            $document = Expense::query();
             if (request()->has('investment_account_id')) {
                 $investment_account_id = request()->get('investment_account_id');
@@ -424,7 +424,7 @@ class SuperAdminController extends Controller
                   return $model->investment?$model->investment->name:'';
                  })
                 ->addColumn('action', function ($model) {
-                	$table ='expenses';
+                  $table ='expenses';
                     return view('superadmin.status', compact('model','table'));
                 })->rawColumns(['action','category','date','account','e_amount','employee'])->make(true);
         }
@@ -439,10 +439,10 @@ class SuperAdminController extends Controller
    public function account(Request $request)
    {
 
-   	if (!auth()->user()->hasRole('Super Admin')) {
+    if (!auth()->user()->hasRole('Super Admin')) {
         abort(403, 'Unauthorized action.');
       }
-   	        if (request()->ajax()) {
+            if (request()->ajax()) {
             $accounts = AccountTransaction::join(
                 'accounts as A',
                 'account_transactions.account_id',
@@ -539,13 +539,13 @@ class SuperAdminController extends Controller
 
    public function hidden(Request $request,$value,$id)
    {
-   	
-  	if (request()->ajax()) {
-  		  DB::table($request->model)
+    
+    if (request()->ajax()) {
+        DB::table($request->model)
             ->where('id', $id)
             ->update(['hidden' => $value,]);
-			return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Status Updated')]);
-		}
+      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Status Updated')]);
+    }
   
    }
 }

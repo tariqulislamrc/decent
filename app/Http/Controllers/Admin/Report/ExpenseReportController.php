@@ -55,6 +55,7 @@ class ExpenseReportController extends Controller
             else{
                 $q= $q->where('created_by',$user_id);     
             }
+
             if ($sDate && $eDate) {
                 $q=$q->whereBetween('date',[$sDate,$eDate]);
             }

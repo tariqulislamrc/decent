@@ -21,13 +21,13 @@
                     <th scope="col">{{ _lang('Date') }}</th>
                     <th scope="col">{{ _lang('Account By') }}</th>
                     @can('view_account.credit')
-                    @if ($transaction_type=='All' || $transaction_type=='credit')
+                    @if ($transaction_type=='All' || $transaction_type=='Credit')
                     <th scope="col">{{ _lang('Credit') }}</th>
                     @endif
                     @endcan
 
                     @can('view_account.debit')
-                    @if ($transaction_type=='All' || $transaction_type=='debit')
+                    @if ($transaction_type=='All' || $transaction_type=='Debit')
                     <th scope="col">{{ _lang('Debit') }}</th>
                     @endif
                     @endcan
@@ -46,9 +46,9 @@
                         
                     </td>
                    @can('view_account.credit')
-                   @if ($transaction_type=='All' || $transaction_type=='credit')
+                   @if ($transaction_type=='All' || $transaction_type=='Credit')
                        <td>
-                           @if ($element->type=='credit')
+                           @if ($element->type=='Credit')
                               {{ number_format($element->amount,2) }}
                            @endif
                        </td>
@@ -56,9 +56,9 @@
                    @endcan
 
                    @can('view_account.debit')
-                   @if ($transaction_type=='All' || $transaction_type=='debit')
+                   @if ($transaction_type=='All' || $transaction_type=='Debit')
                        <td>
-                            @if ($element->type=='debit')
+                            @if ($element->type=='Debit')
                               {{ number_format($element->amount,2) }}
                            @endif
                        </td>
@@ -72,13 +72,13 @@
                 <tr>
                     <th colspan="3">{{ _lang('Total') }}</th>
                     @can('view_account.credit')
-                    @if ($transaction_type=='All' || $transaction_type=='credit')
-                    <td>{{ number_format($result->where('type','credit')->sum('amount'),2) }}</td>
+                    @if ($transaction_type=='All' || $transaction_type=='Credit')
+                    <td>{{ number_format($result->where('type','Credit')->sum('amount'),2) }}</td>
                     @endif
                     @endcan
                     @can('view_account.debit')
-                    @if ($transaction_type=='All' || $transaction_type=='debit')
-                    <td>{{ number_format($result->where('type','debit')->sum('amount'),2) }}</td>
+                    @if ($transaction_type=='All' || $transaction_type=='Debit')
+                    <td>{{ number_format($result->where('type','Debit')->sum('amount'),2) }}</td>
                     @endif
                     @endcan
                 </tr>

@@ -256,7 +256,7 @@ class StoreRequestController extends Controller
         $data = [];
 
         $people = WorkOrder::select('id')
-            ->where('transaction_status','transaction')
+            // ->where('transaction_status','transaction')
             ->where('type', 'like', '%' . $_GET['term'] . '%')
             ->orWhere('code', 'like', '%' . $_GET['term'] . '%')
             ->orderBy('id', 'DESC')
