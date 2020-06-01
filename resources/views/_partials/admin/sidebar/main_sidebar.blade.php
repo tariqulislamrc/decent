@@ -272,74 +272,12 @@
         </li>
     @endcan
 
-    @can('setting.view')
-        {{-- Settings --}}
-        <li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">{{_lang('Settings')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                @can('setting.view')
-                    {{-- General Settings --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
-                            href="{{ route('admin.setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('General Settings')}}</a></li>
-                @endcan
-
-                @can('system_configuration.view')
-                    {{-- System Configuration --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
-                            href="{{ route('admin.system.setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('System Configuration ')}}</a></li>
-                @endcan
-
-                @can('mail_configuration.view')
-                    {{-- Mail Configuration --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
-                            href="{{ route('admin.mail.setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Mail Configuration ')}}</a></li>
-                @endcan
-
-                @can('sms_configuration.view')
-                    {{-- SMS Configuration --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
-                            href="{{ route('admin.sms.setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('SMS Configuration ')}}</a></li>
-                @endcan
-
-                @can('module_configuration.view')
-                    {{-- Module Configuration --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
-                            href="{{ route('admin.module.setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Module Configuration ')}}</a></li>
-                @endcan
-
-                @can('id_card_template.view')
-                    {{-- Module Configuration --}}
-                    <li class="mt-1"><a
-                            class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
-                            href="{{ route('admin.id-card-template') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Id Card Template ')}}</a></li>
-                @endcan
-
-                @can('member_setting.view')
-                    {{-- Member Settings Configuration --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
-                                        href="{{ route('admin.member-setting') }}"><i class="icon fa fa-circle-o"></i>
-                            {{_lang('Member')}}</a></li>
-                @endcan
-            </ul>
-        </li>
-    @endcan
-
     @can('client.view')
         {{-- Database Backup --}}
         <li><a class="app-menu__item {{ Request::is('admin/client') ? ' active' : '' }}" href="{{ route('admin.client.index') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Client')}}</span></a></li>
     @endcan
 
-       @can('sale_pos.view')
+    @can('sale_pos.view')
         <li class="treeview {{ Request::is('admin/sale*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle" aria-hidden="true"></i>
                 <span class="app-menu__label">{{_lang('Sale Pos')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
@@ -905,3 +843,65 @@
             </ul>
         </li>
     @endrole
+
+@can('setting.view')
+    {{-- Settings --}}
+    <li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">{{_lang('Settings')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <ul class="treeview-menu">
+            @can('setting.view')
+                {{-- General Settings --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
+                        href="{{ route('admin.setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('General Settings')}}</a></li>
+            @endcan
+
+            @can('system_configuration.view')
+                {{-- System Configuration --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
+                        href="{{ route('admin.system.setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('System Configuration ')}}</a></li>
+            @endcan
+
+            @can('mail_configuration.view')
+                {{-- Mail Configuration --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
+                        href="{{ route('admin.mail.setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Mail Configuration ')}}</a></li>
+            @endcan
+
+            @can('sms_configuration.view')
+                {{-- SMS Configuration --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
+                        href="{{ route('admin.sms.setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('SMS Configuration ')}}</a></li>
+            @endcan
+
+            @can('module_configuration.view')
+                {{-- Module Configuration --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
+                        href="{{ route('admin.module.setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Module Configuration ')}}</a></li>
+            @endcan
+
+            @can('id_card_template.view')
+                {{-- Module Configuration --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
+                        href="{{ route('admin.id-card-template') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Id Card Template ')}}</a></li>
+            @endcan
+
+            @can('member_setting.view')
+                {{-- Member Settings Configuration --}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
+                                    href="{{ route('admin.member-setting') }}"><i class="icon fa fa-circle-o"></i>
+                        {{_lang('Member')}}</a></li>
+            @endcan
+        </ul>
+    </li>
+@endcan

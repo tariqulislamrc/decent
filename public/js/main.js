@@ -9,7 +9,7 @@ var _componentDatePicker = function () {
 
 var _componentSelect2Normal = function() {
 
-    $('.select').select2();
+    $('.select').select2({width:'100%'});
 };
 
 function __highlight(value, obj) {

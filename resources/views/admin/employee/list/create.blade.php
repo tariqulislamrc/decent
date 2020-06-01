@@ -51,7 +51,7 @@
                 </div>
         
         
-                 {{-- Department --}}
+                {{-- Department --}}
                 <div class="col-md-6 form-group">
                     <label for="name">{{_lang('Department')}} <span class="text-danger">*</span>
                     </label>
@@ -68,18 +68,18 @@
         
                 {{-- Father Name --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Father Name')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Father Name')}}
                     </label>
                     <input type="text" name="father_name" id="father_name" class="form-control"
-                    placeholder="Enter Father Name" required>
+                    placeholder="Enter Father Name">
                 </div>
         
                 {{-- Mother Name --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Mother Name')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Mother Name')}}
                     </label>
                     <input type="text" name="mother_name" id="mother_name" class="form-control"
-                    placeholder="Enter Mother Name" required>
+                    placeholder="Enter Mother Name">
                 </div>
         
                 {{-- Contact Number --}}
@@ -92,12 +92,12 @@
         
                 {{-- Gender --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Gender')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Gender')}}
                     </label>
                     
                     <select data-parsley-errors-container="#parsley_error_select_gender_for_creating_new_employee" data-placeholder="Please Select One" name="gender" id="gender" class="form-control select" required>
                         <option value="">Please Select One..</option>
-                        <option value="Male">Male</option>
+                        <option selected value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                     <span id="parsley_error_select_gender_for_creating_new_employee"></span>
@@ -105,16 +105,16 @@
         
                 {{-- Date Of Birth --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Date Of Birth')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Date Of Birth')}} 
                     </label>
-                    <input type="text" autocomplete="off" name="date_of_birth" id="date_of_birth" class="form-control date" required>
+                    <input type="text" autocomplete="off" name="date_of_birth" id="date_of_birth" class="form-control date">
                 </div>
         
                 {{-- Date Of Joining --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Date Of Joining')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Date Of Joining')}}
                     </label>
-                    <input type="text" name="joining_date" autocomplete="off" id="joining_date" class="form-control date" required>
+                    <input type="text" name="joining_date" autocomplete="off" id="joining_date" class="form-control date">
                 </div>
         
                 @can('employee_list.create')

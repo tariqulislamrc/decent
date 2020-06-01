@@ -44,7 +44,7 @@
                                     {{-- Default Holiday In a Week --}}
                                     <div class="col-md-6">
                                         {{ Form::label('holiday', _lang('Default Holiday') , ['class' => 'col-form-label ']) }}
-                                        <select name="holiday" class="form-control select" required data-placeholder="Select A Day">
+                                        <select name="holiday" class="form-control select" data-placeholder="Select A Day">
                                             <option value="">Select A Day</option>
                                             <option {{get_option('holiday') == 'Friday' ? 'selected' : ''}}  value="Friday">Friday</option>
                                             <option {{get_option('holiday') == 'Saturday' ? 'selected' : ''}}  value="Saturday">Saturday</option>
@@ -176,7 +176,7 @@
                                 <div class="col-md-6"></div>
 
                                 {{-- Enable Https --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                    <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="enable_https">{{_lang('Enable Https')}}</label>
                                     <div class="toggle lg">
@@ -187,10 +187,10 @@
                                         </label>
                                     </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- Show Error Display --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                    <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="show_error_display">{{_lang('Show Error Display')}}</label>
                                     <div class="toggle lg">
@@ -201,10 +201,10 @@
                                         </label>
                                        </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- Enable FrontEnd Website --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                      <div  class="border border-secondary p-2 rounded text-center"> 
                                     <label for="enable_frontend_website">{{_lang('Enable FrontEnd Website')}}</label>
                                     <div class="toggle lg">
@@ -215,10 +215,10 @@
                                         </label>
                                     </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- IP Filter--}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                     <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="ip_filter">{{_lang('IP Filter')}}</label>
                                     <div class="toggle lg">
@@ -229,24 +229,24 @@
                                         </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- To-Do --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                     <div  class="border border-secondary p-2 rounded text-center">
-                                    <label for="todo">{{_lang('To-Do ')}}</label>
-                                    <div class="toggle lg">
-                                        <label class="mb-0">
-                                            <input value="1" name="todo" id="todo"
-                                                   {{get_option('todo') == '1' ? 'checked' : ''}} type="checkbox"><span
-                                                class="button-indecator text-primary"></span>
-                                        </label>
+                                        <label for="todo">{{_lang('To-Do ')}}</label>
+                                        <div class="toggle lg">
+                                            <label class="mb-0">
+                                                <input value="1" name="todo" id="todo"
+                                                    {{get_option('todo') == '1' ? 'checked' : ''}} type="checkbox"><span
+                                                    class="button-indecator text-primary"></span>
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- BackUp --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                     <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="backup">{{_lang('BackUp ')}}</label>
                                     <div class="toggle lg">
@@ -257,10 +257,10 @@
                                         </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- Enable Maintenance Mode --}}
-                                <div class="col-md-3 mt-3">
+                                {{-- <div class="col-md-3 mt-3">
                                     <div  class="border border-secondary p-2 rounded text-center">
                                     <label for="maintenance_mode">{{_lang('Enable Maintenance Mode ')}}</label>
                                     <div class="toggle lg">
@@ -271,7 +271,7 @@
                                         </label>
                                     </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>

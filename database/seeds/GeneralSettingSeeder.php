@@ -1,5 +1,6 @@
 <?php
 
+use App\models\Client;
 use App\models\employee\EmployeeAttendanceType;
 use App\models\employee\EmployeeCategory;
 use Illuminate\Database\Seeder;
@@ -78,6 +79,13 @@ class GeneralSettingSeeder extends Seeder
             'alias'     =>      'H',
             'type'      =>      'Holiday',
             'is_active'  =>         1, 
+        ]);
+
+        // Create a Walking Customer
+        Client::create([
+            'type' => 'customer',
+            'name' => 'Walking Customer',
+            'mobile' => '017XXXXXXXX',
         ]);
     }
 }

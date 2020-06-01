@@ -15,66 +15,66 @@
 		Frontend Route
 ==========================================================*/
 
-
-Route::get('/', 'Frontend\Front_End_Controller@index');
-
-Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
-	Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
-	Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
-	Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
-	Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
-	Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
-
-	// check_user_name_is_exist_or_not
-	Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
-	// check_email_is_exist_or_not
-	Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
-	Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-});
-
-Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
-Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
-Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
-Route::get('account', 'Frontend\Front_End_Controller@account')->name('account');
-Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
-Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
-Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
-
-Route::get('blog',function(){
-	return view('eCommerce.blog');
-})->name('blog');
-
-Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
-
-
-Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
-Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
-
-
-
-Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
-
-Route::get('product-list',function(){
-	return view('eCommerce.product_list_view');
-})->name('product-list');
-
-Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
-Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
-Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
-Route::get('wishlist-add', 'Frontend\Front_End_Controller@add_into_wishlist')->name('add_into_wishlist');
-Route::get('wishlist-delete', 'Frontend\Front_End_Controller@delete_into_wishlist')->name('delete_into_wishlist');
-Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
-Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
-Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
-Route::get('coupon-check', 'Frontend\CartController@coupon_check')->name('coupon-check');
-Route::post('shopping-cart-store', 'Frontend\CartController@store_cart')->name('shopping-cart-store');
-Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
-Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
-/* ====================================================
-		End Frontend Route
-==========================================================*/
 Route::group(['middleware' => ['install']], function () {
+
+	Route::get('/', 'Frontend\Front_End_Controller@index');
+
+	Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
+		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
+		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
+		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
+		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
+		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
+	
+		// check_user_name_is_exist_or_not
+		Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
+		// check_email_is_exist_or_not
+		Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
+		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+	
+	});
+	
+	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
+	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
+	Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
+	Route::get('account', 'Frontend\Front_End_Controller@account')->name('account');
+	Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
+	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
+	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
+	
+	Route::get('blog',function(){
+		return view('eCommerce.blog');
+	})->name('blog');
+	
+	Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
+	
+	
+	Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
+	Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
+	
+	
+	
+	Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
+	
+	Route::get('product-list',function(){
+		return view('eCommerce.product_list_view');
+	})->name('product-list');
+	
+	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
+	Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
+	Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
+	Route::get('wishlist-add', 'Frontend\Front_End_Controller@add_into_wishlist')->name('add_into_wishlist');
+	Route::get('wishlist-delete', 'Frontend\Front_End_Controller@delete_into_wishlist')->name('delete_into_wishlist');
+	Route::get('shopping-cart-show', 'Frontend\CartController@show_cart')->name('shopping-cart-show');
+	Route::get('shopping-cart-qty', 'Frontend\CartController@qty_cart')->name('shopping-cart-qty');
+	Route::get('shopping-cart-remove', 'Frontend\CartController@remove_cart')->name('shopping-cart-remove');
+	Route::get('coupon-check', 'Frontend\CartController@coupon_check')->name('coupon-check');
+	Route::post('shopping-cart-store', 'Frontend\CartController@store_cart')->name('shopping-cart-store');
+	Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
+	Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
+	/* ====================================================
+			End Frontend Route
+	==========================================================*/
 
 Route::get('admin/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login', 'Admin\Auth\LoginController@login')->name('admin.login');

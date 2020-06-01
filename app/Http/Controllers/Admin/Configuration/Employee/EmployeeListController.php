@@ -103,12 +103,12 @@ class EmployeeListController extends Controller
             'name' => 'required',
             'designation' => 'required',
             'department' => 'required',
-            'father_name' => 'required',
-            'mother_name' => 'required',
+            // 'father_name' => 'required',
+            // 'mother_name' => 'required',
             'contact_number' => 'required|numeric',
-            'gender' => 'required',
-            'date_of_birth' => 'required',
-            'joining_date' => 'required',
+            // 'gender' => 'required',
+            // 'date_of_birth' => 'required',
+            // 'joining_date' => 'required',
         ]);
        $uuid =  Str::uuid()->toString();
 

@@ -101,10 +101,10 @@
                                     </div>
                                 </div>
 
-                               <hr> <h3 class="text-center">Leave Configaration</h3><hr>
+                               {{-- <hr> <h3 class="text-center">Leave Configaration</h3><hr> --}}
                                 <div class="row">
                                     {{--Leave Holiday Calculation Mode --}}
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         {{ Form::label('holiday_mode', _lang('Leave Holiday Calculation Mode') , ['class' => 'col-form-label ']) }}
                                         <select name="holiday_mode" id="holiday_mode" class="form-control select" data-placeholder="Select Holiday Calculation Mode">
                                             <option value="">{{_lang('Select Holiday Calculation Mode')}}</option>
@@ -112,7 +112,7 @@
                                             <option {{get_option('holiday_mode') == 'Include' ? 'selected' : ''}} value="Include">{{_lang('Include Holiday That falls during Leave Period')}}</option>
                                             <option {{get_option('holiday_mode') == 'Include_if_enclosed' ? 'selected' : ''}} value="Include_if_enclosed">{{_lang('Include Holiday if followed & preceded by leave during Leave Period')}}</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             <hr> <h3 class="text-center">Payroll Configaration</h3><hr>
                                 <div class="row">
