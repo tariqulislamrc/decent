@@ -87,17 +87,14 @@ var DatatableSelect = function () {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 }, {
-                    data: 'name',
-                    name: 'name'
+                    data: 'code',
+                    name: 'code'
                 }, {
                     data: 'photo',
                     name: 'photo'
                 }, {
                     data: 'category',
                     name: 'category'
-                }, {
-                    data: 'sub_category',
-                    name: 'sub_category'
                 }, {
                     data: 'price',
                     name: 'price'

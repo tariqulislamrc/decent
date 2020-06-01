@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h4 class="text-center">Add New Hot Sale Product In the Feature Product List</h4>
+        <h4 class="text-center">Add New Hot Sale Product In the Hot Sale Product List</h4>
     </div>
     <div class="card-body">
         <div class="table-responsive">

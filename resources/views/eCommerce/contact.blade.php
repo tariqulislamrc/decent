@@ -31,6 +31,13 @@
                   <li>
                     <strong>Address</strong>
                     <address>{{get_option('address')?get_option('address'):''}}</address>
+                    @if (get_option('address_2') && get_option('address_2') != '')
+                        <address>{{ get_option('address_2') }}</address>
+                    @endif
+                    @if (get_option('address_optional') && get_option('address_optional') != '')
+                        <address>{{ get_option('address_optional') }}</address>
+                    @endif
+                    <address>{{get_option('city') ? get_option('city') : '' }}, {{get_option('state') ? get_option('state') : '' }}, {{get_option('zip') ? get_option('zip') : '' }}, {{get_option('country') ? get_option('country') : '' }}</address>
                   </li>
                   <li>
                     <strong>Phone</strong>
@@ -48,10 +55,10 @@
                 <form action="{{route('contactus')}}" class="contact-form" id="myfrom" method="post">
                   @csrf
                   <fieldset>
-                    <input type="text" name="name" class="form-control" placeholder="Name">
-                    <input type="email" name="email" class="form-control" placeholder="E-Mail">
+                    <input type="text" required name="name" class="form-control" placeholder="Name">
+                    <input type="email" required name="email" class="form-control" placeholder="E-Mail">
                     <input type="text" name="subject" class="form-control" placeholder="Subject">
-                    <textarea class="form-control" name="descsription" placeholder="Message"></textarea>
+                    <textarea class="form-control" required name="descsription" placeholder="Message"></textarea>
                     <button class="btn-type3" type="submit">Send</button>
                   </fieldset>
                 </form>

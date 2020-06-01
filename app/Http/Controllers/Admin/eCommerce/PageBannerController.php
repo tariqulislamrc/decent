@@ -55,7 +55,7 @@ class PageBannerController extends Controller
     {
         $request->validate([
             'page_name' => 'required',
-            'image' => 'mimes:jpeg,jpg,png | max:2000',
+            'image' => 'max:2000',
         ]);
 
         $page = new PageBanner;

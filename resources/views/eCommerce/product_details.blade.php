@@ -3,10 +3,9 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 @push('seo_section')
-<meta name="title" content="{{$model->seo_title}}">
-<meta name="keyword" content="{{$model->keyword}}">
-<meta name="description" content="{{$model->meta_description}}">
-
+    <meta name="title" content="{{$model->seo_title}}">
+    <meta name="keyword" content="{{$model->keyword}}">
+    <meta name="description" content="{{$model->meta_description}}">
 @endpush
 @push('main')
 <!-- mt main start here -->
@@ -19,17 +18,17 @@
                     <!-- Slider of the Page -->
                     <div class="slider">
                         <!-- Comment List of the Page -->
-                        <ul class="list-unstyled comment-list">
+                        {{-- <ul class="list-unstyled comment-list">
                             <li><a href="#"><i class="fa fa-heart"></i>27</a></li>
                             <li><a href="#"><i class="fa fa-comments"></i>{{$total_row}}</a></li>
                             <li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>
-                        </ul>
+                        </ul> --}}
                         <!-- Comment List of the Page end -->
                         <!-- Product Slider of the Page -->
                         <div class="product-slider">
                             @foreach ($model->photo_details as $item)
                             <div class="slide">
-                                <img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/610x490'}}"
+                                <img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
                                     alt="image descrption">
                             </div>
                             @endforeach
@@ -39,8 +38,8 @@
                         <ul class="list-unstyled slick-slider pagg-slider">
                             @foreach ($model->photo_details as $item)
                             <li>
-                                <div class="img"><img
-                                        src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/105x105'}}"
+                                <div class="img">
+                                    <img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg')}}"
                                         alt="image description"></div>
                             </li>
                             @endforeach
@@ -56,7 +55,7 @@
                         <div class="detial-holder">
                             <!-- Breadcrumbs of the Page -->
                             <ul class="list-unstyled breadcrumbs">
-                                <li><a href="#">Chairs <i class="fa fa-angle-right"></i></a></li>
+                                <li><a href="#">{{ $model->name }} <i class="fa fa-angle-right"></i></a></li>
                                 <li>Products</li>
                             </ul>
                             <!-- Breadcrumbs of the Page end -->
@@ -75,10 +74,10 @@
                                     <div class="addthis_inline_share_toolbox"></div>
                                     {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                                 </li>
-                                <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li>
-                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                {{-- <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li> --}}
+                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$model->id}}" class="heart" style="cursor:pointer;">
                                     @php
-                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                        $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $model->id)->first();
                                     @endphp	
                                     @if ($check)
                                         <i class="fa fa-heart" aria-hidden="true"></i>

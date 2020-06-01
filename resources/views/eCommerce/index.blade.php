@@ -222,9 +222,19 @@
 										<div class="container">
 											<div class="row">
 												<div class="col-xs-12">
-													@foreach ($featur_product as $item)
-														@include('eCommerce.product')
-													@endforeach
+													@if (count($featur_product) > 0)
+														@foreach ($featur_product as $item)
+															@include('eCommerce.product')
+														@endforeach
+													@else 
+														<p style="margin: 0 0 9.5px;
+														padding: 10px;
+														font-size: 20px;
+														background-color: #ddd;
+														color: red;
+														text-align: center;">Sorry. No Featured Product Found At This Moment.</p>
+													@endif
+													
 												</div>
 											</div>
 										</div>
@@ -251,7 +261,18 @@
 
 							{{-- Best Selling Product --}}
 							<div id="tab3">
-								
+								@if (count($featur_product) > 0)
+									@foreach ($featur_product as $item)
+										@include('eCommerce.product')
+									@endforeach
+								@else 
+									<p style="margin: 0 0 9.5px;
+									padding: 10px;
+									font-size: 20px;
+									background-color: #ddd;
+									color: red;
+									text-align: center;">Sorry. No Best Selling Product Found At This Moment.</p>
+								@endif
 							</div>
 
 						</div>
@@ -287,26 +308,26 @@
 								</div>
 							@endforeach
 						@else 
-							<div class="banner-15 right">
+							{{-- <div class="banner-15 right">
 								<img src="http://placehold.it/590x250" alt="image description">
 								<div class="holder">
-									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2>
+									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2> --}}
 									{{-- <a class="btn-shop" href="#">
 										<span>SHOP NOW</span>
 										<i class="fa fa-angle-right"></i>
 									</a> --}}
-								</div>
+								{{-- </div>
 							</div>
 							<div class="banner-15 right">
 								<img src="http://placehold.it/590x250" alt="image description">
 								<div class="holder">
-									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2>
+									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2> --}}
 									{{-- <a class="btn-shop" href="#">
 										<span>SHOP NOW</span>
 										<i class="fa fa-angle-right"></i>
 									</a> --}}
-								</div>
-							</div>
+								{{-- </div>
+							</div> --}}
 						@endif
 					</div>
 					{{-- Banner Part End Here --}}
@@ -316,73 +337,97 @@
 							<div class="col-xs-12 col-sm-6 col-md-3 mt-paddingbottomsm">
 								<h3 class="heading">Hot Sale</h3>
 								
-								@foreach ($hot_sale as $hot_sale_item)
-									@php
-										$find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
-										if(count($find_price) > 0) {
-											$total_product_variation = count($find_price);
-											$price = 0;
-											foreach($find_price as $row) {
-												$default_price = $row['default_sell_price'];
-												$price = $price + $default_price;
+								@if (count($hot_sale))
+									@foreach ($hot_sale as $hot_sale_item)
+										@php
+											$find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
+											if(count($find_price) > 0) {
+												$total_product_variation = count($find_price);
+												$price = 0;
+												foreach($find_price as $row) {
+													$default_price = $row['default_sell_price'];
+													$price = $price + $default_price;
+												}
+										
+												$per_product_price = round($price / $total_product_variation) ;
+												
 											}
-									
-											$per_product_price = round($price / $total_product_variation) ;
-											
-										}
-									@endphp
-									<div class="mt-product4 mt-paddingbottom20">
-										<div class="img">
-											<a href="{{route('product-details',$hot_sale_item->id)}}"><img src="{{isset($hot_sale_item->photo)?asset('storage/product/'.$hot_sale_item->photo):''}}"></a>
-										</div>
-										<div class="text">
-											<div class="frame">
-												<strong><a href="{{route('product-details',$hot_sale_item->id)}}">{{$hot_sale_item->name}}</a></strong>
-												<ul class="ratting-area">
-													<li class="list-group-item count_rating" data-score={{$hot_sale_item->avarage_retting}}>
-												</li>
-											</ul>
+										@endphp
+										<div class="mt-product4 mt-paddingbottom20">
+											<div class="img">
+												<a href="{{route('product-details',$hot_sale_item->id)}}">
+													<img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$hot_sale_item->photo): asset('img/product.jpg') }}">
+												</a>
 											</div>
-											{{-- <del class="off">$75,00</del> --}}
-											<span class="price">৳ {{$per_product_price}}</span>
+											<div class="text">
+												<div class="frame">
+													<strong><a href="{{route('product-details',$hot_sale_item->id)}}">{{$hot_sale_item->name}}</a></strong>
+													<ul class="ratting-area">
+														<li class="list-group-item count_rating" data-score={{$hot_sale_item->avarage_retting}}>
+													</li>
+												</ul>
+												</div>
+												{{-- <del class="off">$75,00</del> --}}
+												<span class="price">৳ {{$per_product_price}}</span>
+											</div>
 										</div>
-									</div>
-								@endforeach	
+									@endforeach	
+								@else 
+								<p style="margin: 0 0 9.5px;
+								padding: 10px;
+								font-size: 20px;
+								background-color: #ddd;
+								color: red;
+								text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
+								@endif
+								
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-3 mt-paddingbottomsm">
 								<h3 class="heading">Featured Products</h3>
-								@foreach ($footer_featur_product as $footer_item)
-									@php
-										$find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
-										if(count($find_price) > 0) {
-											$total_product_variation = count($find_price);
-											$price = 0;
-											foreach($find_price as $row) {
-												$default_price = $row['default_sell_price'];
-												$price = $price + $default_price;
+								@if (count($footer_featur_product))
+									@foreach ($footer_featur_product as $footer_item)
+										@php
+											$find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
+											if(count($find_price) > 0) {
+												$total_product_variation = count($find_price);
+												$price = 0;
+												foreach($find_price as $row) {
+													$default_price = $row['default_sell_price'];
+													$price = $price + $default_price;
+												}
+										
+												$per_product_price = round($price / $total_product_variation) ;
+												
 											}
-									
-											$per_product_price = round($price / $total_product_variation) ;
-											
-										}
-									@endphp
-									<div class="mt-product4 mt-paddingbottom20">
-										<div class="img">
-											<a href="{{route('product-details',$footer_item->id)}}"><img src="{{isset($footer_item->photo)?asset('storage/product/'.$footer_item->photo):''}}"></a>
-										</div>
-										<div class="text">
-											<div class="frame">
-												<strong><a href="{{route('product-details',$footer_item->id)}}">{{$footer_item->name}}</a></strong>
-												<ul class="ratting-area">
-													<li class="list-group-item count_rating" data-score={{$footer_item->avarage_retting}}>
-												</li>
-											</ul>
+										@endphp
+										<div class="mt-product4 mt-paddingbottom20">
+											<div class="img">
+												<a href="{{route('product-details',$footer_item->id)}}">
+													<img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$footer_item->photo):  asset('img/product.jpg') }}">
+												</a>
 											</div>
-											{{-- <del class="off">$75,00</del> --}}
-											<span class="price">৳ {{$per_product_price}}</span>
+											<div class="text">
+												<div class="frame">
+													<strong><a href="{{route('product-details',$footer_item->id)}}">{{$footer_item->name}}</a></strong>
+													<ul class="ratting-area">
+														<li class="list-group-item count_rating" data-score={{$footer_item->avarage_retting}}>
+													</li>
+												</ul>
+												</div>
+												{{-- <del class="off">$75,00</del> --}}
+												<span class="price">৳ {{$per_product_price}}</span>
+											</div>
 										</div>
-									</div>
-								@endforeach
+									@endforeach
+								@else 
+									<p style="margin: 0 0 9.5px;
+									padding: 10px;
+									font-size: 20px;
+									background-color: #ddd;
+									color: red;
+									text-align: center;">Sorry. No Feature Product Found At This Moment.</p>
+								@endif
+								
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-3 mt-paddingbottomxs">
 								<h3 class="heading">Sale Products</h3>
@@ -403,7 +448,8 @@
 									@endphp
 									<div class="mt-product4 mt-paddingbottom20">
 										<div class="img">
-											<a href="{{route('product-details',$item->id)}}"><img src="{{isset($item->photo)?asset('storage/product/'.$item->photo):''}}"></a>
+											<a href="{{route('product-details',$item->id)}}">
+												<img src="{{isset($item->photo) && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"></a>
 										</div>
 										<div class="text">
 											<div class="frame">
@@ -425,7 +471,9 @@
 								@foreach ($products as $item)
 								<div class="mt-product4 mt-paddingbottom20">
 									<div class="img">
-										<a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/80x80'}}" alt="image description"></a>
+										<a href="{{route('product-details',$item->id)}}">
+											<img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="Top Rated Products Image">
+										</a>
 									</div>
 									<div class="text">
 										<div class="frame">

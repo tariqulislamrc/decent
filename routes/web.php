@@ -72,6 +72,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::post('shopping-cart-store', 'Frontend\CartController@store_cart')->name('shopping-cart-store');
 	Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
 	Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
+	Route::get('welcome', 'Frontend\CartController@welcome')->name('welcome');
 	/* ====================================================
 			End Frontend Route
 	==========================================================*/

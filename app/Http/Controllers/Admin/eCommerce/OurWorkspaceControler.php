@@ -64,13 +64,13 @@ class OurWorkspaceControler extends Controller{
     public function store(Request $request){
 
         $data = $request->validate([
-            'image_one' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_one' => 'required|max:2048',
             'image_one_alt' => '',
-            'image_two' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_two' => 'required|max:2048',
             'image_two_alt' => '',
-            'image_three' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_three' => 'required|max:2048',
             'image_three_alt' => '',
-            'image_four' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_four' => 'required|max:2048',
             'image_four_alt' => '',
         ]);
 

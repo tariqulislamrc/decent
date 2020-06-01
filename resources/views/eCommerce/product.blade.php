@@ -17,9 +17,11 @@
     <div class="box">
         <div class="b1">
             <div class="b2">
-                <a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo ? asset('storage/product/'.$item->photo) : 'http://placehold.it/215x215'}}" alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}"> </a>
+                <a href="{{route('product-details',$item->id)}}">
+                    <img src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}" alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}"> 
+                </a>
                 <span class="caption">
-                    <span class="off">15% Off</span>
+                    {{-- <span class="off">15% Off</span> --}}
                     <span class="new">NEW</span>
                 </span>
                 <ul class="mt-stars">
