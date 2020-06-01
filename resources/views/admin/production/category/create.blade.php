@@ -37,7 +37,7 @@
                         </label>
                         <div class="toggle lg">
                             <label>
-                                <input name="status" id="status" type="checkbox" value="1"><span class="button-indecator"></span>
+                                <input checked name="status" id="status" type="checkbox" value="1"><span class="button-indecator"></span>
                             </label>
                         </div>
                     </div>
@@ -53,6 +53,6 @@
     </div>
 </div>
 <script>
-    $('.select').select2();
+    // $('.select').select2({width:'100%'});
 </script>
 <script src="{{ asset('js/production/category.js') }}"></script>

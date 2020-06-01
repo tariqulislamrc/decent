@@ -69,7 +69,7 @@
 
                 @can('employee_leave.view')
                     {{-- Employee Leave Type --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave*') ? 'active':''}}"
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave') ? 'active':''}}"
                                         href="{{ route('admin.employee-leave.view') }}"><i
                                 class="icon fa fa-circle-o"></i>
                             {{_lang('Employee Leave')}}</a></li>

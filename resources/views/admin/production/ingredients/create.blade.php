@@ -26,7 +26,7 @@
                         </label>
                         <div class="toggle lg">
                             <label>
-                                <input name="status" id="status" type="checkbox" value="1"><span class="button-indecator"></span>
+                                <input checked name="status" id="status" type="checkbox" value="1"><span class="button-indecator"></span>
                             </label>
                         </div>
                     </div>

@@ -20,9 +20,14 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('production_variation.create')
-                        <button data-placement="bottom" title="Create New Production Variation Template" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-variation.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
-                    @endcan
+                    @php
+                        $query = App\models\Production\VariationTemplate::count();
+                    @endphp
+                    @if ($query != 2)
+                        @can('production_variation.create')
+                            <button data-placement="bottom" title="Create New Production Variation Template" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-variation.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        @endcan
+                    @endif
                 </h3>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.production-variation.datatable') }}">

@@ -112,8 +112,7 @@ var _formValidation = function () {
                     toastr.error(data.message);
                 } else {
                     toastr.success(data.message);
-                    $('#submit').show();
-                    $('#submiting').hide();
+                    
                     $('#content_form')[0].reset();
                     if (data.goto) {
                         setTimeout(function () {
@@ -134,7 +133,7 @@ var _formValidation = function () {
                         setTimeout(function () {
 
                             window.location.href = "";
-                        }, 2500);
+                        }, 1000);
                     }
 
                     if (typeof(emran) != "undefined" && emran !== null) {
@@ -143,6 +142,9 @@ var _formValidation = function () {
                         }
                     }
                 }
+
+                $('#submit').show();
+                $('#submiting').hide();
             },
             error: function (data) {
                 var jsonValue = $.parseJSON(data.responseText);
@@ -428,8 +430,7 @@ var _modalFormValidation = function () {
                     toastr.error(data.message);
                 } else {
                     toastr.success(data.message);
-                    $('#submit').show();
-                    $('#submiting').hide();
+                    
                     $('#modal_remote').modal('toggle');
                     if (data.goto) {
                         setTimeout(function () {
@@ -442,7 +443,7 @@ var _modalFormValidation = function () {
                         setTimeout(function () {
 
                             window.location.href = "";
-                        }, 2500);
+                        }, 1000);
                     }
 
                     if (data.window) {
@@ -458,6 +459,9 @@ var _modalFormValidation = function () {
                     }
 
                 }
+
+                $('#submit').show();
+                $('#submiting').hide();
             },
             error: function (data) {
                 var jsonValue = data.responseJSON;
@@ -530,14 +534,14 @@ var _modalClassFormValidation = function () {
                         setTimeout(function () {
 
                             window.location.href = data.goto;
-                        }, 2500);
+                        }, 1000);
                     }
 
                     if (data.load) {
                         setTimeout(function () {
 
                             window.location.href = "";
-                        }, 2500);
+                        }, 1000);
                     }
 
                     if (typeof(emran) != "undefined" && emran !== null) {
@@ -780,7 +784,7 @@ $(document).on('click', '#delete_item', function(e) {
                             setTimeout(function() {
 
                                 window.location.href = data.goto;
-                            }, 2500);
+                            }, 1000);
                         }
 
 
@@ -791,7 +795,7 @@ $(document).on('click', '#delete_item', function(e) {
                             setTimeout(function() {
 
                                 window.location.href = "";
-                            }, 2500);
+                            }, 1000);
                         }
                     }
                     $('#delete_loading_' + row).hide();
@@ -857,14 +861,14 @@ $(document).on('click', '#restore_item', function(e) {
                             setTimeout(function() {
 
                                 window.location.href = data.goto;
-                            }, 2500);
+                            }, 1000);
                         }
 
                         if (data.load) {
                             setTimeout(function() {
 
                                 window.location.href = "";
-                            }, 2500);
+                            }, 1000);
                         }
                     }
                     $('#delete_loading_' + row).hide();

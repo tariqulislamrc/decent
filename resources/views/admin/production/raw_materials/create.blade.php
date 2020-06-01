@@ -10,7 +10,7 @@
                     <div class="col-md-6">
                         <label for="unit_id">{{_lang('Production Unit Name')}} <span class="text-danger">*</span></label>
                         <div class="input-group">
-                        <select name="unit_id" id="unit_id" data-placeholder="Select One" class="form-control select unit_append" required>
+                        <select data-parsley-errors-container="#parsley_unit_id_error" name="unit_id" id="unit_id" data-placeholder="Select One" class="form-control select unit_append" required>
                             <option value="">Select One</option>
                             @foreach ($models as $item)
                             <option value="{{$item->id}}">{{$item->unit}}</option>
@@ -19,6 +19,7 @@
                         <div class="input-group-append">
                             <span class="btn-modal btn btn-info" id="btn-modal" data-url="{{ route('admin.remort_unit_modal') }}" data-container=".unit_modal">+</span>
                         </div>
+                        <span id="parsley_unit_id_error"></span>
                     </div>
                     </div>
                     {{-- Production Raw Metrials name --}}
@@ -30,8 +31,8 @@
 
                      {{-- Production Raw Metrials price --}}
                     <div class="col-md-6 form-group">
-                        <label for="price">{{_lang('Raw Metrials price')}}</label>
-                        <input type="text" name="price" id="price" class="form-control" placeholder="Enter Raw Metrials price">
+                        <label for="price">{{_lang('Raw Metrials price')}} <span class="text-danger">*</span></label>
+                        <input required type="text" name="price" id="price" class="form-control" placeholder="Enter Raw Metrials price">
                     </div>
                     {{-- Production Raw Metrials description --}}
                     <div class="col-md-6 form-group">
