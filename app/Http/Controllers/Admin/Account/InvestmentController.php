@@ -153,13 +153,13 @@ class InvestmentController extends Controller
                                 }
                             })
                   ->addColumn('debit', function ($row) {
-                                if ($row->type == 'debit') {
+                                if ($row->type == 'Debit') {
                                     return '<span class="display_currency debit" data-currency_symbol="true" data-orig-value="'.$row->amount.'">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '';
                             })
                   ->addColumn('credit', function ($row) {
-                                if ($row->type == 'credit') {
+                                if ($row->type == 'Credit') {
                                     return '<span class="display_currency credit" data-currency_symbol="true" data-orig-value="'.$row->amount.'">' . number_format($row->amount,2) . '</span>';
                                 }
                                 return '<span class="credit" data-orig-value="'.number_format(0,2).'"></span>';

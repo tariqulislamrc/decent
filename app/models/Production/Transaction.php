@@ -43,7 +43,7 @@ class Transaction extends Model
 
     public function return_parent()
     {
-        return $this->hasMany(Transaction::class, 'return_parent_id');
+        return $this->hasOne(Transaction::class, 'return_parent_id');
     }
 
     public function return_trans()

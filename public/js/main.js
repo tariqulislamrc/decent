@@ -166,6 +166,7 @@ var _formValidation = function () {
                         // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
                         toastr.error(value);
                         i++;
+                        alert(value);
                     });
                 } else {
                     toastr.warning(jsonValue.message);
@@ -1031,4 +1032,66 @@ $(document).on('click', '#change_hidden', function(e) {
 
             });
 });
+
+
+function sum_table_col(table, class_name) {
+    var sum = 0;
+    table
+        .find('tbody')
+        .find('tr')
+        .each(function() {
+            if (
+                parseFloat(
+                    $(this)
+                        .find('.' + class_name)
+                        .data('orig-value')
+                )
+            ) {
+                sum += parseFloat(
+                    $(this)
+                        .find('.' + class_name)
+                        .data('orig-value')
+                );
+            }
+        });
+
+    return sum;
+}
+
+function __sum_status(table, class_name) {
+    var statuses = [];
+    var status_html = [];
+    table
+        .find('tbody')
+        .find('tr')
+        .each(function() {
+            element = $(this).find('.' + class_name);
+            if (element.data('orig-value')) {
+                var status_name = element.data('orig-value');
+                if (!(status_name in statuses)) {
+                    statuses[status_name] = [];
+                    statuses[status_name]['count'] = 1;
+                    statuses[status_name]['display_name'] = element.data('status-name');
+                } else {
+                    statuses[status_name]['count'] += 1;
+                }
+            }
+        });
+
+    return statuses;
+}
+
+function __sum_status_html(table, class_name) {
+    var statuses_sum = __sum_status(table, class_name);
+    var status_html = '<p class="text-left"><small>';
+    for (var key in statuses_sum) {
+        status_html +=
+            statuses_sum[key]['display_name'] + ' - ' + statuses_sum[key]['count'] + '</br>';
+    }
+
+    status_html += '</small></p>';
+
+    return status_html;
+}
+
 

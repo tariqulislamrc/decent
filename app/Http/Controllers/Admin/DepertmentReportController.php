@@ -168,7 +168,7 @@ class DepertmentReportController extends Controller
             $brand_id =WorkOrder::find($request->work_order_id)->brand_id;
             $product_variation_id =Variation::find($request->variation_id[$i])->product_variation_id;
              //branddetails product_id[$i] age 1 cilo....
-            $variation_exit =VariationBrandDetails::where('product_id',$product_id[$i])
+            $variation_exit =VariationBrandDetails::where('product_id',$request->product_id[$i])
                                         ->where('variation_id',$request->variation_id[$i])
                                         ->where('brand_id',$brand_id)
                                         ->first();
