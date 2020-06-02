@@ -70,14 +70,14 @@ class SalePOsController extends Controller
                  })
                  ->editColumn('paid', function ($model) {
                     if (auth()->user()->can("view_sale.sale_paid")) {
-                    return $model->payment()->where('type','Credit')->sum('amount');
+                    return $model->payment()->sum('amount');
                   }else{
                     return 'N/A';
                   }
                  })
                 ->editColumn('due', function ($model) {
                     if (auth()->user()->can("view_sale.sale_due")) {
-                    return $model->net_total-($model->payment()->where('type','Credit')->sum('amount'));
+                    return $model->net_total-($model->payment()->sum('amount'));
                     }else{
                         return 'N/A';
                     }
@@ -179,7 +179,7 @@ class SalePOsController extends Controller
              $this->transactionUtil->decreaseProductQuantity(
                                 $value['product_id'],
                                 $value['variation_id'],
-                                1,
+                                get_option('default_brand'),
                                 $decrease_qty
                             );
         }
@@ -320,10 +320,10 @@ class SalePOsController extends Controller
           if (!auth()->user()->hasRole('Super Admin')) {
                 $products->where('variations.hidden',false);
             }
-           // $products->where(function ($query) use ($brand_id) {
-           //          $query->where('VBD.brand_id', $brand_id);
+           $products->where(function ($query) use ($brand_id) {
+                    $query->where('VBD.brand_id', $brand_id);
                     
-           //      });
+                });
            $products = $products->select(
                 'products.id as product_id',
                 'products.name',
@@ -397,7 +397,8 @@ class SalePOsController extends Controller
     public function printpayment($id)
     {
         $model =TransactionPayment::find($id);
-        return view('admin.salePos.partials.paymentPrint',compact('model'));
+        $bill_for =_lang('Sales  for');
+        return view('admin.salePos.partials.paymentPrint',compact('model','bill_for'));
     }
 
     public function pos_print($id)

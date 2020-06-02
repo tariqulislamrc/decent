@@ -166,7 +166,7 @@ var _formValidation = function () {
                         // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
                         toastr.error(value);
                         i++;
-                        alert(value);
+
                     });
                 } else {
                     toastr.warning(jsonValue.message);

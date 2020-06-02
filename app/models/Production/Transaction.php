@@ -36,6 +36,11 @@ class Transaction extends Model
         return $this->hasMany('App\models\inventory\TransactionSellLine');
     }
 
+    public function job_works()
+    {
+        return $this->hasMany('App\JobWork');
+    }
+
     public function client()
     {
         return $this->belongsTo('App\models\Client');
