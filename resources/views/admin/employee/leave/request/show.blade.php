@@ -93,6 +93,7 @@
                             </tr>
                             @foreach ($leave as $item)
                             <tr>
+
                                     <td>{{$item->leave_type->name}}</td>
                                     <td>{{$item->used ? $item->used : '0'}}/{{$item->allotted ? $item->allotted : '0'}}</td>
                                 </tr>
@@ -164,8 +165,19 @@
                                        <span class="badge badge-warning">Cancelled</span> 
                                     @endif
                                 </td>
+                                @if (auth()->user()->employee_id)
+                                @php
+                                    $employee = App\models\employee\Employee::where('id',auth()->user()->employee_id)->first();
+                                @endphp
+                                    <td>{{$employee->name}} ({{$employee->prefix}}{{numer_padding($employee->code, get_option('digits_employee_code'))}})</td>
+                                @else 
+                                @php
+                                    $name = App\models\User::select('name')->where('id',auth()->user()->id)->first();
+                                @endphp
+                                    <td>{{$name->name}}</td>
+                                @endif
                                 <td>{{$item->comment}}</td>
-                                <td>{{$item->employee->name}} ({{$item->employee->prefix}}{{numer_padding($item->employee->code, get_option('digits_employee_code'))}})</td>
+                                
                                 <td>{{$item->updated_at}}</td>
                             </tr>
                             @endforeach

@@ -2,6 +2,7 @@
 
 namespace App\models\employee;
 
+use App\models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class EmployeeLeaveRequest extends Model
@@ -23,6 +24,6 @@ class EmployeeLeaveRequest extends Model
 
     function request()
     {
-        return $this->belongsTo(Employee::class, 'requester_user_id','id');
+        return $this->belongsTo(User::class, 'requester_user_id','id');
     }
 }
