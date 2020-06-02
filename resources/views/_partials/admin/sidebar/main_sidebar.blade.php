@@ -7,7 +7,7 @@
 
     @can('employee.view')
         {{-- Employee --}}
-        <li data-placement="bottom" title="Employee all System" class="treeview {{ Request::is('admin/employee*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{_lang('Employee')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li data-placement="bottom" title="Employee all System" class="treeview {{ (Request::is('admin/employee*') or Request::is('admin/emp-leave*')) ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"></i><span class="app-menu__label">{{_lang('Employee')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 
                 {{-- Employee Shift --}}
@@ -62,7 +62,7 @@
                 @can('employee_leave_type.view')
 
                 {{-- Employee Leave Type --}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave-type*') ? 'active':''}}"
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/emp-leave*') ? 'active':''}}"
                         href="{{ route('admin.employee-leave-type.index') }}"><i class="icon fa fa-circle-o"></i>
                         {{_lang('Employee Leave Type')}}</a></li>
                 @endcan

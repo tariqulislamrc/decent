@@ -41,7 +41,7 @@
                     <button data-url="{{route('admin.production-variation.addmore')}}" type="button" class="btn btn-info"  id="add">{{_lang('Add More')}}<i class="icon-arrow-right14 position-right"></i></button> 
                 </div>
             <div class="text-right">
-                <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Create')}}<i class="icon-arrow-right14 position-right"></i></button>
+                <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Update')}}<i class="icon-arrow-right14 position-right"></i></button>
                 <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>

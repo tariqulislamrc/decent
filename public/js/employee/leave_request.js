@@ -139,6 +139,7 @@ var DatatableSelect = function () {
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _modalFormValidation();
+                    _componentDatefPicker();
                 })
                 .fail(function (data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
