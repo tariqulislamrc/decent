@@ -6,7 +6,9 @@
             <div class="col-xs-12 col-sm-4 col-md-3 mt-paddingbottomsm">
                 <div class="f-widget-about">
                     <div class="logo">
-                        <a href="{{url('/')}}"><img src="{{asset('frontend')}}/images/logo.png" alt="Schon"></a>
+                        <a href="{{url('/')}}">
+                            <img alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+                        </a>
                     </div>
                     <p>{{get_option('description')?get_option('description'):''}}</p>
                     <!-- Social Network of the Page -->

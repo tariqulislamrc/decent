@@ -57,7 +57,8 @@ class Front_End_Controller extends Controller{
     
     public function privacyPolicy(){
         $model = PrivacyPolicy::first();
-        return view('eCommerce.privacy_policy',compact('model'));
+        $banner = PageBanner::where('page_name','Contact')->first();
+        return view('eCommerce.privacy_policy',compact('model', 'banner'));
     }
 
     public function category_product($id){
@@ -86,7 +87,8 @@ class Front_End_Controller extends Controller{
 
     public function termsCondition(){
         $model = TeramsCondition::first();
-        return view('eCommerce.terms_conditions',compact('model'));
+        $banner = PageBanner::where('page_name','Contact')->first();
+        return view('eCommerce.terms_conditions',compact('model', 'banner'));
     }
 
     public function contactUs(){

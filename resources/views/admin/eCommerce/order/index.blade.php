@@ -189,5 +189,18 @@
 		console.log('after open');
 	});
     </script>
+
+    @if (isset($_GET['order']) && $_GET['order'] != '')
+        @php
+            $order = $_GET['order'];
+        @endphp
+
+        @if ($order != '')
+            <script>
+                var order = '{{ $order }}';
+                $('#sort_order').val(order).trigger('change');
+            </script>
+        @endif
+    @endif
 @endpush
 

@@ -21,6 +21,25 @@
     <a class="app-sidebar__toggle pt-2" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
     
     <ul class="app-nav">
+
+        {{-- Ecommerce Navber --}}
+        <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-shopping-cart fa-lg"></i></a>
+        
+            <ul class="dropdown-menu settings-menu dropdown-menu-right">
+        
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.feature-product.index')}}"><i class="fa fa-free-code-camp fa-lg"></i> Feature Product</a></li>
+        
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i class="fa fa-fire fa-lg"></i> Hot Sale Product</a></li>
+
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i class="fa fa-bullseye fa-lg"></i> eCommerce Offer</a></li>
+
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.order.index') }}"><i class="fa fa-first-order fa-lg"></i> Order</a></li>
+
+                <li><a class="dropdown-item" href="{{ route('admin.client.index') }}"><i class="fa fa-user fa-lg"></i> Client</a></li>
+        
+            </ul>
+        
+        </li>
     
         <li class="app-search">
 

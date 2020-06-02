@@ -453,8 +453,7 @@
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
 
 
-                {{--Ecommerce Orders --}}
-    
+                    {{--Ecommerce Orders --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
 
             </ul>

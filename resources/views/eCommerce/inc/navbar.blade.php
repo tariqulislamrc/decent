@@ -3,7 +3,9 @@
         <div class="row">
             <div class="col-xs-12">
                 {{-- <div class="mt-logo"><a href="#"><img alt="schon" src="{{asset(get_option('logo')?'storage/logo/'.get_option('logo'):'favicon.png')}}"></a></div> --}}
-                <div class="mt-logo"><a href="{{url('/')}}"><img alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}"></a></div>
+                <div class="mt-logo"><a href="{{url('/')}}">
+                    <img alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+                </a></div>
                 <span class="tel">{{get_option('phone') ? get_option('phone') : '+880 1703 960157'}} </span>
                 <a id='card_check' href="{{route('shopping-cart-show')}}">
                 <div class="mt-sh-cart2">

@@ -120,15 +120,20 @@
                     </div>
                 </div>
 
-                <!-- True False -->
+                <!-- Total Products -->
                 <div class="col-md-4">
                     <div class="widget-small primary coloured-icon"><i class="icon fa fa-archive fa-3x"></i>
                         <div class="info">
                             <h4>Total Products</h4>
                             <p><b>
                             @php
-                                $count = App\models\Production\Product::where('status', 'Active')->where('title', '!=', null)->get();
-                                echo count($count);
+                                $brand_id = get_option('default_brand');
+                                $product = App\models\Production\VariationBrandDetails::where('brand_id', $brand_id)->get();
+                                foreach ($product as $value) {
+                                    $product_id[] = $value->product_id;
+                                }
+                                // $count = App\models\Production\Product::where('status', 'Active')->where('title', '!=', null)->get();
+                                echo count($product_id);
                             @endphp
                             </b></p>
                         </div>
@@ -159,6 +164,190 @@
                             
                             </b></p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Total Pending Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Pending Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=pending') }}"><span>More Infor</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Confirm Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Confirm Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'confirm')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=confirm') }}"><span>More Info</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total In Progressing Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total In Progressing Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'progressing')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=progressing') }}"><span>More Info</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total In Shipment Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total In Shipment Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'shipmen')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=shipment') }}"><span>More Info</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Cancel Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Cancel Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'cancel')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=cancel') }}"><span>More Info</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Success Order -->
+                <div class="col-md-4">
+                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info">
+                            <h4>Total Success Order</h4>
+                            <p><b>
+                                @php
+                                    echo App\models\Production\Transaction::where('ecommerce_status', 'success')->orderBy('id', 'desc')->count();
+                                @endphp
+                            </b></p>
+                            <a href="{{ route('admin.eCommerce.order.index', 'order=success') }}"><span>More Info</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Pending Order List --}}
+                <div class="col-md-6 mt-3">
+                    <div class="table-responsive">
+                        <h4 class="text-center">Recent Pending Order</h4>
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>P. Type</th>
+                                    <th>T. Code</th>
+                                    <th>S. Name</th>
+                                    <th>Phone</th>
+                                    <th width="15%">Total</th>
+                                </tr>
+                            </thead>
+                            @php
+                                $query = App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->limit(5)->get();
+                            @endphp
+                            <tbody>
+                                @if (count($query))
+                                    @foreach ($query as $item)
+                                        <tr>
+                                            <td>
+                                                @if ($item->payment_status == 'cash_on_delivery')
+                                                    Cash On Delivery
+                                                @endif    
+                                            </td>
+                                            <td>
+                                                {{$item->reference_no}}
+                                            </td>
+                                            <td>{{get_client_name($item->client_id)}}</td>
+                                            <td>{{get_client_phone($item->client_id)}}</td>
+                                            <td>{{get_option('currency') ? '৳' : get_option('currenct') }} {{$item->net_total}}</td>
+                                        </tr>
+                                    @endforeach    
+                                @else 
+                                    <tr>
+                                        <td class="text-center" colspan="5">No Pending Order Found !</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center"> <a href="{{ route('admin.eCommerce.order.index') }}">View Info</a> </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                {{-- Recent Customer List --}}
+                <div class="col-md-6 mt-3">
+                    <div class="table-responsive">
+                        <h4 class="text-center">Recently Added Customer</h4>
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Address</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            @php
+                                $query = App\models\Client::where('id', '!=', 1)->orderby('id', 'desc')->limit(5)->get();
+                            @endphp
+                            <tbody>
+                                @if (count($query))
+                                    @foreach ($query as $item)
+                                        <tr>
+                                            <td>
+                                                {{ $item->name }}
+                                            </td>
+                                            <td>
+                                                {{$item->mobile}}
+                                            </td>
+                                            <td>{{$item->landmark}}</td>
+                                            <td>{{$item->email}}</td>
+                                        </tr>
+                                    @endforeach    
+                                @else 
+                                    <tr>
+                                        <td class="text-center" colspan="5">No Customer Found !</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center"> <a href="{{ route('admin.client.index') }}">View Info</a> </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>

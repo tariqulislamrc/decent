@@ -87,6 +87,9 @@
        });
    });
 
+   $('#meta_keyword').tagsInput();
+
+
    function useMedia(media_path) {
        $('#modal_remote').modal('toggle');
        $('#summernote').summernote('insertImage', media_path);
