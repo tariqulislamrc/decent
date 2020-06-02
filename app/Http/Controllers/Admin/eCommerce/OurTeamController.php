@@ -62,9 +62,9 @@ class OurTeamController extends Controller
         $data = $request->validate([
             'team_name' => 'required|unique:our_teams|max:255',
             'team_designation' => 'required|unique:our_teams|max:255',
-            'image_one' => 'required|image_one|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_one' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'image_one_alt' => '',
-            'image_two' => 'required|image_two|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_two' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'image_two_alt' => '',
             'description' => 'required',
         ]);

@@ -1,5 +1,8 @@
 @extends('layouts.app', ['title' => _lang('Privacy Policy'),'modal' => 'lg'])
 {{-- Header Section --}}
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/tagsinput.css')}}">
+@endpush
 @section('page.header')
 <div class="app-title">
   <div>
@@ -46,12 +49,15 @@
 @stop
 {{-- Script Section --}}
 @push('scripts')
+<script src="{{asset('backend/js/tagsinput.js')}}"></script>
 <script>
    $(document).ready(function() {
        $('#summernote').summernote({
            height: 300
        });
    });
+
+
 
    function useMedia(media_path) {
        $('#modal_remote').modal('toggle');

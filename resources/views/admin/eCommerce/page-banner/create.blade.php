@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h6>{{_lang('Add New Ingredients Category')}}</h6>
+        <h6>{{_lang('Add New Page Banner')}}</h6>
     </div>
     <div class="card-body">
         <form action="{{route('admin.eCommerce.page-banner.store')}}" method="post" id="content_form">

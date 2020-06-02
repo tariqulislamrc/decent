@@ -28,7 +28,7 @@
                 {{-- Image One --}}
                 <div class="col-md-3 form-group">
                     <label for="image_one">{{_lang('Image One (545x545)')}}</label>
-                    <input type="file"  name="image_one" id="image_one" required class="form-control" />
+                    <input type="file" required  name="image_one" id="image_one" required class="form-control" />
                 </div>
 
                 {{-- Image One alt --}}
@@ -91,4 +91,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
+<script>
+    _modalFormValidation();
+</script>
 @endpush

@@ -32,7 +32,6 @@
                                 <th>{{_lang('Product Name')}}</th>
                                 <th>{{_lang('Photo')}}</th>
                                 <th>{{_lang('Category')}}</th>
-                                <th>{{_lang('Sub Category')}}</th>
                                 <th>{{_lang('Price')}}</th>
                             </tr>
                         </thead>

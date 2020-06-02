@@ -1,9 +1,13 @@
 @extends('eCommerce.layouts.app')
-@push('seo_section')
-    <meta name="description" content="{{$model->meta_description?$model->meta_description:''}}">
-    <meta name="keywords" content="{{$model->meta_keyword?$model->meta_keyword:''}}">
-    <meta name="title" content="{{$model->seo_title?$model->seo_title:''}}">
-@endpush      
+
+@if ($model != null)
+  @push('seo_section')
+      <meta name="description" content="{{ isset($model->meta_description) && $model->meta_description != '' ? $model->meta_description:''}}">
+      <meta name="keywords" content="{{ isset($model->meta_keyword) && $model->meta_keyword ?$model->meta_keyword:''}}">
+      <meta name="title" content="{{ asset($model->seo_title) && $model->seo_title != '' ? $model->seo_title : ''}}">         
+  @endpush  
+@endif
+    
 	@push('main')
 	  <!-- Main of the Page -->
       <main id="mt-main">
@@ -30,8 +34,8 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="txt">
-                  <h2>{{$model->name}}</h2>
-                  <p>{!!$model->description!!}</p>
+                  <h2>{{ isset($model) && $model != null ? $model->name : 'About Us Page'}}</h2>
+                  <p>{!! isset($model) && $model != null ? $model->description : '' !!}</p>
                 </div>
                 <div class="mt-follow-holder">
                   <span class="title">Follow Us</span>
@@ -77,6 +81,8 @@
                   </div>
                   <!-- col of the Page end -->
                    @endforeach
+                @else 
+                  <p class="text-danger text-center">No Team Information Available</p>
                 @endif
                 </div>
               </div>
@@ -95,7 +101,7 @@
           </div>
           <!-- Work Slider of the Page -->
           <ul class="list-unstyled work-slider">
-           @if (isset($our_workspace))
+           @if (count($our_workspace) > 0)
             @foreach ($our_workspace as $our_workspace_item)
             <li>
               <div class="img-holder">
@@ -114,6 +120,8 @@
               </div>
             </li>            
             @endforeach
+            @else 
+                  <li class="text-danger text-center">No Workspace Information Available</li>
           @endif
           </ul>
           <!-- Work Slider of the Page end -->

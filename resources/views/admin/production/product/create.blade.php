@@ -36,8 +36,8 @@
                 </div>
                 {{-- Articel --}}
                 <div class="col-md-3 form-group">
-                    <label for="articel">{{_lang('Articel')}} </label>
-                    <input type="text" name="articel" id="articel" class="form-control" placeholder="Enter Articel">
+                    <label for="articel">{{_lang('Articel')}} <span class="text-danger">*</span></label>
+                    <input type="text" name="articel" required id="articel" class="form-control" placeholder="Enter Articel">
                 </div>
                 {{-- Name --}}
                 <div class="col-md-5 form-group">
@@ -69,7 +69,7 @@
                 </div>
                 {{-- Select Sub Catagory --}}
                 <div class="col-md-4 form-group">
-                    <label for="sub_category">{{_lang('Select Sub Category')}} <span class="text-danger">*</span>
+                    <label for="sub_category">{{_lang('Select Sub Category')}}
                     </label>
                     <select data-placeholder="Select Parent Catagory" name="sub_category" id="sub_category"
                         class="form-control select">
@@ -248,7 +248,7 @@
 <script src="{{ asset('js/production/add_product.js') }}"></script>
 <script>
     $('.select_custom').select2({
-        width: '88%'
+        width: '75%'
     });
 
 </script>

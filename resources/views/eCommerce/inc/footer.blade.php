@@ -6,7 +6,9 @@
             <div class="col-xs-12 col-sm-4 col-md-3 mt-paddingbottomsm">
                 <div class="f-widget-about">
                     <div class="logo">
-                        <a href="{{url('/')}}"><img src="{{asset('frontend')}}/images/logo.png" alt="Schon"></a>
+                        <a href="{{url('/')}}">
+                            <img alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+                        </a>
                     </div>
                     <p>{{get_option('description')?get_option('description'):''}}</p>
                     <!-- Social Network of the Page -->
@@ -61,8 +63,17 @@
                 <div class="f-widget-about">
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled address-list align-right">
-                        <li><i class="fa fa-map-marker"></i><address>{{get_option('address')?get_option('address'):''}}</address></li>
-                        <li><i class="fa fa-phone"></i><a href="tel:{{get_option('phone')?get_option('phone'):''}}">{{get_option('phone')? '0'.get_option('phone'):''}}</a></li>
+                        <li><i class="fa fa-map-marker"></i>
+                            <address>{{get_option('address')?get_option('address'):''}}</address>
+                            @if (get_option('address_2') && get_option('address_2') != '')
+                                <address>{{ get_option('address_2') }}</address>
+                            @endif
+                            @if (get_option('address_optional') && get_option('address_optional') != '')
+                                <address>{{ get_option('address_optional') }}</address>
+                            @endif
+                            <address>{{get_option('city') ? get_option('city') : '' }}, {{get_option('state') ? get_option('state') : '' }}, {{get_option('zip') ? get_option('zip') : '' }}, {{get_option('country') ? get_option('country') : '' }}</address>
+                        </li>
+                        <li><i class="fa fa-phone"></i><a href="tel:{{get_option('phone')?get_option('phone'):''}}">{{get_option('phone')? ''.get_option('phone'):''}}</a></li>
                         <li><i class="fa fa-envelope-o"></i><a href="mailto:{{get_option('email')?get_option('email'):''}}">{{get_option('email')?get_option('email'):''}}</a></li>
                     </ul>
                 </div>
@@ -75,7 +86,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
-                <p>© <a href="{{url('/')}}">schön.</a> - All rights Reserved. Design & Develop by <a href="http://sattit.com" target="_blank">Satt IT</a></p>
+                <p>© <a href="{{url('/')}}">Decent Footwear.</a> - All rights Reserved. Powered by <a href="http://sattit.com" target="_blank">Satt IT</a></p>
             </div>
             <div class="col-xs-12 col-sm-6 text-right">
                 <div class="bank-card">

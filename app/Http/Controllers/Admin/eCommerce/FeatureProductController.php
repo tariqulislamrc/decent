@@ -29,14 +29,16 @@ class FeatureProductController extends Controller
                 ->editColumn('photo', function ($model) {
                     if($model->photo != NULL) {
                         $url= asset('storage/product/'.$model->photo);
-                    } 
-                    return '<img width="100px;" src="'.($model->photo != NULL ? $url : '').'" alt="Image of Product">';
+                    } else {
+                        $url = asset('img/product.jpg');
+                    }
+                    return '<img width="100px;" src="'.($model->photo != NULL ? $url : $url).'" alt="Image of Product">';
                 })
                 ->editColumn('category', function ($model) {
                     return $model->category->name;
                 })
-                ->editColumn('sub_category', function ($model) {
-                    return $model->sub_category->name;
+                ->editColumn('code', function ($model) {
+                    return $model->prefix . ''. $model->code;
                 })
                 ->editColumn('price', function ($model) {
                     $find_price =  Variation::where('product_id', $model->id)->get();
@@ -55,7 +57,7 @@ class FeatureProductController extends Controller
 
                     return '৳'. $per_product_price;
                 })
-                ->rawColumns(['category','sub_category', 'price', 'photo'])->make(true);
+                ->rawColumns(['category', 'price', 'name', 'photo'])->make(true);
         }
     }
   

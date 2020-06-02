@@ -31,7 +31,7 @@ class VariationController extends Controller
      */
     public function create()
     {
-      if (!auth()->user()->can('production_variation.create')) {
+        if (!auth()->user()->can('production_variation.create')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.production.variation.create');
@@ -77,13 +77,18 @@ class VariationController extends Controller
      */
     public function store(Request $request)
     {
-     if (!auth()->user()->can('production_variation.create')) {
+        if (!auth()->user()->can('production_variation.create')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
             'name' => 'required|string|max:255',
             'status' => 'required',
-         ]);
+        ]);
+
+        $count = VariationTemplate::count();
+        if($count == 2) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('You Can not make more then 2 Variation') , 'load' => false]);
+        }
 
         $name = $request->name;
         $status = $request->status;

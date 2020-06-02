@@ -28,7 +28,7 @@
                 <div class="col-md-6 form-group">
                     <label for="shift">{{_lang('Shift')}} <span class="text-danger">*</span>
                     </label>
-                    <select data-parsley-errors-container="#parsley_error_select_Shift_for_creating_new_employee" name="shift" data-placeholder="Please Select One.." class="form-control select" id="shift" required>
+                    <select data-parsley-errors-container="#parsley_error_select_shift_for_creating_new_employee" name="shift" data-placeholder="Please Select One.." class="form-control select" id="shift" required>
                         <option value="">Please Select One..</option>
                         @foreach($shifts as $shift){
                             <option value="{{$shift->id}}">{{$shift->name}}</option>

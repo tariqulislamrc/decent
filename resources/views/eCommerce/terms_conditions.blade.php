@@ -1,10 +1,12 @@
 @extends('eCommerce.layouts.app')
-@push('seo_section')
+@if ($model != '')
+  @push('seo_section')
     <meta name="description" content="{{$model->meta_description}}">
     <meta name="keywords" content="{{$model->meta_keyword}}">
     <meta name="title" content="{{$model->seo_title}}">
-@endpush      
-	@push('main')
+  @endpush  
+@endif
+@push('main')
 	  <!-- Main of the Page -->
       <main id="mt-main">
         <!-- Mt Content Banner of the Page -->
@@ -30,8 +32,8 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="txt">
-                  <h2>{{$model->name}}</h2>
-                  <p>{!!$model->description!!}</p>
+                  <h2>{{ $model != '' ? $model->name : 'Our Terms and Condition'}}</h2>
+                  <p>{!! $model != '' ? $model->description : '' !!}</p>
                 </div>
               </div>
             </div>

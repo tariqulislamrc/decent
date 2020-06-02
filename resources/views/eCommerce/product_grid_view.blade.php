@@ -63,7 +63,9 @@
 									@endphp
 									<div class="mt-product4 mt-paddingbottom20">
 										<div class="img">
-											<a href="{{route('product-details',$hot_sale_item->id)}}"><img src="{{isset($hot_sale_item->photo)?asset('storage/product/'.$hot_sale_item->photo):''}}"></a>
+											<a href="{{route('product-details',$hot_sale_item->id)}}">
+												<img src="{{isset($hot_sale_item->photo) && $hot_sale_item->photo != null ?asset('storage/product/'.$hot_sale_item->photo): asset('img/product.jpg')}}">
+											</a>
 										</div>
 										<div class="text">
 											<div class="frame">
@@ -124,7 +126,9 @@
 										<div class="box">
 											<div class="b1">
 												<div class="b2">
-													<a href="{{route('product-details',$item->id)}}"><img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/275x290'}}" alt="image description"></a>
+													<a href="{{route('product-details',$item->id)}}">
+														<img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="image description">
+													</a>
 													{{-- <ul class="mt-stars">
 														<li><i class="fa fa-star"></i></li>
 														<li><i class="fa fa-star"></i></li>

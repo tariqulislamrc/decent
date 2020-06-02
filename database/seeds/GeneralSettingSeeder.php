@@ -3,6 +3,7 @@
 use App\models\Client;
 use App\models\employee\EmployeeAttendanceType;
 use App\models\employee\EmployeeCategory;
+use App\models\Production\VariationTemplate;
 use Illuminate\Database\Seeder;
 use App\Setting;
 

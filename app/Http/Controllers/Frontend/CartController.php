@@ -216,7 +216,14 @@ class CartController extends Controller
 
         generate_id('purchase', true);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Order Complete Successfuly')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Order Complete Successfuly'), 'goto' => route('welcome')]);
 
+    }
+
+    // welcome
+    public function welcome() {
+        $model = Transaction::orderBy('id', 'desc')->first();
+        $items = TransactionSellLine::where('transaction_id', $model->id)->get();
+        return view('eCommerce.thank', compact('model', 'items'));
     }
 }
