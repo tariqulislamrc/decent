@@ -4,10 +4,10 @@
   @push('seo_section')
       <meta name="description" content="{{ isset($model->meta_description) && $model->meta_description != '' ? $model->meta_description:''}}">
       <meta name="keywords" content="{{ isset($model->meta_keyword) && $model->meta_keyword ?$model->meta_keyword:''}}">
-      <meta name="title" content="{{ asset($model->seo_title) && $model->seo_title != '' ? $model->seo_title : ''}}">         
-  @endpush  
+      <meta name="title" content="{{ asset($model->seo_title) && $model->seo_title != '' ? $model->seo_title : ''}}">
+  @endpush
 @endif
-    
+
 	@push('main')
 	  <!-- Main of the Page -->
       <main id="mt-main">
@@ -59,11 +59,13 @@
             <div class="row">
               <div class="col-xs-12">
                 <h3>OUR TEAM</h3>
-                <div class="holder">
-                  @if (isset($our_team))
-                  @foreach ($our_team as $our_team_item)
-                  <!-- col of the Page -->
-                  <div class="col wow fadeInLeft" data-wow-delay="0.4s">
+                  @if (count($our_team))
+
+                      @foreach ($our_team as $our_team_item)
+                        <div class="holder">
+
+                        <!-- col of the Page -->
+                            <div class="col wow fadeInLeft" data-wow-delay="0.4s">
                     <div class="img-holder">
                       <a href="#">
                         <img src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
@@ -79,12 +81,14 @@
                       <span class="sub-title">{{$our_team_item->team_designation}}</span>
                     </div>
                   </div>
-                  <!-- col of the Page end -->
-                   @endforeach
-                @else 
-                  <p class="text-danger text-center">No Team Information Available</p>
-                @endif
-                </div>
+                        <!-- col of the Page end -->
+
+                        </div>
+                      @endforeach
+                  @else
+
+                      <p class="text-danger text-center">No Team Information Available</p>
+                  @endif
               </div>
             </div>
           </div>
@@ -118,9 +122,9 @@
                    <img src="{{$our_workspace_item->image_four?asset('storage/eCommerce/about/'.$our_workspace_item->image_four):'http://placehold.it/545x545'}}" alt="image description">
                 </div>
               </div>
-            </li>            
+            </li>
             @endforeach
-            @else 
+            @else
                   <li class="text-danger text-center">No Workspace Information Available</li>
           @endif
           </ul>

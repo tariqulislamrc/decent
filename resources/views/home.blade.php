@@ -1,5 +1,58 @@
 @extends('layouts.app', ['title' => 'Dahsboard', 'modal' => false])
 
+<style>
+
+    .card-1{
+        background-color: #14c1d7eb;
+        border: 1px solid #0192a5;
+        margin-bottom: 20px;
+    }
+    .card-1-bottom{
+        background-color: #02bed6;
+    }
+    .card-2{
+        background-color: #4caf50;
+        border: 1px solid #028808;
+        margin-bottom: 20px;
+    }
+    .card-2-bottom{
+        background-color: #3aa53f;
+    }
+    .card-3{
+        background-color: #f9652c;
+        border: 1px solid #b93603;
+        margin-bottom: 20px;
+    }
+    .card-3-bottom{
+        background-color: #eb4d10;
+    }
+    .card-4{
+        background-color: #f9a72c;
+        border: 1px solid #c07300;
+        margin-bottom: 20px;
+    }
+    .card-4-bottom{
+        background-color: #e38a06;
+    }
+
+    i.icon.fa{
+        float: right;
+        position: relative;
+        top: 5px;
+        left: -10px;
+        opacity: 0.5;
+        color: #0000008a;
+    }
+    .info h4 {
+        font-size: 16px;
+    }
+    .info p {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+</style>
+
 {{-- Header Option --}}
 @section('page.header')
     <div class="app-title">
@@ -21,13 +74,13 @@
 
     </div>
 
-    <div class="card border border-danger">
+    <div class="card border-0 border-danger shadow rounded bg-white mb-5">
         <div class="card-header text-center"><h4>{{_lang('Employee Section')}} </h4></div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-anchor fa-3x"></i>
-                        <div class="info">
+                    <div class="card-1 pt-2 text-white rounded"><i class="icon fa fa-anchor fa-3x"></i>
+                        <div class="info p-3">
                             <h4>{{_lang('Total Employee Category')}} </h4>
                             <p><b>
                                     @php
@@ -40,8 +93,8 @@
                 </div>
                 <!-- Short Question -->
                 <div class="col-md-4">
-                    <div class="widget-small info coloured-icon"><i class="icon fa fa-university fa-3x"></i>
-                        <div class="info">
+                    <div class="card-2 pt-2 text-white rounded"><i class="icon fa fa-university fa-3x"></i>
+                        <div class="info p-3">
                             <h4>Total Employee Department</h4>
                             <p><b>
                                     @php
@@ -55,8 +108,8 @@
 
                 <!-- True False -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-user-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-3 pt-2 text-white rounded"><i class="icon fa fa-user-o fa-3x"></i>
+                        <div class="info p-3">
                             <h4>Total Employee</h4>
                             <p><b>
                                     @php
@@ -76,8 +129,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-calendar-plus-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-4 pt-2 text-white rounded"><i class="icon fa fa-calendar-plus-o fa-3x"></i>
+                        <div class="info p-3">
                             <h4>{{_lang('Today Sale')}} </h4>
                             <p><b>
                                     @php
@@ -91,8 +144,8 @@
                 </div>
                 <!-- Short Question -->
                 <div class="col-md-4">
-                    <div class="widget-small info coloured-icon"><i class="icon fa fa-calendar-check-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-3 pt-2 text-white rounded"><i class="icon fa fa-calendar-check-o fa-3x"></i>
+                        <div class="info p-3">
                             <h4>This Month's Sales</h4>
                             <p><b>
                                     @php
@@ -107,8 +160,8 @@
 
                 <!-- True False -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-calendar fa-3x"></i>
-                        <div class="info">
+                    <div class="card-2 pt-2 text-white rounded"><i class="icon fa fa-calendar fa-3x"></i>
+                        <div class="info p-3">
                             <h4>This Year's Sales</h4>
                             <p><b>
                                     @php
@@ -123,8 +176,8 @@
 
                 <!-- Total Products -->
                 <div class="col-md-4">
-                    <div class="widget-small primary coloured-icon"><i class="icon fa fa-archive fa-3x"></i>
-                        <div class="info">
+                    <div class="card-1 pt-2 text-white rounded"><i class="icon fa fa-archive fa-3x"></i>
+                        <div class="info p-3">
                             <h4>Total Products</h4>
                             <p><b>
                                     @php
@@ -145,8 +198,8 @@
 
                 <!-- True False -->
                 <div class="col-md-4">
-                    <div class="widget-small info coloured-icon"><i class="icon fa fa-user fa-3x"></i>
-                        <div class="info">
+                    <div class="card-4 pt-2 text-white rounded"><i class="icon fa fa-user fa-3x"></i>
+                        <div class="info p-3">
                             <h4>Total Customers</h4>
                             <p><b>
                                     @php
@@ -160,11 +213,11 @@
 
                 <!-- True False -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-1 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info p-3">
                             <h4>Newsletter SUBSCRIBER</h4>
                             <p><b>
-
+0
                                 </b></p>
                         </div>
                     </div>
@@ -172,90 +225,102 @@
 
                 <!-- Total Pending Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-2 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total Pending Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=pending') }}"><span>More Infor</span></a>
+                            </div>
+                        <div class="card-2-bottom text-center py-1">
+                            <a class="text-light" href="{{ route('admin.eCommerce.order.index', 'order=pending') }}"><span>More Infor</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total Confirm Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-3 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total Confirm Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'confirm')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=confirm') }}"><span>More Info</span></a>
+                        </div>
+                        <div class="card-3-bottom text-center py-1">
+                            <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=confirm') }}"><span>More Info</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total In Progressing Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-4 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total In Progressing Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'progressing')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=progressing') }}"><span>More Info</span></a>
+                        </div>
+                        <div class="card-3-bottom text-center py-1">
+                            <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=progressing') }}"><span>More Info</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total In Shipment Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-4 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total In Shipment Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'shipmen')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=shipment') }}"><span>More Info</span></a>
+                        </div>
+                        <div class="card-4-bottom text-center py-1">
+                            <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=shipment') }}"><span>More Info</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total Cancel Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-1 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total Cancel Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'cancel')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=cancel') }}"><span>More Info</span></a>
+                        </div>
+                        <div class="card-1-bottom text-center py-1">
+                            <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=cancel') }}"><span>More Info</span></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Total Success Order -->
                 <div class="col-md-4">
-                    <div class="widget-small danger coloured-icon"><i class="icon fa fa-newspaper-o fa-3x"></i>
-                        <div class="info">
+                    <div class="card-2 pt-2 text-white rounded"><i class="icon fa fa-newspaper-o fa-3x"></i>
+                        <div class="info px-3">
                             <h4>Total Success Order</h4>
                             <p><b>
                                     @php
                                         echo App\models\Production\Transaction::where('ecommerce_status', 'success')->orderBy('id', 'desc')->count()
                                     @endphp
                                 </b></p>
-                            <a href="{{ route('admin.eCommerce.order.index', 'order=success') }}"><span>More Info</span></a>
+                        </div>
+                        <div class="card-2-bottom text-center py-1">
+                            <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=success') }}"><span>More Info</span></a>
                         </div>
                     </div>
                 </div>
