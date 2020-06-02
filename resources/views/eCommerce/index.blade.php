@@ -414,7 +414,7 @@
 											</ul>
 											</div>
 											{{-- <del class="off">$75,00</del> --}}
-											<span class="price">৳ {{$per_product_price}}</span>
+											<span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
 										</div>
 									</div>
 								@endforeach

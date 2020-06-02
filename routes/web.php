@@ -108,8 +108,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('employee-shift', 'Configuration\Employee\EmployeeShiftController');
 
 		//:::::::::::::::::::::::::::::Employee leave type:::::::::::::::::::::::::::::::
-		Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
-		Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');
+		Route::group(['prefix' => 'emp-leave'],function(){
+			Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
+			Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');
+		});
+		
 
 		//:::::::::::::::::::::::::::::Employee leave Allocation:::::::::::::::::::::::::::::::
 		Route::get('employee-leave', 'Configuration\Employee\EmployeeLeaveTypeController@view')->name('employee-leave.view');
