@@ -288,6 +288,7 @@ $(function () {
                 data: {product_id: product_id, row_count: row_count, variation_id: variation_id},
                 success: function (result) {
                     $('#item').append(result.html);
+
                     if ($(result.html).find('.qty').length) {
                         $('#row').val(
                             $(result.html).find('.qty').length + parseInt(row_count)

@@ -193,8 +193,7 @@ class WopMaterialController extends Controller
 
     public function product(Request $request)
     {
-        $models = WorkOrder::with('work_order')->where('id',$request->id)->first();
+        $models = WorkOrder::with('workOrderProduct')->where('id',$request->id)->first();
         return view('admin.production.wop-materials.product', compact('models'));
-
     }
 }
