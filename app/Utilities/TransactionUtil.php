@@ -23,7 +23,7 @@ class TransactionUtil
   		'reference_no'=>$ref_no,
   		'transaction_type'=>'Sale',
       'sale_type'=>$input['sale_type'],
-  		'brand_id'=>1,
+  		'brand_id'=>get_option('default_brand'),
   		'sub_total'=>$input['sub_total'],
   		'discount'=>$input['discount'],
   		'discount_type'=>$input['discount_type'],

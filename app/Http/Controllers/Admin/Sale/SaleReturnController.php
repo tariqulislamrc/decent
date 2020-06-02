@@ -70,16 +70,16 @@ class SaleReturnController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '';
                     if (!empty($row->return_parent_id)) {
-                        $html .= '<a href="' . route('admin.sale.return_sale', $row->return_parent_id) . '" class="btn btn-info btn-xs" ><i class="fa fa-pencil-square-o"></i>' .
+                        $html .= '<a href="' . route('admin.sale.return_sale', $row->return_parent_id) . '" class="btn btn-info btn-sm text-light" ><i class="fa fa-pencil-square-o"></i>' .
                                 __("Edit") .
                                 '</a>';
                     } else {
-                          $html .= '<a href="' . route('admin.admin.sale.return_sale', $row->return_parent_id) . '" class="btn btn-info btn-xs" ><i class="fa fa-pencil-square-o"></i>' .
+                          $html .= '<a href="' . route('admin.admin.sale.return_sale', $row->return_parent_id) . '" class="btn btn-info btn-sm text-light" ><i class="fa fa-pencil-square-o"></i>' .
                                 __("Edit") .
                                 '</a>';
                     }
 
-                    $html .= '<a data-url="' . route('admin.sale.return.destroy', $row->id) . '" class="btn btn-danger btn-xs" id="delete_item" data-id="'.$row->id.'" ><i class="fa fa-trash"></i>' .
+                    $html .= '<a data-url="' . route('admin.sale.return.destroy', $row->id) . '" class="btn btn-danger btn-sm text-light" id="delete_item" data-id="'.$row->id.'" ><i class="fa fa-trash"></i>' .
                                 __("Delete") .
                                 '</a>';
                     

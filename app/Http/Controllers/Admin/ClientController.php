@@ -342,6 +342,33 @@ class ClientController extends Controller
             return json_encode($contacts);
         }
     }
+
+ public function getCustomerPayment($id)
+    {
+        if (request()->ajax()) {
+            $query = TransactionPayment::leftjoin('transactions as t', 'transaction_payments.transaction_id', '=', 't.id')
+                // ->where('t.type', 'opening_balance')
+                ->where('t.client_id', $id)
+                ->select(
+                    'transaction_payments.amount',
+                    'method',
+                    'payment_date',
+                    'transaction_payments.id as id',
+                    't.transaction_type'
+                )
+                ->groupBy('transaction_payments.id');
+            return Datatables::of($query)
+                ->editColumn('amount', function ($row) {
+                    return '<span class="display_currency paid-amount" data-orig-value="' . $row->amount . '" data-currency_symbol = true>' . $row->amount . '</span>';
+                })
+
+                 ->editColumn('action', function ($model) {
+                  return '<button class="btn btn-danger btn-sm" id="btn_modal" data-url="'.route('admin.sale.pos.printpayment',$model->id).'">Print</button>';
+                 })
+                ->rawColumns(['amount', 'method', 'action'])
+                ->make(true);
+        }
+    }
 }
 
 

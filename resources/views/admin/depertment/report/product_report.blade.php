@@ -22,7 +22,7 @@
             <div class="row">
 
                 {{-- Purchase Date: --}}
-                   <div class="col-md-6 form-group" id="work_order">
+                   <div class="col-md-6 form-group">
                     <label for="department_id">{{_lang('Depertment')}}
                     </label>
                     <div class="input-group">

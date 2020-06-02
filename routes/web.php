@@ -369,6 +369,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		    Route::resource('client', 'ClientController');
 		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
 		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
+		    Route::get('client/payment-list/{id}','ClientController@getCustomerPayment')->name('getCustomerPayment');
 
 		// Production Route End
 
@@ -718,6 +719,14 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  	Route::post('investment/get','InvestmentController@postInvest')->name('investment.postInvest');
 	  	Route::resource('investment','InvestmentController');
 	  });
+
+	  //Job Work:::::::::::::
+	  Route::get('job-work','JobworkController@index')->name('job_work.index');
+	  Route::get('job-work/create','JobworkController@create')->name('job_work');
+	  Route::get('job-work/product','JobworkController@get_job_product')->name('get_job_product');
+	  Route::post('job-work/product','JobworkController@job_work_post')->name('job_work_post');
+	  Route::get('job-work/accept/{id}','JobworkController@edit')->name('job_work.edit');
+	  Route::post('job-work/accept','JobworkController@update')->name('job_work_accept');
 
 	});
 

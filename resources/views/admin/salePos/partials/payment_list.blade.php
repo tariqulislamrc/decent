@@ -21,7 +21,7 @@
       @endcan
       <td>{{ $pay->note }}</td>
       <td>
-        <a onclick="myFunction('{{ route('admin.sale.pos.printpayment',$pay->id)}}')" class="btn btn-info"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
+        <a onclick="myFunction('{{ route('admin.sale.pos.printpayment',$pay->id)}}')" class="btn btn-info btn-sm text-light"><i class="fa fa-print" aria-hidden="true"></i>Print</a>
       </td>
     </tr>
     @endforeach

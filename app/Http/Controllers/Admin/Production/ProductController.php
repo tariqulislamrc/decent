@@ -540,6 +540,11 @@ class ProductController extends Controller
          if (!auth()->user()->hasRole('Super Admin')) {
                 $products->where('variations.hidden',false);
             }
+
+             $products->where(function ($query) use ($brand_id) {
+                    $query->where('VBD.brand_id', $brand_id);
+                    
+                });
            $products = $products->select(
                 'products.id as product_id',
                 'products.name',

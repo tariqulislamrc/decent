@@ -20,7 +20,7 @@
 </p>
 </div>
 </div>
-<p class="h2 text-uppercase mt-5 text-center"> bill for : {{ _lang('Sales Return for') }} {{ $model->transaction->reference_no }} 
+<p class="h2 text-uppercase mt-5 text-center"> bill for : {{ $bill_for }} {{ $model->transaction->reference_no }} 
 </p>
 <div class="row mt-5 px-4">
 <table class="table table-bordered border-dark">

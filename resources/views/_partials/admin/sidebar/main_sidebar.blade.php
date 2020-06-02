@@ -196,7 +196,7 @@
 
     {{-- Product --}}
     @can('production_product.view')
-        <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/product-list*') ? ' active' : '' }}" href="{{ route('admin.product_list') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Product List')}}</span></a></li>
+        <li data-placement="bottom" title="Department"><a class="app-menu__item {{ Request::is('admin/final/product-list*') ? ' active' : '' }}" href="{{ route('admin.product_list') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Product List')}}</span></a></li>
     @endcan
 
 
@@ -243,6 +243,12 @@
         </li>
     @endcan
 
+
+       {{-- Product --}}
+    @can('production_product.view')
+        <li data-placement="bottom" title="Job Work"><a class="app-menu__item {{ Request::is('admin/job-work*') ? ' active' : '' }}" href="{{ route('admin.job_work.index') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Job Work')}}</span></a></li>
+    @endcan
+
     @can('store_request.view')
         <li class="treeview {{ Request::is('admin/request*') ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-archive" aria-hidden="true"></i>
@@ -274,7 +280,7 @@
 
     @can('client.view')
         {{-- Database Backup --}}
-        <li><a class="app-menu__item {{ Request::is('admin/client') ? ' active' : '' }}" href="{{ route('admin.client.index') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Client')}}</span></a></li>
+        <li><a class="app-menu__item {{ Request::is('admin/client*') ? ' active' : '' }}" href="{{ route('admin.client.index') }}"><i class="app-menu__icon fa fa-user-o"></i><span class="app-menu__label">{{_lang('Client')}}</span></a></li>
     @endcan
 
     @can('sale_pos.view')
