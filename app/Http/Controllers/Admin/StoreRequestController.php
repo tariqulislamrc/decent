@@ -62,7 +62,11 @@ class StoreRequestController extends Controller
      if (!auth()->user()->can('store_request.create')) {
             abort(403, 'Unauthorized action.');
         }
-      $depertments =Depertment::select('id','name')->get();
+        if (auth()->user()->hasRole('Super Admin')) {
+         $depertments =Depertment::select('id','name')->get();
+        }else{
+        $depertments =Depertment::leftjoin('depertment_employees AS de', 'depertments.id', '=', 'de.depertment_id')->select('depertments.id','depertments.name')->where('de.employee_id',auth()->user()->employee_id)->get();
+        }
       return view('admin.depertment.request.create',compact('depertments'));
     }
 
@@ -87,6 +91,12 @@ class StoreRequestController extends Controller
                 'request_date'=>'required',
 
         ]);
+        $total_qty =array_sum($request->qty);
+       
+        if ($total_qty==0) {
+          throw ValidationException::withMessages(['message' => _lang('No Zero Qty Send Or enter non numeric value encounter')]);
+        }
+
         if (isset($request->raw_material_id)) {
             $store =new DepertmentStore;
             $store->dstore_id =rand();
@@ -96,6 +106,7 @@ class StoreRequestController extends Controller
             $store->created_by=auth()->user()->id;
             $store->save();
         for ($i=0; $i <count($request->raw_material_id) ; $i++) { 
+          if ($request->qty[$i]>0) {
             $model =new StoreRequest;
             $model->depertment_store_id =$store->id;
             $model->depertment_id =$request->depertment_id;
@@ -106,6 +117,7 @@ class StoreRequestController extends Controller
             $model->created_by=auth()->user()->id;
             $model->status='Pendding';
             $model->save();
+          }
         }
 
           return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
@@ -210,7 +222,9 @@ class StoreRequestController extends Controller
 
     public function request_destroy($id)
     {
-       $model =DepertmentStore::find($id)->delete();
+       $model =DepertmentStore::find($id);
+       $model->store_request()->delete();
+       $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
     }
 
@@ -245,8 +259,9 @@ class StoreRequestController extends Controller
             abort(403, 'Unauthorized action.');
         }
        $depert =Depertment::findOrFail($id);
+       $work_orders =WorkOrder::all();
 
-        return view('admin.depertment.request.request',compact('depert','type'));  
+        return view('admin.depertment.request.request',compact('depert','type','work_orders'));  
     }
 
 
@@ -271,9 +286,9 @@ class StoreRequestController extends Controller
 
     public function getWorkOrder($id, $code = Null)
     {
-        $category = WorkOrder::find($id);
-        if ($category) {
-            $code =  $category->prefix .'-'. $category->code;
+        $workorders = WorkOrder::find($id);
+        if ($workorders) {
+            $code =  $workorders->prefix .'-'. $workorders->code;
         }
         return $code;
     }

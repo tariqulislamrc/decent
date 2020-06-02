@@ -424,8 +424,19 @@ class SalePOsController extends Controller
 
     public function payment($id)
     {
-        $model =Transaction::find($id);
-        return view('admin.salePos.partials.makepayment_modal',compact('model')); 
+       $transaction = Transaction::where('id', $id)
+                                        ->with(['client'])
+                                        ->first();
+            $payments_query = TransactionPayment::where('transaction_id', $id);
+
+            // $accounts_enabled = false;
+            // if ($this->moduleUtil->isModuleEnabled('account')) {
+            //     $accounts_enabled = true;
+            //     $payments_query->with(['payment_account']);
+            // }
+
+            $payments = $payments_query->get();
+        return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments')); 
     }
 
 }

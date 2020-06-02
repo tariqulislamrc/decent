@@ -1,11 +1,11 @@
-@if($model->net_total - $model->paid > 0)
+@if($transaction->net_total - $transaction->paid > 0)
 <h3>{{ _lang('Make Payment') }}</h3>
 <div class="card">
     <div class="card-body">
         <form action="{{ route('admin.sales.payment') }}"  method="post" id="content_form">
-            <input type="hidden" name="client_id" value="{{$model->client_id}}">
+            <input type="hidden" name="client_id" value="{{$transaction->client_id}}">
             <input type="hidden" name="type" value="Credit">
-            <input type="hidden" name="transaction_id" value="{{$model->id}}">
+            <input type="hidden" name="transaction_id" value="{{$transaction->id}}">
             <div class="row">
                 <div class="col-md-12">
                     <label for="payment_date">
@@ -29,7 +29,7 @@
                     <label for="amount">
                         {{ _lang('Amount') }}
                     </label>
-                    <input type="text" class="form-control" name="amount" id="amount" value="{{ $model->due }}" required>
+                    <input type="text" class="form-control" name="amount" id="amount" value="{{ $transaction->due }}" required>
                      <p id="message" style="color: red;"></p>
                 </div>
                 <div class="col-md-12">
@@ -54,6 +54,39 @@
 </div>
 @endif
 
+<br>
+<h4>@lang('Payment Info')</h4>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+        <table class="table bg-gray">
+            <tbody>
+                <tr class="bg-green text-light">
+                    <th>#</th>
+                    <th> @lang('Date')</th>
+                    <th> @lang('Reference No')</th>
+                    <th> @lang('Amount')</th>
+                    <th> @lang('Payment mode')</th>
+                    <th> @lang('Payment note')</th>
+                    <th> @lang('Print')</th>
+                </tr>
+                @foreach ($payments as $pay)
+                <tr>
+                    <td>{{ $loop->index+1 }}</td>
+                    <td>{{ $pay->payment_date }}</td>
+                    <td>{{ $pay->payment_ref_no }}</td>
+                    <td>{{ $pay->amount }}</td>
+                    <td>{{ $pay->method }}</td>
+                    <td>{{ $pay->note }}</td>
+                    <td><button class="btn btn-sm btn-primary" onclick="myFunction()"><i class="fa fa-print" aria-hidden="true"></i></button></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
 <script>
  $(document).on('change','.method',function(){
         var method =$(".method").val();
@@ -65,4 +98,8 @@
           $('.reference_no').show(400);  
         }
    });
+
+    function myFunction(url) {
+    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
+    }
 </script>

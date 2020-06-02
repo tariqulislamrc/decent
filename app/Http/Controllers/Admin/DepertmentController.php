@@ -108,9 +108,14 @@ class DepertmentController extends Controller
      */
     public function show($id)
     {
-        if (!auth()->user()->can('production_department.view')) {
+     if (!auth()->user()->can('production_department.view')) {
             abort(403, 'Unauthorized action.');
         }
+
+      if (!auth()->user()->hasRole('Super Admin') && empdeptExit($id,auth()->user()->employee_id)==false)
+      {
+        abort(403, 'Unauthorized action.');
+      }
       $model =Depertment::findOrFail($id);
       return view('admin.depertment.show',compact('model'));
     }

@@ -41,7 +41,11 @@ class DepertmentReportController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $orders =WorkOrder::all();
-        $depertments =Depertment::all();
+         if (auth()->user()->hasRole('Super Admin')) {
+         $depertments =Depertment::select('id','name')->get();
+        }else{
+        $depertments =Depertment::leftjoin('depertment_employees AS de', 'depertments.id', '=', 'de.depertment_id')->select('depertments.id','depertments.name')->where('de.employee_id',auth()->user()->employee_id)->get();
+        }
         return view('admin.depertment.report.product_report',compact('orders','depertments'));
     }
 
@@ -250,7 +254,11 @@ class DepertmentReportController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $depertments =Depertment::all();
+       if (auth()->user()->hasRole('Super Admin')) {
+         $depertments =Depertment::select('id','name')->get();
+        }else{
+        $depertments =Depertment::leftjoin('depertment_employees AS de', 'depertments.id', '=', 'de.depertment_id')->select('depertments.id','depertments.name')->where('de.employee_id',auth()->user()->employee_id)->get();
+        }
         return view('admin.depertment.report.material',compact('depertments'));
     }
 
