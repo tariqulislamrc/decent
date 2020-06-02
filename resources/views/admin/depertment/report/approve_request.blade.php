@@ -14,12 +14,12 @@
   <div class="col-md-12">
     <div class="tile">
       <div class="tile-body">
-        <h3 class="bg-info text-center py-2">Store Request</h3>
+        <h3 class="">Store Request</h3><hr>
         <form action="{{route('admin.report.material_store')}}" method="post" class="ajax_form"
           enctype="multipart/form-data">
           <div class="row">
             <table class="table table-bordered">
-              <thead>
+              <thead class="bg-green text-light">
                 <tr>
                   <th>{{ _lang('Material') }}</th>
                   <th>{{ _lang('Request') }}</th>
@@ -30,7 +30,7 @@
                   <th>{{ _lang('Waste') }}</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="bg-gray">
                 @foreach ($model->store_request as $element)
                 <tr>
                   <td>

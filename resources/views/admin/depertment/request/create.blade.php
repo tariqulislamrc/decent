@@ -20,7 +20,8 @@
             <div class="tile-body">
                 <div class="col-md-8 mx-auto" >
                     <div class="input-group mb-3">
-                        <select class="form-control select" data-placeholder="Select Depertment" name="depertment" id="depertment" class="form-control" data-url="{{ route('admin.request.get_reques_prev') }}">
+                        {{-- data-placeholder="Select Depertment" --}}
+                        <select class="form-control select"  name="depertment" id="depertment" class="form-control" data-url="{{ route('admin.request.get_reques_prev') }}">
                             <option value="">Select Depertment</option>
                             @foreach ($depertments as $element)
                             <option value="{{ $element->id }}">{{ $element->name }}</option>

@@ -83,6 +83,22 @@
                                     <span class="display_currency" data-currency_symbol="true">
                                     {{ $contact->total_invoice - $contact->invoice_received }}</span>
                                 </p>
+                                <strong>@lang('Total Sale Return')</strong>
+                                <p class="text-muted">
+                                    <span class="display_currency" data-currency_symbol="true">
+                                    {{ $contact->sale_return }} {{ get_option('currency_symbol') }}</span>
+                                </p>
+                                <strong>@lang('Sale Return Paid')</strong>
+                                <p class="text-muted">
+                                    <span class="display_currency" data-currency_symbol="true">
+                                    {{ $contact->return_paid }} {{ get_option('currency_symbol') }}</span>
+                                </p>
+
+                                <strong>@lang('Sale Return Due')</strong>
+                                <p class="text-muted">
+                                    <span class="display_currency" data-currency_symbol="true">
+                                    {{ $contact->sale_return-$contact->return_paid }} {{ get_option('currency_symbol') }}</span>
+                                </p>
                                 @if(!empty($contact->opening_balance) && $contact->opening_balance != '0.00')
                                 <strong>{{ _lang('Opening Balance') }}</strong>
                                 <p class="text-muted">
@@ -100,7 +116,7 @@
                     </div>
                 </div>
                 <div class="row">
-                       <div class="col-sm-12">
+                    <div class="col-sm-12">
                         <table class="table table-bordered table-striped ajax_view" id="sell_table">
                             <thead>
                                 <tr>
@@ -115,98 +131,96 @@
                                 </tr>
                             </thead>
                         </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- /basic initialization -->
-@stop
-{{-- Script Section --}}
-@push('scripts')
-<script type="text/javascript" src="{{asset('backend/js/plugins/jquery.dataTables.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('backend/js/plugins/dataTables.bootstrap.min.js')}}"></script>
-{{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
-<script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-<script>
-           $('.select').select2();
-
-     $(document).on('click', '#content_managment', function(e) {
-            e.preventDefault();
-            //open modal
-            $('#modal_remote').modal('toggle');
-            // it will get action url
-            var url = $(this).data('url');
-            // leave it blank before ajax call
-            $('.modal-body').html('');
-            // load ajax loader
-            $('#modal-loader').show();
-            $.ajax({
-                    url: url,
-                    type: 'Get',
-                    dataType: 'html'
-                })
-                .done(function(data) {
-                    $('.modal-body').html(data).fadeIn(); // load response
-                    $('#modal-loader').hide();
-                    $('#branch_no').focus();
-                    $('.select').select2();
-                    _modalClassFormValidation();
-                    _modalFormValidation();
-                })
-                .fail(function(data) {
-                    $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
-                    $('#modal-loader').hide();
-                });
-        });
-
- function myFunction(url) {
+    <!-- /basic initialization -->
+    @stop
+    {{-- Script Section --}}
+    @push('scripts')
+    <script type="text/javascript" src="{{asset('backend/js/plugins/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('backend/js/plugins/dataTables.bootstrap.min.js')}}"></script>
+    {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
+    <script>
+    $('.select').select2();
+    $(document).on('click', '#content_managment', function(e) {
+    e.preventDefault();
+    //open modal
+    $('#modal_remote').modal('toggle');
+    // it will get action url
+    var url = $(this).data('url');
+    // leave it blank before ajax call
+    $('.modal-body').html('');
+    // load ajax loader
+    $('#modal-loader').show();
+    $.ajax({
+    url: url,
+    type: 'Get',
+    dataType: 'html'
+    })
+    .done(function(data) {
+    $('.modal-body').html(data).fadeIn(); // load response
+    $('#modal-loader').hide();
+    $('#branch_no').focus();
+    $('.select').select2();
+    _modalClassFormValidation();
+    _modalFormValidation();
+    })
+    .fail(function(data) {
+    $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
+    $('#modal-loader').hide();
+    });
+    });
+    function myFunction(url) {
     window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=1400,height=400");
     }
-       var sell_table = $('#sell_table').DataTable({
-        responsive: {
-                details: {
-                    type: 'column',
-                    target: 'tr'
-                }
-        },
-        processing: true,
-        serverSide: true,
-        aaSorting: [[0, 'desc']],
-        ajax: '{{ route('admin.sale.pos.index',['customer_id'=>$contact->id]) }}',
-        columnDefs: [ {
-            "targets": 7,
-            "orderable": false,
-            "searchable": false
-        } ],
-            columns: [
-                // { data: 'checkbox', name: 'checkbox' },
-               {
-                    data: 'date',
-                    name: 'date'
-                }, {
-                    data: 'reference_no',
-                    name: 'reference_no'
-                }, {
-                    data: 'client',
-                    name: 'client'
-                }, {
-                    data: 'payment_status',
-                    name: 'payment_status'
-                }, {
-                    data: 'net_total',
-                    name: 'net_total'
-                }, {
-                    data: 'paid',
-                    name: 'paid'
-                }, {
-                    data: 'due',
-                    name: 'due'
-                }, {
-                    data: 'action',
-                    name: 'action'
-                }
-            ]
+    var sell_table = $('#sell_table').DataTable({
+    responsive: {
+    details: {
+    type: 'column',
+    target: 'tr'
+    }
+    },
+    processing: true,
+    serverSide: true,
+    aaSorting: [[0, 'desc']],
+    ajax: '{{ route('admin.sale.pos.index',['customer_id'=>$contact->id]) }}',
+    columnDefs: [ {
+    "targets": 7,
+    "orderable": false,
+    "searchable": false
+    } ],
+    columns: [
+    // { data: 'checkbox', name: 'checkbox' },
+    {
+    data: 'date',
+    name: 'date'
+    }, {
+    data: 'reference_no',
+    name: 'reference_no'
+    }, {
+    data: 'client',
+    name: 'client'
+    }, {
+    data: 'payment_status',
+    name: 'payment_status'
+    }, {
+    data: 'net_total',
+    name: 'net_total'
+    }, {
+    data: 'paid',
+    name: 'paid'
+    }, {
+    data: 'due',
+    name: 'due'
+    }, {
+    data: 'action',
+    name: 'action'
+    }
+    ]
     });
-</script>
-@endpush
+    </script>
+    @endpush

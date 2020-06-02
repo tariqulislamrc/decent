@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username', 'phone', 'status'
+        'name', 'user_type','surname','email','first_name','last_name', 'password', 'username', 'phone', 'status','uuid'
     ];
 
     /**
@@ -77,7 +77,7 @@ class User extends Authenticatable
 
     public function getNameAttribute() {
 		$profile = $this->getProfile();
-		return ($profile->first_name ? $profile->first_name : '') . ($profile->middle_name ? ' ' . $profile->middle_name : '') . ($profile->last_name ? ' ' . $profile->last_name : '');
+		// return ($profile->first_name ? $profile->first_name : '') . ($profile->middle_name ? ' ' . $profile->middle_name : '') . ($profile->last_name ? ' ' . $profile->last_name : '');
 	}
 
 	public function getNameWithEmailAttribute() {

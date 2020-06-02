@@ -6,6 +6,7 @@ use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ApproveStoreItem;
+use App\models\depertment\DepertmentEmployee;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\Department;
@@ -806,5 +807,14 @@ function getIp(){
         // $output['total_shipping_charges'] = $trans_details->sum('shipping_charges');
   
         // return $output;
+    }
+
+
+    function empdeptExit($dept,$id)
+    {
+      $depert =DepertmentEmployee::where('depertment_id',$dept)->where('employee_id',$id)->exists();
+      if ($depert !=null) {
+      	return true;
+      }
     }
 ?>

@@ -209,10 +209,14 @@ class Installer
         // Create the user
         $user = User::create([
             'name' => $name,
+            'user_type'=>'Super Admin',
+            'surname'=>'Mr',
+            'first_name'=>'Md',
+            'last_name'=>'Admin',
+            'username'=>'super_admin',
             'email' => $email,
             'password' => $password,
             'phone' => $phone,
-            'user_type' => 'Admin',
 			'image' => 'profile.png',
             'uuid'=>Str::uuid(),
             'status'=>'activated',

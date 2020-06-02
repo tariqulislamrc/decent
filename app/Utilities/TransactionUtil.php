@@ -303,6 +303,8 @@ class TransactionUtil
                         $tranaction_payments[] = $array;
 
                         //Update transaction status to paid
+                        $transaction->paid =$transaction->paid+$due;
+                        $transaction->due =$transaction->due-$due;
                         $transaction->payment_status = 'paid';
                         $transaction->save();
 
@@ -312,6 +314,8 @@ class TransactionUtil
                         $tranaction_payments[] = $array;
 
                         //Update transaction status to partial
+                        $transaction->paid =$transaction->paid+$due;
+                        $transaction->due =$transaction->due-$due;
                         $transaction->payment_status = 'partial';
                         $transaction->save();
                         break;

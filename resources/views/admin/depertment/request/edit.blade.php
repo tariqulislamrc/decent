@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Depertment Store Request'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Approve Store Request'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
-        {{_lang('Depertment Store Request')}}</h1>
+        <h1 data-placement="bottom" title="Approve Store Request."><i class="fa fa-universal-access mr-4"></i>
+        {{_lang('Approve Store Request')}}</h1>
     </div>
 </div>
 @stop
