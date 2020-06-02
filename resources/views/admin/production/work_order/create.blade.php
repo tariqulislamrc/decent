@@ -83,7 +83,7 @@
                     <div class="col-md-4 form-group">
                         <label for="name">{{_lang('Select Product')}} <span class="text-danger">*</span>
                         </label>
-                        <input type="text" id="search_product" class="form-control">
+                        <input type="text" id="search_product" class="form-control" placeholder="Type Product Name">
                        {{-- <select required data-placeholder="Select One" name="product_id" id="product_id"
                                 class="form-control select">
                             <option value="" selected>Select One</option>

@@ -29,8 +29,8 @@
                     <p class="h4 pt-4">{{_lang('Name')}} : {{$product->name}}</p>
                     <p class="h5"> {{_lang('Code')}} : {{$product->prefix}}-{{$product->code}}</p>
                     <p> {{_lang('Articel')}} : {{$product->articel}}</p>
-                    <p> {{_lang('Parent Category')}} : {{$product->category->name}} </p>
-                    <p> {{_lang('Sub Category')}} : {{$product->sub_category->name}}</p>
+                    <p> {{_lang('Parent Category')}} : {{$product->category?$product->category->name:''}} </p>
+                    <p> {{_lang('Sub Category')}} : {{$product->sub_category?$product->sub_category->name:''}}</p>
                     <p>{{_lang('Product Status')}} : <span
                         class="font-weight-bold badge {{$product->status == 'Active'?'badge-success':'badge-danger'}}">
                     {{$product->status}} </span> </p>
