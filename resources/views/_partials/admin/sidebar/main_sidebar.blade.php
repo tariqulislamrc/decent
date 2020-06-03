@@ -407,10 +407,10 @@
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Page Banner')}}</a></li>
                
                     {{-- Add Slider  --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}" href="{{ route('admin.eCommerce.slider.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a></li>
+                    {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}" href="{{ route('admin.eCommerce.slider.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a></li> --}}
                
                     {{-- Home Page Image  --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}" href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li>
+                    {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}" href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li> --}}
            
                     {{-- Add Coupons --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>

@@ -121,8 +121,7 @@ class CartController extends Controller
     }
 
 
-    public function store_cart(Request $request)
-    {
+    public function store_cart(Request $request){
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
             Session::put('total', $request->total_hidden);
@@ -136,7 +135,9 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        //dd('hello');
         $banner = PageBanner::where('page_name', 'Checkout')->first();
+
         if (auth('client')->check() == true) {
             $user = auth('client')->user('clients_id');
             $client = Client::findOrFail($user->clients_id);
@@ -172,11 +173,12 @@ class CartController extends Controller
         $client->save();
 
 
-        $code_prefix = get_option('invoice_code_prefix');
-        $code_digits = get_option('digits_invoice_code');
+        $code_prefix = get_option('invoice_code_prefix', 'INV-');
+        $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
-        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits, );
         $invoice_no = $code_prefix . $uniqu_id;
+        
 
         $payment = new Transaction();
         $payment->client_id = $request->client_id;
@@ -186,6 +188,7 @@ class CartController extends Controller
         $payment->sell_note = $request->order_note;
         $payment->sale_type = 'debit';
         $payment->payment_status = 'cash_on_delivery';
+
         $payment->reference_no = rand(1, 100000000);
 
         if($request->checkbox == 'on'){
@@ -199,6 +202,7 @@ class CartController extends Controller
         $payment->ecommerce_status = 'pending';
         $payment->save();
         $transaction_id = $payment->id;
+        
 
         for ($i = 0; $i < count($request->product_id); $i++) {
 
@@ -222,8 +226,9 @@ class CartController extends Controller
 
     // welcome
     public function welcome() {
+        $banner = PageBanner::where('page_name', 'Welcome')->first();
         $model = Transaction::orderBy('id', 'desc')->first();
-        $items = TransactionSellLine::where('transaction_id', $model->id)->get();
-        return view('eCommerce.thank', compact('model', 'items'));
+        $items = TransactionSellLine::where('transaction_id', $model->reference_no)->get();
+        return view('eCommerce.thank', compact('model', 'items','banner'));
     }
 }

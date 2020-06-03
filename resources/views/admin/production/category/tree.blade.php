@@ -10,9 +10,7 @@
 
 {{-- Catagory Delete --}}
                 @can('production_category.delete')
-                    <i class="icon fa fa-trash-o text-danger ml-1 delete" onclick="delete_item('{{route('admin.production-category.destroy',$model->id) }}')" id="delete_model"
-                       data-url=""
-                       data-id="{{$model->id}}"></i>
+                    <i class="icon fa fa-trash-o text-danger ml-1 delete"  id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.production-category.destroy',$model->id) }}"></i>
                 @endcan
 		</span>
 	</li>

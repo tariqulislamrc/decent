@@ -98,13 +98,13 @@ function gbv($params, $keys) {
 if (!function_exists('get_option')) {
     function get_option($name, $default = null)
     {
+	
         if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
-            $setting = DB::table('settings')->where('name', $name)->get();
-            if (!$setting->isEmpty()) {
-                return $setting[0]->value;
+			$setting = DB::table('settings')->where('name', $name)->first();
+	
+            if ($setting and $setting->value) {
+                return $setting->value;
             }
-
-
         }
         return $default;
     }
@@ -352,7 +352,7 @@ function generate_id($id_type, $update = false){
 
 }
 
-function numer_padding($id, $code_digits=3){
+function numer_padding($id = 1, $code_digits=3){
 	// $id = $id + 1 ;
 	return str_pad($id, $code_digits,0, STR_PAD_LEFT);
 }

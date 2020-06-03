@@ -386,6 +386,14 @@
 </div>
 
 <script>
+    $(document).ready(function(){
+        var change_status = $("#change_status").val();
+        if(change_status =="success"){
+            $('#change_status').prop('disabled', true);
+        }else{
+            $('#change_status').prop('disabled', false);
+        }
+    });
     $('#change_status').change(function() {
         var val = $(this).val();
         var id = $('#id').val();

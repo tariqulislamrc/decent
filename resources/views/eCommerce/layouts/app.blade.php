@@ -31,9 +31,10 @@
 	<link href="{{asset('backend/css/toastr.min.css')}}" rel="stylesheet">
 	<link href="{{asset('backend/css/parsley.css')}}" rel="stylesheet">
 	@stack('css')
+
 	@if (isset($seo))
-	{{$seo->google_analytics}}
-	{{$seo->bing_analytics}}
+	{!!$seo->google_analytics!!}
+	{!!$seo->bing_analytics!!}
 	@endif
 </head>
 <body>

@@ -49,26 +49,19 @@
     
 <form action="{{route('shopping-checkout-store')}}" method="post" id="content_form">
 	@csrf
-    <section class="mt-detail-sec toppadding-zero wow fadeInUp" data-wow-delay="0.4s">
+    <section class="mt-detail-sec toppadding-zero wow fadeInUp" data-wow-delay="0.4s" style="background-color: #fff; ">
         <div class="container">
             <div class="bg-light p-2 row">
                 <h1 class="text-center">THANK YOU</h1>
                 <h3 class="text-center">Your order was completed successfully</h3>
 
-                <div class="col-md-4 text-right" style="margin-top: 25px;">
+                <div class="col-md-4 text-center" style="margin-top: 25px;">
                     <img style="width:100px;float:right;" src="{{ asset('img/thank-you.png') }}" alt="Thank You Image">
                 </div>
-                <div class="col-md-8 text-right" style="margin-top: 40px;">
-                    <p><b>Thank you for purchase our products. Generally we deliver products within 48-72 Hours. Your Invoice Number is {{ $model->reference_no }}. We sent you an email from your email address. Pleas keep it for your records. You can also see it below and your Account.</b></p>
-                </div>
-
-                
-                <div style="margin-top: 25px;">
-                    <div class="col-md-8 text-right" style="margin-top: 40px;">
-                        <p><b>You can visit the My Account page at any time to check the status of your order or click here to print a copy of your receipt.</b></p>
-                        <img style="width:100px;float:right;" src="{{ asset('img/code.png') }}" alt="Thank You Image">
-                        <img style="width:100px;float:right;" src="{{ asset('img/print.png') }}" alt="Thank You Image">
-                    </div>
+                <div class="col-md-6 text-center" style="margin-top: 40px;">
+                    <p><b>Thank you for purchase our products. Generally we deliver products within 48-72 Hours. Your Invoice Number is {{ $model->reference_no }}. We sent you an email from your email address. Pleas keep it for your records. You can also see it below and your Account.</b>
+                    <a href="{{ route('eCommerce.invoice.create', $model->reference_no) }}" target="_blank"> <button type="button" id="content_form" data-url ="">{{_lang('Get Your Invoice')}}</button></a>
+                    </p>
                 </div>
 
                 <div class="table-responsive">
@@ -91,5 +84,11 @@
 <script src="{{ asset('js/eCommerce/checkout.js') }}"></script>
 <script>
     _formValidation();
+
+    /* $('#content_form').click(function() {
+        var url = $(this).data('url');
+        window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=600,height=300");
+
+    }); */
 </script>
 @endpush

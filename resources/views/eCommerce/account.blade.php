@@ -2,14 +2,14 @@
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
-    <section class="mt-contact-banner" style="background-image: url(http://placehold.it/1920x205);">
+    <section class="mt-contact-banner"  style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <h1>SIGN IN or register</h1>
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="index.html">home <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="{{url('/')}}">home <i class="fa fa-angle-right"></i></a></li>
                             <li>register</li>
                         </ul>
                     </nav>

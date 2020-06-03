@@ -20,6 +20,8 @@ use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
+use App\models\Production\Transaction;
+use App\models\inventory\TransactionSellLine;
 use App\models\Production\VariationBrandDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -223,5 +225,11 @@ class Front_End_Controller extends Controller{
         }
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Product Removed from your wishlist') , 'load' => true]);
+    }
+
+    public function invoice($id) {
+        $transaction =  Transaction::where('reference_no',$id)->first();
+        $transaction_sale = TransactionSellLine::where('transaction_id',$transaction->id)->get();
+        return view('eCommerce.invoice',compact('transaction','transaction_sale'));
     }
 }

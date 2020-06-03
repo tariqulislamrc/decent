@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\models\eCommerce\ClientShippingAddress;
 use App\models\inventory\TransactionSellLine;
 use App\models\Production\Transaction;
+use App\models\Production\TransactionPayment;
 use App\models\Production\VariationBrandDetails;
 
 class OrderController extends Controller
@@ -63,6 +64,13 @@ class OrderController extends Controller
             $data = 'In Shipment';
         } elseif ($val == 'success') {
             $data = 'Success';
+                $transaction_payment = new TransactionPayment();
+                $transaction_payment->transaction_id = $model->id;
+                $transaction_payment->method = $model->payment_status;
+                $transaction_payment->payment_date = $model->date;
+                $transaction_payment->amount = $model->net_total;
+                $transaction_payment->type = 'credit';
+                $transaction_payment->save();
         } else {
             // find all products from transaction sell line table
             $fapftslt = TransactionSellLine::where('transaction_id', $id)->get();

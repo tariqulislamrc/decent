@@ -193,8 +193,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
+
        if (!auth()->user()->can('production_category.delete')) {
             abort(403, 'Unauthorized action.');
         }
