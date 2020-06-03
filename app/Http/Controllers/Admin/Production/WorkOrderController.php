@@ -475,4 +475,54 @@ class WorkOrderController extends Controller
         }
         return $name;
     }
+
+    // pay_bill
+    public function transaction_list() {
+        return view('admin.production.work_order.list');
+    }
+
+    // transaction_datatable
+    public function transaction_datatable(Request $request) {
+        if ($request->ajax()) {
+            $documents = Transaction::where('transaction_type', 'work_order')->orderBy('id', 'desc')->get();
+            return DataTables::of($documents)
+            ->addIndexColumn()
+            ->editColumn('payment_status', function ($document) {
+                if ($document->type == 'sample') {
+                    return '<span class="badge badge-warning">Sample Work Order</span>';
+                } else {
+                    return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
+                }
+            })
+            ->editColumn('action', function ($document) {
+                return '<a href="'. route('admin.print.work-order-transaction', base64_encode($document->reference_no)) .'" target="blank"><button type="button" class="btn btn-sm btn-success"><i class="fa fa-print" aria-hidden="true"></i> </button></a>';
+            })
+            // ->addColumn('action', function ($model) {
+            //     return view('admin.production.work_order.action', compact('model'));
+            ->rawColumns(['action', 'payment_status'])->make(true);
+        }
+    }
+
+    // print
+    public function print($id) {
+        $id = base64_decode($id);
+
+        // find the transaction list
+        $model = Transaction::where('reference_no', $id)->firstOrFail();
+
+        // find the work order
+        $work_order = WorkOrder::findOrFail($model->work_order_id);
+
+        // find the brand
+        $brand = Brand::findOrFail($work_order->brand_id);
+
+        // find the sell ling
+        $lines = WorkOrderProduct::where('workorder_id', $work_order->id)->get();
+
+        // find the transaction payment
+        $items = TransactionPayment::where('transaction_id', $model->id)->get();
+
+        return view('admin.production.work_order.print', compact('model', 'work_order', 'items', 'brand', 'lines'));
+
+    }
 }

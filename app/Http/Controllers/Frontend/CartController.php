@@ -185,7 +185,7 @@ class CartController extends Controller
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
         $payment->sale_type = 'debit';
-        $payment->payment_status = 'cash_on_delivery';
+        $payment->payment_status = '    ';
         $payment->reference_no = rand(1, 100000000);
 
         if($request->checkbox == 'on'){

@@ -296,6 +296,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::resource('production-raw-materials', 'Production\RawMaterialsController');
 
 			//production-work-order
+			Route::get('production-work-order/list', 'Production\WorkOrderController@transaction_list')->name('production-work-order.list');
+			Route::get('work-order-transaction/datatable', 'Production\WorkOrderController@transaction_datatable')->name('work-order-transaction.datatable');
 			Route::get('production-work-order/datatable', 'Production\WorkOrderController@datatable')->name('work-order.datatable');
 			Route::get('production-work-order/item', 'Production\WorkOrderController@item')->name('production-work-order.item');
 			Route::get('product/get_product', 'Production\WorkOrderController@getProduct');
@@ -303,7 +305,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-work-order/pay/{id}', 'Production\WorkOrderController@pay_form')->name('production-work-order.pay');
 			Route::post('production-work-order/pay-work-order-bill', 'Production\WorkOrderController@pay_bill')->name('production-work-order.pay_store');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
-
+			Route::get('print-work-order-transaction-list/{id}', 'Production\WorkOrderController@print')->name('print.work-order-transaction');
 			// Production Variation Route
 			Route::get('ajax_get_before_data', function() {
 				$row = request()->i;

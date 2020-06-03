@@ -173,6 +173,10 @@
                                 class="icon fa fa-circle-o"></i> {{_lang('Work Order')}}
                             </a>
                     </li>
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/production-work-order-list') ? 'active':''}}" href="{{ route('admin.production-work-order.list') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Work Order Tran.')}}
+                        </a>
+                    </li>
                     @endcan
                     @can('production_wop_materials.view')
                     {{-- Production wop Materials --}}

@@ -13,4 +13,9 @@ class WorkOrderProduct extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // relation with variation
+    public function variation() {
+        return $this->belongsTo(Variation::class, 'variation_id', 'id');
+    }
 }
