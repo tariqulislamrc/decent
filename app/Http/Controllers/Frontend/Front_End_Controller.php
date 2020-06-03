@@ -72,7 +72,7 @@ class Front_End_Controller extends Controller{
         
     public function account()
     {
-        if (Auth::check()) {
+        if (Auth::guard('client')->check()) {
          return Redirect::to('home');
         } else {
             return view('eCommerce.account');

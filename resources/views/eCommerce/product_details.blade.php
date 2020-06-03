@@ -92,7 +92,7 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-md-4">Choose Variation</label>
                                 <div class="col-md-8">
-                                    <select name="variation" required class="form-control select"
+                                    <select name="variation" required class="form-control "
                                         data-placeholder="Select Variation" id="get_price"
                                         data-url='{{route('get-price')}}'>
                                         <option value="">Select Variation</option>

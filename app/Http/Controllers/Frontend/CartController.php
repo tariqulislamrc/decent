@@ -137,7 +137,7 @@ class CartController extends Controller
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
         } else {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('login')]);
         }
     }
 
@@ -152,7 +152,7 @@ class CartController extends Controller
             $models = Cart::getContent();
             return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('login')]);
         }
     }
 

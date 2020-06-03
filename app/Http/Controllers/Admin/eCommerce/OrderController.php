@@ -70,6 +70,7 @@ class OrderController extends Controller
                 $transaction_payment->payment_date = $model->date;
                 $transaction_payment->amount = $model->net_total;
                 $transaction_payment->type = 'credit';
+                $transaction_payment->client_id = $model->client_id;
                 $transaction_payment->save();
         } else {
             // find all products from transaction sell line table

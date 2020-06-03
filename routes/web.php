@@ -19,7 +19,7 @@ Route::group(['middleware' => ['install']], function () {
 
 	Route::get('/', 'Frontend\Front_End_Controller@index');
 
-	Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
+	Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend', 'middleware' => ['auth:client']], function () {
 		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
 		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
