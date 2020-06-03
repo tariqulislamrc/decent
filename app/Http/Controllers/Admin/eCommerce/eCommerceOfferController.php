@@ -163,9 +163,8 @@ class eCommerceOfferController extends Controller
         $uuid = Str::uuid()->toString();
 
         $model = EcommerceOffer::findOrFail($id);
-
         $old_photo = '';
-        $old_photo = $request->old_photo;
+        $old_photo = $model->image;
 
         $model->uuid = $uuid;
         $model->size = $request->size;
@@ -173,16 +172,16 @@ class eCommerceOfferController extends Controller
         $model->old_price = $request->old_price;
         $model->new_price = $request->new_price;
         
-        if ($request->hasFile('photo')) {
-            if ($model->photo) {
-                $image_path = public_path() . '/storage/offer/' . $model->photo;
+        if ($request->hasFile('image')) {
+            if ($model->image) {
+                $image_path = public_path() . '/storage/offer/' . $model->image;
                 unlink($image_path);
             }
-            $storagepath = $request->file('photo')->store('public/product');
+            $storagepath = $request->file('image')->store('public/offer');
             $fileName = basename($storagepath);
-            $model->photo = $fileName;
+            $model->image = $fileName;
         } else {
-            $model->photo = $old_photo;
+            $model->image = $old_photo;
         }
 
         $model->heading = $request->heading;

@@ -19,7 +19,7 @@
                 <h1>ABOUT US</h1>
                 <nav class="breadcrumbs">
                   <ul class="list-unstyled">
-                    <li><a href="index.html">home <i class="fa fa-angle-right"></i></a></li>
+                    <li><a href="{{url('/')}}">home <i class="fa fa-angle-right"></i></a></li>
                     <li>About Us</li>
                   </ul>
                 </nav>

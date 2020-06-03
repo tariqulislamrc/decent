@@ -11,6 +11,7 @@ use Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use App\models\eCommerce\PageBanner;
 
 class LoginController extends Controller {
 	/*
@@ -47,9 +48,9 @@ class LoginController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm(Request $request)
-    {
-        return view('eCommerce.account');
+    public function showLoginForm(Request $request){
+        $banner = PageBanner::where('page_name', 'login')->first();
+        return view('eCommerce.account',compact('banner'));
     }
     /**
      * Log the user out of the application.

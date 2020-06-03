@@ -41,6 +41,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
+	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
 	
 	Route::get('blog',function(){
 		return view('eCommerce.blog');

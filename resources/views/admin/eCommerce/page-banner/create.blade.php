@@ -18,6 +18,9 @@
                         <option value="Cart">{{_lang('Cart Page')}}</option>
                         <option value="Wishlist">{{_lang('Wishlist Page')}}</option>
                         <option value="Checkout">{{_lang('Checkout Page')}}</option>
+                        <option value="dashboard">{{_lang('Dashboard Page')}}</option>
+                        <option value="Welcome">{{_lang('Welcome Page')}}</option>
+                        <option value="login">{{_lang('Sing Up and Sing In')}}</option>
                     </select>
                     </div>
 

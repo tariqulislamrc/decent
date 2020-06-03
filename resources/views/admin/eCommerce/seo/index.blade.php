@@ -38,7 +38,7 @@
       <div class="col-md-6">
         <div class="form-group">
             <label for="meta_keyword">{{_lang('Meta Keyword')}}</label>
-            <input type="text" required name="meta_keyword" data-role="tagsinput" id="meta_keyword"  value="{{isset($model)?$model->meta_keyword:''}}">
+            <input type="text" required name="meta_keyword" data-role="tagsinput" class="form-control" id="meta_keyword"  value="{{isset($model)?$model->meta_keyword:''}}">
         </div>
       </div>
       <div class="col-md-6">
@@ -76,6 +76,7 @@
 @push('scripts')
 <script src="{{asset('backend/js/tagsinput.js')}}"></script>
 <script>
+  $('#meta_keyword').tagsInput();
    $(document).ready(function() {
        $('#summernote').summernote({
            height: 300

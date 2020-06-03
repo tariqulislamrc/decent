@@ -71,7 +71,7 @@
                             @if (get_option('address_optional') && get_option('address_optional') != '')
                                 <address>{{ get_option('address_optional') }}</address>
                             @endif
-                            <address>{{get_option('city') ? get_option('city') : '' }}, {{get_option('state') ? get_option('state') : '' }}, {{get_option('zip') ? get_option('zip') : '' }}, {{get_option('country') ? get_option('country') : '' }}</address>
+                            <address>{{get_option('city') ? get_option('city') : '' }} {{get_option('state') ? get_option('state') : '' }} {{get_option('zip') ? get_option('zip') : '' }} {{get_option('country') ? get_option('country') : '' }}</address>
                         </li>
                         <li><i class="fa fa-phone"></i><a href="tel:{{get_option('phone')?get_option('phone'):''}}">{{get_option('phone')? ''.get_option('phone'):''}}</a></li>
                         <li><i class="fa fa-envelope-o"></i><a href="mailto:{{get_option('email')?get_option('email'):''}}">{{get_option('email')?get_option('email'):''}}</a></li>

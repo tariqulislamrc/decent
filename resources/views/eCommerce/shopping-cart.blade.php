@@ -123,7 +123,6 @@
     <section class="mt-detail-sec style1 wow fadeInUp" data-wow-delay="0.4s">
         <div class="container">
             <div class="row">
-                
                 <div class="col-xs-12 col-sm-6 col-md-offset-3" >
                     <h2>CART TOTAL</h2>
                     <ul class="list-unstyled block cart">
