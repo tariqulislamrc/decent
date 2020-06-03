@@ -48,7 +48,11 @@ class WorkOrderController extends Controller
                     return $document->prefix . numer_padding($document->code, get_option('digits_work_order_code'));
                 })
                 ->editColumn('payment_status', function ($document) {
-                    return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
+                    if ($document->type == 'sample') {
+                        return '<span class="badge badge-warning">Sample Work Order</span>';
+                    } else {
+                        return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
+                    }
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.work_order.action', compact('model'));
@@ -109,71 +113,76 @@ class WorkOrderController extends Controller
         $model->tek_marks = 0;
         $model->created_by = Auth::user()->id;
 
-        // if paid amount is greater then the payable amount
-        if($request->paid > $request->total_payable_amount) {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Paid Amount is Greater then the Payable Amount')]);
-        }
+        if($request->type != 'sample') {
+            // if paid amount is greater then the payable amount
+            if($request->paid > $request->total_payable_amount) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Paid Amount is Greater then the Payable Amount')]);
+            }
 
-        $model->total_item = count($request->price);
-        $model->sub_total = $request->net_total;
-        $model->discount_type = $request->discount_type;
-        $model->discount_amount = (($request->discount == null) ? 0 : $request->discount);
-        $model->tax = (($request->tax == null) ? 0 : $request->tax);
-        $model->tax = (($request->shiping_charge == null) ? 0 : $request->shiping_charge);
-        $model->total_payable = $request->total_payable_amount;
-        $model->paid = $request->paid;
-        $model->due = $request->due;
-        $model->method = $request->method;
-        $model->check_no = $request->check_no;
-        $model->sell_note = $request->sale_note;
-        $model->stuff_note = $request->stuff_note;
-        if($request->paid == $request->total_payable_amount) {
-            $model->payment_status = 1;
-        } else {
-            $model->payment_status = 0;
+            $model->total_item = count($request->price);
+            $model->sub_total = $request->net_total;
+            $model->discount_type = $request->discount_type;
+            $model->discount_amount = (($request->discount == null) ? 0 : $request->discount);
+            $model->tax = (($request->tax == null) ? 0 : $request->tax);
+            $model->tax = (($request->shiping_charge == null) ? 0 : $request->shiping_charge);
+            $model->total_payable = $request->total_payable_amount;
+            $model->paid = $request->paid;
+            $model->due = $request->due;
+            $model->method = $request->method;
+            $model->check_no = $request->check_no;
+            $model->sell_note = $request->sale_note;
+            $model->stuff_note = $request->stuff_note;
+            if($request->paid == $request->total_payable_amount) {
+                $model->payment_status = 1;
+            } else {
+                $model->payment_status = 0;
+            }
+
         }
 
         $success = $model->save();
 
-        $tx = new Transaction;
-        $tx->sell_note = $request->sell_note;
-        $tx->stuff_note = $request->stuff_note;
-        if( $request->paid == $request->total_payable_amount) {
-            $tx->payment_status = 1;
-        } else {
-            $tx->payment_status = 0;
+        if( $request->type != 'sample') {
+            $tx = new Transaction;
+            $tx->sell_note = $request->sell_note;
+            $tx->stuff_note = $request->stuff_note;
+            if( $request->paid == $request->total_payable_amount) {
+                $tx->payment_status = 1;
+            } else {
+                $tx->payment_status = 0;
+            }
+    
+            $ym = Carbon::now()->format('Y/m');
+    
+            $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
+            
+            $ref_no = $ym.'/S-'.ref($row);
+    
+            $tx->due = $request->due;
+            $tx->paid = $request->paid;
+            $tx->net_total = $request->total_payable_amount;
+            $tx->shipping_charges = $request->shipping_charges;
+            $tx->tax = $request->tax;
+            $tx->discount_amount = $request->discount_amount;
+            $tx->discount_type = $request->discount_type;
+            $tx->discount = $request->discount;
+            $tx->sub_total = $request->net_total;
+            $tx->work_order_id = $model->id;
+            $tx->transaction_type = 'work_order';
+            $tx->type = 'Credit';
+            $tx->date = date('y-m-d');
+            $tx->invoice_no = '';
+            $tx->reference_no = $ref_no;
+            $tx->save();
+    
+            $tp = new TransactionPayment;
+            $tp->transaction_id = $tx->id;
+            $tp->method = $request->method;
+            $tp->payment_date = date('y-m-d');
+            $tp->amount = $request->paid;
+            $tp->type = 'Credit';
+            $tp->save();
         }
-
-        $ym = Carbon::now()->format('Y/m');
-
-        $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
-        
-        $ref_no = $ym.'/S-'.ref($row);
-
-        $tx->due = $request->due;
-        $tx->paid = $request->paid;
-        $tx->net_total = $request->total_payable_amount;
-        $tx->shipping_charges = $request->shipping_charges;
-        $tx->tax = $request->tax;
-        $tx->discount_amount = $request->discount_amount;
-        $tx->discount_type = $request->discount_type;
-        $tx->discount = $request->discount;
-        $tx->sub_total = $request->net_total;
-        $tx->work_order_id = $model->id;
-        $tx->transaction_type = 'work_order';
-        $tx->type = 'Credit';
-        $tx->date = date('y-m-d');
-        $tx->invoice_no = '';
-        $tx->reference_no = $ref_no;
-        $tx->save();
-
-        $tp = new TransactionPayment;
-        $tp->transaction_id = $tx->id;
-        $tp->method = $request->method;
-        $tp->payment_date = date('y-m-d');
-        $tp->amount = $request->paid;
-        $tp->type = 'Credit';
-        $tp->save();
 
         if ($success) {
             $count = count($request->product_id);

@@ -63,7 +63,7 @@
                         </label>
                         <select data-placeholder="Select One" name="type" id="type" class="form-control select">
                             <option value="">Select One</option>
-                            <option value="sample">Sample</option>
+                            <option selected value="sample">Sample</option>
                             <option value="production">Production</option>
                         </select>
                     </div>
@@ -97,7 +97,7 @@
                 <h6>{{_lang('Work Order Product For production')}}</h6>
             </div>
             <input type="hidden" value="0" id="row">
-            <div class="card-body">
+            <div class="card-body" >
                 <div class="row">
                     <div class="col-md-12">
                         <table class="table table-bordered table-striped work_order">
@@ -121,7 +121,7 @@
                     </div>
 
                     
-                    <div class="col-md-12">
+                    <div class="col-md-12 production_show" style="display: none;">
                         <div class="card">
                             <div class="card-body">
                                 <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
@@ -174,13 +174,13 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="paid">{{ _lang('Paid') }} </label>
-                                            <input type="text" required autocomplete="off" class="form-control paid" name="paid" id="paid">
+                                            <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
                                         </div>
                                     </div>
                                       <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="due">{{ _lang('Due') }} </label>
-                                            <input type="text" required class="form-control due" name="due" id="due" readonly>
+                                            <input type="text" class="form-control due" name="due" id="due" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -236,6 +236,16 @@
     <script src="{{ asset('js/production/work_order.js') }}"></script>
 
     <script>        
-        
+        $('#type').change(function() {
+            var val = $(this).val();
+            if(val == 'sample') {
+                $('.production_show').fadeOut();
+                $('#paid').removeAttr('required');
+            } else {
+                $('.production_show').fadeIn();
+                $('#paid').attr('required', '1');
+
+            }
+        });
     </script>
 @endpush
