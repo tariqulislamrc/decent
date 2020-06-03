@@ -272,6 +272,11 @@ public function run() {
 			['name' => 'submit_material_to_department.update'],
 			['name' => 'submit_material_to_department.delete'],
 
+			['name' => 'job_work.view'],
+			['name' => 'job_work.create'],
+			['name' => 'job_work.update'],
+			['name' => 'job_work.delete'],
+
 			['name' => 'store_request.view'],
 			['name' => 'store_request.create'],
 			['name' => 'store_request.update'],

@@ -10,9 +10,32 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+<h3 class="tile-title">
+@can('job_work.view')
+<a data-placement="bottom" title="Create New JobWork" type="button" class="btn btn-info" href ="{{ route('admin.job_work') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Work')}}
+</a>
+@endcan
+@can('job_work.create')
+<a data-placement="bottom" title="JobWork List" type="button" class="btn btn-info" href ="{{ route('admin.job_work.index') }}"><i class="fa fa-list-ul" aria-hidden="true"></i>{{_lang('Job Work List')}}
+</a>
+@endcan
+</h3>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ _lang('Accepting Depertment') }} : {{ $send_dept->accept_depertment->name }}</th>
+                    <th>{{ _lang('Reference') }} : {{ $model->reference_no }}</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 <div class="tile">
     <div class="tile-body">
         <form action="{{ route('admin.job_work_accept') }}" method="post" class="ajax_form">
+            <input type="hidden" name="transaction_id" value="{{ $model->id }}">
             <div class="row">
                 <div class="col-md-12">
                     <table class="table table-bordered">
@@ -29,7 +52,8 @@
                             <tr>
                                 <td>
                                     {{ $product->product->name }}-{{ variation_value($product->variation->variation_value_id)}}-{{ variation_value($product->variation->variation_value_id_2)}}
-                                    <input type="hidden" name="variation_id[]" value="{{ $product->id }}">
+                                    <input type="hidden" name="job_work_id[]" value="{{ $product->id }}">
+                                    <input type="hidden" name="variation_id[]" value="{{ $product->variation_id }}">
                                     <input type="hidden" name="product_id[]" value="{{ $product->product_id }}">
                                     <input type="hidden" name="work_order_id[]" value="{{ $product->work_order_id }}">
                                     <input type="hidden" name="depertment_id[]" value="{{ $product->depertment_id }}">
@@ -45,7 +69,6 @@
                                 <td>
                                     <input type="text" class="form-control qty" name="qty[]" value="{{ $product->qty-$product->accept_qty }}">
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>
@@ -56,7 +79,7 @@
                     <select class="form-control select" data-placeholder="Select Depertment" name="send_depertment_id" id="send_depertment_id" required data-parsley-errors-container="#send_depertment_id_error">
                         <option value="">Select One</option>
                         @foreach ($depertments as $depert)
-                        <option value="{{ $depert->id }}">{{ $depert->name }}</option>
+                        <option {{ isset($send_dept->depertment_id)?$send_dept->send_depertment_id==$depert->id?'selected':'':'' }} value="{{ $depert->id }}">{{ $depert->name }}</option>
                         @endforeach
                     </select>
                     <span id="send_depertment_id_error"></span>

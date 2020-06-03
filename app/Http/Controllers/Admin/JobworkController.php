@@ -11,6 +11,7 @@ use App\models\Production\VariationTemplate;
 use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
 use App\models\depertment\Depertment;
+use App\models\depertment\ProductFlow;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -27,6 +28,9 @@ class JobworkController extends Controller
 
     public function index(Request $request)
     {
+      if (!auth()->user()->can('job_work.view')) {
+            abort(403, 'Unauthorized action.');
+        }
     	   if ($request->ajax()) {
             $q=Transaction::query();
             $q =$q->where('transaction_type','job_work');
@@ -43,26 +47,39 @@ class JobworkController extends Controller
                 ->editColumn('due', function ($model) {
                     return $model->net_total-($model->payment()->sum('amount'));
                  })
+
                  ->editColumn('payment_status', function ($model) {
                    if ($model->payment_status=='paid') {
                       return '<span class="badge badge-success">Paid</span>';
                    }
-                   elseif($model->payment_status=='partial'){
-                     return '<span class="badge badge-info">Partial</span>';
-                   }
+
                    else{
                     return '<span class="badge badge-danger">Due</span>';
                    }
                  })
+                 ->editColumn('job_work_status', function ($model) {
+                   if ($model->job_work_status=='pendding') {
+                      return '<span class="badge badge-success">Pendding</span>';
+                   }
+                   elseif($model->job_work_status=='Accept'){
+                     return '<span class="badge badge-info">Accept</span>';
+                   }
+                   else{
+                    return '<span class="badge badge-danger">Partial</span>';
+                   }
+                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.job_work.action', compact('model'));
-                })->rawColumns(['action','date','paid','due','payment_status'])->make(true);
+                })->rawColumns(['action','date','paid','due','payment_status','job_work_status'])->make(true);
         }
       return view('admin.job_work.index');
     }
 
     public function create()
     {
+      if (!auth()->user()->can('job_work.create')) {
+            abort(403, 'Unauthorized action.');
+        }
     	$workorder =WorkOrder::all();
     	$depertments =Depertment::select('id','name')->get();
     	return view('admin.job_work.create',compact('workorder','depertments'));
@@ -89,6 +106,9 @@ class JobworkController extends Controller
 
     public function job_work_post(Request $request)
     {
+      if (!auth()->user()->can('job_work.create')) {
+            abort(403, 'Unauthorized action.');
+        }
 
     	$ym = Carbon::now()->format('Y/m');
 
@@ -140,7 +160,7 @@ class JobworkController extends Controller
         //Update payment status
          $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
 
-          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated')]);
+          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated'),'goto'=>route('admin.job_work.index')]);
         }
         else
         {
@@ -151,15 +171,139 @@ class JobworkController extends Controller
 
     public function edit($id)
     {
+      if (!auth()->user()->can('job_work.update')) {
+            abort(403, 'Unauthorized action.');
+        }
     	 $model = Transaction::where('transaction_type', 'job_work')
                         ->with(['job_works'])
-                        ->find($id);  
-        $depertments =Depertment::select('id','name')->get();                                              
-       return view('admin.job_work.accept',compact('model','depertments'));
+                        ->find($id); 
+        $send_dept =JobWork::where('transaction_id',$model->id)->first();                  
+        $depertments =Depertment::select('id','name')->get()->except($send_dept->depertment_id);                                              
+       return view('admin.job_work.accept',compact('model','depertments','send_dept'));
     }
 
     public function update(Request $request)
     {
-      dd($request->all());
+      if (!auth()->user()->can('job_work.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+      $jobWork = Transaction::where('transaction_type', 'job_work')
+                        ->with(['job_works'])
+                        ->findOrFail($request->input('transaction_id'));
+       for ($i=0; $i <count($request->qty) ; $i++) { 
+           if ($request->qty[$i]>0) {
+             $rq_qty =$request->total_qty[$i];
+             $done_qty =$request->accept_qty[$i];
+            if (($done_qty+$request->qty[$i])>$rq_qty) {
+               throw ValidationException::withMessages(['message' => _lang('Qty Greater than Total Qty')]);
+            }
+              $job_work =JobWork::findOrFail($request->job_work_id[$i]);
+              $job_work->accept_qty =$job_work->accept_qty+$request->qty[$i];
+              $job_work->send_depertment_id =$request->send_depertment_id;
+              $job_work->save();
+              $this->job_work_status($request->job_work_id[$i]);
+
+              $product_flow =new ProductFlow;
+              $product_flow->depertment_id=$request->depertment_id[$i];
+              $product_flow->send_depertment_id=$request->send_depertment_id[$i];
+              $product_flow->variation_id=$request->variation_id[$i];
+              $product_flow->work_order_id=$request->work_order_id[$i];
+              $product_flow->product_id=$request->product_id[$i];
+              $product_flow->qty=$request->qty[$i];
+              $product_flow->date=date('Y-m-d');
+              $product_flow->created_by=auth()->user()->id;
+              $product_flow->job_work_id=$request->job_work_id[$i];
+              $product_flow->save();
+           }
+        } 
+        $this->transaction_status($request->input('transaction_id'));  
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated'),'goto'=>route('admin.job_work.index')]);            
+    }
+
+
+    public function payment($id)
+    {
+      if (!auth()->user()->can('job_work.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+       $transaction = Transaction::where('id', $id)
+                                        ->with(['job_works'])
+                                        ->first();
+      $payments_query = TransactionPayment::where('transaction_id', $id);
+
+            // $accounts_enabled = false;
+            // if ($this->moduleUtil->isModuleEnabled('account')) {
+            //     $accounts_enabled = true;
+            //     $payments_query->with(['payment_account']);
+            // }
+
+       $payments = $payments_query->get();
+        return view('admin.job_work.makepayment_modal',compact('transaction','payments')); 
+    }
+
+
+public function printpayment($id)
+{
+  $model =TransactionPayment::find($id);
+  $bill_for =_lang('JobWork  for');
+  return view('admin.job_work.paymentPrint',compact('model','bill_for'));
+}
+
+
+public function destroy($id)
+{
+  if (!auth()->user()->can('job_work.delete')) {
+            abort(403, 'Unauthorized action.');
+        }
+  $model=Transaction::findOrFail($id);
+  // dd($model->job_works->product_flow);
+  foreach ($model->job_works as $work) {
+     if ($work->product_flow->count()>0) {
+        throw ValidationException::withMessages(['message' => _lang('This Job Work is already accepted to use')]);
+     }
+  }
+
+  $model->job_works()->delete();
+  $model->payment()->delete();
+  $model->delete();
+
+  return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);
+}
+
+
+    private function job_work_status($id)
+    {
+      $job =JobWork::findOrFail($id);
+      $total_qty =$job->qty;
+      $accept_qty =$job->accept_qty;
+      if ($total_qty==$accept_qty) {
+        $status='Accept';
+      }
+      else{
+        $status='Partial';
+      }
+      $job->status =$status;
+      $job->save();
+      return true;
+    }
+
+    private function transaction_status($id)
+    {
+      $transaction = Transaction::where('transaction_type', 'job_work')
+                        ->with(['job_works'])
+                        ->findOrFail($id);
+      $totalqty=$transaction->job_works->sum('qty');                
+      $total_accept_qty=$transaction->job_works->sum('accept_qty');  
+
+      if ($totalqty==$total_accept_qty) {
+        $job_work_status ='Accept';
+       } 
+       else{
+        $job_work_status='Partial';
+       }  
+       $transaction->job_work_status =$job_work_status;
+       $transaction->save();
+       return true;           
     }
 }

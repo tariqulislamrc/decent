@@ -727,6 +727,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  Route::post('job-work/product','JobworkController@job_work_post')->name('job_work_post');
 	  Route::get('job-work/accept/{id}','JobworkController@edit')->name('job_work.edit');
 	  Route::post('job-work/accept','JobworkController@update')->name('job_work_accept');
+	  Route::get('job-work/payment/{id}','JobworkController@payment')->name('job_work.payment');
+	  Route::post('job-work/payment','TransactionPaymentController@jobwork_payment')->name('job_work.post_payment');
+	  Route::get('job-work/printpayment/{id}','JobworkController@printpayment')->name('job_work.printpayment');
+	  Route::delete('job_work/destroy/{id}','JobworkController@destroy')->name('job_work.destroy');
 
 	});
 
