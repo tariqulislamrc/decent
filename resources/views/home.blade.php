@@ -84,7 +84,7 @@
                             <h4>{{_lang('Total Employee Category')}} </h4>
                             <p><b>
                                     @php
-                                        $category = App\Models\Employee\EmployeeCategory::get();
+                                        $category = App\models\employee\EmployeeCategory::get();
                                         echo count($category)
                                     @endphp
                                 </b></p>
@@ -98,7 +98,7 @@
                             <h4>Total Employee Department</h4>
                             <p><b>
                                     @php
-                                        $users = App\Models\Employee\Department::get();
+                                        $users = App\models\employee\Department::get();
                                         echo count($users)
                                     @endphp
                                 </b></p>
@@ -113,7 +113,7 @@
                             <h4>Total Employee</h4>
                             <p><b>
                                     @php
-                                        $users = App\Models\Employee\Employee::get();
+                                        $users = App\models\employee\Employee::get();
                                         echo count($users)
                                     @endphp
                                 </b></p>

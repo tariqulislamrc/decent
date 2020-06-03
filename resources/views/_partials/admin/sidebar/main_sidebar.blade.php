@@ -326,8 +326,16 @@
                                 class="icon fa fa-circle-o"></i> {{_lang('Work Order')}}
                         </a>
                     </li>
+
                 @endcan
                 @can('production_wop_materials.view')
+                    <li class="mt-1">
+                        <a class="treeview-item {{Request::is('admin/production-work-order-list') ? 'active':''}}" href="{{ route('admin.production-work-order.list') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Work Order Tran.')}}
+                        </a>
+                    </li>
+                    @endcan
+                    @can('production_wop_materials.view')
+
                     {{-- Production wop Materials --}}
                     <li class="mt-1"><a
                             class="treeview-item {{Request::is('admin/production-wop-materials*') ? 'active':''}}"
@@ -455,7 +463,27 @@
                     class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
 
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}"
+                                    href="{{ route('admin.eCommerce.e_customer') }}"><i
+                            class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
+
+                {{--Ecommerce Orders --}}
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
+                                    href="{{ route('admin.eCommerce.order.index') }}"><i
+                            class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
+
+                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}"
+                                    href="{{ route('admin.eCommerce.coupons.index') }}"><i
+                            class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
+
+                {{-- Add Coupons --}}
+                <li class="mt-1"><a
+                        class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}"
+                        href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i
+                            class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
+
                 {{-- eCommerce Offer  --}}
+
 
                 <li class="mt-1"><a
                         class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}"
@@ -492,15 +520,7 @@
                 {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}" href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li> --}}
 
                 {{-- Add Coupons --}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}"
-                                    href="{{ route('admin.eCommerce.coupons.index') }}"><i
-                            class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
 
-                {{-- Add Coupons --}}
-                <li class="mt-1"><a
-                        class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}"
-                        href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i
-                            class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
 
                 {{--Privacy Policy--}}
                 <li class="mt-1"><a
@@ -550,14 +570,7 @@
                                     href="{{ route('admin.eCommerce.seo.index') }}"><i
                             class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
 
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}"
-                                    href="{{ route('admin.eCommerce.e_customer') }}"><i
-                            class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
 
-                {{--Ecommerce Orders --}}
-                <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
-                                    href="{{ route('admin.eCommerce.order.index') }}"><i
-                            class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
 
 
                 <li  class="mt-1"><a target="_blank" class="treeview-item"
@@ -570,25 +583,24 @@
 
 
 
-    @can('expense.view')
-        {{-- Expense Section--}}
-        <li class="treeview {{ Request::is('admin/expense*') ? ' is-expanded' : '' }}">
+
+    @can('accounting.view')
+        {{-- Account Section--}}
+        <li class="treeview {{ (Request::is('admin/accounting*') or Request::is('admin/expense*')) ? ' is-expanded' : '' }}">
             <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle"
                                                                          aria-hidden="true"></i>
-                <span class="app-menu__label">{{_lang('Expense')}}</span><i
+                <span class="app-menu__label">{{_lang('Accounting')}}</span><i
                     class="treeview-indicator fa fa-angle-right"></i>
             </a>
             <ul class="treeview-menu">
 
-                {{-- Expense Category--}}
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/expense/category') ? 'active':''}}"
-                       href="{{ route('admin.expense.category.index') }}">
+                    <a class="treeview-item {{Request::is('admin/accounting/investment') ? 'active':''}}"
+                       href="{{ route('admin.accounting.investment.index') }}">
                         <i class="icon fa fa-circle-o"></i>
-                        {{_lang('Expense Category')}}
+                        {{_lang('InvestmentAccount')}}
                     </a>
                 </li>
-
 
                 {{-- Expense --}}
                 <li class="mt-1">
@@ -598,23 +610,6 @@
                         {{_lang('Expense')}}
                     </a>
                 </li>
-
-            </ul>
-        </li>
-    @endcan
-
-
-
-
-    @can('accounting.view')
-        {{-- Account Section--}}
-        <li class="treeview {{ Request::is('admin/accounting*') ? ' is-expanded' : '' }}">
-            <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle"
-                                                                         aria-hidden="true"></i>
-                <span class="app-menu__label">{{_lang('Accounting')}}</span><i
-                    class="treeview-indicator fa fa-angle-right"></i>
-            </a>
-            <ul class="treeview-menu">
 
                 <li class="mt-1">
                     <a class="treeview-item {{Request::is('admin/accounting/account*') ? 'active':''}}"
@@ -644,13 +639,16 @@
                 </li>
 
 
+
+                {{-- Expense Category--}}
                 <li class="mt-1">
-                    <a class="treeview-item {{Request::is('admin/accounting/investment') ? 'active':''}}"
-                       href="{{ route('admin.accounting.investment.index') }}">
+                    <a class="treeview-item {{Request::is('admin/expense/category') ? 'active':''}}"
+                       href="{{ route('admin.expense.category.index') }}">
                         <i class="icon fa fa-circle-o"></i>
-                        {{_lang('InvestmentAccount')}}
+                        {{_lang('Expense Category')}}
                     </a>
                 </li>
+
 
             </ul>
         </li>

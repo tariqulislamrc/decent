@@ -1,5 +1,8 @@
 @foreach( $variations as $variation)
 <tr>
+    <td class="text-center">
+        <i class="fa fa-trash text-danger remove" aria-hidden="true"></i>
+    </td>
     <td>
         {{ $product->name }} {{ $variation->name }} ({{$variation->sub_sku}})
 
@@ -9,17 +12,15 @@
     </td>
 
     <td>
-    	<input type="text" name="quantity[]" class="form-control qty" id="qty_{{$row}}" value="1">
+    	<input type="text" autocomplete="off" name="quantity[]" class="form-control qty" id="qty_{{$row}}" value="1">
     </td>
     <td>
-    	<input type="text" name="price[]" class="form-control price" value="{{$variation->default_sell_price}}">
+    	<input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$variation->default_sell_price}}">
     </td>
     <td>
         <input type="hidden" name="sub_total[]" class="sub_total" value="{{1*$variation->default_sell_price}}">
     	<span id="sub_total_{{$row}}" class="sub_total_text">{{1*$variation->default_sell_price}}</span>
 	</td>
-    <td>
-        <button type="button" class="btn btn-danger btn-sm remove">X</button>
-    </td>
+    
 </tr>
 @endforeach

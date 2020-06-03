@@ -48,9 +48,9 @@
 		}
 		</style>
 	</head>
-	<body>
+	<body style="height: 100vh;">
 		<div class="container">
-			<img src="https://i.imgur.com/qIufhof.png" />
+			<img src="https://i.imgur.com/qIufhof.png" width="320px"/>
 			<h1>
 			<span>500</span> <br />
 			Internal server error
@@ -65,3 +65,4 @@
 		</div>
 	</body>
 </html>
+

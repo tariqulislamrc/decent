@@ -33,7 +33,7 @@ class CartController extends Controller
             'variation' => 'required',
             'qty' => 'required'
         ]);
-        
+
         $qty_available = 0;
         $qty = VariationBrandDetails::where('variation_id', $request->variation)->first();
         if ($qty) {
@@ -42,7 +42,7 @@ class CartController extends Controller
         if ($request->qty > $qty_available) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Quantity Not Available')]);
         }
-        
+
          $a= Cart::add(array(
             'id' => $request->variation,
             'name' => $request->name,
@@ -63,15 +63,15 @@ class CartController extends Controller
     {
         $banner = PageBanner::where('page_name', 'Cart')->first();
         $cart_total =  Cart::getContent();
-        
+
         if (count($cart_total) > 0) {
             Session::put('coupon', null);
             $models = Cart::getContent();
             return view('eCommerce.shopping-cart', compact('models', 'banner'));
         }else{
-            return redirect()->back()->with('error', 'The Cart is Empty.');  
+            return redirect()->back()->with('error', 'The Cart is Empty.');
         }
-        
+
 
     }
 
@@ -107,7 +107,7 @@ class CartController extends Controller
 
     public function coupon_check(Request $request)
     {
-        
+
         if ($request->coupon == null) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('The coupon field is required.')]);
         }
@@ -118,7 +118,7 @@ class CartController extends Controller
             if (Session::get('coupon')) {
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Coupon Already Used.')]);
             }
-            
+
             Session::put('coupon', $model);
             return response()->json(['success' => true, 'coupon' => $model, 'status' => 'success', 'message' => _lang('Coupon Code Match Successfuly')]);
 
@@ -196,6 +196,7 @@ class CartController extends Controller
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
 
+
         $payment->sale_type = 'eCommerce';
         $payment->type = 'Credit';
         $payment->brand_id= get_option('default_brand');
@@ -214,7 +215,7 @@ class CartController extends Controller
         $payment->ecommerce_status = 'pending';
         $payment->save();
         $transaction_id = $payment->id;
-        
+
 
         for ($i = 0; $i < count($request->product_id); $i++) {
 

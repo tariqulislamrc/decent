@@ -15,6 +15,10 @@
 		Frontend Route
 ==========================================================*/
 
+/*Route::get('/s', function(){
+    \Artisan::call('storage:link');
+});*/
+
 Route::group(['middleware' => ['install']], function () {
 
 	Route::get('/', 'Frontend\Front_End_Controller@index');
@@ -25,15 +29,15 @@ Route::group(['middleware' => ['install']], function () {
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
 		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
 		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
-	
+
 		// check_user_name_is_exist_or_not
 		Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
 		// check_email_is_exist_or_not
 		Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-	
+
 	});
-	
+
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 	Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
@@ -42,25 +46,25 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
 	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
-	
+
 	Route::get('blog',function(){
 		return view('eCommerce.blog');
 	})->name('blog');
-	
+
 	Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
-	
-	
+
+
 	Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 	Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
-	
-	
-	
+
+
+
 	Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
-	
+
 	Route::get('product-list',function(){
 		return view('eCommerce.product_list_view');
 	})->name('product-list');
-	
+
 	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 	Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 	Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
@@ -114,7 +118,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
 			Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');
 		});
-		
+
 
 		//:::::::::::::::::::::::::::::Employee leave Allocation:::::::::::::::::::::::::::::::
 		Route::get('employee-leave', 'Configuration\Employee\EmployeeLeaveTypeController@view')->name('employee-leave.view');
@@ -151,7 +155,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::post('/check_advane_return', 'Employee\PayrollTransectionController@check_advane_return')->name('check_advane_return');
 		Route::post('/check_employee_payroll', 'Employee\PayrollTransectionController@check_employee_payroll')->name('check_employee_payroll');
 		Route::resource('payroll-transection', 'Employee\PayrollTransectionController');
-		
+
 			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
@@ -263,7 +267,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::any('/employee-details/login_info/{id}', 'UserController@set_login_info')->name('employee-details.login_info');
 
 
-			
+
 
 		// Production Route Start
 
@@ -300,12 +304,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::resource('production-raw-materials', 'Production\RawMaterialsController');
 
 			//production-work-order
+			Route::get('production-work-order/list', 'Production\WorkOrderController@transaction_list')->name('production-work-order.list');
+			Route::get('work-order-transaction/datatable', 'Production\WorkOrderController@transaction_datatable')->name('work-order-transaction.datatable');
 			Route::get('production-work-order/datatable', 'Production\WorkOrderController@datatable')->name('work-order.datatable');
 			Route::get('production-work-order/item', 'Production\WorkOrderController@item')->name('production-work-order.item');
 			Route::get('product/get_product', 'Production\WorkOrderController@getProduct');
 			Route::post('production-work-order/append', 'Production\WorkOrderController@append');
+			Route::get('production-work-order/pay/{id}', 'Production\WorkOrderController@pay_form')->name('production-work-order.pay');
+			Route::post('production-work-order/pay-work-order-bill', 'Production\WorkOrderController@pay_bill')->name('production-work-order.pay_store');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
-
+			Route::get('print-work-order-transaction-list/{id}', 'Production\WorkOrderController@print')->name('print.work-order-transaction');
 			// Production Variation Route
 			Route::get('ajax_get_before_data', function() {
 				$row = request()->i;
@@ -378,7 +386,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		// Route::resource('employee-payhead', 'Configuration\Employee\EmployeePayHeadController');
 
 		//::::::::Product list
-		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');	
+		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');
@@ -639,7 +647,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
 	 });
-    //Payment 
+    //Payment
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
@@ -667,7 +675,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
 
 		});
-		
+
 		Route::get('eCommerce-report','DepertmentReportController@ecommerce_report')->name('eCommerce-report.index');
 		Route::get('eCommerce-report-date-wise','DepertmentReportController@ecommerce_report_date_wise')->name('ecommerce_report_date_wise');
 	 	Route::get('eCommerce-report/pdf/{id}', 'DepertmentReportController@ecommerce_report_pdf')->name('ecommerce_report.pdf');

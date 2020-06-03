@@ -63,7 +63,7 @@
                         </label>
                         <select data-placeholder="Select One" name="type" id="type" class="form-control select">
                             <option value="">Select One</option>
-                            <option value="sample">Sample</option>
+                            <option selected value="sample">Sample</option>
                             <option value="production">Production</option>
                         </select>
                     </div>
@@ -97,28 +97,127 @@
                 <h6>{{_lang('Work Order Product For production')}}</h6>
             </div>
             <input type="hidden" value="0" id="row">
-            <div class="card-body">
+            <div class="card-body" >
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped work_order">
                             <thead>
                             <tr>
+                                <td class="text-center"> <i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </td>
                                 <td>{{_lang('Product Name')}}</td>
                                 <td>{{_lang('Quantity')}}</td>
                                 <td>{{_lang('price')}}</td>
                                 <td>{{_lang('Sub Total')}}</td>
-                                <td>{{_lang('Action')}}</td>
                             </tr>
                             </thead>
                             <tbody id="item"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-right" colspan="4">Total Amount</td>
+                                    <td><span id="refresh_net_total">0.00</span> </td>
+                                </tr>
+                            </tfoot>
                         </table>
+                    </div>
+
+                    
+                    <div class="col-md-12 production_show" style="display: none;">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span>{{ _lang('Total') }}</span> <br>
+                                                <input type="hidden" name="net_total" id="net_total">
+                                                <span id="show_net_total">0.00</span>
+                                            </td>
+                                            <td style="width: 40%">
+                                                <span>{{ _lang('Discount Type') }}</span> <br>
+                                                <select name="discount_type" class="form-control" id="discount_type">
+                                                    <option value="percentage">Percentage</option>
+                                                    <option value="fixed">Fixed</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Discount') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="discount" class="form-control" id="discount_amount">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>{{ _lang('Discount Value') }}</span> <br>
+                                                <input type="text" name="discount_amount" class="form-control" id="total_discount" value="0" readonly>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Tax') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="tax" class="form-control" id="tax_calculation_amount">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Shipping') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="shipping_charges" class="form-control" id="shipping_charges">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Total Payable') }}</span> <br>
+                                                <input type="hidden" class="form-control" id="total_payable_amount" name="total_payable_amount">
+                                                <span class="total_payable_amount"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Paid') }} </label>
+                                            <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
+                                        </div>
+                                    </div>
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="due">{{ _lang('Due') }} </label>
+                                            <input type="text" class="form-control due" name="due" id="due" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Method') }} </label>
+                                            <select name="method" class="form-control method">
+                                                <option value="cash">Cash</option>
+                                                <option value="check">Check</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 reference_no" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="check_no">{{ _lang('Reference') }} </label>
+                                            <input type="text" class="form-control" name="check_no" id="check_no">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="sale_note">{{ _lang('Sale Note') }} </label>
+                                        <textarea name="sale_note" class="form-control" id="" placeholder="Sale Note"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="stuff_note">{{ _lang('Stuff Note') }} </label>
+                                        <textarea name="stuff_note" class="form-control" id="" placeholder="Stuff Note"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
 
             <div class="form-group col-md-12" align="right">
-                {{-- <input type="hidden" name="type[]" value=" "> --}}
                 <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
                         class="icon-arrow-right14 position-right"></i></button>
                 <button type="button" class="btn btn-info" id="submiting"
@@ -135,4 +234,18 @@
 @push('scripts')
 {{--    <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>--}}
     <script src="{{ asset('js/production/work_order.js') }}"></script>
+
+    <script>        
+        $('#type').change(function() {
+            var val = $(this).val();
+            if(val == 'sample') {
+                $('.production_show').fadeOut();
+                $('#paid').removeAttr('required');
+            } else {
+                $('.production_show').fadeIn();
+                $('#paid').attr('required', '1');
+
+            }
+        });
+    </script>
 @endpush
