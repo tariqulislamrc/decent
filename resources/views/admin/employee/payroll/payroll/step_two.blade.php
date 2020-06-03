@@ -142,7 +142,7 @@
 
         <div class="col-md-6 table-responsive">
 
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped payroll_table_earning">
                 
                 <tr>
 
@@ -189,11 +189,11 @@
                         @if ($template)
                             @php
                                 $total_amount = $item->amount;
-                                $per_day_amount = $total_amount / $date_diff ;
+                                $per_day_amount = number_format($total_amount / $date_diff, 2) ;
 
                                 $total_present = $present + $holiday;
 
-                                $amount = $total_present * $per_day_amount ;
+                                $amount = $total_present * intval($per_day_amount) ;
                                 // $amount = intval(number_format($amount, 2));
                                 $amount = round($amount);
 
@@ -208,7 +208,7 @@
                                             <span class="input-group-text">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT'}} </span>
                                         </div>
                                         
-                                        <input autocomplete="off" type="number" class="form-control" name="amount[]" placeholder="Enter Amount" required value="{{intval(round($amount))}}" {{$templaate_details->category == 'not_applicable' ? 'readonly' : ''}}>       
+                                        <input autocomplete="off" type="number" class="form-control earning" name="amount[]" placeholder="Enter Amount" required value="{{intval(round($amount))}}" {{$templaate_details->category == 'not_applicable' ? 'readonly' : ''}}>       
                                     </div>
 
                                 </td>
@@ -221,7 +221,7 @@
 
         <div class="col-md-6 table-responsive">
 
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped payroll_table_deduction">
 
                 <tr>
 
@@ -236,7 +236,8 @@
                     $items = App\models\employee\EmployeeSalaryDetail::where('employee_salary_id', $salary->id)->get();
                 @endphp
 
-                @foreach ($items as $item)
+                <tbody>
+                    @foreach ($items as $item)
                     @php
                         $i++;
                     @endphp
@@ -274,13 +275,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT'}} </span>
                                     </div>
-                                    <input autocomplete="off" type="number" class="form-control" name="amount[]" placeholder="Enter Amount" required value="{{intval(round($amount))}}" {{$templaate_details->category == 'not_applicable' ? 'readonly' : ''}}>       
+                                    <input autocomplete="off" type="number" class="form-control deduction" name="amount[]" placeholder="Enter Amount" required value="{{intval(round($amount))}}" {{$templaate_details->category == 'not_applicable' ? 'readonly' : ''}}>       
                                 </div>
                             </td>
                         </tr>
                     @endif
 
                 @endforeach
+                </tbody>
                     
             </table>
 
@@ -298,8 +300,8 @@
 
                     <th width="50%" class="text-center">Total Earning</th>
 
-                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning}}</th>
-
+                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} <span id="refresh_total_earning">{{$total_earning}}</span></th>
+                    <input type="hidden" id="total_earning_amount" value="0">
                 </tr>
 
             </table>
@@ -314,7 +316,8 @@
 
                     <th width="50%" class="text-center">Total Deduction</th>
 
-                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_deduction}}</th>
+                    <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} <span id="refresh_total_amount">{{$total_deduction}}</span></th>
+                    <input type="hidden" id="total_deduction_amount" value="0">
 
                 </tr>
 
@@ -332,7 +335,7 @@
 
                 <th width="50%" class="text-center">Net Salary</th>
 
-                <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} {{$total_earning - $total_deduction}}</th>
+                <th with="50%" class="text-center">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT' }} <span id="total__amount">{{$total_earning - $total_deduction}}</span></th>
 
             </tr>
 
@@ -375,4 +378,66 @@
 </div>
 <script>
     _formValidation();
+
+    // for earning
+    $('.payroll_table_earning tbody').on('keyup change',function(){
+        var earning = earning_function();
+        $('#refresh_total_earning').html(earning.toFixed(2));
+        $('#total_earning_amount').val(earning);
+
+        var deduction = $('#total_deduction_amount').val();
+        var total = parseInt(earning) - parseInt(deduction);
+        $('#total__amount').html(total.toFixed(2));
+        // $('#total__amount').val(total);
+    });
+
+    function earning_function()
+    {
+        var total = 0;
+        $('.payroll_table_earning tbody tr').each(function(i, element) {
+            
+            var html = $(this).html();
+            if(html!='')
+            {
+                var earning = $(this).find('.earning');
+                if(earning.length > 0){
+                    total += parseInt(earning.val());
+                }
+               
+            }
+        });
+        
+        return total;
+    }
+
+    // for deduction
+    $('.payroll_table_deduction tbody').on('keyup change',function(){
+        var deduction = deduction_function();
+        $('#refresh_total_deduction').html(deduction.toFixed(2));
+        $('#total_deduction_amount').val(deduction);
+
+        var earning = $('#total_earning_amount').val();
+        var total = parseInt(earning) - parseInt(deduction);
+        $('#total__amount').html(total.toFixed(2));
+
+    });
+
+    function deduction_function()
+    {
+        var total = 0;
+        $('.payroll_table_deduction tbody tr').each(function(i, element) {
+            
+            var html = $(this).html();
+            if(html!='')
+            {
+                var deduction = $(this).find('.deduction');
+                if(deduction.length > 0){
+                    total += parseInt(deduction.val());
+                }
+               
+            }
+        });
+        
+        return total;
+    }
 </script>

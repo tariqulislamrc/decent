@@ -64,6 +64,7 @@ class GeneralSettingSeeder extends Seeder
             'alias'     =>      'P',
             'type'      =>      'Present',
             'is_active'  =>         1, 
+            'description' => '',
         ]);
 
         // Create a absent attendance type default
@@ -72,6 +73,7 @@ class GeneralSettingSeeder extends Seeder
             'alias'     =>      'A',
             'type'      =>      'On_leave',
             'is_active'  =>         1, 
+            'description' => '',
         ]);
 
         // Create a present attendance type default

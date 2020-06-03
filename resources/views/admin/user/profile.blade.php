@@ -8,7 +8,7 @@
               <h4>{{auth()->user()->email?auth()->user()->email:'John Doe'}}</h4>
               <p>{{getUserRoleName(auth()->user()->id)?getUserRoleName(auth()->user()->id):'Admin'}}</p>
             </div>
-            <div class="cover-image"></div>
+            <div class="cover-image" style="background-image: url('{{ auth()->user()->banner != '' ? asset('storage/user/photo/'.auth()->user()->banner) : asset('img/food.jpg') }} ');"></div>
           </div>
         </div>
         <div class="col-md-3">
@@ -31,7 +31,7 @@
                       <div class="form-group">
                         {{ Form::label('surname', _lang('prefix') , ['class' => 'col-form-label required']) }}
 
-                        {{ Form::text('surname', $user->surname, ['class' => 'form-control', 'placeholder' => 'Dr/Mr/Mrs','required'=>'']) }}
+                        {{ Form::text('surname', $user->surname, ['class' => 'form-control', 'placeholder' => 'Dr/Mr/Mrs']) }}
                       </div>
                     </div>
 
@@ -88,6 +88,22 @@
                   </div>
                 </div>
              </div>
+
+             <div class="col-md-12 form-group">
+               <label for="image">Profile Photo</label>
+               <input type="file" name="image" id="image" class="form-control dropify" data-default-file="{{ asset('storage/user/photo/'.auth()->user()->image) }}"> 
+             </div>
+             @if (auth()->user()->image != '')
+                   <input type="hidden" name="oldFile" value="{{ auth()->user()->image }}">
+               @endif
+
+               <div class="col-md-12 form-group">
+                <label for="image">Cover Photo</label>
+                <input type="file" name="banner" id="banner" class="form-control dropify" data-default-file="{{ asset('storage/user/photo/'.auth()->user()->banner) }}"> 
+              </div>
+              @if (auth()->user()->banner != '')
+                    <input type="hidden" name="oldBanner" value="{{ auth()->user()->banner }}">
+                @endif
             <div class="text-right">
               <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Update Profile')}}<i class="icon-arrow-right14 position-right"></i></button>
               <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>

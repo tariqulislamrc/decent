@@ -61,10 +61,13 @@
 						<form action="#">
 							<fieldset>
 								<input type="text" placeholder="Search...">
-								<span class="icon-microphone"></span>
+								{{-- <span class="icon-microphone"></span> --}}
 								<button class="icon-magnifier" type="submit"></button>
 							</fieldset>
 						</form>
+						<div>
+							
+						</div>
 					</div>
 				</div>
 			</div><!-- mt search popup end here -->

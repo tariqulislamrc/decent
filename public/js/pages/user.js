@@ -152,6 +152,7 @@ var DatatableSelect = function() {
             _componentDatePicker();
             _formValidation();
             _classformValidation();
+            _componentDropFile();
         }
     }
 }();

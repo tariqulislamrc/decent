@@ -39,7 +39,7 @@
                             </ul>
                         </nav><!-- navigation end here -->
 
-                        {{-- <!-- mt icon list start here -->
+                        <!-- mt icon list start here -->
                         <ul class="mt-icon-list">
                             <li class="hidden-lg hidden-md">
                                 <a href="#" class="bar-opener mobile-toggle">
@@ -49,7 +49,7 @@
                                 </a>
                             </li>
                             <li><a class="icon-magnifier" href="#"></a></li>
-                        </ul><!-- mt icon list end here --> --}}
+                        </ul><!-- mt icon list end here -->
                     </div><!-- mt holder end here -->
                 </div><!-- mt nav box end here -->
             </div>

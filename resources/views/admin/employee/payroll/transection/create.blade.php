@@ -45,7 +45,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : 'BDT'}} </span>
                     </div>
-                    <input autocomplete="off" type="number" class="form-control" name="amount" placeholder="Enter Amount" required>       
+                    <input autocomplete="off" type="number" class="form-control" name="amount" placeholder="Enter Amount" required data-parsley-errors-container="#amount_parsley_error">       
 
                     <select data-url="{{route('admin.check_payment_method')}} " data-placeholder="Select Payment Methhod" name="payment_method" id="payment_method" class="form-control select" data-parsley-errors-container="#payment_method_error">
                         <option value="">{{_lang('Select Payment Methhod')}}</option>
@@ -53,8 +53,9 @@
                         <option value="2">{{_lang('Bank Check')}}</option>
                         <option value="3">{{_lang('Mobile Banking')}}</option>
                     </select>
-                    <span id="payment_method_error"></span>
-                </div>
+                    
+                </div><span id="payment_method_error"></span>
+                <span id="amount_parsley_error"></span>
 
                 <div class="row col-md-12" id="payment_method_gateway"></div>
 
@@ -85,6 +86,11 @@
         dateFormat: "yy-mm-dd",
         autoclose: true,
         todayHighlight: true
+    });
+
+    $('#head').change(function() {
+        $('#employee_id').val('').trigger('change');
+        $('#employee_id_error').html('');
     });
 
     $('#employee_id').change(function() {

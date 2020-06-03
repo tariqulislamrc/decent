@@ -180,18 +180,21 @@
                         <div class="info p-3">
                             <h4>Total Products</h4>
                             <p><b>
-                                    @php
-                                        $brand_id = get_option('default_brand');
 
-                                        $product_id = [];
-                                        $product = App\models\Production\VariationBrandDetails::where('brand_id', $brand_id)->get();
-                                        foreach ($product as $value) {
-                                            $product_id[] = $value->product_id;
-                                        }
-                                        // $count = App\models\Production\Product::where('status', 'Active')->where('title', '!=', null)->get();
-                                        echo count($product_id)
-                                    @endphp
-                                </b></p>
+                            @php
+                                $brand_id = get_option('default_brand');
+                                $product = App\models\Production\VariationBrandDetails::where('brand_id', $brand_id)->get();
+                                if(count($product)) {
+                                    foreach ($product as $value) {
+                                        $product_id[] = $value->product_id;
+                                    }
+                                } else {
+                                    $product_id = [];
+                                }
+                                // $count = App\models\Production\Product::where('status', 'Active')->where('title', '!=', null)->get();
+                                echo count($product_id);
+                            @endphp
+                            </b></p>
                         </div>
                     </div>
                 </div>
