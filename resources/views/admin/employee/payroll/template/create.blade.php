@@ -75,12 +75,12 @@
                                                     <option value="user_defined">
                                                         User Defined
                                                     </option>
-                                                    <option value="computation">
+                                                    {{-- <option value="computation">
                                                         Computation
-                                                    </option>
-                                                    <option value="production">
+                                                    </option> --}}
+                                                    {{-- <option value="production">
                                                         On Production
-                                                    </option>
+                                                    </option> --}}
                                                 </select>
                                                 <!---->
                                             </div>

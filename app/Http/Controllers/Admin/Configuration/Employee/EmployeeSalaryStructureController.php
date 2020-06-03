@@ -180,9 +180,9 @@ class EmployeeSalaryStructureController extends Controller
                     //     return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. User Defind is not working at this moment . Contact with Sadik')]);
                     // }
                     
-                    if($category == 'production') {
-                        return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. On Production is not working at this moment . Contact with Sadik')]);
-                    }
+                    // if($category == 'production') {
+                    //     return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. On Production is not working at this moment . Contact with Sadik')]);
+                    // }
                     
                     if($category == 'computation') {
                         $template_alias_id = $request->template_details_id[$i - 1];

@@ -37,13 +37,51 @@ class UiController extends Controller
 			$model->last_name =$request->last_name;
 			$model->name =$request->name;
 			$model->phone =$request->phone;
+
+			if($request->hasFile('image')) {
+
+				$model = User::findOrFail(Auth::user()->id);
+				$storagepath = $request->file('image')->store('public/user/photo/');
+				$fileName = basename($storagepath);
+	
+				$model->image = $fileName;
+	
+				//if file chnage then delete old one
+				$oldFile = $request->oldFile;
+				if( $oldFile != ''){
+
+					$file_path = "public/user/photo/".$oldFile;
+					Storage::delete($file_path);
+				}
+	
+			}
+
+			// Banner
+			if($request->hasFile('banner')) {
+
+				$model = User::findOrFail(Auth::user()->id);
+				$storagepath = $request->file('banner')->store('public/user/photo/');
+				$fileName = basename($storagepath);
+	
+				$model->banner = $fileName;
+	
+				//if file chnage then delete old one
+				$oldFile = $request->oldBanner;
+				if( $oldFile != ''){
+
+					$file_path = "public/user/photo/".$oldFile;
+					Storage::delete($file_path);
+				}
+	
+			}
+
 			$model->save();
 
 			// Activity Log
 			activity()->log('Update User Information from Profile.');
 
 
-			return response()->json(['message' => _lang('Profile Update.')]);
+			return response()->json([ 'load' => true, 'message' => _lang('Profile Update.')]);
 		}
    	}
 

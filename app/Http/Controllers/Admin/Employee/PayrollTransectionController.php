@@ -105,7 +105,7 @@ class PayrollTransectionController extends Controller
         if($amount > 0) {
             echo '<span class="text-success">Advance returnable '. $usd . ' ' . $amount . '</span>' ;
         } else {
-            echo 'Advance returnable ₹1,000';
+            echo '<span class="text-warning">Select Employee</span>';
         }
     }
 
@@ -154,6 +154,11 @@ class PayrollTransectionController extends Controller
             $paid = $payroll->paid;
             $new_paid = $paid + $amount ;
             $total = $payroll->total;
+            
+            if($total < $new_paid) {
+                $output = 'Amount is greater than payroll balance.<br> Total Payable Amount '. $total . '. <br>Total Paid Amount ' . $new_paid ;
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang($output)]);
+            }
 
             if(round($total) == round($new_paid)) {
                 $status = 'Paid';
@@ -238,7 +243,7 @@ class PayrollTransectionController extends Controller
             $total_due = $total_advance - $total_advance_return ;
 
             if($amount > $total_due) {
-                $output = 'mount is greater than advance returnable '. $usd . ' ' . $total_due ;
+                $output = 'Amount is greater than advance returnable '. $usd . ' ' . $total_due ;
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang($output)]);
             }
 

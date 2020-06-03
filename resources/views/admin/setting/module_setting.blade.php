@@ -114,23 +114,7 @@
                                         </select>
                                     </div> --}}
                                 </div>
-                            <hr> <h3 class="text-center">Payroll Configaration</h3><hr>
-                                <div class="row">
-                                    {{--Per Day Salary Calculation Basis --}}
-                                    <div class="col-md-6">
-                                        {{ Form::label('per_day_sarary', _lang('Per Day Salary Calculation Basis') , ['class' => 'col-form-label ']) }}
-                                        <select name="per_day_sarary" id="per_day_sarary" class="form-control select" data-placeholder="Select Per Day Salarye">
-                                            <option value="">{{_lang('Select Per Day Salarye')}}</option>
-                                            <option {{get_option('per_day_sarary') == 'Calender_basis' ? 'selected' : ''}} value="Calender_basis">{{_lang('As Per Calender Basis')}}</option>
-                                            <option {{get_option('per_day_sarary') == 'User_defined' ? 'selected' : ''}} value="User_defined">{{_lang('User Defined')}}</option>
-                                        </select>
-                                    </div>
-                                    {{-- User Defined Days --}}
-                                    <div class="col-md-6" style="display:none;" id="defined-days">
-                                        {{ Form::label('user_defined_days', _lang('User Defined Days') , ['class' => 'col-form-label ']) }}
-                                        {{ Form::text('user_defined_days', get_option('user_defined_days'), ['class' => 'form-control', 'placeholder' => _lang('Type User Defined Days')]) }}
-                                    </div>
-                                </div>
+                           
                         </div>
                         @can('module_configuration.update')
                             {{-- This is for submit Button --}}

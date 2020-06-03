@@ -1,7 +1,7 @@
 <aside class="app-sidebar">
     <div class="app-sidebar__user">
         {{-- User Photo --}}
-        <img class="app-sidebar__user-avatar" src="{{auth()->user()->image? asset('storage/user/photo/'.auth()->user()->image):'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg'}}" alt="User Image">
+        <img class="app-sidebar__user-avatar" style="width: 50px;" src="{{auth()->user()->image? asset('storage/user/photo/'.auth()->user()->image):'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg'}}" alt="User Image">
         <div>
             {{-- User Name --}}
             <p class="app-sidebar__user-name">{{auth()->user()->email}}</p>
