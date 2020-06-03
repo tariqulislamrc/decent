@@ -300,6 +300,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-work-order/item', 'Production\WorkOrderController@item')->name('production-work-order.item');
 			Route::get('product/get_product', 'Production\WorkOrderController@getProduct');
 			Route::post('production-work-order/append', 'Production\WorkOrderController@append');
+			Route::get('production-work-order/pay/{id}', 'Production\WorkOrderController@pay_form')->name('production-work-order.pay');
+			Route::post('production-work-order/pay-work-order-bill', 'Production\WorkOrderController@pay_bill')->name('production-work-order.pay_store');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
 
 			// Production Variation Route

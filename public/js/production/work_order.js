@@ -99,6 +99,9 @@ var DatatableSelect = function () {
                     data: 'delivery_date',
                     name: 'delivery_date'
                 }, {
+                    data: 'payment_status',
+                    name: 'payment_status'
+                }, {
                     data: 'action',
                     name: 'action'
                 }
@@ -163,6 +166,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
 $(function () {
 
+    function total_function()
+        {
+            var total = 0;
+            $('.work_order tbody tr').each(function(i, element) {
+                
+                var html = $(this).html();
+                if(html!='')
+                {
+                    var net_total = $(this).find('.sub_total');
+                    if(net_total.length > 0){
+                        total += parseInt(net_total.val());
+                    }
+                
+                }
+            });
+            
+            return total;
+        }
+
+        $('.work_order tbody').on('keyup change',function(){
+            var total = total_function();
+            $('#refresh_net_total').html(total.toFixed(2));
+            $('#net_total').val(total);
+            $('#show_net_total').html(total.toFixed(2));
+            $('.total_payable_amount').html(total.toFixed(2));
+            $('#total_payable_amount').val(total.toFixed(2));
+        });
+
     $("#item").on('click', '.remove', function () {
         $(this).closest('tr').remove();
         $("#discount_amount").val("");
@@ -174,6 +205,41 @@ $(function () {
     $("#item").on('keyup change', '.qty, .price', function () {
         var tr = $(this).parent().parent();
         update_sub_total(tr);
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        console.log(tax);
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
     });
 
     function update_sub_total(tr) {
@@ -293,9 +359,226 @@ $(function () {
                             $(result.html).find('.qty').length + parseInt(row_count)
                         ).trigger('change');
                     }
+                    var net_total = total_function();
+                    $('#refresh_net_total').html(net_total.toFixed(2));
+                    $('#net_total').val(net_total);
+                    $('#show_net_total').html(net_total.toFixed(2));
+                    $('.total_payable_amount').html(net_total.toFixed(2));
+                    $('#total_payable_amount').val(net_total.toFixed(2));
                 },
             });
         }
+
+        // console.log(net_total);
     }
+
+    // discount_type
+    $('#discount_amount').keyup(function() {
+        var net_total = $('#net_total').val();
+        var discount_type = $('#discount_type').val();
+        var discount_amount = $(this).val();
+        if(discount_amount == '') {
+            discount_amount = 0;
+        }
+        if(discount_type == 'percentage') {
+            var discount_amount_for_show = (net_total * discount_amount) / 100;
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+        } else {
+            var discount_amount_for_show = parseFloat(discount_amount);
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+
+        }
+
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+        
+    });
+
+    // discount_type
+    $('#discount_type').change(function() {
+        var net_total = $('#net_total').val();
+        var discount_type = $('#discount_type').val();
+        var discount_amount = $('#discount_amount').val();
+        if(discount_amount == '') {
+            discount_amount = 0;
+        }
+
+        if(discount_type == 'percentage') {
+            var discount_amount_for_show = (net_total * discount_amount) / 100;
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+        } else {
+
+            var discount_amount_for_show = parseFloat(discount_amount);
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+
+        }
+
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    // tax_calculation_amount
+    $('#tax_calculation_amount').keyup(function() {
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    // shipping_charges
+    $('#shipping_charges').keyup(function() {
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    $('#paid').keyup(function() {
+        var payable = $('#total_payable_amount').val();
+        console.log(payable);
+        var paid = $(this).val();
+        if(paid == '') {
+            paid = 0;
+        }
+        var due = parseInt(payable) - parseInt(paid);
+        $('#due').val(due);
+    });
+
+    // payment method
+    $('.method').change(function() {
+        var val = $(this).val();
+
+        if(val == 'check' || val == 'other') {
+            $('.reference_no').fadeIn();
+        } else {
+            $('.reference_no').fadeOut();
+        }
+    });
 
 });

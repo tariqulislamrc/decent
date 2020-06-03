@@ -32,6 +32,7 @@
                                 <th>{{_lang('Name')}}</th>
                                 <th>{{_lang('Work Orde Date')}}</th>
                                 <th>{{_lang('Delivery Date')}}</th>
+                                <th>{{_lang('P. Status')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>
