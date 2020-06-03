@@ -62,7 +62,7 @@
                             <div class="input-group-append">
                                  <span class="input-group-text"><i class="fa fa-male" aria-hidden="true"></i></span>
                              </div>
-                            <select name="client_id" class="form-control customer_id" id="customer_id">
+                            <select name="client_id" class="form-control customer_id" id="customer_id" data-placeholder="Select Customer" >
                             </select>    
                          </div>
                       </div>

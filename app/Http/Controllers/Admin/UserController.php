@@ -27,7 +27,7 @@ class UserController extends Controller
 	public function datatable(Request $request)
 	{
 		if (request()->ajax()) {
-			$users = User::all()->except(1);
+			$users = User::where('user_type','!=','Client')->get()->except(1);
 			return Datatables::of($users)
 				->addIndexColumn()
 				->addColumn('action', function ($model) {

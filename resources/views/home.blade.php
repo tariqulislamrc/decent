@@ -427,6 +427,45 @@
         </div>
     </div>
 
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {!! $sells_graph->html() !!}
+                </div>
+            </div>
+        </div>
+
+          <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {!! $purchase_graph->html() !!}
+                </div>
+            </div>
+        </div>
+
+             <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {!! $line->html() !!}
+                </div>
+            </div>
+        </div>
+
+            <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    {!! $donut->html() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- /basic initialization -->
+{!! Charts::scripts() !!}
+{!! $sells_graph->script() !!}
+{!! $line->script() !!}
+{!! $purchase_graph->script() !!}
+{!! $donut->script() !!}
 @stop
 

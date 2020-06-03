@@ -371,6 +371,7 @@ class ClientController extends Controller
                             ->orWhere('mobile', 'like', '%' . $term .'%');
                 });
             }
+            $contacts->where('client_type','client');
 
             $contacts = $contacts->select(
                 'id',
@@ -380,7 +381,7 @@ class ClientController extends Controller
                 'city',
                 'state'
             )
-                    ->get();
+             ->get();
 
             return json_encode($contacts);
         }

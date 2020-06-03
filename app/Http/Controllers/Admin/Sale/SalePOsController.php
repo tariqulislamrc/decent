@@ -97,7 +97,7 @@ class SalePOsController extends Controller
                     return view('admin.salePos.action', compact('model'));
                 })->rawColumns(['action','client','date','paid','due','payment_status'])->make(true);
         }
-        $customer =Client::orderBy('id','DESC')->pluck('name','id');
+        $customer =Client::orderBy('id','DESC')->where('client_type','client')->pluck('name','id');
         $user =User::orderBy('id','DESC')->pluck('email','id');
        return view('admin.salePos.index',compact('customer','user'));
     }

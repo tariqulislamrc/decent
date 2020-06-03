@@ -77,12 +77,12 @@ class User extends Authenticatable
 //     }
 
     public function getNameAttribute() {
-		$profile = $this->getProfile();
+		// $profile = $this->getProfile();
 		// return ($profile->first_name ? $profile->first_name : '') . ($profile->middle_name ? ' ' . $profile->middle_name : '') . ($profile->last_name ? ' ' . $profile->last_name : '');
 	}
 
 	public function getNameWithEmailAttribute() {
-		$profile = $this->getProfile();
+		// $profile = $this->getProfile();
 
 		return $profile->first_name . ' ' . $profile->middle_name . ' ' . $profile->last_name . ' (' . $this->email . ')';
     }
