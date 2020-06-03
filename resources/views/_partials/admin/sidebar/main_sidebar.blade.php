@@ -456,8 +456,9 @@
          
 
                     {{--Seo --}}
-                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/c/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
 
+                    <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
 
                     {{--Ecommerce Orders --}}
                     <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
