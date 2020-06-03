@@ -33,6 +33,7 @@
                                 <fieldset>
                                     <input required type="text" placeholder="Username or email address" class="input" autofocus name="email" id="email">
                                     <input required type="password" placeholder="Password" class="input" name="password" id="password">
+                                    <input type="hidden" name="user_type" value="Client">
                                     <div class="box">
                                         <span class="left"><input class="checkbox" type="checkbox" id="check1"><label
                                                 for="check1">Remember Me</label></span>

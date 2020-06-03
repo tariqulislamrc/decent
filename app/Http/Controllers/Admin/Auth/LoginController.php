@@ -60,10 +60,13 @@ class LoginController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function validateLogin(Request $request) {
-        $request->validate([
-           $this->username() => 'required|exists:users,' . $this->username() . ',status,activated',
+         $request->validate([
+            $this->username() => 'required|exists:users,' . $this->username() . ',status,activated',
             'password' => 'required|string',
-        ]);
+        ],
+        [
+        $this->username() . '.exists' => 'The selected email is invalid or the account has been disabled.'
+    ]);
     }
 
     /**

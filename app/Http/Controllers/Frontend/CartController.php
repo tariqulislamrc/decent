@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\eCommerce\Coupon;
-use App\models\Production\Product;
+use App\Utilities\TransactionUtil;
 use App\models\Client;
-use App\models\eCommerce\PageBanner;
-use App\models\inventory\TransactionSellLine;
+use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\VariationBrandDetails;
+use App\models\eCommerce\Coupon;
+use App\models\eCommerce\PageBanner;
+use App\models\inventory\TransactionSellLine;
 use Cart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use View;
 use Session;
+use View;
 
 class CartController extends Controller
 {
+
+   protected $transactionUtil;
+   public function __construct(TransactionUtil $transactionUtil)
+    {
+        $this->transactionUtil = $transactionUtil;
+    }
+
     public function add_cart(Request $request)
     {
         $request->validate([
@@ -177,15 +185,19 @@ class CartController extends Controller
         $uniqu_id = generate_id('purchase', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
         $invoice_no = $code_prefix . $uniqu_id;
-
+    
         $payment = new Transaction();
-        $payment->client_id = $request->client_id;
+        $payment->client_id = $client->id;
+        $payment->date = date('Y-m-d');
         $payment->invoice_no = $invoice_no;
+        $payment->transaction_type = 'eCommerce';
         $payment->sub_total = $request->sub_total;
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
-        $payment->sale_type = 'debit';
-        $payment->payment_status = 'cash_on_delivery';
+        $payment->sale_type = 'eCommerce';
+        $payment->type = 'Credit';
+        $payment->brand_id= get_option('default_brand');
+        $payment->payment_status = 'due';
         $payment->reference_no = rand(1, 100000000);
 
         if($request->checkbox == 'on'){
@@ -212,6 +224,13 @@ class CartController extends Controller
             $total = ($request->quantity[$i]) * ($request->price[$i]);
             $transaction->total = $total;
             $transaction->save();
+
+            $this->transactionUtil->decreaseProductQuantity(
+                               $request->product_id[$i],
+                               $request->variation_id[$i],
+                               get_option('default_brand'),
+                               $request->quantity[$i]
+                            );
         }
 
         generate_id('purchase', true);

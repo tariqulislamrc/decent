@@ -549,7 +549,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');
 		Route::resource('page-banner', 'PageBannerController');
 
+		Route::get('customer','ClientController@ecustomer')->name('e_customer');
+
 	});
+
+     Route::get('eCommerce/customer','ClientController@ecustomer')->name('eCommerce.e_customer');
+     Route::get('eCommerce/customer/view/{id}','ClientController@ecustomer_view')->name('e_customer.view');
 
 	//Sms Marketing:::::::::::::::::::
 	Route::group(['as' => 'smsmerketing.','prefix' => 'smsmerketing','namespace' => 'marketing'], function () {

@@ -43,7 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest:client');
     }
 
         /**
@@ -86,6 +86,7 @@ class RegisterController extends Controller
 
         $model = new Client;
         $model->type        =       'customer';
+        $model->client_type =       'ecommerce';
         $model->name        =       $data['name'];
         $model->last_name   =       $data['last_name'];
         $model->user_name   =       $data['username'];
@@ -102,6 +103,7 @@ class RegisterController extends Controller
 
         $item = new User;
         $item->clients_id = $id;
+        $item->user_type = 'Client';
         $item->name = $data['name'];
         $item->surname = $data['last_name'];
         $item->first_name = $data['name'];
