@@ -10,20 +10,29 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-
 <div class="tile">
+  <h3 class="tile-title">
+            @can('job_work.create')
+            <a data-placement="bottom" title="Create New JobWork" type="button" class="btn btn-info" href ="{{ route('admin.job_work') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Work')}}
+            </a>
+            @endcan
 
+            @can('job_work.view')
+            <a data-placement="bottom" title="JobWork List" type="button" class="btn btn-info" href ="{{ route('admin.job_work.index') }}"><i class="fa fa-list-ul" aria-hidden="true"></i>{{_lang('Job Work List')}}
+            </a>
+            @endcan
+    </h3>
     <div class="tile-body">
-    <form action="{{ route('admin.job_work_post') }}" method="post" class="ajax_form">
-    <div class="row">
-                   <div class="col-md-6">
+        <form action="{{ route('admin.job_work_post') }}" method="post" class="ajax_form">
+            <div class="row">
+                <div class="col-md-6">
                     <label for="department_id">{{_lang('Depertment')}}
                     </label>
                     <div class="input-group">
                         <select class="form-control select" data-placeholder="Select Depertment" name="department_id" id="department_id" required data-parsley-errors-container="#department_id_error">
                             <option value="">Select One</option>
                             @foreach ($depertments as $depert)
-                                <option value="{{ $depert->id }}">{{ $depert->name }}</option>
+                            <option value="{{ $depert->id }}">{{ $depert->name }}</option>
                             @endforeach
                         </select>
                         <span id="department_id_error"></span>
@@ -54,8 +63,8 @@
 {{-- Script Section --}}
 @push('scripts')
 <script>
-$('.select').select2();
-
+ $('.select').select2();
+var loaded =false;
 $(document).on('change', '#work_order_id', function () {
 // it will get action url
 $('.pageloader').show();
@@ -74,7 +83,10 @@ $('.pageloader').show();
           $('.pageloader').hide();
           $('#data').html(data);
           $("#data").find('.select_custom').select2();
+          if (!loaded) {
           _classformValidation();
+          loaded=true;
+      }
         
     })
 });

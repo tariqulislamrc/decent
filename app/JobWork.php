@@ -20,4 +20,20 @@ class JobWork extends Model
    public function product(){
         return $this->belongsTo('App\models\Production\Product','product_id','id');
    }
+
+   public function send_by(){
+        return $this->belongsTo('App\User','created_by','id');
+   }
+
+   public function send_depertment(){
+        return $this->belongsTo('App\models\depertment\Depertment','send_depertment_id','id');
+   }
+
+    public function accept_depertment(){
+        return $this->belongsTo('App\models\depertment\Depertment','depertment_id','id');
+   }
+
+    public function product_flow(){
+      return $this->hasMany('App\models\depertment\ProductFlow');
+    }
 }

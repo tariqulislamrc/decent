@@ -244,9 +244,9 @@
     @endcan
 
 
-       {{-- Product --}}
-    @can('production_product.view')
-        <li data-placement="bottom" title="Job Work"><a class="app-menu__item {{ Request::is('admin/job-work*') ? ' active' : '' }}" href="{{ route('admin.job_work.index') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Job Work')}}</span></a></li>
+       {{-- Job Work --}}
+    @can('job_work.view')
+        <li data-placement="bottom" title="Job Work"><a class="app-menu__item {{ Request::is('admin/job-work*') ? ' active' : '' }}" href="{{ route('admin.job_work.index') }}"><i class="app-menu__icon fa fa-ils" aria-hidden="true"></i><span class="app-menu__label">{{_lang('Job Work')}}</span></a></li>
     @endcan
 
     @can('store_request.view')

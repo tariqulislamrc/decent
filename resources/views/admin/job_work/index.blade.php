@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Job Work List'), 'modal' => 'xl'])
+@extends('layouts.app', ['title' => _lang('Job Work List'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
@@ -14,8 +14,8 @@
     <div class="col-md-12">
         <div class="tile">
             <h3 class="tile-title">
-            @can('sale_pos.create')
-            <a data-placement="bottom" title="Create New Sale" type="button" class="btn btn-info" href ="{{ route('admin.job_work') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Work')}}</a>
+            @can('job_work.create')
+            <a data-placement="bottom" title="Create New JobWork" type="button" class="btn btn-info" href ="{{ route('admin.job_work') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Work')}}</a>
             @endcan
             </h3>
             <div class="tile-body">
