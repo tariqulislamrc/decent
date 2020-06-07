@@ -31,10 +31,10 @@
             @foreach ($products as $item)
             @php
               $low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-              $low = $low_price->default_sell_price;
+              $low = isset($low_price)?$low_price->default_sell_price:0;
 
               $high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-              $high = $high_price->default_sell_price;
+              $high = isset($high_price)?$high_price->default_sell_price:0;
               
             @endphp
           <div class="col-xs-12 col-sm-2">

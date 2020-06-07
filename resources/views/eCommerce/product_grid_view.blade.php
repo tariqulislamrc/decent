@@ -76,7 +76,7 @@
 													<li class="list-group-item count_rating" data-score={{$hot_sale_item->avarage_retting}}>
 												</ul>
 											</div>
-											<span class="price">৳ {{$per_product_price}} </span>
+											<span class="price">৳ {{isset($per_product_price)?$per_product_price:''}} </span>
 										</div>
 									</div>
 								@endforeach		
@@ -124,10 +124,10 @@
 								@foreach ($products as $item)
 								@php
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-									$low = $low_price->default_sell_price;
+									$low = isset($low_price)?$low_price->default_sell_price:0;
 
 									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-									$high = $high_price->default_sell_price;
+									$high = isset($high_price)?$high_price->default_sell_price:0;
 									
 								@endphp
 								<li>
@@ -146,7 +146,7 @@
 														<li><i class="fa fa-star-o"></i></li>
 													</ul> --}}
 													<ul class="links">
-														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+														<li><a href="{{route('product-details',$item->id)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
 															@php
 																$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();

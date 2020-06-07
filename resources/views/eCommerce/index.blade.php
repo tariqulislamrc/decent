@@ -342,7 +342,7 @@
                                         </ul>
                                     </div>
                                     {{-- <del class="off">$75,00</del> --}}
-                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:0.00}}</span>
                                 </div>
                             </div>
                             @endforeach
@@ -393,7 +393,7 @@
                                         </ul>
                                     </div>
                                     {{-- <del class="off">$75,00</del> --}}
-                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:0.00}}</span>
                                 </div>
                             </div>
                             @endforeach
@@ -441,7 +441,7 @@
                                         </ul>
                                     </div>
                                     {{-- <del class="off">$75,00</del> --}}
-                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:0.00}}</span>
                                 </div>
                             </div>
                             @endforeach
@@ -467,8 +467,8 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <del class="off">$75,00</del>
-                                    <span class="price">$55,00</span>
+                                    <del class="off">৳ 75,00</del>
+                                    <span class="price">৳ 55,00</span>
                                 </div>
                             </div><!-- mt product4 end here -->
                             @endforeach

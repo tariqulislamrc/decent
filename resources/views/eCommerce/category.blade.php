@@ -12,8 +12,8 @@
 								<!-- Breadcrumbs of the Page -->
 								<nav class="breadcrumbs">
 									<ul class="list-unstyled">
-										<li><a href="index.html">Home <i class="fa fa-angle-right"></i></a></li>
-										<li><a href="product-detail.html">Products <i class="fa fa-angle-right"></i></a></li>
+										<li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
+										<li><a href="javascript::void(0)">Products <i class="fa fa-angle-right"></i></a></li>
 										<li>Chairs</li>
 									</ul>
 								</nav><!-- Breadcrumbs of the Page end -->
@@ -58,10 +58,10 @@
 								@foreach ($products as $item)
 								@php
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-									$low = $low_price->default_sell_price;
+									$low = isset($low_price)?$low_price->default_sell_price:0;
 
 									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-									$high = $high_price->default_sell_price;
+									$high = isset($high_price)?$$high_price->default_sell_price:0;
 									
 								@endphp
 								<li>
@@ -78,7 +78,7 @@
 														<li><i class="fa fa-star-o"></i></li>
 													</ul> --}}
 													<ul class="links">
-														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+														<li><a href="{{route('product-details',$item->id)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
 														@php
 															$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
