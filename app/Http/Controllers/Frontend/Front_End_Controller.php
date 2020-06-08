@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\EcommerceOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
 use App\models\eCommerce\Seo;
@@ -20,6 +21,8 @@ use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
+use App\models\Production\Transaction;
+use App\models\inventory\TransactionSellLine;
 use App\models\Production\VariationBrandDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -70,8 +73,8 @@ class Front_End_Controller extends Controller{
         
     public function account()
     {
-        if (Auth::check()) {
-         return Redirect::to('home');
+        if (Auth::guard('client')->check()) {
+         return Redirect::to('member/dashboard');
         } else {
             return view('eCommerce.account');
         }
@@ -223,5 +226,14 @@ class Front_End_Controller extends Controller{
         }
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Product Removed from your wishlist') , 'load' => true]);
+    }
+
+    public function invoice($id) {
+        $transaction =  Transaction::where('reference_no',$id)->first();
+        $transaction_sale = TransactionSellLine::where('transaction_id',$transaction->id)->get();
+        
+        // find the client
+        $client = Client::findOrFail($transaction->client_id);
+        return view('eCommerce.invoice',compact('transaction','transaction_sale', 'client'));
     }
 }

@@ -2,30 +2,38 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\eCommerce\Coupon;
-use App\models\Production\Product;
+use App\Utilities\TransactionUtil;
 use App\models\Client;
-use App\models\eCommerce\PageBanner;
-use App\models\inventory\TransactionSellLine;
+use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\VariationBrandDetails;
+use App\models\eCommerce\Coupon;
+use App\models\eCommerce\PageBanner;
+use App\models\inventory\TransactionSellLine;
 use Cart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use View;
 use Session;
+use View;
 
 class CartController extends Controller
 {
+
+   protected $transactionUtil;
+   public function __construct(TransactionUtil $transactionUtil)
+    {
+        $this->transactionUtil = $transactionUtil;
+    }
+
     public function add_cart(Request $request)
     {
         $request->validate([
             'variation' => 'required',
             'qty' => 'required'
         ]);
-        
+
         $qty_available = 0;
         $qty = VariationBrandDetails::where('variation_id', $request->variation)->first();
         if ($qty) {
@@ -34,7 +42,7 @@ class CartController extends Controller
         if ($request->qty > $qty_available) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Quantity Not Available')]);
         }
-        
+
          $a= Cart::add(array(
             'id' => $request->variation,
             'name' => $request->name,
@@ -55,15 +63,15 @@ class CartController extends Controller
     {
         $banner = PageBanner::where('page_name', 'Cart')->first();
         $cart_total =  Cart::getContent();
-        
+
         if (count($cart_total) > 0) {
             Session::put('coupon', null);
             $models = Cart::getContent();
             return view('eCommerce.shopping-cart', compact('models', 'banner'));
         }else{
-            return redirect()->back()->with('error', 'The Cart is Empty.');  
+            return redirect()->back()->with('error', 'The Cart is Empty.');
         }
-        
+
 
     }
 
@@ -99,7 +107,7 @@ class CartController extends Controller
 
     public function coupon_check(Request $request)
     {
-        
+
         if ($request->coupon == null) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('The coupon field is required.')]);
         }
@@ -110,7 +118,7 @@ class CartController extends Controller
             if (Session::get('coupon')) {
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Coupon Already Used.')]);
             }
-            
+
             Session::put('coupon', $model);
             return response()->json(['success' => true, 'coupon' => $model, 'status' => 'success', 'message' => _lang('Coupon Code Match Successfuly')]);
 
@@ -121,8 +129,7 @@ class CartController extends Controller
     }
 
 
-    public function store_cart(Request $request)
-    {
+    public function store_cart(Request $request){
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
             Session::put('total', $request->total_hidden);
@@ -136,7 +143,9 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        //dd('hello');
         $banner = PageBanner::where('page_name', 'Checkout')->first();
+
         if (auth('client')->check() == true) {
             $user = auth('client')->user('clients_id');
             $client = Client::findOrFail($user->clients_id);
@@ -172,20 +181,27 @@ class CartController extends Controller
         $client->save();
 
 
-        $code_prefix = get_option('invoice_code_prefix');
-        $code_digits = get_option('digits_invoice_code');
+        $code_prefix = get_option('invoice_code_prefix', 'INV-');
+        $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
         $invoice_no = $code_prefix . $uniqu_id;
 
         $payment = new Transaction();
-        $payment->client_id = $request->client_id;
+        $payment->client_id = $client->id;
+        $payment->date = date('Y-m-d');
         $payment->invoice_no = $invoice_no;
+        $payment->transaction_type = 'eCommerce';
         $payment->sub_total = $request->sub_total;
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
-        $payment->sale_type = 'debit';
-        $payment->payment_status = '    ';
+
+
+        $payment->sale_type = 'eCommerce';
+        $payment->type = 'Credit';
+        $payment->brand_id= get_option('default_brand');
+        $payment->payment_status = 'due';
+
         $payment->reference_no = rand(1, 100000000);
 
         if($request->checkbox == 'on'){
@@ -197,8 +213,10 @@ class CartController extends Controller
             $payment->city = $request->forcity;
         }
         $payment->ecommerce_status = 'pending';
+        $payment->due = $request->total;
         $payment->save();
         $transaction_id = $payment->id;
+
 
         for ($i = 0; $i < count($request->product_id); $i++) {
 
@@ -212,6 +230,13 @@ class CartController extends Controller
             $total = ($request->quantity[$i]) * ($request->price[$i]);
             $transaction->total = $total;
             $transaction->save();
+
+            $this->transactionUtil->decreaseProductQuantity(
+                               $request->product_id[$i],
+                               $request->variation_id[$i],
+                               get_option('default_brand'),
+                               $request->quantity[$i]
+                            );
         }
 
         generate_id('purchase', true);
@@ -222,8 +247,9 @@ class CartController extends Controller
 
     // welcome
     public function welcome() {
+        $banner = PageBanner::where('page_name', 'Welcome')->first();
         $model = Transaction::orderBy('id', 'desc')->first();
-        $items = TransactionSellLine::where('transaction_id', $model->id)->get();
-        return view('eCommerce.thank', compact('model', 'items'));
+        $items = TransactionSellLine::where('transaction_id', $model->reference_no)->get();
+        return view('eCommerce.thank', compact('model', 'items','banner'));
     }
 }

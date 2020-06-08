@@ -89,6 +89,7 @@ class GeneralSettingSeeder extends Seeder
             'type' => 'customer',
             'name' => 'Walking Customer',
             'mobile' => '017XXXXXXXX',
+            'client_type' => 'client',
         ]);
     }
 }

@@ -6,7 +6,7 @@
     
         @if(get_option('logo'))
     
-            <img class="w-50" src="{{asset('storage/logo')}}/{{get_option('logo')}}" alt="">
+            <img class="w-50" style="margin-top: 10px;" src="{{asset('storage/logo')}}/{{get_option('logo')}}" alt="">
         
         @else 
     

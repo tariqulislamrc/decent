@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h6>{{_lang('Edit Employee Catagory - ')}} <span class="badge badge-primary">{{$model->name}}</span></h6>
+        <h6>{{_lang('Edit Employee Category - ')}} <span class="badge badge-primary">{{$model->name}}</span></h6>
     </div>
     <div class="card-body">
         <form action="{{route('admin.employee-category.update', $model->id)}}" method="post" id="content_form">
@@ -9,14 +9,14 @@
             <div class="row">
                 {{-- Employee Category Name --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Document Type Name')}} <span class="text-danger">*</span>
+                    <label for="name">{{_lang('Category Name')}} <span class="text-danger">*</span>
                     </label>
                     <input type="text" name="name" value="{{$model->name}}" id="name" class="form-control"
                         placeholder="Enter Employee Category Name" required>
                 </div>
                 {{-- Employee Category Description --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Document Type Description')}}
+                    <label for="description">{{_lang('Category Description')}}
                     </label>
                     <textarea name="description" class="form-control" id=""
                         placeholder="Enter Employee Category Description">{{$model->description}}</textarea>

@@ -127,10 +127,11 @@ class PayrollTransectionController extends Controller
         ]);
 
         $payroll = Payrolls::where('employee_id', $request->employee_id)->where('payment_status', '!=', 'Paid')->first();
-        $payroll_id = $payroll->id;
+        
         if(!$payroll) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('No Unpaid payroll found for this Employee')]);
         }
+        $payroll_id = $payroll->id;
 
         // Date of transaction cannot be less than payroll end date.
         if($request->head == 'Salary Payment') {
