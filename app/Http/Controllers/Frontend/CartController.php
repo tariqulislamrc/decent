@@ -184,7 +184,7 @@ class CartController extends Controller
         $code_prefix = get_option('invoice_code_prefix', 'INV-');
         $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
-        $uniqu_id = numer_padding($uniqu_id, $code_digits);
+        $uniqu_id = numer_padding($uniqu_id, $code_digits, );
         $invoice_no = $code_prefix . $uniqu_id;
 
         $payment = new Transaction();
@@ -248,8 +248,9 @@ class CartController extends Controller
     // welcome
     public function welcome() {
         $banner = PageBanner::where('page_name', 'Welcome')->first();
-        $model = Transaction::orderBy('id', 'desc')->first();
-        $items = TransactionSellLine::where('transaction_id', $model->reference_no)->get();
-        return view('eCommerce.thank', compact('model', 'items','banner'));
+        $transaction = Transaction::orderBy('id', 'desc')->first();
+        $client = Client::findOrFail($transaction->client_id);
+        $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->reference_no)->get();
+        return view('eCommerce.thank', compact('transaction', 'client', 'transaction_sale','banner'));
     }
 }

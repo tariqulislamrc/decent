@@ -4,8 +4,8 @@
 	 <!-- mt main start here -->
 			<main id="mt-main">
 				<!-- Mt Contact Banner of the Page -->
-				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x205'}});">
-					<div class="container">
+				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http	placehold.it/1920x205'}});">
+					<div class="container"> \
 						<div class="row">
 							<div class="col-xs-12 text-center">
 								<h1>Product's List</h1>
@@ -32,7 +32,7 @@
 								<ul class="list-unstyled category-list">
 									@foreach ($category as $item)
 									<li>
-										<a href="{{route('category-product',$item->id)}}">
+										<a href="{{route('category-product',$item->category_slug)}}">
 											<span class="name">{{$item->name}}</span>
 										<span class="num">{{count($item->product)}}</span>
 										</a>
@@ -46,12 +46,14 @@
 								@php
 									$hot_sale   = App\models\Production\Product::where('hot_sale_status','1')->orderBy('id','desc')->take(4)->get();
 								@endphp
-								@foreach ($hot_sale as $hot_sale_item)
+								@if(count($hot_sale) > 0)
+									@foreach ($hot_sale as $hot_sale_item)
 									@php
 										$find_price =  App\models\Production\Variation::where('product_id', $hot_sale_item->id)->get();
 										if(count($find_price) > 0) {
 											$total_product_variation = count($find_price);
 											$price = 0;
+											
 											foreach($find_price as $row) {
 												$default_price = $row['default_sell_price'];
 												$price = $price + $default_price;
@@ -77,7 +79,15 @@
 											<span class="price">৳ {{$per_product_price}} </span>
 										</div>
 									</div>
-								@endforeach									
+								@endforeach		
+								@else 
+									<p style="margin: 0 0 9.5px;
+									padding: 10px;
+									font-size: 20px;
+									background-color: #ddd;
+									color: red;
+									text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
+								@endif							
 							</section>
 						</aside>
 						<div class="col-xs-12 col-sm-8 col-md-9 wow fadeInRight" data-wow-delay="0.4s">
@@ -114,10 +124,10 @@
 								@foreach ($products as $item)
 								@php
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-									$low = $low_price->default_sell_price;
+									$low = $low_price->default_sell_price != null ? $low_price->default_sell_price : 0;
 
 									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-									$high = $high_price->default_sell_price;
+									$high = $high_price->default_sell_price != null ? $high_price->default_sell_price : 0;
 									
 								@endphp
 								<li>

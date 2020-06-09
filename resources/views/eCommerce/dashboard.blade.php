@@ -95,7 +95,7 @@
                     <!-- Breadcrumbs of the Page -->
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="#">Home <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
                             <li>My Account</li>
                         </ul>
                     </nav>
@@ -243,7 +243,7 @@
                 <div class="row" style="margin-top:25px;">
                     {{-- Email or Username --}}
                     <div class="col-md-12 form-group">
-                        <label for="email_or_username">Old Password</label>
+                        <label for="email_or_username">Email Address Or User Name</label>
                         <input type="text" name="email_or_username" id="email_or_username" class="form-control" required placeholder="Enter Your Email or Username Here">
                     </div>
 

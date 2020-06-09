@@ -1,0 +1,1 @@
+ <a class="btn btn-info btn-sm has-tooltip" data-original-title="null"  href="{{route('admin.e_customer.view',$model->id)}}" ><i class="fa fa-eye-slash"></i></a>

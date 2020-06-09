@@ -11,6 +11,7 @@ use Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use App\models\eCommerce\PageBanner;
 
 class LoginController extends Controller {
 	/*
@@ -47,9 +48,9 @@ class LoginController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm(Request $request)
-    {
-        return view('eCommerce.account');
+    public function showLoginForm(Request $request){
+        $banner = PageBanner::where('page_name', 'login')->first();
+        return view('eCommerce.account',compact('banner'));
     }
     /**
      * Log the user out of the application.
@@ -80,6 +81,29 @@ class LoginController extends Controller {
         ]);
     }
 
+    // public function login(Request $request)
+    // {
+    //    $this->validate($request, [
+    //         'email' => 'required', 
+    //         'password' => 'required',
+    //     ]);
+
+    //     $user_data = array(
+    //         'email'  => $request->get('email'),
+    //         'password' => $request->get('password'),
+    //         'user_type'=>'Client'
+    //     );
+
+    //     if(!Auth::attempt($user_data)){
+    //         return redirect('users');
+    //     }
+
+    //     if ( Auth::check() ) {
+    //         return response()->json(['message' => 'Successfully Login', 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+    //     }
+    // }
+
+
     /**
      * Attempt to log the user into the application.
      *
@@ -99,7 +123,7 @@ class LoginController extends Controller {
      * @return array
      */
     protected function credentials(Request $request) {
-        return $request->only($this->username(), 'password');
+        return $request->only($this->username(), 'password','user_type');
     }
 
     /**

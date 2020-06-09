@@ -26,16 +26,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
       Schema::defaultStringLength(191);
-
-      if(Schema::hasTable('settings')) {
-        $timexone = get_option('timezone');
-        if($timexone == '') {
-          $timexone = 'Asia/Dhaka';
-        }
+      
+        $timexone = get_option('timezone', 'Asia/Dhaka');
+       
         date_default_timezone_set($timexone);
-      } else {
-        date_default_timezone_set('Asia/Dhaka');
-      }
+     
 
       // default timezone
       

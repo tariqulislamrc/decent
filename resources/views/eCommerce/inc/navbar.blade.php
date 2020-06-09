@@ -32,8 +32,30 @@
                         <nav id="nav">
                             <ul>
                                 <li><a href="{{url('/')}}">Home</a></li>
+                                @php
+                                    $fetch_categories = App\models\Production\Category::where('status', 1)->where('parent_id', 0)->orderBy('id', 'desc')->limit(3)->get();
+                                @endphp
+                                @foreach ($fetch_categories as $cat)
+                                <li>
+                                    @php
+                                        $find_the_sub_cat =  App\models\Production\Category::where('parent_id', $cat->id)->where('status', 1)->orderBy('id', 'desc')->get();
+                                    @endphp
+                                    <a class="{{ count($find_the_sub_cat) > 0 ? 'drop-link' : ''}}" href="{{ count($find_the_sub_cat) > 0 ? 'homepage1.html' : route('category-product', $cat->category_slug) }} ">{{ $cat->name }} <i class="fa fa-angle-down hidden-lg hidden-md" aria-hidden="true"></i></a>
+                                    
+                                    @if (count($find_the_sub_cat) > 0)
+                                    <div class="s-drop">
+                                        <ul>
+                                            @foreach ($find_the_sub_cat as $sub_cat)
+                                                <li><a href="{{ route('category-product', $sub_cat->category_slug) }}">{{ $sub_cat->name }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @endif
+                                    
+                                </li>
+                                @endforeach
+                                
                                 <li><a href="{{route('product')}}">Product</a></li>
-                                {{-- <li><a href="{{route('blog')}}">Blog</a></li> --}}
                                 <li><a href="{{route('about')}}">About</a></li>
                                 <li><a href="{{route('contact')}}">Contact</a></li>
                             </ul>
@@ -48,7 +70,7 @@
                                     <span class="bar"></span>
                                 </a>
                             </li>
-                            <li><a class="icon-magnifier" href="#"></a></li>
+                            <li><a class="icon-magnifier open-search-box" href="#"></a></li>
                         </ul><!-- mt icon list end here -->
                     </div><!-- mt holder end here -->
                 </div><!-- mt nav box end here -->

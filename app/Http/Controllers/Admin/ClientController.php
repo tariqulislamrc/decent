@@ -41,6 +41,7 @@ class ClientController extends Controller
                         )
               
                     ->groupBy('clients.id');
+                    $document->where('clients.client_type','client');
                     if (!auth()->user()->hasRole('Super Admin')) {
                         $document->where('clients.hidden',false);
                     }
@@ -64,6 +65,46 @@ class ClientController extends Controller
                     return view('admin.client.action', compact('model'));
                 })->rawColumns(['action','landmark','due','return_due'])->make(true);
         }
+    }
+
+
+    public function ecustomer(Request $request)
+    {
+           if ($request->ajax()) {
+            $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
+                    ->select('clients.name','clients.email','clients.address', 'state', 'country', 'landmark', 'mobile', 'clients.id','t.hidden as hidden',
+                        DB::raw("SUM(IF(t.transaction_type = 'eCommerce', net_total, 0)) as total_invoice"),
+                        DB::raw("SUM(IF(t.transaction_type = 'eCommerce', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received")
+                        )
+              
+                    ->groupBy('clients.id');
+                    $document->where('clients.client_type','ecommerce');
+                    if (!auth()->user()->hasRole('Super Admin')) {
+                        $document->where('clients.hidden',false);
+                    }
+            return DataTables::of($document)
+                ->addIndexColumn()
+                 ->editColumn(
+                'landmark',
+                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
+                
+                  )
+                    ->addColumn(
+                'due',
+                '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
+                  
+                )
+                ->addColumn('action', function ($model) {
+                    return view('admin.eCommerce.customer.action', compact('model'));
+                })->rawColumns(['action','landmark','due'])->make(true);
+        }
+      return view('admin.eCommerce.customer.index');
+    }
+
+    public function ecustomer_view($id)
+    {
+      $model =Client::where('client_type','ecommerce')->findOrFail($id);
+      return view('admin.eCommerce.customer.view',compact('model'));
     }
 
 
@@ -101,6 +142,7 @@ class ClientController extends Controller
          $input = $request->only(['type',
                 'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
          $input['created_by'] = auth()->user()->id;
+         $input['client_type']='client';
          $contact = Client::create($input);
 
         $ym = Carbon::now()->format('Y/m');
@@ -136,6 +178,7 @@ class ClientController extends Controller
          $input = $request->only(['type',
                 'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
          $input['created_by'] = auth()->user()->id;
+         $input['client_type']='client';
          $contact = Client::create($input);
          return response()->json(['id'=>$contact->id,'name'=>$contact->name,'addto'=>'customer_id','modal'=>'contact_modal']);
     }
@@ -158,6 +201,8 @@ class ClientController extends Controller
                                 DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
                                 DB::raw("SUM(IF(t.transaction_type = 'Purchase', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as purchase_paid"),
                                 DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
+                                DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as sale_return"),
+                                DB::raw("SUM(IF(t.transaction_type = 'sale_return', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as return_paid"),
                                 DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
                                 DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid"),
                                 'clients.*'
@@ -326,6 +371,7 @@ class ClientController extends Controller
                             ->orWhere('mobile', 'like', '%' . $term .'%');
                 });
             }
+            $contacts->where('client_type','client');
 
             $contacts = $contacts->select(
                 'id',
@@ -335,9 +381,36 @@ class ClientController extends Controller
                 'city',
                 'state'
             )
-                    ->get();
+             ->get();
 
             return json_encode($contacts);
+        }
+    }
+
+ public function getCustomerPayment($id)
+    {
+        if (request()->ajax()) {
+            $query = TransactionPayment::leftjoin('transactions as t', 'transaction_payments.transaction_id', '=', 't.id')
+                // ->where('t.type', 'opening_balance')
+                ->where('t.client_id', $id)
+                ->select(
+                    'transaction_payments.amount',
+                    'method',
+                    'payment_date',
+                    'transaction_payments.id as id',
+                    't.transaction_type'
+                )
+                ->groupBy('transaction_payments.id');
+            return Datatables::of($query)
+                ->editColumn('amount', function ($row) {
+                    return '<span class="display_currency paid-amount" data-orig-value="' . $row->amount . '" data-currency_symbol = true>' . $row->amount . '</span>';
+                })
+
+                 ->editColumn('action', function ($model) {
+                  return '<button class="btn btn-danger btn-sm" id="btn_modal" data-url="'.route('admin.sale.pos.printpayment',$model->id).'">Print</button>';
+                 })
+                ->rawColumns(['amount', 'method', 'action'])
+                ->make(true);
         }
     }
 }

@@ -95,8 +95,8 @@
                         {{-- Submit Button --}}
                         @can('user.create')
                             <div class="text-right">
-                                <button  data-placement="bottom" title="Create New User." type="submit" class="btn btn-primary"  id="submit">{{_lang('Create User')}}<i class="icon-arrow-right14 position-right"></i></button>
-                                <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                                <button  data-placement="bottom" title="Create New User." type="submit" class="btn btn-primary"  id="submit">{{_lang('Create User')}}</button>
+                                <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                             </div>
                         @endcan
                     <fieldset class="mb-3" id="form_field">

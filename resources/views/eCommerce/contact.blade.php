@@ -10,8 +10,8 @@
                 <h1>CONTACT</h1>
                 <nav class="breadcrumbs">
                   <ul class="list-unstyled">
-                    <li><a href="index.html">Home <i class="fa fa-angle-right"></i></a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
+                    <li><a href="javascript::void(0)">Contact</a></li>
                   </ul>
                 </nav>
               </div>
@@ -37,7 +37,7 @@
                     @if (get_option('address_optional') && get_option('address_optional') != '')
                         <address>{{ get_option('address_optional') }}</address>
                     @endif
-                    <address>{{get_option('city') ? get_option('city') : '' }}, {{get_option('state') ? get_option('state') : '' }}, {{get_option('zip') ? get_option('zip') : '' }}, {{get_option('country') ? get_option('country') : '' }}</address>
+                    <address>{{get_option('city') ? get_option('city') : '' }} {{get_option('state') ? get_option('state') : '' }} {{get_option('zip') ? get_option('zip') : '' }} {{get_option('country') ? get_option('country') : '' }}</address>
                   </li>
                   <li>
                     <strong>Phone</strong>

@@ -80,6 +80,7 @@
                     @endcan
                     @can('view_sale.sale_due')
                     <th>{{ $element->net_total-$element->payment->sum('amount') }}</th>
+                    @endcan
                 </tr>
                 @endforeach
             </tbody>

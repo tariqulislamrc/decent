@@ -15,6 +15,10 @@
 		Frontend Route
 ==========================================================*/
 
+/*Route::get('/s', function(){
+    \Artisan::call('storage:link');
+});*/
+
 Route::group(['middleware' => ['install']], function () {
 
 	Route::get('/', 'Frontend\Front_End_Controller@index');
@@ -25,15 +29,16 @@ Route::group(['middleware' => ['install']], function () {
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
 		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
 		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
-	
+
 		// check_user_name_is_exist_or_not
 		Route::get('/check_user_name_is_exist_or_not', 'ProfileController@check_user_name_is_exist_or_not')->name('check_user_name_is_exist_or_not');
 		// check_email_is_exist_or_not
 		Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-	
+
+
 	});
-	
+
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 	Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
@@ -41,25 +46,28 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('about','Frontend\Front_End_Controller@aboutUs')->name('about');
 	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
-	
+	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
+	Route::get('category-offer/{slug}','Frontend\Front_End_Controller@category_offer')->name('category-offer');
+	Route::get('search-product', 'Frontend\Front_End_Controller@search_product')->name('search_product');
+
 	Route::get('blog',function(){
 		return view('eCommerce.blog');
 	})->name('blog');
-	
+
 	Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
-	
-	
+
+
 	Route::get('product', 'Frontend\Front_End_Controller@product')->name('product');
 	Route::get('category-product/{id}', 'Frontend\Front_End_Controller@category_product')->name('category-product');
-	
-	
-	
+
+
+
 	Route::get('privacy-policy','Frontend\Front_End_Controller@privacyPolicy')->name('privacy-policy');
-	
+
 	Route::get('product-list',function(){
 		return view('eCommerce.product_list_view');
 	})->name('product-list');
-	
+
 	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 	Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 	Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
@@ -109,8 +117,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('employee-shift', 'Configuration\Employee\EmployeeShiftController');
 
 		//:::::::::::::::::::::::::::::Employee leave type:::::::::::::::::::::::::::::::
-		Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
-		Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');
+		Route::group(['prefix' => 'emp-leave'],function(){
+			Route::get('employee-leave-type-datatable', 'Configuration\Employee\EmployeeLeaveTypeController@datatable')->name('leave_type.datatable');
+			Route::resource('employee-leave-type', 'Configuration\Employee\EmployeeLeaveTypeController');
+		});
+
 
 		//:::::::::::::::::::::::::::::Employee leave Allocation:::::::::::::::::::::::::::::::
 		Route::get('employee-leave', 'Configuration\Employee\EmployeeLeaveTypeController@view')->name('employee-leave.view');
@@ -147,7 +158,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::post('/check_advane_return', 'Employee\PayrollTransectionController@check_advane_return')->name('check_advane_return');
 		Route::post('/check_employee_payroll', 'Employee\PayrollTransectionController@check_employee_payroll')->name('check_employee_payroll');
 		Route::resource('payroll-transection', 'Employee\PayrollTransectionController');
-		
+
 			//:::::::::::::::::::::::::::::Designation::::::::::::::::::::::::::
 		Route::get('designation-datatable', 'Configuration\Employee\DesignationController@datatable')->name('designation.datatable');
 		Route::resource('employee/designation', 'Configuration\Employee\DesignationController');
@@ -259,7 +270,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::any('/employee-details/login_info/{id}', 'UserController@set_login_info')->name('employee-details.login_info');
 
 
-			
+
 
 		// Production Route Start
 
@@ -370,6 +381,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		    Route::resource('client', 'ClientController');
 		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
 		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
+		    Route::get('client/payment-list/{id}','ClientController@getCustomerPayment')->name('getCustomerPayment');
 
 		// Production Route End
 
@@ -377,7 +389,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		// Route::resource('employee-payhead', 'Configuration\Employee\EmployeePayHeadController');
 
 		//::::::::Product list
-		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');	
+		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');
@@ -478,6 +490,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');
 		Route::resource('eCommerce-offer', 'eCommerceOfferController');
 
+		// special_offer
+		Route::get('add_to_special_offer_row', 'SpecialOfferController@add_to_special_offer_row')->name('add_to_special_offer_row');
+		Route::get('special-offer.datatable', 'SpecialOfferController@datatable')->name('special-offer.datatable');
+		Route::resource('special-offer', 'SpecialOfferController');
+
+		// Special Category
+		Route::get('special-category.datatable', 'SpecialCategoryController@datatable')->name('special-category.datatable');
+		Route::resource('special-category', 'SpecialCategoryController');
+
 		// feature-product
 		Route::get('feature-product/datatable','FeatureProductController@datatable')->name('feature-product.datatable');
 		Route::get('feature-product/status', 'FeatureProductController@status')->name('feature-product.change_status');
@@ -549,7 +570,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');
 		Route::resource('page-banner', 'PageBannerController');
 
+		Route::get('customer','ClientController@ecustomer')->name('e_customer');
+
 	});
+
+     Route::get('eCommerce/customer','ClientController@ecustomer')->name('eCommerce.e_customer');
+     Route::get('eCommerce/customer/view/{id}','ClientController@ecustomer_view')->name('e_customer.view');
 
 	//Sms Marketing:::::::::::::::::::
 	Route::group(['as' => 'smsmerketing.','prefix' => 'smsmerketing','namespace' => 'marketing'], function () {
@@ -633,7 +659,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
 	 });
-    //Payment 
+    //Payment
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
@@ -661,7 +687,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
            Route::post('raw-material/report-details','DepertmentReportController@get_rawmaterial_report_details')->name('get_rawmaterial_report_details');
 
 		});
-		
+
 		Route::get('eCommerce-report','DepertmentReportController@ecommerce_report')->name('eCommerce-report.index');
 		Route::get('eCommerce-report-date-wise','DepertmentReportController@ecommerce_report_date_wise')->name('ecommerce_report_date_wise');
 	 	Route::get('eCommerce-report/pdf/{id}', 'DepertmentReportController@ecommerce_report_pdf')->name('ecommerce_report.pdf');
@@ -719,6 +745,18 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  	Route::post('investment/get','InvestmentController@postInvest')->name('investment.postInvest');
 	  	Route::resource('investment','InvestmentController');
 	  });
+
+	  //Job Work:::::::::::::
+	  Route::get('job-work','JobworkController@index')->name('job_work.index');
+	  Route::get('job-work/create','JobworkController@create')->name('job_work');
+	  Route::get('job-work/product','JobworkController@get_job_product')->name('get_job_product');
+	  Route::post('job-work/product','JobworkController@job_work_post')->name('job_work_post');
+	  Route::get('job-work/accept/{id}','JobworkController@edit')->name('job_work.edit');
+	  Route::post('job-work/accept','JobworkController@update')->name('job_work_accept');
+	  Route::get('job-work/payment/{id}','JobworkController@payment')->name('job_work.payment');
+	  Route::post('job-work/payment','TransactionPaymentController@jobwork_payment')->name('job_work.post_payment');
+	  Route::get('job-work/printpayment/{id}','JobworkController@printpayment')->name('job_work.printpayment');
+	  Route::delete('job_work/destroy/{id}','JobworkController@destroy')->name('job_work.destroy');
 
 	});
 

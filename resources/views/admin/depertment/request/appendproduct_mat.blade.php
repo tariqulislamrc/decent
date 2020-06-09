@@ -15,7 +15,7 @@
 		
 	</td>
 	<td>
-		<button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
+		<button type="button" name="remove" class="btn btn-danger btn-sm remmove"><i class="fa fa-trash" aria-hidden="true"></i></button>
 	</td>
 </tr>
 @endforeach

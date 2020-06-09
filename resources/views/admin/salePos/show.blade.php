@@ -65,18 +65,21 @@
                                 @endcan
 
                                 @can('view_purchase.paid')
-                                <span><b>{{ _lang('Paid') }}</b> : {{  $model->payment->sum('amount') }}</span>
+                                <span><b>{{ _lang('Sale Paid') }}</b> : {{  $model->payment->sum('amount') }}</span>
                                 @if($model->return == 1)
                                 <small>(This Sale has return item)</small> <br>
                                 @endif
+                                @if($model->net_total - $model->paid > 0)
+                                <span><b>{{ _lang('Sale Due') }}</b> : {{ $model->net_total- $model->payment->sum('amount') }}</span> <br>
+                                @endif
                                 @if($model->return == 1 || ($model->net_total - $model->payment->sum('amount')) > 0 )
                                 @php
-                                $return =$model->return_parent->sum('net_total')
+                                $return =$model->return_parent->net_total
                                 @endphp
-                                <span><b>{{ _lang('Return') }}: </b>{{ $return }}</span> <br>
+                                @if($model->return == 1)
+                                <span><b>{{ _lang('Return Amt') }}: </b>{{ $return }}</span> <br>
+                                <span><b>{{ _lang('Return Paid') }}: </b>{{ $model->return_parent->payment->sum('amount')}}</span> <br>
                                 @endif
-                                @if($model->net_total - $model->paid > 0)
-                                <span><b>{{ _lang('Due') }}</b> : {{ $model->net_total- $model->payment->sum('amount') }}</span>
                                 @endif
                                 @endcan
                             </p>

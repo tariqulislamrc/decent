@@ -27,11 +27,14 @@ class UserController extends Controller
 	public function datatable(Request $request)
 	{
 		if (request()->ajax()) {
-			$users = User::all()->except(1);
+			$users = User::where('user_type','!=','Client')->get()->except(1);
 			return Datatables::of($users)
 				->addIndexColumn()
 				->addColumn('action', function ($model) {
 					return view('admin.user.action', compact('model'));
+				})
+				->addColumn('username', function ($model) {
+					return $model->username;
 				})
 				->addColumn('role', function ($model) {
 					return $role_name = getUserRoleName($model->id);
@@ -40,7 +43,7 @@ class UserController extends Controller
 
 					return view('admin.status', compact('model'));
 				})
-				->rawColumns(['action', 'status'])->make(true);
+				->rawColumns(['action','role','username', 'status'])->make(true);
 
 		}
 	}

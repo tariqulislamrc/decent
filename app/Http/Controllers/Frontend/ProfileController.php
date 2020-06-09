@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\models\Client;
+use App\models\eCommerce\PageBanner;
 use App\models\Production\Transaction;
 use App\User;
 
@@ -76,7 +77,8 @@ class ProfileController extends Controller
     // get access for member Dashboard
     public function dashboard() {
         if(auth('client')->check() == true) {
-            return view('eCommerce.dashboard');
+            $banner = PageBanner::where('page_name','dashboard')->first();
+            return view('eCommerce.dashboard',compact('banner'));
         }
     }
 

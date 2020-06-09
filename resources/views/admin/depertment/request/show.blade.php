@@ -1,9 +1,9 @@
-@extends('layouts.app', ['title' => _lang('Department'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Store Request '), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
   <div>
-    <h1 data-placement="bottom" title="Department."><i class="fa fa-universal-access mr-4"></i> {{_lang('Department')}}</h1>
+    <h1 data-placement="bottom" title="Department."><i class="fa fa-universal-access mr-4"></i> {{_lang('Store Request ')}}</h1>
   </div>
 </div>
 @stop
@@ -17,19 +17,21 @@
   <div class="col-md-12">
     <div class="tile">
       <div class="tile-body">
-        <h3 class="bg-info text-center py-2">Store Request</h3>
+        <h3>Store Request</h3> <hr>
         <div class="row">
           <table class="table table-bordered">
-            <thead>
+            <thead class="bg-green text-light">
               <tr>
                 <th>{{ _lang('Date') }}</th>
                 <th>{{ _lang('Material') }}</th>
                 <th>{{ _lang('Qty') }}</th>
+                <th>{{ _lang('Approve Qty') }}</th>
+                <th>{{ _lang('Remain Qty') }}</th>
                 <th>{{ _lang('Status') }}</th>
                 <th>{{ _lang('Action') }}</th>
               </tr>
             </thead>
-            <thead>
+            <thead class="bg-gray">
               @foreach ($model->store_request as $store)
               {{--  {{ dd($category) }} --}}
               <tr>
@@ -38,12 +40,14 @@
                   {{$store->material?$store->material->name:''}}
                 </td>
                 <td>{{ $store->qty }}</td>
+                <td>{{ $store->approve_qty }}</td>
+                <td>{{$store->qty-$store->approve_qty }}</td>
                 <td>
                   {{ $store->status }}
                 </td>
                 <td>
                   @can('store_request.update')
-                  <a href="{{route('admin.request.edit',$store->id)}}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-check-circle" aria-hidden="true"></i></a>
+                  <a href="{{route('admin.request.edit',$store->id)}}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" >{{ _lang('Approve') }}</a>
                   @endcan
                   @can('store_request.delete')
                   <button id="delete_item" data-id ="{{$store->id}}" data-url="{{route('admin.request.destroy',$store->id)  }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"

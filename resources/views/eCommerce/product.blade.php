@@ -17,7 +17,7 @@
     <div class="box">
         <div class="b1">
             <div class="b2">
-                <a href="{{route('product-details',$item->id)}}">
+                <a href="{{route('product-details',$item->product_slug)}}">
                     <img src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}" alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}"> 
                 </a>
                 <span class="caption">
@@ -31,7 +31,7 @@
                     <li><i class="fa fa-star-o"></i></li>
                 </ul>
                 <ul class="links">
-                    <li><a href="{{route('product-details',$item->id)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+                    <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
                     <li>
                         <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
                             @php

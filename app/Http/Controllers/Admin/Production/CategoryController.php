@@ -66,6 +66,24 @@ class CategoryController extends Controller
         }
          return view('admin.production.category.quick_modal'); 
     }
+
+    // make slug
+    public function slug($old_slug, $row = Null)
+    {
+        if(!$row){
+            $slug = $old_slug;
+            $row = 0;
+        }else{
+            $slug = $old_slug . '-'.$row;
+        }
+
+        $check_res = Category::where('category_slug', $slug)->first();
+        if($check_res) {
+            $slug = $this->slug($old_slug, $row+1);
+        }
+
+        return $slug;
+    }
     
 
     public function remort_addCategory(Request $request)
@@ -83,6 +101,8 @@ class CategoryController extends Controller
             'description' => '',
         ]);
         $model = new Category;
+        $slug = $this->slug(make_slug($request->name));
+        $model->category_slug = $slug;
         $model->name = $request->name;
         $model->parent_id =0;
         $model->description = $request->description;
@@ -114,6 +134,8 @@ class CategoryController extends Controller
         ]);
 
         $model = new Category;
+        $slug = $this->slug(make_slug($request->name));
+        $model->category_slug = $slug;
         $model->name = $request->name;
         $model->parent_id = $request->parent_id;
         $model->description = $request->description;
@@ -193,8 +215,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
+
        if (!auth()->user()->can('production_category.delete')) {
             abort(403, 'Unauthorized action.');
         }

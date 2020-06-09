@@ -344,10 +344,11 @@
                             </thead>
                             @php
                                 $query = App\models\Production\Transaction::where('transaction_type', 'ecommerce')->orderBy('id', 'desc')->limit(5)->get()
+                                // $query = App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->limit(5)->get()
                             @endphp
                             <tbody>
                             @if (count($query))
-                                @foreach ($query as $item)
+                                {{-- @foreach ($query as $item)
                                     <tr>
                                         <td>
                                             @if ($item->ecommerce_status == 'pending')
@@ -362,6 +363,8 @@
                                                 <span class="badge badge-success">Success</span>
                                             @else
                                                 <span class="badge badge-danger">Cancel</span>
+                                            @if ($item->payment_status == 'cash_on_delivery')
+                                                Cash On Delivery
                                             @endif
                                         </td>
                                         <td>
@@ -370,8 +373,9 @@
                                         <td>{{get_client_name($item->client_id)}}</td>
                                         <td>{{get_client_phone($item->client_id)}}</td>
                                         <td>{{get_option('currency') ? '৳' : get_option('currenct') }}{{$item->net_total}}</td>
+                                        <td>{{get_option('currency') ? '৳' : get_option('currenct') }} {{$item->net_total}}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             @else
                                 <tr>
                                     <td class="text-center" colspan="5">No Pending Order Found !</td>

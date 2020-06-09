@@ -42,7 +42,7 @@
                     </label>
                     <div class="input-group">
                         <select class="form-control select" data-placeholder="Select Work Order" name="wo_id"
-                            data-url='{{route('admin.request.product_append')}}' id="wo_id" class="form-control select">
+                            data-url='{{route('admin.request.product_append')}}' id="wo_id">
                         </select>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                     </label>
                     <div class="input-group">
                         <select class="form-control select" data-placeholder="Select Product" name="product_id"
-                            data-url='{{route('admin.request.material_append')}}' id="product_id" class="form-control select">
+                            data-url='{{route('admin.request.material_append')}}' id="product_id">
                         </select>
                     </div>
                 </div>
@@ -62,6 +62,22 @@
 
 
             </div>
+            @if ($type=='row_material')
+            <div class="row">
+                 <div class="col-md-6 form-group">
+                    <label for="product_id">{{_lang('Work Order')}}
+                    </label>
+                    <div class="input-group">
+                        <select class="form-control select" data-placeholder="Select Product" name="wo_id" required>
+                            <option value="">Work Order</option>
+                            @foreach ($work_orders as $element)
+                               <option value="{{ $element->id }}">{{ $element->prefix }}-{{ $element->code }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
 
 
@@ -82,9 +98,8 @@
             @endif
 
             <div class="table-responsive">
-                <table class="table table-condensed table-bordered table-th-green text-center table-striped"
-                    id="purchase_entry_table">
-                    <thead>
+                <table class="table table-condensed table-bordered text-center table-striped" id="purchase_entry_table">
+                    <thead class="bg-green text-light">
                         <tr>
                             <th>Product Name</th>
                             <th>Previous Request</th>
@@ -92,7 +107,7 @@
                             <th><i class="fa fa-trash" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
-                    <tbody id="data">
+                    <tbody id="data" class="bg-gray">
 
                     </tbody>
                 </table>
@@ -101,9 +116,9 @@
 
         <div class="form-group col-md-12" id="submit_btn" align="right" style="display:none">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
+            <button type="submit" class="btn btn-primary" id="">{{_lang('Create')}}<i
                     class="icon-arrow-right14 position-right"></i></button>
-            <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
+            <button type="button" class="btn btn-info" id="" style="display: none;">{{_lang('Processing')}}
                 <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
     </div>

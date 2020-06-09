@@ -2,14 +2,14 @@
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
-    <section class="mt-contact-banner" style="background-image: url(http://placehold.it/1920x205);">
+    <section class="mt-contact-banner"  style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <h1>SIGN IN or register</h1>
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="index.html">home <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="{{url('/')}}">home <i class="fa fa-angle-right"></i></a></li>
                             <li>register</li>
                         </ul>
                     </nav>
@@ -33,6 +33,7 @@
                                 <fieldset>
                                     <input required type="text" placeholder="Username or email address" class="input" autofocus name="email" id="email">
                                     <input required type="password" placeholder="Password" class="input" name="password" id="password">
+                                    <input type="hidden" name="user_type" value="Client">
                                     <div class="box">
                                         <span class="left"><input class="checkbox" type="checkbox" id="check1"><label
                                                 for="check1">Remember Me</label></span>

@@ -60,7 +60,13 @@ class EmployeeLeaveRequestController extends Controller
                     }
                 })
                 ->editColumn('request', function ($document) {
-                    return $document->request->name . ' (' . $document->request->prefix . numer_padding($document->request->code, get_option('digits_employee_code')) . ')';
+                    if($document->request->id == 1){
+                        return $document->request->name . ' (Admin)';
+                    }else{
+                        $employee = Employee::where('id', $document->request->employee_id)->first();
+                        return $employee->name . ' (' . $employee->prefix . numer_padding($employee->code, get_option('digits_employee_code')) . ')';
+                    }
+                    
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.leave.request.action', compact('model'));
@@ -103,15 +109,25 @@ class EmployeeLeaveRequestController extends Controller
             $fileName = '';
         }
 
-        $id = Auth::user()->id;
-        $models =  Employee::where('user_id', $id)->firstOrFail();
-        $user_id = $models->user_id;
+        $id = auth()->user()->id;
         $employee_id = $request->employee;
+
+        if ($id == 1 AND $employee_id == '') {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Admin cannot request leave for himself')]);
+        }
+
+        if($id != 1){
+            $models =  Employee::where('user_id', $id)->firstOrFail();
+            $user_id = $models->id;
+        }
+
         if ($employee_id) {
             $model =  EmployeeLeaveAllocation::where('employee_id', $employee_id)->firstOrFail();
         }else{
             $model =  EmployeeLeaveAllocation::where('employee_id', $user_id)->firstOrFail();
         }
+
+
         $alocation_details =  EmployeeLeaveAllocationDetail::where('employee_leave_allocation_id', $model->id)->where('employee_leave_type_id', $leave_type)->firstOrFail();
         $total = $alocation_details->allotted - $alocation_details->used;
 
@@ -125,15 +141,16 @@ class EmployeeLeaveRequestController extends Controller
         $model->uuid = $uuid;
         if ($employee_id) {
             $model->employee_id = $employee_id;
+        }else{
+            $model->employee_id = $user_id;
         }
-        $model->employee_id = $user_id;
         $model->employee_leave_type_id = $leave_type;
         $model->start_date = $request->start_date;
         $model->end_date = $request->end_date;
         $model->reason = $request->reason;
         $model->status = 'pending';
         $model->upload_token = $fileName;
-        $model->requester_user_id = $user_id;
+        $model->requester_user_id = $id;
         $model->save();
         $id = $model->id;
 
@@ -168,9 +185,8 @@ class EmployeeLeaveRequestController extends Controller
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Leave Request Date Expired')]);
         }
 
-        $id = Auth::user()->id;
-        $models =  Employee::where('user_id', $id)->firstOrFail();
-        $user_id = $models->user_id;
+        $user_id = Auth::user()->id;
+        
         $leave_id = $request->id;
 
         $status = $request->status;
@@ -178,14 +194,18 @@ class EmployeeLeaveRequestController extends Controller
             $data = EmployeeLeaveRequest::findOrFail($leave_id);
             $old_status = $data->status;
             $data->status = $status;
-            $data->save();
 
             if ($status == "approved") {
                 $employee_id = $data->employee_id;
                 $employee = EmployeeLeaveAllocation::where('employee_id', $employee_id)->firstOrFail();
                 $data1 = EmployeeLeaveAllocationDetail::where('employee_leave_type_id', $data->employee_leave_type_id)->where('employee_leave_allocation_id', $employee->id)->firstOrFail();
 
+                $still_leave = $data1->allotted - $data1->used;
                 $count = to_date($data->start_date, $data->end_date);
+
+                if ($still_leave < $count) {
+                    return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Leave Request is Bigger then Your vacancy')]);
+                }
 
                 if ($old_status != "approved") {
                     if ($data1->used) {
@@ -210,9 +230,10 @@ class EmployeeLeaveRequestController extends Controller
                         }
                 }
             }
-        }
-        
 
+            $data->save();
+        }
+       
         $model = new EmployeeLeaveRequestDetail;
         $model->employee_leave_request_id = $request->id;
         $model->date_of_action = now();
@@ -222,7 +243,7 @@ class EmployeeLeaveRequestController extends Controller
         $model->save();
 
         // Activity Log
-        activity()->log('Created a Employee Leave Request Employee - ' . $models->name);
+        activity()->log('Created a Employee Leave Request Employee - ');
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update'), 'goto' => route('admin.employee-leave-request.index')]);
     }
 

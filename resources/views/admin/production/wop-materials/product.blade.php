@@ -1,4 +1,4 @@
-@foreach ($models->work_order as $work_order_product)
+@foreach ($models->workOrderProduct as $work_order_product)
 <div class="row">
     <div class="col-md-12">
         <p class="h4 pt-4">{{_lang('Product')}} : <span class="">{{$work_order_product->product->name}} ({{$work_order_product->product->articel}})</span></p>
@@ -29,7 +29,7 @@
                             <td>
                                 <div class="input-group">
                                 <input type="text" class="form-control qty qty_{{$item->id}}" id="{{$item->id}}" name="raw_material[{{$work_order_product->id}}][{{$item->id}}][qty]"
-                                    value="{{ $item->qty }}">
+                                    value="{{ $work_order_product->qty }}">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="unit">{{$item->unit->unit}}</span>
                                     </div>
@@ -37,19 +37,30 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control unit_price" id="unit_price_{{$item->id}}"
-                                    data-id="{{$item->id}}" name="raw_material[{{$work_order_product->id}}][{{$item->id}}][unit_price]" value="{{ $item->unit_price }}">
+                                    data-id="{{$item->id}}" name="raw_material[{{$work_order_product->id}}][{{$item->id}}][unit_price]" value="{{ $work_order_product->price }}">
                             </td>
                             <td>
                                 <input type="text" class="form-control price" id="price_{{$item->id}}" readonly name="raw_material[{{$work_order_product->id}}][{{$item->id}}][price]"
-                                    value="{{ $item->price }}">
+                                    value="{{ $work_order_product->sub_total }}">
                             </td>
                             <td>
+                                <div class="input-group">
                                 <input type="number" class="form-control waste" maxlength="2" id="{{$item->id}}" name="raw_material[{{$work_order_product->id}}][{{$item->id}}][waste]"
                                     value="{{ $item->waste }}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" >%</span>
+                                    </div>
+                                </div>
                             </td>
                             <td>
+                                <div class="input-group">
                                 <input type="text" readonly class="form-control uses" id="uses_{{$item->id}}" name="raw_material[{{$work_order_product->id}}][{{$item->id}}][uses]"
                                     value="{{ $item->uses }}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" >%</span>
+                                    </div>
+                                </div>
+                                
                             </td>
                         </tr>
                         @endforeach
@@ -77,7 +88,6 @@ $(".unit_price").on('keyup', function (e) {
     var total = parseInt(qty) * parseInt(unit_price);
     $("#price_"+id).val(total);
 });
-
 
     $(".waste").on('keyup', function (e) {
     var id = $(this).attr('id');

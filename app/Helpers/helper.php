@@ -6,6 +6,7 @@ use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ApproveStoreItem;
+use App\models\depertment\DepertmentEmployee;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\employee\Department;
@@ -97,13 +98,13 @@ function gbv($params, $keys) {
 if (!function_exists('get_option')) {
     function get_option($name, $default = null)
     {
+	
         if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
-            $setting = DB::table('settings')->where('name', $name)->get();
-            if (!$setting->isEmpty()) {
-                return $setting[0]->value;
+			$setting = DB::table('settings')->where('name', $name)->first();
+	
+            if ($setting and $setting->value) {
+                return $setting->value;
             }
-
-
         }
         return $default;
     }
@@ -351,7 +352,7 @@ function generate_id($id_type, $update = false){
 
 }
 
-function numer_padding($id, $code_digits=3){
+function numer_padding($id = 1, $code_digits=3){
 	// $id = $id + 1 ;
 	return str_pad($id, $code_digits,0, STR_PAD_LEFT);
 }
@@ -807,4 +808,53 @@ function getIp(){
   
         // return $output;
     }
+
+
+    function empdeptExit($dept,$id)
+    {
+      $depert =DepertmentEmployee::where('depertment_id',$dept)->where('employee_id',$id)->exists();
+      if ($depert !=null) {
+      	return true;
+      }
+	}
+	
+	// Sadik Work Start 
+		// make_slug
+		function make_slug($string){
+
+			$string = remove_special_char($string);
+			$string = text_shorten($string);
+			$string = str_replace(' ', '-', $string);
+			return $string;
+		}
+
+		function text_shorten($text, $limit = 200){
+			$text = $text. " ";
+			$text = substr($text, 0, $limit);
+			$text = substr($text, 0, strrpos($text, ' '));
+			return $text;
+		}//textShorten
+
+		function remove_special_char($string) {
+			$string = html_entity_decode($string);
+			$string = strip_tags($string);
+
+			$string = htmlspecialchars($string);
+
+			$string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+			$string = str_replace(array('[\', \', ]','(', ')', '{', '}', '[', ']', '|', '?', '-', '_', ',', '~', '`', '/', '\\', '"', "'", ':'), '', $string);
+			$string = preg_replace('/\[.*\]/U', '', $string);
+
+			$string = preg_replace('/!|@|#|%|&/', '', $string);
+
+			$string = htmlentities($string, ENT_COMPAT, 'utf-8');
+			$string = str_replace('&times;', 'x', $string);
+			$string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+
+			$string = preg_replace('/\s+/u', ' ', trim($string)); // for multiple spaces
+			$string = preg_replace('/-+/', ' ', $string); //for multiple -
+			return strtolower(trim($string, ' '));
+		}
+
+	// Sadik Work Stop
 ?>
