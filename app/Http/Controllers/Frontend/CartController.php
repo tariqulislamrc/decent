@@ -21,8 +21,8 @@ use View;
 class CartController extends Controller
 {
 
-   protected $transactionUtil;
-   public function __construct(TransactionUtil $transactionUtil)
+    protected $transactionUtil;
+    public function __construct(TransactionUtil $transactionUtil)
     {
         $this->transactionUtil = $transactionUtil;
     }
@@ -43,7 +43,7 @@ class CartController extends Controller
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Quantity Not Available')]);
         }
 
-         $a= Cart::add(array(
+        $a= Cart::add(array(
             'id' => $request->variation,
             'name' => $request->name,
             'price' => $request->price,
@@ -184,7 +184,7 @@ class CartController extends Controller
         $code_prefix = get_option('invoice_code_prefix', 'INV-');
         $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
-        $uniqu_id = numer_padding($uniqu_id, $code_digits, );
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
         $invoice_no = $code_prefix . $uniqu_id;
 
         $payment = new Transaction();
@@ -231,11 +231,11 @@ class CartController extends Controller
             $transaction->save();
 
             $this->transactionUtil->decreaseProductQuantity(
-                               $request->product_id[$i],
-                               $request->variation_id[$i],
-                               get_option('default_brand'),
-                               $request->quantity[$i]
-                            );
+                $request->product_id[$i],
+                $request->variation_id[$i],
+                get_option('default_brand'),
+                $request->quantity[$i]
+            );
         }
 
         generate_id('purchase', true);

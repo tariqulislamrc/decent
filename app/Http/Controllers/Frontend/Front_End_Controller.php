@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class Front_End_Controller extends Controller{
-    
+
     public function index(){
 
         $product_id = [];
@@ -56,7 +56,7 @@ class Front_End_Controller extends Controller{
         $latest_product   = Product::orderBy('id','desc')->take(4)->get();
         return view('eCommerce.index',compact('general_products', 'seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product'));
     }
-    
+
     public function privacyPolicy(){
         $model = PrivacyPolicy::first();
         $banner = PageBanner::where('page_name','Contact')->first();
@@ -69,16 +69,16 @@ class Front_End_Controller extends Controller{
         $category = Category::with('product')->get();
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
-        
+
     public function account()
     {
-        if (Auth::check()) {
-         return Redirect::to('home');
+        if (Auth::guard('client')->check()) {
+         return Redirect::to('/member/dashboard');
         } else {
             return view('eCommerce.account');
         }
     }
- 
+
 
     public function aboutUs(){
         $model = AboutUs::first();
@@ -154,7 +154,7 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.offer_details', compact('model', 'product','product_rating','avarage_rating','total_row'));
     }
 
-    
+
     public function get_price(Request $request){
         $price = Variation::findOrFail($request->id);
         $qty = VariationBrandDetails::where('variation_id', $request->id)->first();

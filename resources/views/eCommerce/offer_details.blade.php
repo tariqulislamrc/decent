@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="slider">
-                        
+
                         <!-- Comment List of the Page -->
                         <ul class="list-unstyled comment-list">
                             <li><a href="#"><i class="fa fa-heart"></i>
@@ -27,7 +27,7 @@
                             {{-- <li><a href="#"><i class="fa fa-comments"></i>{}</a></li> --}}
                         </ul>
                         <!-- Comment List of the Page end -->
-                        
+
                         <!-- Product Slider of the Page -->
                         <div class="product-slider">
                             @foreach ($product->photo_details as $item)
@@ -38,7 +38,7 @@
                             @endforeach
                         </div>
                         <!-- Product Slider of the Page end -->
-                        
+
                         <!-- Pagg Slider of the Page -->
                         <ul class="list-unstyled slick-slider pagg-slider">
                             @foreach ($product->photo_details as $item)
@@ -58,7 +58,7 @@
                         <input type="hidden" name="id" value="{{$product->id}}">
                         <input type="hidden" name="name" value="{{$product->name}}">
                         <div class="detial-holder">
-                            
+
                             <!-- Breadcrumbs of the Page -->
                             {{-- <ul class="list-unstyled breadcrumbs">
                                 <li><a href="#">Chairs <i class="fa fa-angle-right"></i></a></li>
@@ -88,16 +88,17 @@
                                 <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$product->id}}" class="heart" style="cursor:pointer;">
                                     @php
                                         $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $product->id)->first();
-                                    @endphp	
+                                    @endphp
                                     @if ($check)
                                         <i class="fa fa-heart" aria-hidden="true"></i>
-                                    @else 	
+                                    @else
                                         <i class="fa fa-heart-o" aria-hidden="true"></i>
                                     @endif
                                     ADD TO WISHLIST</a></li>
                             </ul>
                             @php
                                 $variation = '';
+$variation_name = '';
                             @endphp
                             @foreach ($product->variation as $item)
                                 @php
@@ -285,9 +286,9 @@
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-		
+
 		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-		
+
 		$.ajax({
             type: 'GET',
             url: url,
@@ -296,7 +297,7 @@
             },
 			beforeSend: function() {
                 $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
-            }, 
+            },
             success: function (data) {
                 if(data.status == 'success') {
                     toastr.success(data.message);
