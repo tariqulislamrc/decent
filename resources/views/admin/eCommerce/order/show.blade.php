@@ -221,20 +221,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="50%">{{_lang('Edit Information')}}</th>
-                                <td>
-                                    <div class="button_show"><button class="btn btn-info btn-block" type="button" id="edit">Edit  <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button> </div>
-                                    <div style="display:none;" class="button_hide">
-                                        <div class="row">
-                                            <div class="col-md-6 mt-2">
-                                                <button class="btn btn-primary btn-block " type="submit" id="submit">Save</button> 
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <button class="btn btn-danger btn-block" type="button" id="cancel">Cancel </button> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                                <th class="text-center" colspan="2">
+                                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-primary btn-sm">Update The Invoice</button></a>
+                                </th>
                             </tr>
                         </table>
                     @else 
@@ -353,7 +342,7 @@
                                     <td class="text-center">{!!get_product_image($item->product_id)!!}</td>
                                     <td>{{get_product_color($item->variation_id)}}</td>
                                     <td>{{get_product_size($item->variation_id)}}</td>
-                                    <td><input data-id={{$item->id}} type="number" name="qty" id="qty_{{$item->id}}" class="form-control qty" value="{{round($item->quantity)}}"> </td>
+                                    <td>{{round($item->quantity)}}</td>
                                     <td>{{round($item->unit_price)}} </td>
                                     <td>{{round($item->total)}} </td>
                                 </tr>

@@ -167,23 +167,23 @@ document.addEventListener('DOMContentLoaded', function () {
 $(function () {
 
     function total_function()
-        {
-            var total = 0;
-            $('.work_order tbody tr').each(function(i, element) {
-                
-                var html = $(this).html();
-                if(html!='')
-                {
-                    var net_total = $(this).find('.sub_total');
-                    if(net_total.length > 0){
-                        total += parseInt(net_total.val());
-                    }
-                
-                }
-            });
+    {
+        var total = 0;
+        $('.work_order tbody tr').each(function(i, element) {
             
-            return total;
-        }
+            var html = $(this).html();
+            if(html!='')
+            {
+                var net_total = $(this).find('.sub_total');
+                if(net_total.length > 0){
+                    total += parseInt(net_total.val());
+                }
+            
+            }
+        });
+        
+        return total;
+    }
 
         $('.work_order tbody').on('keyup change',function(){
             var total = total_function();

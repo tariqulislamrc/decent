@@ -48,7 +48,8 @@
                                             <span id="emailError" class="text-danger"></span>
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="password" name="password" required placeholder="Password" class="input">
+                                            <input type="password" name="password" required placeholder="Password" class="input" id="password">
+                                            <small id="hint" class="text-danger">Please make sure that your password at least 8 character and use at least one capital word. We believe that your security is your hand</small>
                                         </div>
                                     </div>
                                     <button type="submit" id="submit" class="btn-type1 mt-5">Register</button>
@@ -82,5 +83,13 @@
 {{-- <script src="{{ asset('js/eCommerce/register.js') }}"></script> --}}
 <script>
     _formValidation();
+
+    // $('#password').focus(function() {
+    //     $('#hint').fadeIn();
+    // });
+
+    // $('#password').blur(function() {
+    //     $('#hint').fadeOut();
+    // });
 </script>
 @endpush

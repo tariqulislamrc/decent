@@ -1,7 +1,7 @@
 @foreach( $variations as $variation)
 <tr>
     <td class="text-center">
-        <i class="fa fa-trash text-danger remove" aria-hidden="true"></i>
+        <i style="cursor: pointer;" class="fa fa-trash text-danger remove" aria-hidden="true"></i>
     </td>
     <td>
         {{ $product->name }} {{ $variation->name }} ({{$variation->sub_sku}})
@@ -24,3 +24,71 @@
     
 </tr>
 @endforeach
+
+<script>
+    function total_function()
+    {
+        var total = 0;
+        $('.update_invoice_table tbody tr').each(function(i, element) {
+            
+            var html = $(this).html();
+            if(html!='')
+            {
+                var net_total = $(this).find('.sub_total');
+                if(net_total.length > 0){
+                    total += parseInt(net_total.val());
+                }
+            
+            }
+        });
+        
+        return total;
+    }
+
+    $(document).on('click', '.remove', function () {
+        $(this).closest('tr').remove();
+        $("#discount_amount").val("");
+        $("#discount").val("");
+        $("#paid").val("");
+    });
+
+    $(".update_invoice_table tbody tr").on('keyup change', '.qty, .price', function () {
+        var tr = $(this).parent().parent();
+        update_sub_total(tr);
+        // console.log(sub);
+        var discount_amount = $('#total_discount').val();
+        var sub_total = total_function();
+        var discount_type = $('#discount_type').val();
+        $('#show_subtotal').text(sub_total.toFixed(2));
+        if(discount_type == 'fixed') {
+            discount = sub_total - discount_amount;
+        } else {
+            discount = (sub_total * discount_amount) / 100;
+        }
+
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount); 
+
+        console.log(total_payable);
+
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    function update_sub_total(tr) {
+        var qty = tr.find('.qty').val();
+        var price = tr.find('.price').val();
+        var total = qty * price;
+        tr.find('.sub_total').val(total);
+        // tr.find('.net_total').val(total);
+        tr.find('.sub_total_text').text(total);
+        // tr.find('.net_total_text').text(total);
+    }
+</script>

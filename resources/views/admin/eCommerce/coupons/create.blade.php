@@ -9,7 +9,7 @@
                     {{-- discount_type --}}
                     <div class="col-md-6 form-group">
                         <label for="coupons_code">{{_lang('Coupons Code')}} <span class="text-danger">*</span> </label>
-                        <input type="text" name="coupons_code" id="coupons_code" class="form-control" placeholder="Coupons Code" required>
+                        <input type="text" autocomplete="off" name="coupons_code" id="coupons_code" class="form-control" placeholder="Coupons Code" required>
                     </div>
                     {{-- Product Coupons Code --}}
                     <div class="col-md-6 form-group">
@@ -20,10 +20,10 @@
                             <option value="percentage">Percentage</option>
                         </select>
                     </div>
-                    {{-- Product  Discount  Amount--}}
+                    {{-- Product Discount  Amount--}}
                     <div class="col-md-6 form-group">
                         <label for="discount_amount">{{_lang('Discount Amount')}} <span class="text-danger">*</span> </label>
-                        <input type="text" name="discount_amount" id="discount_amount" class="form-control" placeholder="Discount Amount" required>
+                        <input autocomplete="off" type="text" name="discount_amount" id="discount_amount" class="form-control" placeholder="Discount Amount" required>
                     </div>
                     {{-- Note For coupon --}}
                     <div class="col-md-6 form-group">
@@ -40,3 +40,7 @@
         </form>
     </div>
 </div>
+
+<script>
+    $('.select').select2({width:'100%'});
+</script>

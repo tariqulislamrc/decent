@@ -20,6 +20,27 @@
                 $('#total_hidden').val(data.total);
                 $('#sub_total').text(data.sub_total);
                 $('#sub_total_hidden').val(data.sub_total);
+                var discount_type = $('#c_type').val();
+                var amt = $('#c_amount').val();
+                if (discount_type == 'percentage') {
+                    var total_amt = (data.total * amt) / 100;
+                    var sub_total = data.total - total_amt;
+                    $('#total').text(sub_total);
+                    $('#total_hidden').val(sub_total);
+                    $('#coupon_amt').val(total_amt);
+                    $('#show_discount_amount').html(total_amt);
+                } else {
+                    var sub_total = data.total - amt;
+                    $('#c_amount').val(amt);
+                    $('#c_type').val(discount_type);
+                    $('#total').text(sub_total);
+                    $('#sub_total_hidden').val(sub_total);
+                    $('#coupon_amt').val(amt);
+                    $('#show_discount_amount').html(amt);
+                }
+                if(amt != 0) {
+                    $('#show_coupon_area').fadeIn();
+                }
                 $('#cart_total').text(data.bdt + ' ' + data.total);
             })
     });
@@ -151,6 +172,9 @@ var _formValidation = function () {
 
 
 $(document).on('click', '#coupon-submit', function () {
+
+    $('#coupon-submit').hide();
+    $('#submitting').show();
     // it will get action url
     var url = $(this).data('url');
     var coupon = $('#coupon-value').val();
@@ -177,19 +201,31 @@ $(document).on('click', '#coupon-submit', function () {
                 if (data.coupon.discount_type == 'percentage') {
                     var total_amt = (total_hidden * amt) / 100;
                     var sub_total = total_hidden - total_amt;
-
+                    $('#c_amount').val(amt);
+                    $('#c_type').val(data.coupon.discount_type);
                     $('#total').text(sub_total);
+                    $('#show_discount_amount').html(total_amt);
                     $('#total_hidden').val(sub_total);
                     $('#coupon_amt').val(total_amt);
                     $('.mt-holder').hide('500');
                 } else {
                     var sub_total = total_hidden - amt;
+                    $('#c_amount').val(amt);
+                    $('#c_type').val(data.coupon.discount_type);
                     $('#total').text(sub_total);
+                    $('#show_discount_amount').html(amt);
                     $('#sub_total_hidden').val(sub_total);
-                     $('#coupon_amt').val(amt);
+                    $('#coupon_amt').val(amt);
                     $('.mt-holder').hide('500');
                 }
 
+                if(amt != 0) {
+                    $('#show_coupon_area').fadeIn();
+                }
+
             }
+
+            $('#coupon-submit').show();
+            $('#submitting').hide();
         })
 });
