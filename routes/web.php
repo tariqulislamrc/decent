@@ -345,6 +345,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('production-product/details/store/{id}', 'Production\ProductController@details_store')->name('production-product.details-store');
 
 			Route::get('products/list','Production\ProductController@product_list');
+			Route::get('product/status/{id}','Production\ProductController@get_product_status')->name('get_product.status');
+			Route::post('product/status','Production\ProductController@post_product_status')->name('post_product_status');
 			Route::resource('production-product', 'Production\ProductController');
 
 

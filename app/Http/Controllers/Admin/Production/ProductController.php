@@ -52,10 +52,10 @@ class ProductController extends Controller
 
                 })
                 ->editColumn('status', function ($document) {
-                    if ($document->status == 'Active') {
-                        return '<span class="badge badge-success">' . 'Active' . '</span>';
-                    } else if ($document->status == 'InActive') {
-                        return '<span class="badge badge-danger">' . 'Inactive' . '</span>';
+                    if ($document->status == 'Sample') {
+                        return '<a data-url="'.route('admin.get_product.status',$document->id).'" class="btn_modal" style="cursor:pointer"><span class="badge badge-success">' . 'Sample' . '</span></a>';
+                    } else if ($document->status == 'Production') {
+                        return '<a data-url="'.route('admin.get_product.status',$document->id).'" class="btn_modal" style="cursor:pointer"><span class="badge badge-danger">' . 'Production' . '</span></a>';
                     }
                 })
                 ->addColumn('action', function ($model) {
@@ -773,5 +773,11 @@ public function product_report_print(Request $request)
             $products = $products->orderBy('VBD.qty_available', 'desc')
                         ->get();  
             return view('admin.report.product.product_report_print',compact('products'));        
+}
+
+public function get_product_status($id)
+{
+    $model=Product::find($id);
+    return view('admin.production.product.include.get_product_status',compact('model'));
 }
 }

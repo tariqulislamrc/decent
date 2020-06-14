@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Production Product'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Production Product'), 'modal' => 'xl'])
 @push('admin.css')
 <style>
 .table th, .table td {
