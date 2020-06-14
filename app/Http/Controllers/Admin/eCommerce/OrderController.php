@@ -30,8 +30,9 @@ class OrderController extends Controller
     public function change_status(Request $request) {
         $id = $request->id;
         $val = $request->val;
+        $note = $request->note;
         $model = Transaction::where('id', $id)->first();
-
+        $model->sell_note = $note;
         $status = $model->ecommerce_status;
         if($status == 'cancel') {
             if($val == 'progressing' || $val == 'shipment' || $val == 'success' || $val == 'cancel') {
@@ -161,7 +162,7 @@ class OrderController extends Controller
 
         // Activity Log
         activity()->log('Change Sipping Address for transaction id - ' . $request->transaction_id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully'), 'load' => true]);
+        return response()->json(['success' => true, 'chage_order_status' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully')]);
 
     }
 }

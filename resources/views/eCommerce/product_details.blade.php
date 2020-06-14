@@ -231,13 +231,9 @@
 
 <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
 <script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
 <script>
     $('#content_form').parsley();
-
-</script>
-<script>
     $(function () {
         $('#prd').raty({
             number: 5,
@@ -247,9 +243,6 @@
             scoreName: "score",
         });
     });
-
-</script>
-<script>
     $('#avrage_rating').raty({
         score: '{{$avarage_rating}}', //default score
         starHalf: '{{asset("frontend/images/star-half.png")}}',

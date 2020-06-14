@@ -172,7 +172,7 @@ var _formValidation = function () {
                     toastr.warning(jsonValue.message);
 
                 }
-                _componentSelect2Normal();
+                // _componentSelect2Normal();
                 $('#submit').show();
                 $('#submiting').hide();
             }
@@ -431,8 +431,13 @@ var _modalFormValidation = function () {
                     toastr.error(data.message);
                 } else {
                     toastr.success(data.message);
+
+                    if(data.chage_order_status) {
+                        
+                    } else {
+                        $('#modal_remote').modal('toggle');
+                    }
                     
-                    $('#modal_remote').modal('toggle');
                     if (data.goto) {
                         setTimeout(function () {
 

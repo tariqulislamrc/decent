@@ -1,171 +1,78 @@
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-
-<style>
-    
-   .table-light tbody+tbody, .table-light td, .table-light th, .table-light thead th {
-   border-color: #bdbdbd;
-   }
-   .table-light, .table-light>td, .table-light>th {
-   background-color: #ebeefd;
-   }
-
-   .table td, .table th {
-    padding: .3rem .75rem;
-   }
-
-   @media print {
-       
-   table thead.bg-primary{
-   background-color: #007bff!important;
-   }
-    
-    .table thead th {
-    background-color: #007bff!important;
-}
-       
-    .table td {
-   background-color: #ebeefd !important;
-   }   
-    .table th {
-   background-color: #ebeefd !important;
-   }
-    
-       .fotter-bottom{
-           position: absolute;
-           bottom: 0;
-           left: 0;
-           right: 0;
-       }
-    
-   }
-    
-</style>
-  </head>
-  <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="bg-primary py-2">
-                    <p class="text-uppercase h5 text-center text-light font-weight-light mb-0"> Invoice </p>
+@extends('eCommerce.layouts.app')
+@push('main')
+{{-- {{ dd(Session::get('coupon'))}} --}}
+<!-- Main of the Page -->
+<main id="mt-main">
+    <section class="mt-contact-banner mt-banner-22 wow fadeInUp" data-wow-delay="0.4s"
+        style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="text-center">CHECK OUT</h1>
+                    <!-- Breadcrumbs of the Page -->
+                    <nav class="breadcrumbs">
+                        <ul class="list-unstyled">
+                            <li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
+                            <li>Check Out</li>
+                        </ul>
+                    </nav>
+                    <!-- Breadcrumbs of the Page end -->
                 </div>
             </div>
-            <div class="col-md-12 text-center mt-3">
-                <p class="text-primary h2 mb-0"> <i class="fas fa-cart-plus"></i> </p>
-                <p class="h2 text-primary"> {{get_option('company_name')}} </p>
-                <p class="mb-1">Order Invoice</p>
-                <p class="mb-1"> {{get_option('city')}} </p>
-                <p class="mb-1"> {{get_option('country')}} </p>
-                <p class="mb-1"> {{get_option('zip')}} </p>
-                <hr>
+        </div>
+    </section>
+    <!-- Mt Process Section of the Page -->
+    <div class="mt-process-sec wow fadeInUp" data-wow-delay="0.4s">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- Process List of the Page -->
+                    <ul class="list-unstyled process-list">
+                        <li class="active">
+                            <span class="counter">01</span>
+                            <strong class="title">Shopping Cart</strong>
+                        </li>
+                        <li class="active">
+                            <span class="counter">02</span>
+                            <strong class="title">Check Out</strong>
+                        </li>
+                        <li class="active">
+                            <span class="counter">03</span>
+                            <strong class="title">Order Complete</strong>
+                        </li>
+                    </ul>
+                    <!-- Process List of the Page end -->
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <h6>Dear {{$client->name }}</h6>
+                <h3>THANKS</h3>
+
+                <p>We Hope You Enjoy Your Purchase.</p>
+
+                <p>All Of Our Purchase Are Crafted With An Obsassive Attention To Details</p>
+
+                <p>We'd love To Hear Your Thoughts, or See Pictures</p>
+
+                <p>@decentfootwear</p>
+
+                <h3>DECENT FOOTWEAR</h3>
+
+                <p><a href="{{ route('invoice', $transaction->reference_no) }}" target="_blank">Print Your Invoice Copy</a></p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p class="mb-1 font-weight-bold"> BILL TO : </p>
-                <p class="h5"> {{$client->name }} </p>
-                <p class="mb-1"> {{$client->address}} {{ $client->postcode}} </p>
-                <p class="mb-1"> {{$client->city}} </p>
-                <p class="mb-1"> {{$client->state}} </p>
-                <p class="mb-1"> {{$client->country != null ? $client->country : 'Bangladesh'}} </p>
-            </div>
-            <div class="col-md-6 text-right">
-                <p class="mb-1 font-weight-bold text-uppercase"> Invoice# </p>
-                <p class="mb-1 "> {{$transaction->invoice_no}} </p>
-                <p class="mb-1 font-weight-bold text-uppercase"> Date </p>
-                @php
-                    $date = explode(" ",$transaction->updated_at)
-                @endphp
-                <p class="mb-1"> {{$date[0]}} </p>
-            </div>
-        </div>
-        <div class="row"> 
-        <div class="col-md-12">
-            <table class="table table-bordered table-striped">
-                <thead class="bg-primary text-white">
-                    <tr>
-                        <th class="text-uppercase" scope="col" > Items </th>
-                        <th class="text-uppercase w-50" scope="col" > Product Name </th>
-                        <th class="text-uppercase" scope="col" > quantity </th>
-                        <th class="text-uppercase" scope="col" > price </th>
-                        <th class="text-uppercase" scope="col" > Amount </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($transaction_sale as $key => $item)
-                    <tr class="table-light">
-                        <th scope="row">Item {{$key+1}}</th>
-                        <td> {{$item->product->name}} <small>({{ $item->variation->name }}) </small> </td>
-                        <td> {{$item->quantity}}<small>pcs</small></small></td> 
-                        <td>  {{get_option('currency')}}  {{$item->unit_price}} </td>
-                        <td> {{get_option('currency')}} {{$item->total}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="4" class="text-right">Subtotal</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->sub_total != null ? number_format($transaction->sub_total, 2) : '0.00'}} </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-right">Dscount Amount</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->discount_amount != null ? number_format($transaction->discount_amount, 2) : '0.00'}} </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-right">Shipping Charges</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->shipping_charges != null ? number_format($transaction->shipping_charges, 2) : '0.00'}} </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-right">Total Paid</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->paid != null ? number_format($transaction->paid, 2) : '0.00'}} </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-right">Total Due</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->due != null ? number_format($transaction->due, 2) : '0.00'}} </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-right">Net Total</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->net_total != null ? number_format($transaction->net_total, 2) : '0.00'}} </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        </div>
-    </div>
+    </div><!-- Mt Process Section of the Page end -->
+
     
-    <div class="container-fluid fotter-bottom">
-        <div class="row mt-3 mb-5">
-            <div class="col-md-6"></div>
-            <div class="col-md-6 text-right">
-                  <p class="text-uppercase font-weight-bold"> total </p>
-                  <p class="h1 text-primary">  {{get_option('currency') }} {{number_format($transaction_sale->sum('total'), 2)}}</p>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-md-6 text-center mx-auto">
-                <span class="font-weight-bold"> Power By &nbsp; </span> 
-                <img src="Logo2.png" alt="" style="width: 120px">
-                <p> <small>© {{date('Y')}} decentfootware.com, All Rights Reserved.Developed by SATT IT</small></p>
-            </div>
-        </div>
-        
-    </div>
-   
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  </body>
-</html>
+</main>
+@endpush
+@push('scripts')
+<script src="{{asset('js/main.js')}}"></script>
+<script src="{{asset('backend/js/parsley.min.js')}}"></script>
+<script src="{{ asset('js/eCommerce/checkout.js') }}"></script>
+<script>
+    _formValidation();
+
+</script>
+@endpush

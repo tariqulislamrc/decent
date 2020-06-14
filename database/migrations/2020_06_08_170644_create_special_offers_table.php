@@ -16,6 +16,8 @@ class CreateSpecialOffersTable extends Migration
         Schema::create('special_offers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
+            $table->string('offer_slug')->nullable();
+            $table->string('sub_heading')->nullable();
             $table->string('cover_image')->nullable();
             $table->boolean('status')->nullable();
             $table->timestamp('deleted_at')->nullable();

@@ -66,12 +66,12 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            // 'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,id,deleted_at'],
+            // 'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'phone' => ['required', 'numeric', 'min:10', 'unique:users,id,deleted_at'],
+            // 'address' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
         ]);
     }
 
@@ -88,9 +88,9 @@ class RegisterController extends Controller
         $model->type        =       'customer';
         $model->client_type =       'ecommerce';
         $model->name        =       $data['name'];
-        $model->last_name   =       $data['last_name'];
-        $model->user_name   =       $data['username'];
-        $model->address     =       $data['address'];
+        // $model->last_name   =       $data['last_name'];
+        // $model->user_name   =       $data['username'];
+        // $model->address     =       $data['address'];
         $model->email       =       $data['email'];
         $model->mobile      =       $data['phone'];
         $model->tek_marks   =       'Created Client from Frontend';
@@ -105,10 +105,10 @@ class RegisterController extends Controller
         $item->clients_id = $id;
         $item->user_type = 'Client';
         $item->name = $data['name'];
-        $item->surname = $data['last_name'];
+        // $item->surname = $data['last_name'];
         $item->first_name = $data['name'];
-        $item->last_name = $data['last_name'];
-        $item->username = $data['username'];
+        // $item->last_name = $data['last_name'];
+        // $item->username = $data['username'];
         $item->email = $data['email'];
         $item->phone = $data['phone'];
         $item->status = 'activated';

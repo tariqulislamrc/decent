@@ -137,6 +137,12 @@
                         <th width="50%">{{_lang('Date')}}</th>
                         <td>{{formatDate($model->created_at)}}</td>
                     </tr>
+                    @if ($model->discount_type == 'Coupon')
+                        <tr>
+                            <td>Coupon Amount</td>
+                            <td>{{ number_format($model->discount, 2) }} </td>
+                        </tr>
+                    @endif
                 </table>
             </div>
 
@@ -347,7 +353,7 @@
                                     <td class="text-center">{!!get_product_image($item->product_id)!!}</td>
                                     <td>{{get_product_color($item->variation_id)}}</td>
                                     <td>{{get_product_size($item->variation_id)}}</td>
-                                    <td>{{round($item->quantity)}} </td>
+                                    <td><input data-id={{$item->id}} type="number" name="qty" id="qty_{{$item->id}}" class="form-control qty" value="{{round($item->quantity)}}"> </td>
                                     <td>{{round($item->unit_price)}} </td>
                                     <td>{{round($item->total)}} </td>
                                 </tr>
@@ -357,6 +363,12 @@
                         @endif
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Order Note --}}
+            <div class="col-md-12 form-group">
+                <label for="order_note">Order Note</label>
+                <textarea name="order_note" id="order_note" class="form-control" cols="30" rows="2" placeholder="Enter Order Note">{{ $model->sell_note }}</textarea>
             </div>
 
             {{-- Change Order Status --}}
@@ -397,12 +409,13 @@
     $('#change_status').change(function() {
         var val = $(this).val();
         var id = $('#id').val();
+        var note = $('#order_note').val();
         var url = $(this).data('url');
         $.ajax({
             type: 'GET',
             url: url,
             data: {
-                id: id, val: val
+                id: id, val: val, note:note
             },
             beforeSend: function() {
                 $('#show_loader_1').fadeIn();

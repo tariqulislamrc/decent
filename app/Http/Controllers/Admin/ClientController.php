@@ -7,6 +7,7 @@ use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\email\EmailTemolate;
+use App\models\inventory\TransactionSellLine;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -105,6 +106,37 @@ class ClientController extends Controller
     {
       $model =Client::where('client_type','ecommerce')->findOrFail($id);
       return view('admin.eCommerce.customer.view',compact('model'));
+    }
+
+    // delete
+    public function delete($id) {
+        $model = Client::findOrFail($id);
+        $model->delete();
+
+        $trans = Transaction::where('client_id', $model->id)->get();
+        if($trans) {
+            foreach ($trans as $item) {
+                $item->delete();
+
+                // find the tran payment
+                $tranpay = TransactionPayment::where('transaction_id', $item->id)->get();
+                if($tranpay) {
+                    foreach($tranpay as $tp) {
+                        $tp->delete();
+                    }
+                }
+
+                // find the tran sell line
+                $transellline = TransactionSellLine::where('transaction_id', $item->id)->get();
+                if($transellline) {
+                    foreach($transellline as $tsp) {
+                        $tsp->delete();
+                    }
+                }
+            }
+        }
+
+    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Customer Deleted Successfully')]);
     }
 
 

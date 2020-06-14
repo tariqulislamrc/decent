@@ -68,6 +68,8 @@ Route::group(['middleware' => ['install']], function () {
 		return view('eCommerce.product_list_view');
 	})->name('product-list');
 
+	Route::get('offer-product/{slug}', 'Frontend\Front_End_Controller@offer_product')->name('offer-product');
+	Route::get('special-offer/{slug}', 'Frontend\Front_End_Controller@special_offer')->name('special-offer');
 	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 	Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 	Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
@@ -81,6 +83,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
 	Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
 	Route::get('welcome', 'Frontend\CartController@welcome')->name('welcome');
+	Route::get('invoice/{id}', 'Frontend\CartController@invoice')->name('invoice');
 	/* ====================================================
 			End Frontend Route
 	==========================================================*/
@@ -576,6 +579,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
      Route::get('eCommerce/customer','ClientController@ecustomer')->name('eCommerce.e_customer');
      Route::get('eCommerce/customer/view/{id}','ClientController@ecustomer_view')->name('e_customer.view');
+     Route::delete('eCommerce/customer/delete/{id}','ClientController@delete')->name('e_customer.delete');
 
 	//Sms Marketing:::::::::::::::::::
 	Route::group(['as' => 'smsmerketing.','prefix' => 'smsmerketing','namespace' => 'marketing'], function () {
