@@ -61,8 +61,8 @@
                             <tr>
                                 <td>
                                     <input type="text" name="variation[sub_sku][0]" class="form-control" value="{{ $model->articel }}-0">
-                                    <input type="text" name="variation[default_purchase_price][0]" class="form-control" value="0.00">
-                                    <input type="text" name="variation[default_sell_price][0]" class="form-control" value="0.00">
+                                    <input type="hidden" name="variation[default_purchase_price][0]" class="form-control" value="0.00">
+                                    <input type="hidden" name="variation[default_sell_price][0]" class="form-control" value="0.00">
                                 </td>
                                 @foreach ($variations as $item)
                                 <td>

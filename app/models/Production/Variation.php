@@ -14,4 +14,9 @@ class Variation extends Model
     {
         return $this->belongsTo(VariationTemplateDetails::class, 'variation_value_id_2', 'id');
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
