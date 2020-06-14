@@ -19,6 +19,8 @@ use App\models\eCommerce\ContactUs;
 use App\models\eCommerce\HomePage;
 use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
+use App\models\eCommerce\SpecialOffer;
+use App\models\eCommerce\SpecialOfferItem;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
 use App\models\Production\Transaction;
@@ -76,11 +78,25 @@ class Front_End_Controller extends Controller{
         
     public function account()
     {
+        $banner = PageBanner::where('page_name', 'Login')->first();
         if (Auth::guard('client')->check()) {
             return Redirect::to('member/dashboard');
         } else {
-            return view('eCommerce.account');
+            return view('eCommerce.account', compact('banner'));
         }
+    }
+
+    // special_offer
+    public function special_offer($slug) {
+        $offer = SpecialOffer::where('offer_slug', $slug)->firstOrFail();
+        $items = SpecialOfferItem::where('special_offer_id', $offer->id)->get();
+        $banner = PageBanner::where('page_name', 'Category')->first();
+
+        // find the category
+        $category = Category::with('product')->get();
+
+        return view('eCommerce.special_offer', compact('offer', 'category', 'items','banner'));
+
     }
  
 
@@ -261,6 +277,11 @@ class Front_End_Controller extends Controller{
         // All Categoyr
         $category = Category::where('status', 1)->get();
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
+    }
+
+    // offer_product
+    public function offer_product($slug) {
+        dd($slug);
     }
 
     // search_product

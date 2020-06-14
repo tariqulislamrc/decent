@@ -15,6 +15,7 @@ use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session as FacadesSession;
 use Session;
 use View;
 
@@ -55,7 +56,7 @@ class CartController extends Controller
         $cart_total =  Cart::getTotal();
         $bdt = get_option('currency');
 
-        return response()->json(['success' => true, 'cart_total' => $cart_total , 'bdt'=>$bdt, 'status' => 'success', 'message' => _lang('Product Added To Cart Successfuly')]);
+        return response()->json(['success' => true, 'cart_total' => $cart_total , 'bdt'=>$bdt, 'status' => 'success', 'message' => _lang('Product Added To Cart Successfuly'), 'goto' => route('shopping-cart-show')]);
 
     }
 
@@ -132,12 +133,12 @@ class CartController extends Controller
     public function store_cart(Request $request){
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
-            Session::put('total', $request->total_hidden);
+            Session::put('total', $request->total_hidden - $request->coupon_amt);
             Session::put('coupon', $request->coupon_amt);
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
         } else {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account','goto=cart')]);
         }
     }
 
@@ -196,6 +197,10 @@ class CartController extends Controller
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
 
+        if(FacadesSession::get('coupon')) {
+            $payment->discount_type = 'Coupon';
+            $payment->discount = FacadesSession::get('coupon');
+        }
 
         $payment->sale_type = 'eCommerce';
         $payment->type = 'Credit';
@@ -252,5 +257,13 @@ class CartController extends Controller
         $client = Client::findOrFail($transaction->client_id);
         $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->reference_no)->get();
         return view('eCommerce.thank', compact('transaction', 'client', 'transaction_sale','banner'));
+    }
+
+    // invoice
+    public function invoice($id) {
+        $transaction = Transaction::where('reference_no', $id)->firstOrFail();
+        $client = Client::findOrFail($transaction->client_id);
+        $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->id)->get();
+        return view('eCommerce.invoice', compact('transaction', 'client', 'transaction_sale'));
     }
 }

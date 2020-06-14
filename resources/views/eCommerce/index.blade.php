@@ -49,33 +49,32 @@
                     {{-- 415 X 225 --}}
                     <div class="banner-box third wow fadeInRight" data-wow-delay="0.4s">
                         @php
-                        $banner3 = App\EcommerceOffer::where('size', '415 X 225')->with('product')->take(2)->get();
+                        $banner3 = App\models\eCommerce\SpecialOffer::where('status', 1)->get();
                         @endphp
                         @if (count($banner3) > 0)
-                        @foreach ($banner3 as $item)
-                        <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                            <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
-                                alt="image description">
-                            <div class="holder">
-                                <h2><span>{{$item->product->category->name}}</span><strong>{{$item->heading}}</strong>
-                                </h2>
-                                <a class="btn-shop" href="{{route('offer',$item->uuid)}}">
-                                    <span>SHOP NOW</span>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                        @endforeach
+                            @foreach ($banner3 as $item)
+                                <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
+                                    <img src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
+                                    <div class="holder">
+                                        <h2><span>{{$item->name}}</span><strong>{{$item->sub_heading}}</strong>
+                                        </h2>
+                                        <a class="btn-shop" href="{{route('special-offer',$item->offer_slug)}}">
+                                            <span>SHOP NOW</span>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
                         @else
                         <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
                             <img src="http://placehold.it/415x225" alt="image description">
                             <div class="holder">
                                 <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for show</strong>
                                 </h2>
-                                {{-- <a class="btn-shop" href="product-detail.html">
+                                <a class="btn-shop" href="product-detail.html">
 												<span>SHOP NOW</span>
 												<i class="fa fa-angle-right"></i>
-											</a> --}}
+											</a>
                             </div>
                         </div>
                         <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
@@ -83,10 +82,10 @@
                             <div class="holder">
                                 <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for show</strong>
                                 </h2>
-                                {{-- <a class="btn-shop" href="product-detail.html">
+                                <a class="btn-shop" href="product-detail.html">
 												<span>SHOP NOW</span>
 												<i class="fa fa-angle-right"></i>
-											</a> --}}
+											</a>
                             </div>
                         </div>
                         @endif

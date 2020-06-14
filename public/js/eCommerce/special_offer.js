@@ -73,7 +73,7 @@ var DatatableSelect = function () {
             }],
             columnDefs: [{
                 orderable: false,
-                targets: [5]
+                targets: [4]
             }],
 
             order: [0, 'desc'],
@@ -89,6 +89,9 @@ var DatatableSelect = function () {
                 }, {
                     data: 'photo',
                     name: 'photo'
+                }, {
+                    data: 'name',
+                    name: 'name'
                 }, {
                     data: 'product',
                     name: 'product'

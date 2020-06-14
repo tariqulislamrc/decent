@@ -1,15 +1,20 @@
 <div class="col-md-6 mx-auto text-center mb-3 border bg-light border-info">
     <b>Create New Special Offer</b>
 </div>
-{{ dd($document)}}
 
-<form action="{{ route('admin.eCommerce.special-offer.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.eCommerce.special-offer.store') }}" id="content_form" method="POST" enctype="multipart/form-data">
     @csrf
 
     {{-- Offer Name --}}
     <div class="col-md-12 form-group">
         <label for="name">Offer Name <span class="text-danger">*</span></label>
-        <input type="text" autocomplete="off" id="name" class="form-control" value="" placeholder="Enter Offer Name" required>
+        <input type="text" autocomplete="off" name="name" id="name" class="form-control" placeholder="Enter Offer Name" required>
+    </div>
+
+    {{-- Offer Sub Heading --}}
+    <div class="col-md-12 form-group">
+        <label for="name">Offer Sub Heading <span class="text-danger">*</span></label>
+        <input type="text" autocomplete="off" name="sub_heading" id="sub_heading" class="form-control" placeholder="Enter Offer Name" required>
     </div>
 
     {{-- Cover Image --}}
@@ -19,13 +24,23 @@
         <span class="text-danger">Please Make Sure The Cover Image Must be (WIDTH x HEIGHT) (415 X 225) pixel size.</span>
     </div>
 
+    {{-- Status --}}
+    <div class="col-md-12 form-group">
+        <label for="status">Select Status</label>
+        <select name="status" id="status" class="form-control select" data-placeholder="Select Status" required>
+            <option value="">Select Staus</option>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
+        </select>
+    </div>
+
     {{-- Select Product --}}
     <div class="col-md-12 form-group">
         <label for="select_product">Select Product</label>
         <select data-url="{{ route('admin.eCommerce.add_to_special_offer_row') }}" name="" id="select_product" class="form-control select add-row" data-placeholder="Select Product for Special Offer" required>
             <option value="">Select Product for Special Offer</option>
             @foreach ($document as $item)
-                <option value="{{ $item->product_id }}">{{ $item->pro_name }} - {{ $item->variation }} ({{ $item->sku}} ) </option>
+                <option value="{{ $item->product_id }} {{ $item->variation_id }}">{{ $item->pro_name }} - {{ $item->variation }} ({{ $item->sku}} ) </option>
             @endforeach
         </select>
     </div>
@@ -42,13 +57,19 @@
                     <th>D. Type</th>
                     <th>D. Amount</th>
                     <th>S. Price</th>
-                    <th>Action</th>
+                    <th><i class="fa text-danger fa-trash" aria-hidden="true"></i></th>
                 </tr>
             </thead>
             <tbody>
 
             </tbody>
         </table>
+    </div>
+
+    <div class="form-group col-md-12" align="right">
+        <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Create')}}<i class="icon-arrow-right14 position-right"></i></button>
+        <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
 </form>
 
@@ -64,12 +85,8 @@
         var product_id = $(this).val();
         type = parseInt(type);
         row = type + 1;
-        if( products.includes( $(this).data('id') ) ) {
-            var qty = $('.update_qty_'+id).val();
-            var refresh_qty = parseInt(qty) + 1;
-            $('.update_qty_'+id).val(refresh_qty);
-            calc();
-            toastr.warning('Product Quantity is Updated Successfully');
+        if( products.includes( $(this).val() ) ) {
+            toastr.warning('Product is Alreaddy Added');
         } else {
             products.push(product_id);
             $('#number').val(row);
@@ -83,57 +100,16 @@
                 success: function(data) {
                     $(".special_offer_table tbody").append(data);
                     toastr.success('Product is added into Cart Successfully');
-                    calc();
                 }
             });
         }
-
-        // $('.pay_now').attr('id', 'content_managment');
-        // $('.hold').attr('id', 'content_managment');
     });
 
-$('.sell_table tbody').on('keyup change',function(){
-calc();
-});
+        // delete the row
+    $(document).on('click', '.delete_row', function() {
+        var row_id = $(this).data('id');
 
-function calc()
-{
-$('.sell_table tbody tr').each(function(i, element) {
-    var html = $(this).html();
-    if(html!='')
-    {
-        var qty = $(this).find('.qty').val();
-        var sell_price = $(this).find('.sell_price').val();
-        $(this).find('.net_total').val((qty*sell_price).toFixed(2));
-        
-        calc_total();
-    }
-});
-}
+        $("#table_row_" + row_id).fadeOut('slow').remove();
+    });
 
-function calc_total()
-{
-sub_total=0;
-$('.net_total').each(function() {
-    sub_total += parseInt($(this).val());
-});
-$('.sub_total').html(sub_total.toFixed(2)); 
-$('#subtotal').val(sub_total.toFixed(2)); 
-
-tax_sum=sub_total/100*$('#order_tax').val();
-$('#total').val((tax_sum+sub_total).toFixed(2));
-$('#shiping_charge').val(0);
-$('#other_charge').val(0);
-$('#discount').val(0);
-
-var discount = parseInt($('#discount').val());
-var other = parseInt($('#other_charge').val());
-var ship = parseInt($('#shiping_charge').val());
-var sub_total = parseInt($('#subtotal').val());
-var tax = parseInt($('#order_tax').val());
-var tax_amount = (sub_total * tax) / 100;
-var total = sub_total + ship + tax_amount + other - discount;
-$('.total').html(total.toFixed(2));
-$('#total').val(total);
-}
 </script>

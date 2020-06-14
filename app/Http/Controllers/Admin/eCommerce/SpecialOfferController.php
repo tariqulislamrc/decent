@@ -8,6 +8,7 @@ use App\models\eCommerce\SpecialOffer;
 use App\models\eCommerce\SpecialOfferItem;
 use App\models\Production\Product;
 use App\models\Production\ProductPhoto;
+use App\models\Production\Variation;
 use App\models\Production\VariationBrandDetails;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,8 +32,8 @@ class SpecialOfferController extends Controller
                 return DataTables::of($document)
                     ->addIndexColumn()
                     ->editColumn('photo', function ($model) {
-                        if($model->photo != NULL) {
-                            $url= asset('storage/special-offer/'.$model->photo);
+                        if($model->cover_image != NULL) {
+                            $url= asset('storage/eCommerce/special_offer/'.$model->cover_image);
                         } else {
                             $url = asset('img/product.jpg');
                         }
@@ -124,15 +125,41 @@ class SpecialOfferController extends Controller
     public function add_to_special_offer_row(Request $request) {
         
         $row = $request->row;
-        $product_id = $request->product_id;
+        $product_info = $request->product_id;
+        
+        $exp = explode(' ', $product_info);
+
+        $product_id = $exp[0];
+        $variation_id = $exp[1];
+
         $product = Product::where('id', $product_id)->first();
+
+        $variation = Variation::where('id', $variation_id)->first();
+
         $photo = ProductPhoto::select('photo')->where('product_id', $product_id)->first();
         if($photo) {
             $photo = $photo->photo;
         } else {
             $photo = '';
         }
-        return view('admin.eCommerce.special-offer.add_product', compact('row', 'product', 'photo'));
+        return view('admin.eCommerce.special-offer.add_product', compact('row', 'variation', 'product', 'photo'));
+    }
+
+    public function slug($old_slug, $row = Null)
+    {
+        if(!$row){
+            $slug = $old_slug;
+            $row = 0;
+        }else{
+            $slug = $old_slug . '-'.$row;
+        }
+
+        $check_res = SpecialOffer::where('offer_slug', $slug)->first();
+        if($check_res) {
+            $slug = $this->slug($old_slug, $row+1);
+        }
+
+        return $slug;
     }
 
     /**
@@ -143,7 +170,77 @@ class SpecialOfferController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+
+        $request->validate([
+            'name' => 'required|string',
+            'sub_heading' => 'required|string',
+            'status' => 'required',
+            'cover_iamge' => 'required',
+        ]);
+
+        if($request->status == 1) {
+            $check = SpecialOffer::where('status', 1)->count();
+            if($check >= 2) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => 'Maximum 2 Active Status is Required']);
+            }
+        } 
+
+        $slug = $this->slug(make_slug($request->name));
+
+
+        $model = new SpecialOffer;
+        $model->name = $request->name;
+        $model->offer_slug = $slug;
+        $model->sub_heading = $request->sub_heading;
+        $model->status = $request->status;
+
+        if($request->hasFile('cover_iamge')) {
+            $data = getimagesize($request->file('cover_iamge'));
+            $width = $data[0];
+            $height = $data[0];
+
+            if($width > 415 && $height > 225) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => 'Offer Image Width and height is wrong']);
+            }
+
+
+            $storagepath = $request->file('cover_iamge')->store('public/eCommerce/special_offer/');
+            $fileName = basename($storagepath);
+
+            $model->cover_image = $fileName;
+
+            //if file chnage then delete old one
+            // $oldFile = $request->oldFile;
+            // if( $oldFile != ''){
+
+            //     $file_path = "public/user/photo/".$oldFile;
+            //     Storage::delete($file_path);
+            // }
+        }
+
+        $model->save();
+
+        for($i = 0; $i < count($request->product_id); $i++) {
+            $product_id = $request->product_id[$i];
+            $variation_id = $request->variation_id[$i];
+            $discount_type = $request->discount_type[$i];
+            $discount = $request->discount[$i];
+            $price_with_dis = $request->price_with_dis[$i];
+            $price_without_dis = $request->price_without_dis[$i];
+
+            $item = new SpecialOfferItem;
+            $item->special_offer_id = $model->id;
+            $item->variation_id = $variation_id;
+            $item->product_id = $product_id;
+            $item->discount_type = $discount_type;
+            $item->discount_amount = $discount;
+            $item->price_without_dis = $price_without_dis;
+            $item->price_with_dis = $price_with_dis;
+            $item->save();
+        }
+        return response()->json(['success' => true, 'status' => 'success', 'message' => 'Special Offer is Successfully Created']);
+
     }
 
     /**
@@ -154,7 +251,11 @@ class SpecialOfferController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = SpecialOffer::findOrFail($id);
+
+        $items = SpecialOfferItem::where('special_offer_id', $id)->get();
+
+        return view('admin.eCommerce.special-offer.view', compact('model', 'items'));
     }
 
     /**
@@ -188,6 +289,15 @@ class SpecialOfferController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = SpecialOffer::findOrFail($id);
+        $model->delete();
+
+        $items = SpecialOfferItem::where('special_offer_id', $id)->get();
+        if(count($items)) {
+            foreach($items as $item) {
+                $item->delete();
+            }
+        }
+        return response()->json(['success' => true, 'status' => 'success', 'message' => 'Special Offer is Successfully Deleted']);
     }
 }

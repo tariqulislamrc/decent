@@ -17,6 +17,8 @@ class CreateSpecialOfferItemsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('special_offer_id')->nullable();
             $table->foreign('special_offer_id')->on('special_offers')->references('id')->onDelete('cascade');
+            $table->unsignedBigInteger('variation_id')->nullable();
+            $table->foreign('variation_id')->on('variations')->references('id')->onDelete('cascade');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->on('products')->references('id')->onDelete('cascade');
             $table->string('discount_type')->nullable();
