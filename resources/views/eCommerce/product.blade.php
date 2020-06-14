@@ -9,7 +9,7 @@
         }
 
         $per_product_price = round($price / $total_product_variation) ;
-        
+
     }
 @endphp
 {{-- Product --}}
@@ -18,7 +18,7 @@
         <div class="b1">
             <div class="b2">
                 <a href="{{route('product-details',$item->product_slug)}}">
-                    <img src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}" alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}"> 
+                    <img src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}" alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}">
                 </a>
                 <span class="caption">
                     {{-- <span class="off">15% Off</span> --}}
@@ -36,10 +36,10 @@
                         <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
                             @php
                                 $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
-                            @endphp	
+                            @endphp
                             @if ($check)
                                 <i class="fa fa-heart" aria-hidden="true"></i>
-                            @else 	
+                            @else
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                             @endif
                         </a>
