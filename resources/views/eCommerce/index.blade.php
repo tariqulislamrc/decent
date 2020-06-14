@@ -78,10 +78,10 @@
                                         <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for
                                                 show</strong>
                                         </h2>
-                                        <a class="btn-shop" href="product-detail.html">
+                                        {{--<a class="btn-shop" href="product-detail.html">
                                             <span>SHOP NOW</span>
                                             <i class="fa fa-angle-right"></i>
-                                        </a>
+                                        </a>--}}
                                     </div>
                                 </div>
                                 <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
@@ -90,10 +90,10 @@
                                         <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for
                                                 show</strong>
                                         </h2>
-                                        <a class="btn-shop" href="product-detail.html">
+                                        {{--<a class="btn-shop" href="product-detail.html">
                                             <span>SHOP NOW</span>
                                             <i class="fa fa-angle-right"></i>
-                                        </a>
+                                        </a>--}}
                                     </div>
                                 </div>
                             @endif

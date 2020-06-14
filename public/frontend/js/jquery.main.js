@@ -55,10 +55,10 @@ function initNavOpener() {
 		jQuery("body").toggleClass("search-active");
 		return false;
 	});
-	jQuery('.drop-link , #nav > ul > li.drop > a').click(function() {
+	/*jQuery('.drop-link , #nav > ul > li.drop > a').click(function() {
 		jQuery(this).next().toggleClass("open");
 		return false;
-	});
+	});*/
 	jQuery('.mt-subopener').click(function() {
 		jQuery(this).parent().next().toggleClass("open");
 		return false;
@@ -249,7 +249,7 @@ function initSlickSlider() {
 		centerPadding: '0',
 		asNavFor: '.pagg-slider'
 	});
-	/*jQuery('.pagg-slider').slick({
+	jQuery('.pagg-slider').slick({
 		slidesToShow: 4,
 		slidesToScroll: 1,
 		centerPadding: '0',
@@ -263,7 +263,7 @@ function initSlickSlider() {
 		  }
 		}
 		]
-	});*/
+	});
 }
 
 // fancybox modal popup init

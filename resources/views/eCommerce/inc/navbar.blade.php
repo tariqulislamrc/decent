@@ -11,8 +11,8 @@
                 <div class="mt-sh-cart2">
                     <span class="icon-handbag"></span>
                     <span id="cart_total">{{get_option('currency')}} {{\Cart::getTotal()}}</span>
-                </div>   
-                </a>       
+                </div>
+                </a>
 
                 <!-- mt nav box start here -->
                 <div class="mt-nav-box">
@@ -41,8 +41,8 @@
                                     @php
                                         $find_the_sub_cat =  App\models\Production\Category::where('parent_id', $cat->id)->where('status', 1)->orderBy('id', 'desc')->get();
                                     @endphp
-                                    <a class="{{ count($find_the_sub_cat) > 0 ? 'drop-link' : ''}}" href="{{ count($find_the_sub_cat) > 0 ? 'homepage1.html' : route('category-product', $cat->category_slug) }} ">{{ $cat->name }} <i class="fa fa-angle-down hidden-lg hidden-md" aria-hidden="true"></i></a>
-                                    
+                                    <a class="{{ count($find_the_sub_cat) > 0 ? 'drop-link' : ''}}" href="{{  route('category-product', $cat->category_slug) }} ">{{ $cat->name }} <i class="fa fa-angle-down hidden-lg hidden-md" aria-hidden="true"></i></a>
+
                                     @if (count($find_the_sub_cat) > 0)
                                     <div class="s-drop">
                                         <ul>
@@ -52,10 +52,10 @@
                                         </ul>
                                     </div>
                                     @endif
-                                    
+
                                 </li>
                                 @endforeach
-                                
+
                                 <li><a href="{{route('product')}}">Product</a></li>
                                 <li><a href="{{route('about')}}">About</a></li>
                                 <li><a href="{{route('contact')}}">Contact</a></li>
