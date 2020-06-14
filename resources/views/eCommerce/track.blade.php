@@ -25,9 +25,12 @@
 
         <div class="container">
             <div class='row'>
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                
                 <h3>Track Order</h3>
                 <p>Here you can track all of your order stattus from here</p>
-                <div class="col-md-12 mt-5">
+                <div class="mt-5">
                     <div class="row">
                         {{-- Tracking Code --}}
                         <div class="col-md-12 form-group">
@@ -35,7 +38,7 @@
                             <input type="text" name="code" id="code" class="form-control" placeholder="Enter Your Tracking Code Here" required>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-right">
                         <button data-url="{{route('member.client_track_code')}}" type="button" name="track_code" id="track_code" class="brn btn-info btn-lg">Track</button>
                         <button type="button" class="btn btn-primary btn-lg" disabled  id="track_code_submitting" style="display: none;">{{_lang('Tracking')}} <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></button>
                     </div>
@@ -45,7 +48,12 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
+        </div>
+
+
+
 
     </div>    
 
