@@ -15,6 +15,7 @@ use App\models\Production\Variation;
 use App\models\email\EmailTemolate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\DataTables;
 
@@ -63,7 +64,15 @@ class SalePOsController extends Controller
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn('date', function ($model) {
-                  return formatDate($model->date);
+                    $return ='';
+                    if ($model->return_parent) {
+                        $return='<span class="badge badge-info"><i class="fa fa-reply-all" aria-hidden="true"></i></span>';
+                    }
+                  return formatDate($model->date).$return;
+                 })
+
+                   ->editColumn('reference_no', function ($model) {
+                  return '<a title="view Details" data-url="'.route('admin.sale.pos.view',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f">'.$model->reference_no.'</a>';
                  })
                  ->editColumn('client', function ($model) {
                   return $model->client?$model->client->name:'';
@@ -93,9 +102,16 @@ class SalePOsController extends Controller
                     return '<span class="badge badge-danger">Due</span>';
                    }
                  })
+                 ->editColumn('return', function ($model) {
+                    $return="";
+                    if ($model->return_parent) {
+                    $return = '<a style="cursor:pointer;color:#12f" data-url="' . route('admin.sale.return.show', $model->return_parent->return_parent_id) . '" class="btn_modal">' . ($model->net_total-($model->payment()->sum('amount')+$model->return_parent->net_total)). '</a>';
+                    }  
+                    return $return;
+                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.salePos.action', compact('model'));
-                })->rawColumns(['action','client','date','paid','due','payment_status'])->make(true);
+                })->rawColumns(['action','client','date','paid','due','payment_status','return','reference_no'])->make(true);
         }
         $customer =Client::orderBy('id','DESC')->where('client_type','client')->pluck('name','id');
         $user =User::orderBy('id','DESC')->pluck('email','id');
@@ -260,16 +276,42 @@ class SalePOsController extends Controller
     if (!auth()->user()->can('sale_pos.delete')) {
             abort(403, 'Unauthorized action.');
         }
-       $transaction =Transaction::find($id);
-       //Sale Related
-       $transaction->sell_lines()->delete();
-       //transaction Payment
-       $transaction->payment()->delete();
-       //return
-       $transaction->returntransaction()->delete();
-       $transaction->return_parent()->delete();
-       $transaction->delete();
-       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);
+            if (request()->ajax()) {
+                //Check if return exist then not allowed
+                if ($this->transactionUtil->isReturnExist($id)) {
+                   throw ValidationException::withMessages(['message' => _lang('This Transaction has return Item')]);
+                }
+        
+                $transaction = Transaction::where('id', $id)
+                                ->with(['sell_lines'])
+                                ->first();
+                
+                $delete_sale_lines = $transaction->sell_lines;
+                DB::beginTransaction();
+
+                $transaction_status = $transaction->status;
+                
+                    //Delete sell_lines lines first
+                    $delete_sale_line_ids = [];
+                    foreach ($delete_sale_lines as $purchase_line) {
+                        $delete_sale_line_ids[] = $purchase_line->id;
+                    }
+
+                    TransactionSellLine::where('transaction_id', $transaction->id)
+                                ->whereIn('id', $delete_sale_line_ids)
+                                ->delete();
+
+                //Delete Transaction
+                $transaction->payment()->delete();
+                $transaction->delete();
+
+                //Delete account transactions
+                AccountTransaction::where('transaction_id', $id)->delete();
+
+                DB::commit();
+
+             return response()->json(['status' => 'success', 'message' => 'Data is deleted successfully']);
+            }
 
     }
 
@@ -277,6 +319,7 @@ class SalePOsController extends Controller
     {
          if ($request->ajax()) {
             $category_id = $request->get('category_id');
+            $sub_category_id = $request->get('sub_category_id');
             $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
 
@@ -311,12 +354,19 @@ class SalePOsController extends Controller
            
         });
         }
-         if ($category_id != 'all') {
-                $products->where(function ($query) use ($category_id) {
-                    $query->where('products.category_id', $category_id);
-                    $query->orWhere('products.sub_category_id', $category_id);
-                });
-          }
+         // if ($category_id != 'all') {
+         //        $products->where(function ($query) use ($category_id) {
+         //            $query->where('products.category_id', $category_id);
+         //            $query->orWhere('products.sub_category_id', $category_id);
+         //        });
+         //  }
+        if (!empty($category_id)) {
+            $products->where('products.category_id',$category_id);
+        }
+
+        if (!empty($sub_category_id)) {
+            $products->where('products.sub_category_id',$sub_category_id);
+        }
           if (!auth()->user()->hasRole('Super Admin')) {
                 $products->where('variations.hidden',false);
             }
@@ -381,6 +431,7 @@ class SalePOsController extends Controller
                 ->where('variations.id', $request->variation_id)
                 ->select( 'p.id as product_id',
                         'p.category_id',
+                        'p.name as pro_name',
                         'vbd.qty_available',
                         'variations.default_sell_price as selling_price',
                         'variations.id as variation_id',
@@ -425,18 +476,18 @@ class SalePOsController extends Controller
 
     public function payment($id)
     {
-       $transaction = Transaction::where('id', $id)
-                                        ->with(['client'])
-                                        ->first();
-            $payments_query = TransactionPayment::where('transaction_id', $id);
+        $transaction = Transaction::where('id', $id)
+                                    ->with(['client'])
+                                    ->first();
+        $payments_query = TransactionPayment::where('transaction_id', $id);
 
-            // $accounts_enabled = false;
-            // if ($this->moduleUtil->isModuleEnabled('account')) {
-            //     $accounts_enabled = true;
-            //     $payments_query->with(['payment_account']);
-            // }
+        // $accounts_enabled = false;
+        // if ($this->moduleUtil->isModuleEnabled('account')) {
+        //     $accounts_enabled = true;
+        //     $payments_query->with(['payment_account']);
+        // }
 
-            $payments = $payments_query->get();
+        $payments = $payments_query->get();
         return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments')); 
     }
 

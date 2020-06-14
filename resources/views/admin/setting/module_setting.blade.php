@@ -118,9 +118,9 @@
                         </div>
                         @can('module_configuration.update')
                             {{-- This is for submit Button --}}
-                            <div class="text-right mr-2 mt-4">
-                                <button data-placement="bottom" title="Update The Change"  type="submit" class="btn btn-primary"  id="submit">{{_lang('update_setting')}}</button>
-                                <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{ _lang('processing') }} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                              <div class="text-right mr-2 mt-4">
+                                <button data-placement="bottom" title="Update The Change"  type="submit" class="btn btn-primary"  id="submit">{{_lang('Update Setting')}}</button>
+                                <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{ _lang('processing') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                             </div>
                         @endcan
                     {!!Form::close()!!}

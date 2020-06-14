@@ -81,12 +81,20 @@ var DatatableSelect = function() {
             processing: true,
             serverSide: true,
 
-            ajax: $('.content_managment_table').data('url'),
+            ajax: { 
+            url: $('.content_managment_table').data('url'),
+            data: function(d) {
+                d.sub_type = $('select#sub_type').val();
+            },
+            },
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
                  {
                     data: 'name',
                     name: 'name'
+                },{
+                    data: 'sub_type',
+                    name: 'sub_type'
                 }, {
                     data: 'mobile',
                     name: 'mobile'
@@ -168,3 +176,10 @@ var DatatableSelect = function() {
 document.addEventListener('DOMContentLoaded', function() {
     DatatableSelect.init();
 });
+
+  $('select#sub_type').on(
+    'change',
+    function() {
+        emran.ajax.reload();
+    }
+);

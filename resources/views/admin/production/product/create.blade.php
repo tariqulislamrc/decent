@@ -77,13 +77,14 @@
                 </div>
                 {{-- Select status --}}
                 <div class="col-md-4 form-group">
-                    <label for="status">{{_lang('Select Product Status')}}
+                    <label for="status">{{_lang('Product Status')}}
                     </label>
-                    <select data-placeholder="Select Product Status" name="status" id="status"
+                   {{--  <select data-placeholder="Select Product Status" name="status" id="status"
                         class="form-control select">
                         <option selected value="Active">Active</option>
                         <option value="InActive">InActive</option>
-                    </select>
+                    </select> --}}
+                    <input type="text" class="form-control" name="status" value="Sample" readonly>
                 </div>
                 {{-- Product Details --}}
                 <div class="col-md-6 form-group">
@@ -135,54 +136,55 @@
                         </div>
                     </div>
                     <div class="col-md-4 form-group" id="unit_price_row">
-                        <label for="unitPrice">{{_lang('Unit Price')}}</label>
-                        <input type="number" min="1" class="form-control" placeholder="Unit Price" maxlength="50"
+                        {{-- <label for="unitPrice">{{_lang('Unit Price')}}</label> --}}
+                        <input type="hidden" min="1" class="form-control" placeholder="Unit Price" maxlength="50"
                             id="unitPrice">
                     </div>
                     <div class="col-md-4 form-group" id="child_unit_row">
-                        <label for="child_unit_price">{{_lang('Child unit price')}}</label>
+                        {{-- <label for="child_unit_price">{{_lang('Child unit price')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="child_unit_price">
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" id="child_unit_price">
+                            {{-- <div class="input-group-append">
                                 <span class="input-group-text" id="child_unit">{{ _lang('Unit') }}</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-4" id="unit_row">
-                        <label for="grossPrice">{{_lang('Gross Price')}}</label>
+                        {{-- <label for="grossPrice">{{_lang('Gross Price')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="grossPrice" readonly>
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" id="grossPrice" readonly>
+                      {{--       <div class="input-group-append">
                                 <span class="input-group-text">USD</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="waste">{{_lang('Waste')}}</label>
+                        {{-- <label for="waste">{{_lang('Waste')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" maxlength="2" id="waste">
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" maxlength="2" id="waste">
+                            {{-- <div class="input-group-append">
                                 <span class="input-group-text">%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="uses">{{_lang('Uses')}}</label>
+                        {{-- <label for="uses">{{_lang('Uses')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="uses" readonly>
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" id="uses" readonly>
+                         {{--    <div class="input-group-append">
                                 <span class="input-group-text">%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-4 form-group">
-                        <label for="raw_status">{{_lang('Raw Material Status')}}
+                       {{--  <label for="raw_status">{{_lang('Raw Material Status')}}
                         </label>
                         <select data-placeholder="Raw Material Status" name="raw_status" id="raw_status"
                             class="form-control select">
                             <option selected value="Active">{{_lang('Active')}}</option>
                             <option value="InActive">{{_lang('InActive')}}</option>
-                        </select>
+                        </select> --}}
+                        <input type="hidden" id="raw_status" name="raw_status" value="Active">
                     </div>
                     {{-- Product Details --}}
                     <div class="col-md-12 form-group">
@@ -209,11 +211,12 @@
                             <tr>
                                 <th>{{ _lang('Raw Material') }}</th>
                                 <th>{{ _lang('Quantity') }}</th>
-                                <th>{{ _lang('Price') }}</th>
+                                {{-- <th>{{ _lang('Price') }}</th>
                                 <th>{{ _lang('Total Price') }}</th>
                                 <th>{{ _lang('Waste') }}</th>
                                 <th>{{ _lang('Uses') }}</th>
-                                <th>{{ _lang('action') }}</th>
+                                <th>{{ _lang('status') }}</th> --}}
+                                <th><i class="fa fa-trash"></i></th>
                             </tr>
                         </thead>
                         <tbody id="pursesDetailsRender">

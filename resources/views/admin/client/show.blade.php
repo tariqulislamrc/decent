@@ -72,6 +72,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-3 mx-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <strong>{{ _lang('Bank Name') }}: {{ $contact->bank_name }}</strong><br><br>
+                                <strong><i class="fa fa-bandcamp margin-r-5"></i>{{ _lang('Account Name') }}</strong>
+                                <p class="text-muted">
+                                 {{ $contact->account_name }}
+                                </p>
+
+                                 <strong><i class="fa fa-bandcamp margin-r-5"></i>{{ _lang('Bank Holder') }}</strong>
+                                 <p class="text-muted">
+                                 {{ $contact->bank_holder }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-3 mx-auto">
                         <div class="card">
                             <div class="card-body">
@@ -163,7 +180,7 @@
                                 <tr>
                                     <th>{{ _lang('Date') }}</th>
                                     <th>{{ _lang('Reference') }}</th>
-                                    <th>{{ _lang('Parent Purchase') }}</th>
+                                    <th>{{ _lang('Parent Sale') }}</th>
                                     <th>{{ _lang('Customer') }}</th>
                                     <th>{{ _lang('Payment Status') }}</th>
                                     <th>{{ _lang('Total') }}</th>

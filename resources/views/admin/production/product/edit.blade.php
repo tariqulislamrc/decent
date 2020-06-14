@@ -73,19 +73,20 @@
                     </label>
                     <select data-placeholder="Select Parent Catagory" name="sub_category" id="sub_category"
                         class="form-control select">
-                        <option value="{{$product->sub_category_id}}">{{$product->sub_category->name}}</option>
+                        <option value="{{$product->sub_category_id}}">{{$product->sub_category?$product->sub_category->name:''}}</option>
                     </select>
                 </div>
 
                 {{-- Select status --}}
                 <div class="col-md-4 form-group">
-                    <label for="status">{{_lang('Select Product Status')}}
+                    <label for="status">{{_lang('Product Status')}}
                     </label>
-                    <select data-placeholder="Select Product Status" name="status" id="status"
+                    {{-- <select data-placeholder="Select Product Status" name="status" id="status"
                         class="form-control select">
                         <option {{$product->category_id == 'Active'?'selected':''}} value="Active">Active</option>
                         <option {{$product->category_id == 'InActive'?'selected':''}} value="InActive">InActive</option>
-                    </select>
+                    </select> --}}
+                      <input type="text" class="form-control" name="status" value="Sample" readonly>
                 </div>
 
 
@@ -143,59 +144,60 @@
 
 
                     <div class="col-md-4 form-group" id="unit_price_row">
-                        <label for="unitPrice">{{_lang('Unit Price')}}</label>
-                        <input type="number" min="1" class="form-control" placeholder="Unit Price" maxlength="50"
+                        {{-- <label for="unitPrice">{{_lang('Unit Price')}}</label> --}}
+                        <input type="hidden" min="1" class="form-control" placeholder="Unit Price" maxlength="50"
                             id="unitPrice">
                     </div>
 
                     <div class="col-md-4 form-group" id="child_unit_row">
-                        <label for="child_unit_price">{{_lang('Child unit price')}}</label>
+                       {{--  <label for="child_unit_price">{{_lang('Child unit price')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="child_unit_price">
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" id="child_unit_price">
+                          {{--   <div class="input-group-append">
                                 <span class="input-group-text" id="child_unit">{{ _lang('Unit') }}</span>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
                     <div class="col-md-4" id="unit_row">
-                        <label for="grossPrice">{{_lang('Gross Price')}}</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="grossPrice" readonly>
-                            <div class="input-group-append">
+                      {{--   <label for="grossPrice">{{_lang('Gross Price')}}</label>
+                        <div class="input-group mb-3"> --}}
+                            <input type="hidden" class="form-control" id="grossPrice" readonly>
+                           {{--  <div class="input-group-append">
                                 <span class="input-group-text">USD</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <label for="waste">{{_lang('Waste')}}</label>
+                       {{--  <label for="waste">{{_lang('Waste')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" maxlength="2" value="0" id="waste">
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" maxlength="2" value="0" id="waste">
+                         {{--    <div class="input-group-append">
                                 <span class="input-group-text">%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <label for="uses">{{_lang('Uses')}}</label>
+                        {{-- <label for="uses">{{_lang('Uses')}}</label> --}}
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="uses" readonly>
-                            <div class="input-group-append">
+                            <input type="hidden" class="form-control" id="uses" readonly>
+                           {{--  <div class="input-group-append">
                                 <span class="input-group-text">%</span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <label for="raw_status">{{_lang('Raw Material Status')}}
+                       {{--  <label for="raw_status">{{_lang('Raw Material Status')}}
                         </label>
                         <select data-placeholder="Raw Material Status" name="raw_status" id="raw_status"
                             class="form-control  select">
                             <option selected value="Active">{{_lang('Active')}}</option>
                             <option value="InActive">{{_lang('InActive')}}</option>
-                        </select>
+                        </select> --}}
+                        <input type="hidden" id="raw_status" name="raw_status" value="Active">
                     </div>
 
                     {{-- Product Details --}}
@@ -224,11 +226,11 @@
                             <tr>
                                 <th>{{ _lang('Raw Material') }}</th>
                                 <th>{{ _lang('Quantity') }}</th>
-                                <th>{{ _lang('Price') }}</th>
+                            {{--     <th>{{ _lang('Price') }}</th>
                                 <th>{{ _lang('Total Price') }}</th>
                                 <th>{{ _lang('Waste') }}</th>
-                                <th>{{ _lang('Uses') }}</th>
-                                <th>{{ _lang('action') }}</th>
+                                <th>{{ _lang('Uses') }}</th> --}}
+                                <th><i class="fa fa-trash"></i></th>
                             </tr>
                         </thead>
                         <tbody id="pursesDetailsRender">
@@ -240,23 +242,31 @@
                                 </td>
                                 <td>
                                 <input type="text" class="qty form-control qty_{{$item->id}}" id="{{$item->id}}" name="qty[]" value="{{ $item->qty }}" >
+                                 <input type="hidden" class="form-control unit_price" id="unit_price_{{$item->id}}" data-id="{{$item->id}}" name="unit_price[]" value="{{ $item->unit_price }}">
+                               <input type="hidden" name="raw_status[]" value="{{ $item->status }}">
+                                <input type="hidden" name="raw_description[]" value="{{ $item->description }}">
+                                 <input type="hidden" class="form-control price" id="price_{{$item->id}}" readonly name="price[]" value="{{ $item->price }}">
+                                 <input type="hidden" class="form-control waste" maxlength="2" id="{{$item->id}}" name="waste[]" value="{{ $item->waste }}">
+                                  <input type="hidden" name="unit[]" value="{{ $item->unit_id }}">
+                                  <input type="hidden" readonly class="form-control uses" id="uses_{{$item->id}}" name="uses[]" value="{{ $item->uses }}">
                                 </td>
-                                <td>
+                              {{--   <td>
                                 <input type="text" class="form-control unit_price" id="unit_price_{{$item->id}}" data-id="{{$item->id}}" name="unit_price[]" value="{{ $item->unit_price }}">
-                                </td>
-                                <td>
+                                </td> --}}
+                              {{--   <td>
                                     <input type="hidden" name="raw_status[]" value="{{ $item->status }}">
                                     <input type="hidden" name="raw_description[]" value="{{ $item->description }}">
                                      <input type="text" class="form-control price" id="price_{{$item->id}}" readonly name="price[]" value="{{ $item->price }}">
-                                </td>
-                                <td>
+                                </td> --}}
+                              {{--   <td>
                                     <input type="number" class="form-control waste" maxlength="2" id="{{$item->id}}" name="waste[]" value="{{ $item->waste }}">
-                                </td>
-                                <td>
+                                    <input type="hidden" name="unit[]" value="{{ $item->unit_id }}">
+                                </td> --}}
+                               {{--  <td>
                                     <input type="text" readonly class="form-control uses" id="uses_{{$item->id}}" name="uses[]" value="{{ $item->uses }}">
-                                </td>
+                                </td> --}}
                                 <td>
-                                    <button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
+                                    <button type="button" name="remove" class="btn btn-danger btn-sm remmove"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -269,7 +279,7 @@
 
         <div class="form-group col-md-12" align="right">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Update')}}<i
                     class="icon-arrow-right14 position-right"></i></button>
             <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>

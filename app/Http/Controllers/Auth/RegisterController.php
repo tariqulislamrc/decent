@@ -87,6 +87,7 @@ class RegisterController extends Controller
         $model = new Client;
         $model->type        =       'customer';
         $model->client_type =       'ecommerce';
+        $model->sub_type =       'ecommerce';
         $model->name        =       $data['name'];
         // $model->last_name   =       $data['last_name'];
         // $model->user_name   =       $data['username'];

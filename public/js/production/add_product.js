@@ -13,7 +13,7 @@
                 })
                 .done(function (data) {
                     $('#sub_category').html("");
-                    $('#sub_category').append($('<option>').text("--Select Models--").attr('value', ""));
+                    $('#sub_category').append($('<option>').text("--Select Sub Category--").attr('value', ""));
                     $.each(data, function (i, parts) {
                         $('#sub_category').append($('<option>').text(parts.name).attr('value', parts.id));
                     });

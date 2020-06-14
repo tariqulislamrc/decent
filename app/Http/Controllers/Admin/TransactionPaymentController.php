@@ -123,6 +123,8 @@ class TransactionPaymentController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'Purchase', net_total, 0)) as total_purchase"),
                         DB::raw("SUM(IF(t.transaction_type = 'Purchase', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as total_paid"),
                         'clients.name',
+                        'clients.email',
+                        'clients.mobile',
                         'clients.id as client_id'
                     );
             } elseif ($due_payment_type == 'purchase_return') {
@@ -130,6 +132,8 @@ class TransactionPaymentController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'purchase_return', net_total, 0)) as total_purchase_return"),
                         DB::raw("SUM(IF(t.transaction_type = 'purchase_return', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as total_return_paid"),
                         'clients.name',
+                        'clients.email',
+                        'clients.mobile',
                         'clients.id as client_id'
                     );
             } elseif ($due_payment_type == 'Sale') {
@@ -137,6 +141,8 @@ class TransactionPaymentController extends Controller
                     DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
                     DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as total_paid"),
                     'clients.name',
+                    'clients.email',
+                    'clients.mobile',
                     'clients.id as client_id'
                 );
             } elseif ($due_payment_type == 'sale_return') {
@@ -144,6 +150,8 @@ class TransactionPaymentController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as total_sell_return"),
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as total_return_paid"),
                         'clients.name',
+                        'clients.email',
+                        'clients.mobile',
                         'clients.id as client_id'
                     );
             }
@@ -206,7 +214,7 @@ class TransactionPaymentController extends Controller
     {
         if (!auth()->user()->can('transaction_payment.create')) {
             abort(403, 'Unauthorized action.');
-        }
+          }
            $validator = $request->validate([
             'payment_date'=>'required',
             'amount'=>'required|numeric',

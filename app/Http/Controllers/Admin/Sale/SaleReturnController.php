@@ -96,8 +96,8 @@ class SaleReturnController extends Controller
                
                 ->editColumn(
                     'payment_status',
-                    '<a href="" class="view_payment_modal payment-status payment-status-label" data-orig-value="{{$payment_status}}" data-status-name="@if($payment_status != "paid"){{__( $payment_status)}}@else{{__("received")}}@endif"><span class="label @payment_status($payment_status)">@if($payment_status != "paid"){{__( $payment_status)}} @else {{__("received")}} @endif
-                        </span></a>'
+                    '<span class="view_payment_modal payment-status payment-status-label" data-orig-value="{{$payment_status}}" data-status-name="@if($payment_status != "paid"){{__( $payment_status)}}@else{{__("received")}}@endif"><span class="label @payment_status($payment_status)">@if($payment_status != "paid"){{__( $payment_status)}} @else {{__("received")}} @endif
+                        </span></span>'
                 )
                 ->editColumn('parent_sale', function ($row) {
                     $html = '';
@@ -155,7 +155,15 @@ class SaleReturnController extends Controller
      */
     public function create()
     {
-        //
+        $transaction=Transaction::where('transaction_type','Sale')->select('id','reference_no')->get();
+        return view('admin.sale_return.create',compact('transaction'));
+    }
+
+
+    public function return_check(Request $request)
+    {
+     $transaction_id =$request->transaction_id;
+     return response()->json(['success' => true, 'status' => 'success', 'message' =>'Checking Successfully','goto'=>route('admin.sale.return_sale',$transaction_id)]);
     }
 
     /**
@@ -169,6 +177,13 @@ class SaleReturnController extends Controller
         if (!auth()->user()->can('sale_pos.view')) {
             abort(403, 'Unauthorized action.');
         }
+
+         $validator = $request->validate([
+            'total_return'=>'required',
+        ]);
+         // if ($request->total_return==0) {
+         //     # code...
+         // }
         $sale = Transaction::where('transaction_type', 'Sale')
                         ->with(['sell_lines'])
                         ->findOrFail($request->input('transaction_id'));
@@ -190,7 +205,7 @@ class SaleReturnController extends Controller
                         $sale_line->product_id,
                         $sale_line->variation_id,
                         $sale_line->brand_id,
-                        $sale_line->quantity,
+                        $return_quantity,
                         $old_return_qty
                     );
                 }
@@ -233,7 +248,7 @@ class SaleReturnController extends Controller
             $payment_data['client_id']=$sale->client_id;
             $payment_data['method']='cash';
             $payment_data['type']='Debit';
-            $payment_data['payment_date']=Carbon::now();
+            $payment_data['payment_date']=date('Y-m-d');
             $payment_data['amount']=$return_transaction->net_total;
             if (!empty($return_payment)) {
                 $return_payment->update($payment_data);

@@ -662,6 +662,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
+	 		Route::get('return-check','SaleReturnController@return_check');
 	 });
     //Payment
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');
