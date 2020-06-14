@@ -1,6 +1,5 @@
 @extends('layouts.auth')
 @section('auth')
-
 <div class="login-box">
     <form class="login-form" action="{{ route('admin.login') }}" method="post" id="login">
         <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>

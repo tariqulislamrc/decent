@@ -38,7 +38,7 @@
                         </li>
                         <li>
                             <span class="counter">03</span>
-                            <strong class="title">Order Complete</strong>
+                            <strong class="title">Order Request Complete</strong>
                         </li>
                     </ul>
                     <!-- Process List of the Page end -->
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input name="state" type="text" value="{{$client->state}}" class="form-control"
-                                        required placeholder="State / Country">
+                                        required placeholder="Thana">
                                 </div>
                                 <div class="form-group">
                                     <input name="post_code" type="text" value="{{$client->post_code}}"

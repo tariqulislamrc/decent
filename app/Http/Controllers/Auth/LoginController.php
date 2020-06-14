@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
@@ -149,7 +149,13 @@ class LoginController extends Controller {
      * @return mixed
      */
     protected function authenticated(Request $request, $user) {
-        return response()->json(['message' => 'Successfully Login', 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+
+        $goto = session()->get('goto') ? session()->get('goto') : redirect()->intended($this->redirectPath())->getTargetUrl();
+        Session::put('goto', null);
+        return response()->json(['message' => trans('auth.logged_in'), 'goto' => $goto]);
+
+
+        // return response()->json(['message' => 'Successfully Login', 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
     }
 
     /**

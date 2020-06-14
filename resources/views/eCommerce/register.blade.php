@@ -55,17 +55,9 @@
                                     <button type="button" style="display: none;" id="submiting" class="btn-type1 mt-5">Please Wait ...</button>
                                 </fieldset>
                             </form>
-                            <header>
-                                <h2 style="margin: 0 0 5px;">register with social</h2>
-                                <p>Create an account using social</p>
-                            </header>
-                            <ul class="mt-socialicons">
-                                <li class="mt-facebook"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li class="mt-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li class="mt-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li class="mt-dribbble"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            </ul>
                         </div>
+
+                         <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">Already Registered <a href="{{route('login')}}" style="color: #327DBA;"> Sign in </a> here</span></div>
                     </div>
                 </div>
             </div>

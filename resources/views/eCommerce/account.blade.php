@@ -1,5 +1,6 @@
 @extends('eCommerce.layouts.app')
 @push('main')
+
 <!-- Main of the Page -->
 <main id="mt-main">
     <section class="mt-contact-banner" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">

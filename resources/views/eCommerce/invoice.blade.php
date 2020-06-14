@@ -61,7 +61,9 @@
                 </div>
             </div>
             <div class="col-md-12 text-center mt-3">
-                <p class="text-primary h2 mb-0"> <i class="fas fa-cart-plus"></i> </p>
+                <div class="mt-logo">
+                    <img style="width:100px;" alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+               </div>
                 <p class="h2 text-primary"> {{get_option('site_title')}} </p>
                 <p class="mb-1">Order Invoice</p>
                 <p class="mb-1"> {{get_option('address')}} </p>
