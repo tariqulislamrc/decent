@@ -213,6 +213,7 @@ class CartController extends Controller
             $payment->city = $request->forcity;
         }
         $payment->ecommerce_status = 'pending';
+        $payment->due = $request->total;
         $payment->save();
         $transaction_id = $payment->id;
 
@@ -247,8 +248,9 @@ class CartController extends Controller
     // welcome
     public function welcome() {
         $banner = PageBanner::where('page_name', 'Welcome')->first();
-        $model = Transaction::orderBy('id', 'desc')->first();
-        $items = TransactionSellLine::where('transaction_id', $model->reference_no)->get();
-        return view('eCommerce.thank', compact('model', 'items','banner'));
+        $transaction = Transaction::orderBy('id', 'desc')->first();
+        $client = Client::findOrFail($transaction->client_id);
+        $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->reference_no)->get();
+        return view('eCommerce.thank', compact('transaction', 'client', 'transaction_sale','banner'));
     }
 }

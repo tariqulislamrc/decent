@@ -323,22 +323,27 @@ class EmployeeListController extends Controller
 
     // Image_Upload
     public function Image_Upload(Request $request, $id) {
+        
+        // $request->validate([
+        //     'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048' ,
+        // ]);
         // Upload the file if have & delete the old file
-        $fileName="";
-        if($request->hasFile('photo')) {
+    
+        $model = Employee::findOrFail($id);
+        $old_photo = '';
+        $old_photo = $request->old_photo;
+        if ($request->hasFile('photo')) {
+            if ($model->photo) {
+                $image_path = public_path() . '/storage/employee/' . $model->photo;
+                unlink($image_path);
+            }
             $storagepath = $request->file('photo')->store('public/employee');
             $fileName = basename($storagepath);
-
-            //if file chnage then delete old one
-            $oldFile = $request->get('oldfavicon','');
-            if( $oldFile != ''){
-                $file_path = "public/logo/".$oldFile;
-                Storage::delete($file_path);
-            }
+            $model->photo = $fileName;
+        } else {
+            $model->photo = $old_photo;
         }
 
-        $model = Employee::findOrFail($id);
-        $model->photo = $fileName;
         $model->save();
         // make activity log & return
         activity()->log('Updated a Employee Photo ' );

@@ -51,7 +51,7 @@ function initNavOpener() {
 		jQuery(this).parent().toggleClass("open");
 		return false;
 	});
-	jQuery(".search-close, .icon-magnifier, .fa-search").click(function(){
+	jQuery(".search-close, .open-search-box").click(function(){
 		jQuery("body").toggleClass("search-active");
 		return false;
 	});

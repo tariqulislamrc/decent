@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\EcommerceOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
 use App\models\eCommerce\Seo;
@@ -64,16 +65,19 @@ class Front_End_Controller extends Controller{
     }
 
     public function category_product($id){
-        $banner = PageBanner::where('page_name', 'Category')->first();
-        $products = Product::where('category_id', $id)->paginate(15);
+        // find the category
         $category = Category::with('product')->get();
+
+        $get_categoyr = Category::where('category_slug', $id)->firstOrFail();
+        $banner = PageBanner::where('page_name', 'Category')->first();
+        $products = Product::where('category_id', $get_categoyr->id)->paginate(15);
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
 
     public function account()
     {
         if (Auth::guard('client')->check()) {
-         return Redirect::to('/member/dashboard');
+            return Redirect::to('member/dashboard');
         } else {
             return view('eCommerce.account');
         }
@@ -125,7 +129,10 @@ class Front_End_Controller extends Controller{
     }
 
     public function product_details($id){
-        $product_rating = ProductRating::where('product_id',$id)->get();
+        // find the product
+        $model = Product::with('photo_details', 'variation')->where('product_slug',$id)->firstOrFail();
+        // find the product Rating
+        $product_rating = ProductRating::where('product_id',$model->id)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
         if ($total_row>0) {
@@ -133,7 +140,6 @@ class Front_End_Controller extends Controller{
         }else{
             $avarage_rating = 0;
         }
-        $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model','product_rating','avarage_rating','total_row'));
     }
 
@@ -230,6 +236,50 @@ class Front_End_Controller extends Controller{
     public function invoice($id) {
         $transaction =  Transaction::where('reference_no',$id)->first();
         $transaction_sale = TransactionSellLine::where('transaction_id',$transaction->id)->get();
-        return view('eCommerce.invoice',compact('transaction','transaction_sale'));
+        
+        // find the client
+        $client = Client::findOrFail($transaction->client_id);
+        return view('eCommerce.invoice',compact('transaction','transaction_sale', 'client'));
+    }
+
+    // category_offer
+    public function category_offer($slug) {
+        $category = Category::where('category_slug', $slug)->firstOrFail();
+        
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+        
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->where('category_id', $category->id)->paginate(15);
+        $banner = PageBanner::where('page_name', 'Category')->first();
+
+        // All Categoyr
+        $category = Category::where('status', 1)->get();
+        return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
+    }
+
+    // search_product
+    public function search_product(Request $request) {
+        $text = $request->text;
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+        
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->where('name', 'like', '%' .$text . '%')->paginate(15);
+        $banner = PageBanner::where('page_name', 'Category')->first();
+        // All Categoyr
+        $category = Category::where('status', 1)->get();
+
+        return view('eCommerce.search.search_result_ajax', compact('products', 'banner', 'category'));
     }
 }

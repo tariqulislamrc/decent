@@ -59,16 +59,13 @@
 				<div class="mt-holder">
 					<a href="#" class="search-close"><span></span><span></span></a>
 					<div class="mt-frame">
-						<form action="#">
+						<form action="{{ route('search_product') }}" method="GET">
 							<fieldset>
-								<input type="text" placeholder="Search...">
+								<input autocomplete="off" type="text" name="text" id="search_text" placeholder="Search...">
 								{{-- <span class="icon-microphone"></span> --}}
 								<button class="icon-magnifier" type="submit"></button>
 							</fieldset>
 						</form>
-						<div>
-							
-						</div>
 					</div>
 				</div>
 			</div><!-- mt search popup end here -->
@@ -98,7 +95,7 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        });
+		});
         
         $(document).ready(function() {
             /*

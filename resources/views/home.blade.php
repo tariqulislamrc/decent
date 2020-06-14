@@ -331,8 +331,8 @@
                 {{-- Pending Order List --}}
                 <div class="col-md-6 mt-3">
                     <div class="table-responsive">
-                        <h4 class="text-center">Recent Pending Order</h4>
-                        <table class="table table-bordered table-striped">
+                        <h4 class="text-center">Recent Ecommerce Order</h4>
+                        <table style="font-size:15px;" class="table table-bordered table-striped">
                             <thead class="table-primary">
                             <tr>
                                 <th>P. Type</th>
@@ -343,13 +343,26 @@
                             </tr>
                             </thead>
                             @php
-                                $query = App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->limit(5)->get()
+                                $query = App\models\Production\Transaction::where('transaction_type', 'ecommerce')->orderBy('id', 'desc')->limit(5)->get()
+                                // $query = App\models\Production\Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->limit(5)->get()
                             @endphp
                             <tbody>
                             @if (count($query))
-                                @foreach ($query as $item)
+                                {{-- @foreach ($query as $item)
                                     <tr>
                                         <td>
+                                            @if ($item->ecommerce_status == 'pending')
+                                                <span class="badge badge-warning">Pending</span>
+                                            @elseif($item->ecommerce_status == 'confirm')
+                                            <span class="badge badge-primary"> Confirm</span>
+                                            @elseif($item->ecommerce_status == 'progressing')
+                                            <span class="badge badge-info">In Progressing</span>
+                                            @elseif($item->ecommerce_status == 'shipment')
+                                            <span class="badge badge-dark">In Shipment</span>
+                                            @elseif($item->ecommerce_status == 'success')
+                                                <span class="badge badge-success">Success</span>
+                                            @else
+                                                <span class="badge badge-danger">Cancel</span>
                                             @if ($item->payment_status == 'cash_on_delivery')
                                                 Cash On Delivery
                                             @endif
@@ -359,9 +372,10 @@
                                         </td>
                                         <td>{{get_client_name($item->client_id)}}</td>
                                         <td>{{get_client_phone($item->client_id)}}</td>
+                                        <td>{{get_option('currency') ? '৳' : get_option('currenct') }}{{$item->net_total}}</td>
                                         <td>{{get_option('currency') ? '৳' : get_option('currenct') }} {{$item->net_total}}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             @else
                                 <tr>
                                     <td class="text-center" colspan="5">No Pending Order Found !</td>

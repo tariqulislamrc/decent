@@ -4,8 +4,8 @@
 	 <!-- mt main start here -->
 			<main id="mt-main">
 				<!-- Mt Contact Banner of the Page -->
-				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http	placehold.it/1920x205'}});">
-					<div class="container"> \
+				<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x205'}});">
+					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 text-center">
 								<h1>Product's List</h1>
@@ -47,8 +47,9 @@
 									$hot_sale   = App\models\Production\Product::where('hot_sale_status','1')->orderBy('id','desc')->take(4)->get();
 								@endphp
 								@if(count($hot_sale) > 0)
-									@foreach ($hot_sale as $hot_sale_item)
-									@php
+                                    @foreach ($hot_sale as $hot_sale_item)
+                                    @php
+                                    
 										$find_price =  App\models\Production\Variation::where('product_id', $hot_sale_item->id)->get();
 										if(count($find_price) > 0) {
 											$total_product_variation = count($find_price);
@@ -61,11 +62,12 @@
 									
 											$per_product_price = round($price / $total_product_variation) ;
 											
-										}
+                                        }
+                                        
 									@endphp
 									<div class="mt-product4 mt-paddingbottom20">
 										<div class="img">
-											<a href="{{route('product-details',$hot_sale_item->id)}}">
+											<a href="{{route('product-details',$hot_sale_item->product_slug)}}">
 												<img src="{{isset($hot_sale_item->photo) && $hot_sale_item->photo != null ?asset('storage/product/'.$hot_sale_item->photo): asset('img/product.jpg')}}">
 											</a>
 										</div>
@@ -136,17 +138,11 @@
 										<div class="box">
 											<div class="b1">
 												<div class="b2">
-													<a href="{{route('product-details',$item->id)}}">
+													<a href="{{route('product-details',$item->product_slug)}}">
 														<img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="image description">
 													</a>
-													{{-- <ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul> --}}
 													<ul class="links">
-														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+														<li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
 															@php
 																$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
@@ -164,7 +160,7 @@
 											</div>
 										</div>
 										<div class="txt">
-											<strong class="title"><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
+											<strong class="title"><a href="{{route('product-details',$item->product_slug)}}">{{$item->name}}</a></strong>
 											@if ($low == $high)
 												<span class="price">{{get_option('currency')}} <span>{{$low}}</span></span>
 											@else

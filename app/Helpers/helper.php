@@ -816,5 +816,45 @@ function getIp(){
       if ($depert !=null) {
       	return true;
       }
-    }
+	}
+	
+	// Sadik Work Start 
+		// make_slug
+		function make_slug($string){
+
+			$string = remove_special_char($string);
+			$string = text_shorten($string);
+			$string = str_replace(' ', '-', $string);
+			return $string;
+		}
+
+		function text_shorten($text, $limit = 200){
+			$text = $text. " ";
+			$text = substr($text, 0, $limit);
+			$text = substr($text, 0, strrpos($text, ' '));
+			return $text;
+		}//textShorten
+
+		function remove_special_char($string) {
+			$string = html_entity_decode($string);
+			$string = strip_tags($string);
+
+			$string = htmlspecialchars($string);
+
+			$string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+			$string = str_replace(array('[\', \', ]','(', ')', '{', '}', '[', ']', '|', '?', '-', '_', ',', '~', '`', '/', '\\', '"', "'", ':'), '', $string);
+			$string = preg_replace('/\[.*\]/U', '', $string);
+
+			$string = preg_replace('/!|@|#|%|&/', '', $string);
+
+			$string = htmlentities($string, ENT_COMPAT, 'utf-8');
+			$string = str_replace('&times;', 'x', $string);
+			$string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+
+			$string = preg_replace('/\s+/u', ' ', trim($string)); // for multiple spaces
+			$string = preg_replace('/-+/', ' ', $string); //for multiple -
+			return strtolower(trim($string, ' '));
+		}
+
+	// Sadik Work Stop
 ?>

@@ -16,7 +16,7 @@
         
                 {{-- Category --}}
                 <div class="col-md-6 form-group">
-                    <label for="name">{{_lang('Category')}} <span class="text-danger">*</span>
+                    <label for="employee_category_id">{{_lang('Category')}} <span class="text-danger">*</span>
                     </label>
                     <select data-parsley-errors-container="#parsley_add_designation_catagory" data-placeholder="Please Select One" name="employee_category_id" id="employee_category_id" class="form-control select" required>
                         <option value="">Please Select One</option>
@@ -29,8 +29,7 @@
         
                 {{-- Top Designation --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Top Designation')}} 
-                    </label>
+                    <label for="top_designation_id">{{_lang('Top Designation')}}</label>
                     <select data-placeholder="Please Select One" name="top_designation_id" id="top_designation_id" class="form-control select" >
                         <option value="">Please Select One</option>
                         @foreach ($designations as $designation)
@@ -42,10 +41,9 @@
         
                 {{-- Designation Description --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Description')}}
+                    <label for="description">{{_lang('Description')}}
                     </label>
-                    <textarea name="description" class="form-control" id=""
-                        placeholder="Enter Designation Description"></textarea>
+                    <textarea name="description" class="form-control" id="description" placeholder="Enter Designation Description"></textarea>
         
                 </div>
         

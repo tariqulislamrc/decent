@@ -36,6 +36,7 @@ Route::group(['middleware' => ['install']], function () {
 		Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
+
 	});
 
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
@@ -46,6 +47,8 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
 	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
+	Route::get('category-offer/{slug}','Frontend\Front_End_Controller@category_offer')->name('category-offer');
+	Route::get('search-product', 'Frontend\Front_End_Controller@search_product')->name('search_product');
 
 	Route::get('blog',function(){
 		return view('eCommerce.blog');
@@ -486,6 +489,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('eCommerce-offer/datatable','eCommerceOfferController@datatable')->name('eCommerce-offer.datatable');
 		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');
 		Route::resource('eCommerce-offer', 'eCommerceOfferController');
+
+		// special_offer
+		Route::get('add_to_special_offer_row', 'SpecialOfferController@add_to_special_offer_row')->name('add_to_special_offer_row');
+		Route::get('special-offer.datatable', 'SpecialOfferController@datatable')->name('special-offer.datatable');
+		Route::resource('special-offer', 'SpecialOfferController');
+
+		// Special Category
+		Route::get('special-category.datatable', 'SpecialCategoryController@datatable')->name('special-category.datatable');
+		Route::resource('special-category', 'SpecialCategoryController');
 
 		// feature-product
 		Route::get('feature-product/datatable','FeatureProductController@datatable')->name('feature-product.datatable');

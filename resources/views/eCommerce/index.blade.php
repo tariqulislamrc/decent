@@ -148,17 +148,16 @@
                 {{-- Banner Part Start --}}
                 <div class="banner-frame nospace wow fadeInUp" data-wow-delay="0.4s">
                     @php
-                    $banner_part = App\EcommerceOffer::where('size', '400 X 210')->with('product')->limit(3)->get();
-
+                    $offer_categories = App\models\eCommerce\SpecialCategory::where('status', 1)->get();
                     @endphp
-                    @if (count($banner_part) > 0)
-                    @foreach ($banner_part as $item)
+                    @if (count($offer_categories) > 0)
+                    @foreach ($offer_categories as $item)
                     <div class="banner-9">
-                        <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
+                        <img src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_category/'. $item->cover_image) : 'http://placehold.it/765x580'}}"
                             alt="image description">
                         <div class="holder">
-                            <h2><span>{{$item->product->category->name}}</span><strong>{{$item->heading}}</strong></h2>
-                            <a class="btn-shop" href="{{route('offer',$item->uuid)}}">
+                            <h2><span>{{$item->category->name}}</span></h2>
+                            <a class="btn-shop" href="{{route('category-offer',$item->category->category_slug)}}">
                                 <span>SHOP NOW</span>
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -167,7 +166,12 @@
 
                     @endforeach
                     @else
-
+                    <p style="margin: 0 0 9.5px;
+                    padding: 10px;
+                    font-size: 20px;
+                    background-color: #ddd;
+                    color: red;
+                    text-align: center;">Sorry. No Offer Category Found At This Moment.</p>
                     @endif
                 </div>
 
@@ -277,30 +281,213 @@
                     </div>
 
                     @endforeach
-                    @else
-                    {{-- <div class="banner-15 right">
-								<img src="http://placehold.it/590x250" alt="image description">
-								<div class="holder">
-									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2> --}}
-                    {{-- <a class="btn-shop" href="#">
-										<span>SHOP NOW</span>
-										<i class="fa fa-angle-right"></i>
-									</a> --}}
-                    {{-- </div>
-							</div>
-							<div class="banner-15 right">
-								<img src="http://placehold.it/590x250" alt="image description">
-								<div class="holder">
-									<h2>No Offer Found <strong>Add 590 X 250 Size Offer for Size</strong></h2> --}}
-                    {{-- <a class="btn-shop" href="#">
-										<span>SHOP NOW</span>
-										<i class="fa fa-angle-right"></i>
-									</a> --}}
-                    {{-- </div>
-							</div> --}}
+
                     @endif
                 </div>
                 {{-- Banner Part End Here --}}
+
+                <div class="mt-producttabs style6 wow fadeInUp" data-wow-delay="0.4s"
+                    style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">
+                    <div class="mt-heading2">
+                        <h2 class="head">WOODEN CHAIRS</h2>
+                        <p>FURNITURE DESIGNS IDEAS</p>
+                    </div>
+                    <!-- tabs slider start here -->
+                    <div class="tabs-slider row slick-initialized slick-slider"><button type="button" data-role="none"
+                            class="slick-prev slick-arrow" aria-label="Previous" role="button"
+                            style="display: block;">Previous</button>
+                        <!-- slide start here -->
+                        <div aria-live="polite" class="slick-list draggable">
+                            <div class="slick-track" role="listbox" style="opacity: 1; width: 4182px; left: -1230px;">
+                                <div class="slide slick-slide slick-cloned" data-slick-index="-5" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img33.jpg" alt="image description"></a>
+                                                    <ul class="links">
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icon-handbag"></i><span>Add to
+                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Wood
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>198,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                                
+                                <div class="slide slick-slide slick-cloned" data-slick-index="7" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img31.jpg" alt="image description"></a>
+                                                    <span class="caption">
+                                                        <span class="new">new</span>
+                                                    </span>
+                                                    <ul class="mt-stars">
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star-o"></i></li>
+                                                    </ul>
+                                                    <ul class="links">
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icon-handbag"></i><span>Add to
+                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Puff
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>287,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                                <div class="slide slick-slide slick-cloned" data-slick-index="8" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img32.jpg" alt="image description"></a>
+                                                    <ul class="links">
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icon-handbag"></i><span>Add to
+                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Bombi
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                                <div class="slide slick-slide slick-cloned" data-slick-index="9" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img33.jpg" alt="image description"></a>
+                                                    <ul class="links">
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icon-handbag"></i><span>Add to
+                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Wood
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>198,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                                <div class="slide slick-slide slick-cloned" data-slick-index="10" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img34.jpg" alt="image description"></a>
+                                                    <span class="caption">
+                                                        <span class="off">15% Off</span>
+                                                        <span class="new">new</span>
+                                                    </span>
+                                                    <ul class="links">
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icon-handbag"></i><span>Add to
+                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Bombi
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>200,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                                <div class="slide slick-slide slick-cloned" data-slick-index="11" aria-hidden="true"
+                                    tabindex="-1" style="width: 246px;">
+                                    <!-- mt product1  start here -->
+                                    <div class="mt-product1">
+                                        <div class="box">
+                                            <div class="b1">
+                                                <div class="b2">
+                                                    <a href="product-detail.html" tabindex="-1"><img
+                                                            src="images/products/img35.jpg" alt="image description"></a>
+                                                    <ul class="links add">
+                                                        <li><a href="#" tabindex="-1"><i class="icon-handbag"></i></a>
+                                                        </li>
+                                                        <li><a href="#" tabindex="-1"><i
+                                                                    class="icomoon icon-heart-empty"></i></a></li>
+                                                        <li><a href="#popup1" class="lightbox" tabindex="-1"><i
+                                                                    class="icomoon icon-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title"><a href="product-detail.html" tabindex="-1">Bombi
+                                                    Chair</a></strong>
+                                            <span class="price"><i class="fa fa-eur"></i> <span>399,00</span></span>
+                                        </div>
+                                    </div><!-- mt product1  end here -->
+                                </div>
+                            </div>
+                        </div><!-- slide end here -->
+
+                        <button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next"
+                            role="button" style="display: block;">Next</button>
+                    </div>
+                    <!-- tabs slider end here -->
+                </div>
 
                 <div class="mt-smallproducts mt-nopaddingtopxs wow fadeInUp" data-wow-delay="0.4s">
                     <div class="row">
@@ -326,7 +513,7 @@
                             @endphp
                             <div class="mt-product4 mt-paddingbottom20">
                                 <div class="img">
-                                    <a href="{{route('product-details',$hot_sale_item->id)}}">
+                                    <a href="{{route('product-details',$hot_sale_item->product_slug)}}">
                                         <img
                                             src="{{isset($hot_sale_item->photo) && $hot_sale_item->photo != ''?asset('storage/product/'.$hot_sale_item->photo): asset('img/product.jpg') }}">
                                     </a>
@@ -334,7 +521,7 @@
                                 <div class="text">
                                     <div class="frame">
                                         <strong><a
-                                                href="{{route('product-details',$hot_sale_item->id)}}">{{$hot_sale_item->name}}</a></strong>
+                                                href="{{route('product-details',$hot_sale_item->product_slug)}}">{{$hot_sale_item->name}}</a></strong>
                                         <ul class="ratting-area">
                                             <li class="list-group-item count_rating"
                                                 data-score={{$hot_sale_item->avarage_retting}}>
@@ -377,7 +564,7 @@
                             @endphp
                             <div class="mt-product4 mt-paddingbottom20">
                                 <div class="img">
-                                    <a href="{{route('product-details',$footer_item->id)}}">
+                                    <a href="{{route('product-details',$footer_item->product_slug)}}">
                                         <img
                                             src="{{isset($footer_item->photo) && $footer_item->photo != ''?asset('storage/product/'.$footer_item->photo):  asset('img/product.jpg') }}">
                                     </a>
@@ -385,7 +572,7 @@
                                 <div class="text">
                                     <div class="frame">
                                         <strong><a
-                                                href="{{route('product-details',$footer_item->id)}}">{{$footer_item->name}}</a></strong>
+                                                href="{{route('product-details',$footer_item->product_slug)}}">{{$footer_item->name}}</a></strong>
                                         <ul class="ratting-area">
                                             <li class="list-group-item count_rating"
                                                 data-score={{$footer_item->avarage_retting}}>
@@ -393,7 +580,8 @@
                                         </ul>
                                     </div>
                                     {{-- <del class="off">$75,00</del> --}}
-                                    <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                    <span class="price">{{ get_option('currency') }}
+                                        {{isset($per_product_price)?$per_product_price:''}}</span>
                                 </div>
                             </div>
                             @endforeach
@@ -426,14 +614,14 @@
                             @endphp
                             <div class="mt-product4 mt-paddingbottom20">
                                 <div class="img">
-                                    <a href="{{route('product-details',$item->id)}}">
+                                    <a href="{{route('product-details',$item->product_slug)}}">
                                         <img
                                             src="{{isset($item->photo) && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"></a>
                                 </div>
                                 <div class="text">
                                     <div class="frame">
                                         <strong><a
-                                                href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
+                                                href="{{route('product-details',$item->product_slug)}}">{{$item->name}}</a></strong>
                                         <ul class="ratting-area">
                                             <li class="list-group-item count_rating"
                                                 data-score={{$item->avarage_retting}}>
@@ -452,7 +640,7 @@
                             @foreach ($products as $item)
                             <div class="mt-product4 mt-paddingbottom20">
                                 <div class="img">
-                                    <a href="{{route('product-details',$item->id)}}">
+                                    <a href="{{route('product-details',$item->product_slug)}}">
                                         <img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
                                             alt="Top Rated Products Image">
                                     </a>
@@ -460,7 +648,7 @@
                                 <div class="text">
                                     <div class="frame">
                                         <strong><a
-                                                href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
+                                                href="{{route('product-details',$item->product_slug)}}">{{$item->name}}</a></strong>
                                         <ul class="ratting-area">
                                             <li class="list-group-item count_rating"
                                                 data-score={{$item->avarage_retting}}>
