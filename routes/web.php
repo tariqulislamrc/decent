@@ -27,6 +27,7 @@ Route::group(['middleware' => ['install']], function () {
 		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
 		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
+		Route::get('client-track', 'ProfileController@client_track')->name('track');
 		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
 		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
 

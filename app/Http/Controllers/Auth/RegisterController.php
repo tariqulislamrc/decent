@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -97,7 +98,7 @@ class RegisterController extends Controller
         $model->save();
         $id = $model->id;
 
-        $data['id'] = $id;
+        // $data['id'] = $id;
         $uuid =  Str::uuid()->toString();
 
 
@@ -133,7 +134,13 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        return response()->json(['message' => trans('auth.logged_in'), 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+
+        $goto = session()->get('goto') ? session()->get('goto') : redirect()->intended($this->redirectPath())->getTargetUrl();
+        Session::put('goto', null);
+
+        return response()->json(['message' => trans('auth.logged_in'), 'goto' => $goto]);
+
+        // return response()->json(['message' => trans('auth.logged_in'), 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
 
         // return $this->registered($request, $user)
         //                 ?: redirect($this->redirectPath());

@@ -19,7 +19,7 @@
                                 <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
                                     alt="image description">
                                 <div class="s-box">
-                                    <strong class="s-title">{{$item->product->category->name}}</strong>
+                                    <strong class="s-title">{{$item->product->category?$item->product->category->name:''}}</strong>
                                     <span class="heading add">{{$item->heading}}</span>
                                     <div class="s-txt">
                                         <p>{{$item->sub_heading}}</p>
@@ -271,7 +271,7 @@
                         <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/590X250'}}"
                             alt="image description">
                         <div class="holder">
-                            <h2>{{$item->product->category->name}}<strong>{{$item->heading}}</strong></h2>
+                            <h2>{{$item->product->category?$item->product->category->name:''}}<strong>{{$item->heading}}</strong></h2>
                             <a class="btn-shop" href="{{route('offer',$item->uuid)}}">
                                 <span>SHOP NOW</span>
                                 <i class="fa fa-angle-right"></i>

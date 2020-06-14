@@ -17,6 +17,7 @@
                 <!-- mt nav box start here -->
                 <div class="mt-nav-box">
                     <ul class="mt-top-list hidden-sm hidden-xs">
+                        <li><a href="{{route('member.track')}}">Track Order</a></li>
                         @if (auth('client')->check())
                             <li><a href="{{ route('member.dashboard') }} ">My Account</a></li>
                             <li><a id="logout" style="cursor:pointer;" data-url='{{ route('admin.logout') }}'>LogOut</a></li>
