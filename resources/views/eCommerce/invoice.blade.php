@@ -110,35 +110,35 @@
                         <th scope="row">Item {{$key+1}}</th>
                         <td> {{$item->product->name}} </td>
                         <td> {{$item->quantity}} </td> 
-                        <td class="text-right"> ট{{$item->unit_price}} </td>
-                        <td class="text-right"> ট{{$item->total}}</td>
+                        <td class="text-right"> {{ get_option('currency') }} {{$item->unit_price}} </td>
+                        <td class="text-right"> {{ get_option('currency') }} {{$item->total}}</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4" class="text-right">Subtotal</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->sub_total != null ? number_format($transaction->sub_total, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->sub_total != null ? number_format($transaction->sub_total, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
-                        <th colspan="4" class="text-right">Dscount Amount</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->discount != null ? number_format($transaction->discount, 2) : '0.00'}} </td>
+                        <th colspan="4" class="text-right">Coupon Amount</th>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->discount != null ? number_format($transaction->discount, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Shipping Charges</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->shipping_charges != null ? number_format($transaction->shipping_charges, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->shipping_charges != null ? number_format($transaction->shipping_charges, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Total Paid</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->paid != null ? number_format($transaction->paid, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->paid != null ? number_format($transaction->paid, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Total Due</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->due != null ? number_format($transaction->due, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }}{{ $transaction->due != null ? number_format($transaction->due, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Net Total</th>
-                        <td colspan="1" class="text-right">৳{{ $transaction->net_total != null ? number_format($transaction->net_total, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->net_total != null ? number_format($transaction->net_total, 2) : '0.00'}} </td>
                     </tr>
                 </tfoot>
             </table>
@@ -151,7 +151,7 @@
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
                   <p class="text-uppercase font-weight-bold"> total </p>
-                  <p class="h1 text-primary">  ট {{number_format($transaction_sale->sum('total'), 2)}}</p>
+                  <p class="h1 text-primary">  {{ get_option('currency') }} {{number_format($transaction_sale->sum('total'), 2)}}</p>
             </div>
         </div>
         <hr>

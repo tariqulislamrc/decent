@@ -52,10 +52,10 @@ class CouponsController extends Controller{
        $data = $request->validate([
             'coupons_code' => 'required|unique:coupons|max:255',
             'discount_type' => 'required',
-            'discount_amount' => 'required',
+            'discount_amount' => 'required|numeric',
             'note' => '',
         ]);
-        $data['created_by']=Auth::user()->id;
+        $data['created_by']= Auth::user()->id;
         $model = new Coupon;
         $model->create($data);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Coupons Create Successfuly'), 'goto' => route('admin.eCommerce.coupons.index')]);

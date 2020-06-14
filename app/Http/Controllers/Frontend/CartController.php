@@ -137,7 +137,7 @@ class CartController extends Controller
 
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
-            Session::put('total', $request->total_hidden - $request->coupon_amt);
+            Session::put('total', $request->total_hidden);
             Session::put('coupon', $request->coupon_amt);
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
@@ -156,6 +156,7 @@ class CartController extends Controller
             $user = auth('client')->user('clients_id');
             $client = Client::findOrFail($user->clients_id);
             $models = Cart::getContent();
+
             return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
              dd(URL::previous());

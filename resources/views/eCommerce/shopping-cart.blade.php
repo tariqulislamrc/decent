@@ -110,8 +110,11 @@
                     <div  class="coupon-form">
                         <fieldset>
                             <div class="mt-holder">
-                                <input type="text" id="coupon-value"  class="form-control" placeholder="Your Coupon Code">
+                                <input type="text" autocomplete="off" id="coupon-value"  class="form-control" placeholder="Your Coupon Code">
+                                <input type="hidden" id="c_amount" value="0">
+                                <input type="hidden" id="c_type" value="0">
                                 <button type="button" data-url="{{route('coupon-check')}}" id="coupon-submit">APPLY</button>
+                                <button type="button" style="display: none; font-size:12px;" type="button" class="small" disabled id="submitting">Processing...</button>
                             </div>
                         </fieldset>
                     </div>
@@ -140,6 +143,14 @@
                                 <strong class="title sub-title pull-left">SHIPPING</strong>
                                 <div class="txt pull-right">
                                     <strong>Free Shipping</strong>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="show_coupon_area" style="display: none;">
+                            <div class="txt-holder">
+                                <strong class="title sub-title pull-left">Coupon Amount</strong>
+                                <div class="txt pull-right">
+                                    <strong id="show_discount_amount">৳0.00</strong>
                                 </div>
                             </div>
                         </li>

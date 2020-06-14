@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Employee Category'), 'modal' => 'xl'])
+@extends('layouts.app', ['title' => _lang('Ecommerce Order List'), 'modal' => 'xl'])
 @push('admin.css')
     <link rel="stylesheet" href="{{asset('backend/css/daterangepicker.css')}}">
 @endpush
