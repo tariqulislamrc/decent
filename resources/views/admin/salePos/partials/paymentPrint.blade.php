@@ -38,7 +38,7 @@
 </tbody>
 </table>
 </div>
-<p class="h2 text-capitalize mt-4 text-center"> In Words : ........................................................................................................</p>
+<p class="h2 text-capitalize mt-4 text-center"> In Words : {{ convert_number_to_words($model->amount) }}</p>
 <br><br>
 <div class="row mt-5 mb-3 text-center">
 <div class="col-md-3">

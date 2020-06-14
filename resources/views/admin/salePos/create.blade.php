@@ -105,22 +105,18 @@
 							<div class="row">
 								<div class="col-md-6 ">
                                     <div class="form-group">
-									<select name="brand_id" id="brand_id" class="form-control select">
-
-										<option value="">Select Brand</option>
-										@foreach ($brands as $brand)
-										<option value="{{ $brand->id }}">{{ $brand->name }}</option>
-										@endforeach
-									</select>
+								    <select name="category_id" id="category_id" class="form-control select" data-url='{{route('admin.production-product.category')}}'>
+                                        <option value="">All Category</option>
+                                        @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 								</div>
 								<div class="col-md-6 ">
                                     <div class="form-group">
-									<select name="category_id" id="category_id" class="form-control select">
-										<option value="all">All Category</option>
-										@foreach ($categories as $category)
-										<option value="{{ $category->id }}">{{ $category->name }}</option>
-										@endforeach
+									<select name="sub_category_id" id="sub_category_id" class="form-control select">
+									<option value="">All Subcategory</option>
 									</select>
                                 </div>
 								</div>
@@ -166,17 +162,17 @@
         page += 1;
         $('#suggestion_page').val(page);
         var category_id = $('select#category_id').val();
-        var brand_id = $('select#brand_id').val();
+        var sub_category_id = $('select#sub_category_id').val();
 
-        get_product_suggestion_list(category_id, brand_id);
+        get_product_suggestion_list(category_id, sub_category_id);
     }
 });
 
-	$('select#category_id, select#brand_id').on('change', function(e) {
+	$('select#category_id, select#sub_category_id').on('change', function(e) {
         $('input#suggestion_page').val(1);
             get_product_suggestion_list(
                 $('select#category_id').val(),
-                $('select#brand_id').val(),
+                $('select#sub_category_id').val(),
                 null
             );
 
@@ -184,7 +180,7 @@
 
 
 
- function get_product_suggestion_list(category_id, brand_id, url = null,term=null) {
+ function get_product_suggestion_list(category_id, sub_category_id, url = null,term=null) {
 
     if($('div#product_list_body').length == 0) {
         return false;
@@ -207,7 +203,7 @@
         url: url,
         data: {
             category_id: category_id,
-            brand_id: brand_id,
+            sub_category_id: sub_category_id,
             page: page,
             term:term
         },
@@ -565,13 +561,44 @@ $(document).on('change','.method',function(){
     }
 });
 
-$("#item").delegate(".qty,.sale_price", "keyup", function() {
+$("#item").delegate(".qty,.sale_price", "keyup blur change", function() {
     var tr = $(this).parent().parent();
-    tr.find(".amt").html(tr.find(".qty").val() * tr.find(".sale_price").val());
-    calculate();
+    var qty =tr.find('.qty');
+    var able =tr.find('input.tqty').val();
+   if ((qty.val() -0) > (tr.find(".tqty").val()-0)) {
+     toastr.error('Sorry! this much not quantity is not available! available Qty is :'+' '+able);
+      qty.val(1).change();
+    }
+    else{
+        tr.find(".amt").html(qty.val() * tr.find(".sale_price").val());
+      calculate();
+    }
 
 
 })
+
+$(document).on('change', '#category_id', function () {
+    // it will get action url
+    var url = $(this).data('url');
+    var id = $(this).val();
+
+    $.ajax({
+            url: url,
+            data: {
+                id: id
+            },
+            type: 'Get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+            console.log(data);
+            $('#sub_category_id').html("");
+            $('#sub_category_id').append($('<option>').text("All SubCategory").attr('value', ""));
+            $.each(data, function (i, parts) {
+                $('#sub_category_id').append($('<option>').text(parts.name).attr('value', parts.id));
+            });
+        })
+});
 _componentDatefPicker();
 _formValidation();
 </script>

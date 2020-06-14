@@ -131,7 +131,6 @@ class TransactionUtil
     {
 
         $qty_difference = $new_quantity - $old_quantity;
-        
 
         $product = Product::find($product_id);
 
@@ -289,7 +288,6 @@ class TransactionUtil
                             'transaction_id' => $transaction->id,
                             'method' => $parent_payment->method,
                             'transaction_no' => $parent_payment->transaction_no,
-                            'type' => $parent_payment->type,
                             'payment_date' => $parent_payment->payment_date,
                             'created_by' => $parent_payment->created_by,
                             'client_id' => $parent_payment->client_id,
@@ -297,6 +295,12 @@ class TransactionUtil
                             'created_at' => $now,
                             'updated_at' => $now
                         ];
+
+                      if ($transaction->transaction_type=='sale_return') {
+                            $array['type'] = 'Debit';
+                        }else{
+                            $array['type'] = 'Credit'; 
+                        }
 
                     if ($due <= $total_amount) {
                         $array['amount'] = $due;
@@ -328,6 +332,17 @@ class TransactionUtil
                 TransactionPayment::insert($tranaction_payments);
             }
         }
+    }
+
+       /**
+     * Check if return exist for a particular purchase or sell
+     * @param id $transacion_id
+     *
+     * @return boolean
+     */
+    public function isReturnExist($transacion_id)
+    {
+        return Transaction::where('return_parent_id', $transacion_id)->exists();
     }
 
 }

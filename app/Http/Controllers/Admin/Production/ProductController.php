@@ -401,7 +401,7 @@ class ProductController extends Controller
             $variation->save();
         }
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'),'load'=>true]);
     }
 
 
@@ -451,7 +451,7 @@ class ProductController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'),'load'=>true]);
     }
 
 
@@ -534,6 +534,8 @@ class ProductController extends Controller
             $query->orWhere('articel', 'like', '%' . $term . '%');
             $query->orWhere('prefix', 'like', '%' . $term . '%');
             $query->orWhere('sub_sku', 'like', '%' . $term . '%');
+            $query->orWhere('variations.name', 'like', '%' . $term . '%');
+            // $query->orWhere('variation_brand_details.name', 'like', '%' . $term . '%');
            
         });
         }

@@ -16,25 +16,33 @@
 					{!! Form::open(['route' => $route.'quick_add', 'class' => 'form-validate-jquery quick_add_contact', 'id' => 'remort_add', 'files' => true, 'method' => 'POST']) !!}
 					<input type="hidden" name="type" value="customer">
 					<div class="row">
-						<div class="col-md-3">
+						<div class="col-md-6">
+							<div class="form-group">
+								{!! Form::label('sub_type', _lang('Client Type').':') !!}
+								{!! Form::select('sub_type', ['retail'=>'Retail','wholesale'=>'WholeSale','ecommerce'=>'eCommerce'], null, ['class' => 'form-control','id'=>'sub_type']); !!}
+							</div>
+						</div>
+						<div class="col-md-6">
 							<div class="form-group">
 								{{ Form::label('name', _lang('Name') , ['class' => 'col-form-label']) }}
 								{{ Form::text('name', null, ['class' => 'form-control input_number', 'id'=>'name', 'placeholder' => _lang('Name'),'required'=>'','autofocus'=>true]) }}
 							</div>
 						</div>
-						<div class="col-md-3">
+					</div>
+					<div class="row">
+						<div class="col-md-4">
 							<div class="form-group">
 								{{ Form::label('email', _lang('Email') , ['class' => 'col-form-label']) }}
 								{{ Form::text('email', null, ['class' => 'form-control input_number', 'id'=>'email', 'placeholder' => _lang('Email')]) }}
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<div class="form-group">
 								{{ Form::label('mobile', _lang('Mobile') , ['class' => 'col-form-label']) }}
 								{{ Form::text('mobile', null, ['class' => 'form-control input_number', 'id'=>'mobile', 'placeholder' => _lang('Mobile'),'required'=>'','autofocus'=>true]) }}
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-4">
 							<div class="form-group">
 								{{ Form::label('alternate_number', _lang('Alternate Mobile') , ['class' => 'col-form-label']) }}
 								{{ Form::text('alternate_number', null, ['class' => 'form-control input_number', 'id'=>'alternate_number', 'placeholder' => _lang('Alternate Mobile')]) }}
@@ -78,6 +86,27 @@
 							<div class="form-group">
 								{{ Form::label('net_total', _lang('Opening Balance') , ['class' => 'col-form-label']) }}
 								{{ Form::text('net_total', null, ['class' => 'form-control', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
+							</div>
+						</div>
+					</div>
+					<h5>{{ _lang('Banking Info') }}</h5>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								{{ Form::label('bank_name', _lang('Bank Name') , ['class' => 'col-form-label']) }}
+								{{ Form::text('bank_name', null, ['class' => 'form-control', 'id'=>'bank_name', 'placeholder' => _lang('Bank Name')]) }}
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								{{ Form::label('account_name', _lang('Bank Account') , ['class' => 'col-form-label']) }}
+								{{ Form::text('account_name', null, ['class' => 'form-control', 'id'=>'account_name', 'placeholder' => _lang('Bank Account')]) }}
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								{{ Form::label('bank_holder', _lang('Bank Holder') , ['class' => 'col-form-label']) }}
+								{{ Form::text('bank_holder', null, ['class' => 'form-control', 'id'=>'bank_holder', 'placeholder' => _lang('Bank Holder')]) }}
 							</div>
 						</div>
 					</div>

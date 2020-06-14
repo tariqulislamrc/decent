@@ -80,4 +80,7 @@
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
 <script src="{{ asset('js/expense/expense.js') }}"></script>
+<script>
+    _componentSelect2Normal();
+</script>
 @endpush

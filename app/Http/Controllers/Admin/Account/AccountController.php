@@ -497,7 +497,7 @@ class AccountController extends Controller
                     ->addColumn('action', function ($row) {
                          if (auth()->user()->can("accounting.update")) {
                         $action = '<button type="button" class="btn btn-info 
-                        btn-sm" id="content_managment" data-url="' .route('admin.accounting.getLinkAccount',$row->payment_id) .'" data-container=".view_modal">' . _lang('Link Account') .'</button>';
+                        btn-sm" id="content_managment" data-url="' .route('admin.accounting.getLinkAccount',$row->id) .'" data-container=".view_modal">' . _lang('Link Account') .'</button>';
                         }
                         return $action;
                     })

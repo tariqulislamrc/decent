@@ -29,7 +29,7 @@
                     <label for="amount">
                         {{ _lang('Amount') }}
                     </label>
-                    <input type="text" class="form-control" name="amount" id="amount" value="{{ $transaction->due }}" required>
+                    <input type="text" class="form-control input_number" name="amount" id="amount" value="{{ $transaction->due }}" required>
                      <p id="message" style="color: red;"></p>
                 </div>
                 <div class="col-md-12">

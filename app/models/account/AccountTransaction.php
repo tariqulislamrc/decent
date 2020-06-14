@@ -98,9 +98,12 @@ class AccountTransaction extends Model
         $account_transaction_types = [
             'Sale' => 'Credit',
             'Purchase' => 'Debit',
+            'opening_balance' => 'Debit',
             'Expense' => 'Debit',
             'purchase_return' => 'Credit',
             'sale_return' => 'Debit',
+            'work_order'=>'Credit',
+            'eCommerce'=>'Credit',
         ];
 
         return $account_transaction_types[$tansaction_type];

@@ -19,18 +19,20 @@
 </p>
 </div>
 </div>
-<p class="h2 text-uppercase mt-5 text-center"> bill for : {{ _lang('Sales Return for') }} {{ $model->reference_no }} </p>
+<p class="h2 text-uppercase mt-5 text-center"> bill for : {{ _lang('Sales  for') }} {{ $model->reference_no }} </p>
 <div class="row mt-5 px-4">
 <table class="table table-bordered border-dark">
 <thead>
     <tr class="table-danger">
-        <th scope="col">{{ _lang('Sl') }}</th>
-        <th scope="col">{{ _lang('Name') }}</th>
+        <th scope="col" width="5%">{{ _lang('Sl') }}</th>
+        <th scope="col" width="15%">{{ _lang('Article') }}</th>
+        <th scope="col" width="30%">{{ _lang('Name') }}</th>
+        <th scope="col" width="15%">{{ _lang('Variation') }}</th>
         @can('view_sale.qty')
-        <th scope="col-2">{{ _lang('Qty') }}</th>
+        <th scope="col-2" width="15%">{{ _lang('Qty') }}</th>
         @endcan
         @can('view_sale.sale_price')
-        <th scope="col">{{ _lang('Total') }}</th>
+        <th scope="col" width="20%">{{ _lang('Total') }}</th>
         @endcan
     </tr>
 </thead>
@@ -38,7 +40,9 @@
     @foreach ($model->sell_lines as $element)
     <tr>
         <td>{{ $loop->index+1 }}</td>
-        <td>{{ $element->variation->name }}-{{ $element->product->name }}</td>
+        <td>{{ $element->product->articel }}</td>
+        <td>{{ $element->product->name }}</td>
+        <td>{{ $element->variation->name }}</td>
         @can('view_sale.qty')
         <td>{{ $element->quantity }}</td>
         @endcan
@@ -55,14 +59,14 @@
     @endif
     @can('view_sale.sale_price')
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Sub Total') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Sub Total') }}</td>
         <td> {{ $model->sub_total }} </td>
     </tr>
     @endcan
     @can('view_sale.sale_discount')
     @if ($element->discount)
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Discount Amount') }}</td>
         <td> {{ $model->discount_amount }} </td>
     </tr>
     @endif
@@ -71,7 +75,7 @@
     @can('view_sale.sale_tax')
     @if ($element->tax)
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Discount Amount') }}</td>
         <td> {{ $model->tax }} </td>
     </tr>
     @endif
@@ -80,7 +84,7 @@
     @can('view_sale.shipping_charge')
     @if ($element->shipping_charges)
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Shipping Charge') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Shipping Charge') }}</td>
         <td> {{ $model->shipping_charges }} </td>
     </tr>
     @endif
@@ -88,14 +92,14 @@
     
     @can('view_sale.sale_price')
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Net Total') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Net Total') }}</td>
         <td> {{ $model->net_total }} </td>
     </tr>
     @endcan
 
     @can('view_sale.sale_paid')
     <tr>
-        <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Paid') }}</td>
+        <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Paid') }}</td>
         <td> {{ $model->paid }} </td>
     </tr>
     @endcan
@@ -103,7 +107,7 @@
 </tbody>
 </table>
 </div>
-<p class="h2 text-capitalize mt-4 text-center"> In Words : ........................................................................................................</p>
+<p class="h2 text-capitalize mt-4 text-center"> In Words : {{ convert_number_to_words($model->net_total) }}</p>
 <br><br>
 <div class="row mt-5 mb-3 text-center">
 <div class="col-md-3">
