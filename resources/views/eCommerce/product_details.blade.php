@@ -108,16 +108,18 @@
                                     {{-- <div class="sharethis-inline-share-buttons"></div> --}}
                                 </li>
                                 {{-- <li><a href="#"><i class="fa fa-exchange"></i>COMPARE</a></li> --}}
-                                <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$model->id}}" class="heart" style="cursor:pointer;">
+                                <li>
+                                    <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$model->id}}" class="heart" style="cursor:pointer;">
                                     @php
                                         $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $model->id)->first();
                                     @endphp
                                     @if ($check)
-                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                        <i class="fa fa-heart" ></i>
                                     @else
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        <i id='icon' class="fa fa-heart-o" ></i>
                                     @endif
-                                    ADD TO WISHLIST</a></li>
+                                    ADD TO WISHLIST</a>
+                                </li>
                             </ul>
                             <div class="txt-wrap">
                                 {{$model->short_description}}
@@ -310,9 +312,7 @@
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-
-		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-
+        
 		$.ajax({
             type: 'GET',
             url: url,
@@ -324,6 +324,8 @@
             },
             success: function (data) {
                 if(data.status == 'success') {
+                    $("#icon").removeClass("fa-heart-o");
+                    $("#icon").addClass(" fa-heart");
                     toastr.success(data.message);
                 }
 				if(data.status == 'warning') {

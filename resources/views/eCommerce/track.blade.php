@@ -1,5 +1,27 @@
 @extends('eCommerce.layouts.app')     
+@push('css')
 
+<style>
+    * {box-sizing: border-box}
+        body {font-family: "Lato", sans-serif;}
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 80%;
+        margin: auto;
+        margin-top: 44px;
+        background: #CFFFE5;
+    }
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
+</style>
+
+@endpush
 @push('main')
 <main id="mt-main">
     <section class="mt-contact-banner mt-banner-22 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
