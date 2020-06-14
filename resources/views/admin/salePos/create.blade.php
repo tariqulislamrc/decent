@@ -2,7 +2,7 @@
 {{-- Header Section --}}
 @push('admin.css')
 <style>
-    
+
 .table th, .table td {
     padding: 0.2rem 0.5rem;
 }
@@ -18,6 +18,12 @@
 .table-bordered th, .table-bordered td {
     border: 1px solid #797979;
 }
+
+.product_box.bg-white.add_product.border-0.rounded {
+    box-shadow: 0px 0px 5px #00000042;
+}
+
+
 </style>
 @endpush
 @section('page.header')
@@ -63,7 +69,7 @@
                                  <span class="input-group-text"><i class="fa fa-male" aria-hidden="true"></i></span>
                              </div>
                             <select name="client_id" class="form-control customer_id" id="customer_id" data-placeholder="Select Customer" >
-                            </select>    
+                            </select>
                          </div>
                       </div>
                       <div class="col-md-6">
@@ -92,12 +98,12 @@
                                     </table>
                                 </div>
                                 </div>
-                            </div>  
+                            </div>
                       </div>
                       <div class="col-md-12">
                           @include('admin.salePos.partials.pos_details')
                       </div>
-                  </div>          
+                  </div>
                 </div>
 				<div class="col-md-5">
 					<div class="card">
@@ -229,7 +235,7 @@ $(document).delegate(".add_product", "click", function(e) {
         dateType: 'json',
         success: function(data) {
             item1(data.product, variation_id, quantity);
-           
+
         }
     });
 });
@@ -350,7 +356,7 @@ $("#item").on('click', '.btn_remove', function() {
         if (item.qty <= 0) {
             var string = '<li class="ui-state-disabled">' + item.name;
                 string += '-' + item.variation;
-        
+
             var selling_price = item.selling_price;
             string +=
                 ' (' +
@@ -390,8 +396,8 @@ $("#item").on('click', '.btn_remove', function() {
                 };
             },
         },
-        templateResult: function (data) { 
-            return data.text + "<br>" + 'mobile' + ": " + data.mobile; 
+        templateResult: function (data) {
+            return data.text + "<br>" + 'mobile' + ": " + data.mobile;
         },
         minimumInputLength: 1,
         language: {
@@ -468,7 +474,7 @@ $("#item").on('click', '.btn_remove', function() {
         var change_amount =calculate_balance_due(net_total);
         $('.change_return_span').text(change_amount);
         $('#due').val(change_amount);
-         
+
     }
 
 
@@ -506,9 +512,9 @@ function pos_order_tax(price_total, discount) {
 
 function shipping()
 {
-  var shipping_charges =parseFloat($('#shipping_charges').val()); 
+  var shipping_charges =parseFloat($('#shipping_charges').val());
   return isNaN(shipping_charges) ? 0 : shipping_charges;;
-   
+
 }
 
 function __calculate_amount(calculation_type, calculation_amount, amount) {
@@ -538,7 +544,7 @@ function calculate_balance_due(total) {
 }
 
 $(document).on('click','#payment_modal',function(){
-    
+
     var qty =$('.total_item').val();
     if (qty =="" || qty==0) {
      swal("Oops", "Something Wrong", "error");
@@ -557,7 +563,7 @@ $(document).on('change','.method',function(){
     }
     else
     {
-      $('.reference_no').show(400);  
+      $('.reference_no').show(400);
     }
 });
 
