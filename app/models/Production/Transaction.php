@@ -3,6 +3,7 @@
 namespace App\models\Production;
 
 use App\models\employee\Employee;
+use App\models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -64,5 +65,6 @@ class Transaction extends Model
    public function returntransaction() {
         return $this->hasMany('App\models\inventory\ReturnTransaction');
     }
+
 
 }

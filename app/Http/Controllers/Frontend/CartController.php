@@ -243,12 +243,12 @@ class CartController extends Controller
             $transaction->total = $total;
             $transaction->save();
 
-            $this->transactionUtil->decreaseProductQuantity(
-                $request->product_id[$i],
-                $request->variation_id[$i],
-                get_option('default_brand'),
-                $request->quantity[$i]
-            );
+            // $this->transactionUtil->decreaseProductQuantity(
+            //     $request->product_id[$i],
+            //     $request->variation_id[$i],
+            //     get_option('default_brand'),
+            //     $request->quantity[$i]
+            // );
         }
 
         generate_id('purchase', true);
