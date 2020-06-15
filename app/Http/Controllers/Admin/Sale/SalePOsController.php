@@ -71,7 +71,7 @@ class SalePOsController extends Controller
                   return formatDate($model->date).$return;
                  })
 
-                   ->editColumn('reference_no', function ($model) {
+                ->editColumn('reference_no', function ($model) {
                   return '<a title="view Details" data-url="'.route('admin.sale.pos.view',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f">'.$model->reference_no.'</a>';
                  })
                  ->editColumn('client', function ($model) {

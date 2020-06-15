@@ -376,6 +376,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-purchase/details/{id}', 'Production\PurchaseController@details')->name('production-purchase.details');
 			Route::get('production-purchase/payment/{id}', 'Production\PurchaseController@payment')->name('production-purchase.payment');
 			Route::patch('production-purchase/add_payment/{id}', 'Production\PurchaseController@add_payment')->name('production-purchase.add_payment');
+			Route::get('production-purchase/view/{id}','Production\PurchaseController@view')->name('purchase_view');
 			Route::resource('production-purchase', 'Production\PurchaseController');
 			// Client:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
@@ -623,6 +624,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('request/get_prev_request','StoreRequestController@get_prev_request')->name('request.get_reques_prev');
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
 		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
+		Route::get('store_request_print/{id}','StoreRequestController@store_request_print')->name('store_request_print');
+		Route::match(array('GET','PUT'),'approve-all-request/{id}', 'StoreRequestController@approve_all_request')->name('approve_all_request');
 		Route::resource('request', 'StoreRequestController');
 		//depertment report
 		Route::get('report/get-product','DepertmentReportController@get_variation_product')->name('report.get_variation_product');

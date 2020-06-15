@@ -802,4 +802,20 @@ public function get_product_status($id)
     $model=Product::find($id);
     return view('admin.production.product.include.get_product_status',compact('model'));
 }
+
+public function post_product_status(Request $request)
+{
+    $model =Product::find($request->product_id);
+    for ($i=0; $i <count($request->variation_id) ; $i++) { 
+        $variation=Variation::find($request->variation_id[$i]);
+        $variation->default_purchase_price =$request->default_purchase_price[$i];
+        $variation->default_sell_price =$request->default_sell_price[$i];
+        $variation->save();
+    }
+    $model->status=$request->status;
+    $model->save();
+
+    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
+
+}
 }

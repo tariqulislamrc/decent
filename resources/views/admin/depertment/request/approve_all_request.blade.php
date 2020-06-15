@@ -10,15 +10,12 @@
 @stop
 {{-- Main Section --}}
 @section('content')
-<a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
 <!-- Basic initialization -->
-<form action="{{route('admin.request.update',$model->id)}}" method="post" class="ajax_form"
+<form action="{{route('admin.approve_all_request',$models->id)}}" method="post" class="ajax_form"
     enctype="multipart/form-data">
     @method('PUT')
     @csrf
-    <input type="hidden" name="depertment_id" value="{{ $model->depertment_id }}">
-    <input type="hidden" name="raw_material_id" value="{{ $model->raw_material_id }}">
-    <input type="hidden" name="work_order_id" value="{{ $model->work_order_id }}">
+    
     <div class="card">
         <div class="card-header">
             <h6>{{_lang('Store Request ')}}</h6>
@@ -28,15 +25,15 @@
                 <thead>
                     <tr>
                         <th>{{ _lang('Depertment') }}</th>
-                        <th>{{ $model->depertment->name }}</th>
+                        <th>{{ $models->depertment->name }}</th>
                     </tr>
                     <tr>
                         <th>{{ _lang('Send By') }}</th>
-                        <th>{{ $model->send_by->email }}</th>
+                        <th>{{ $models->send_by->email }}</th>
                     </tr>
                     <tr>
                         <th>{{ _lang('Send Date') }}</th>
-                        <th>{{ formatDate($model->request_date) }}</th>
+                        <th>{{ formatDate($models->request_date) }}</th>
                     </tr>
                 </thead>
             </table>
@@ -52,9 +49,16 @@
                         </tr>
                     </thead>
                     <tbody class="bg-gray">
+                        @foreach ($models->store_request as $model)
+                        @php
+                        $approve_item =$model->approve_store_item->sum('qty');
+                        @endphp
                         <tr>
                             <td>
-                                <input type="hidden" name="raw_material_id" value="{{ $model->raw_material_id}}" class="pid">
+                                <input type="hidden" name="raw_material_id[]" value="{{ $model->raw_material_id}}" class="raw_material_id">
+                                <input type="hidden" name="store_request_id[]" value="{{ $model->id}}" class="store_request_id">
+                                <input type="hidden" name="depertment_id[]" value="{{ $model->depertment_id }}">
+                                <input type="hidden" name="work_order_id[]" value="{{ $model->work_order_id }}">
                                 {{ $model->material->name }}
                             </td>
                             <td>
@@ -64,27 +68,28 @@
                                 {{ $approve_item }}
                             </td>
                             <td>
-                                <input type="text" class="form-control qty " id="{{$model->id}}" name="qty"
+                                <input type="text" class="form-control qty " id="{{$model->id}}" name="qty[]"
                                 value="{{ $model->qty-$approve_item }}" required>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                     <tr>
                         <td colspan="2">
-                             <label for="note">{{_lang('Status')}} </label>
-                                <select name="status" class="form-control" style="width: 100%">
-                                    <option value="Approve">Approve</option>
-                                    <option value="Partial">Partial</option>
-                                </select>
+                            <label for="note">{{_lang('Status')}} </label>
+                            <select name="status" class="form-control" style="width: 100%">
+                                <option value="Approve">Approve</option>
+                                <option value="Partial">Partial</option>
+                            </select>
                         </td>
                         <td colspan="2">
-                        <label for="note">{{_lang('Note')}}
-                        </label>
-                        <textarea name="note" class="form-control" id="" placeholder="Note"></textarea>
+                            <label for="note">{{_lang('Note')}}
+                            </label>
+                            <textarea name="note" class="form-control" id="" placeholder="Note"></textarea>
                         </td>
                     </tr>
-                </tfoot>
+                    </tfoot>
                 </table>
             </div>
         </div>

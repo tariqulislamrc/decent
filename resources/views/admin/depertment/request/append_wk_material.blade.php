@@ -18,10 +18,11 @@ $exit_prev =App\models\depertment\StoreRequest::where('work_order_id',$item->wo_
 	</td>
 	<td>
 		<div class="input-group mb-3">
-			<input type="text" class="form-control qty qty_{{$item->id}}" id="{{$item->id}}" name="qty[]" value="{{ $item->qty }}" required>
+			<input type="text" class="form-control input_number qty qty_{{$item->id}}" id="{{$item->id}}" name="qty[]" value="{{ $item->qty }}" required data-parsley-errors-container=".qty_error">
 			<div class="input-group-append">
 				<span class="input-group-text">{{ $item->raw_material->unit->unit }}</span>
 			</div>
+			<span class="qty_error"></span>
 		</div>
 		
 	</td>

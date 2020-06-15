@@ -98,6 +98,9 @@ var DatatableSelect = function () {
                 }, {
                     data: 'description',
                     name: 'description'
+                },{
+                    data: 'stock',
+                    name: 'stock'
                 }, {
                     data: 'action',
                     name: 'action'

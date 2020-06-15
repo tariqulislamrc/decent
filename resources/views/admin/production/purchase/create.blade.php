@@ -1,10 +1,17 @@
 @extends('layouts.app', ['title' => _lang('Add Purchase'), 'modal' => 'lg'])
+@push('admin.css')
+<style>
+.table th, .table td {
+padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
         <h1 data-placement="bottom" title="Product for Production."><i class="fa fa-universal-access mr-4"></i>
-            {{_lang('Add Purchase')}}</h1>
+        {{_lang('Add Purchase')}}</h1>
     </div>
     <ul class="app-breadcrumb breadcrumb">
         {{ Breadcrumbs::render('purchase-create') }}
@@ -33,22 +40,19 @@
                         </select>
                     </div>
                 </div>
-
                 {{-- Reference No: --}}
                 <div class="col-md-3 form-group">
                     <label for="reference_no">{{_lang('Reference No:')}}
                     </label>
                     <input type="text" class="form-control" placeholder="Reference No" name="reference_no"
-                        id="reference_no" value="{{ $ref_no }}" readonly>
+                    id="reference_no" value="{{ $ref_no }}" readonly>
                 </div>
-
                 {{-- Invoice No: --}}
                 <div class="col-md-3 form-group">
                     <label for="invoice_no">{{_lang('Invoice No:')}}
                     </label>
                     <input type="text" class="form-control" placeholder="Invoice No" name="invoice_no" id="invoice_no">
                 </div>
-
                 {{-- Purchase Date: --}}
                 <div class="col-md-3 form-group" id="child_unit_row">
                     <label for="purchase_date">{{_lang('Purchase Date')}}</label>
@@ -59,7 +63,6 @@
                         <input type="text" class="form-control date" name="purchase_date" id="purchase_date" value="{{ date('Y-m-d') }}">
                     </div>
                 </div>
-
                 {{-- Purchase Status: --}}
                 <div class="col-md-3 form-group">
                     <label for="purchase_status">{{_lang('Purchase Status:')}}
@@ -71,7 +74,6 @@
                         <option value="Ordered">{{_lang('Ordered')}}</option>
                     </select>
                 </div>
-
                 @if ($type == 'work_order')
                 {{-- Work Order --}}
                 <div class="col-md-3 form-group" id="work_order">
@@ -84,7 +86,6 @@
                     </div>
                 </div>
                 @endif
-
                 @if ($type == 'row_material')
                 {{-- Product --}}
                 <div class="col-md-3 form-group" id="product_row">
@@ -97,15 +98,11 @@
                     </div>
                 </div>
                 @endif
-
-
             </div>
         </div>
     </div>
-
     <div class="card mt-3">
         <div class="card-body">
-
             @if ($type == 'row_material')
             {{-- Product Raw Material --}}
             <div class="row pb-3">
@@ -118,31 +115,27 @@
                     </div>
                 </div>
             </div>
-        @endif
-
+            @endif
             <div class="table-responsive">
                 <table class="table table-condensed table-bordered table-th-green text-center table-striped"
                     id="purchase_entry_table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Purchase Quantity</th>
-                            <th>Unit</th>
-                            <th>Price</th>
-                            <th>Line Total</th>
-                            <th>Waste</th>
-                            <th>Uses</th>
-                            <th><i class="fa fa-trash" aria-hidden="true"></i></th>
+                            <th width="25%">Product/Material</th>
+                            <th width="15%">Purchase Quantity</th>
+                            <th width="10%">Unit</th>
+                            <th width="10%">Price</th>
+                            <th width="15%">Line Total</th>
+                            <th width="10%">Waste</th>
+                            <th width="10%">Uses</th>
+                            <th width="5%"><i class="fa fa-trash" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
                     <tbody id="data">
-
                     </tbody>
                 </table>
             </div>
-
             <hr>
-
             <div class="pull-right col-md-5">
                 <table class="pull-right col-md-12">
                     <tbody>
@@ -158,7 +151,6 @@
             </div>
         </div>
     </div>
-
     <div class="card mt-3">
         <div class="card-body">
             <table class="table">
@@ -178,7 +170,7 @@
                             <div class="form-group">
                                 <label for="discount_amount">Discount Amount:</label>
                                 <input class="form-control input_number" required="" name="discount_amount" type="text"
-                                    value="0" id="discount_amount">
+                                value="0" id="discount_amount">
                             </div>
                         </td>
                         <td>&nbsp;</td>
@@ -188,52 +180,46 @@
                             <input name="total_discount_amount" type="hidden" id="total_discount_amount">
                         </td>
                     </tr>
-
                     <tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td class="text-right">
-						<input id="grand_total_hidden" name="final_total" type="hidden" value="0">
-						<b>Purchase Total: </b><span id="grand_total" class="display_currency" data-currency_symbol="true">৳ 0.00</span>
-					</td>
-                </tr>
-                
-
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td class="text-right">
+                            <input id="grand_total_hidden" name="final_total" type="hidden" value="0">
+                            <b>Purchase Total: </b><span id="grand_total" class="display_currency" data-currency_symbol="true">৳ 0.00</span>
+                        </td>
+                    </tr>
+                    
                     <tr>
                         <td colspan="">
                             <div class="form-group">
                                 <label for="stuff_notes">Stuff Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="stuff_notes" cols="50"
-                                    id="stuff_notes"></textarea>
+                                id="stuff_notes"></textarea>
                             </div>
                         </td>
                         <td colspan="">
                             <div class="form-group">
                                 <label for="sell_notes">Sell Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="sell_notes" cols="50"
-                                    id="sell_notes"></textarea>
+                                id="sell_notes"></textarea>
                             </div>
                         </td>
                         <td colspan="2">
                             <div class="form-group">
                                 <label for="transaction_notes">Transaction Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="transaction_notes" cols="50"
-                                    id="transaction_notes"></textarea>
+                                id="transaction_notes"></textarea>
                             </div>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
     </div>
-
-
     <div class="card mt-3">
         <div class="card-body">
             <div class="row">
-
                 <div class="col-md-4">
                     <label for="amount">Amount:</label>
                     <div class="input-group  mb-3">
@@ -241,10 +227,9 @@
                             <span class="input-group-text"><i class="fa fa-money"></i></span>
                         </div>
                         <input class="form-control payment-amount input_number" id="amount" placeholder="Amount"
-                            name="payment" type="text" value="0.00">
+                        name="payment" type="text" value="0.00">
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="method">Payment Method:</label>
@@ -264,19 +249,18 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="transaction">Transaction No.</label>
                         <input class="form-control" placeholder="Transaction No." id="transaction"
-                            name="transaction_no" type="text" value="">
+                        name="transaction_no" type="text" value="">
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="note_0">Payment note:</label>
                         <textarea class="form-control" rows="3" id="note_0" name="payment_note"
-                            cols="50"></textarea>
+                        cols="50"></textarea>
                     </div>
                 </div>
             </div>
@@ -285,31 +269,25 @@
                 <div class="col-sm-12">
                     <input id="payment_due_hidden" name="payment_due_hidden" type="hidden" value="0">
                     <div class="pull-right"><strong>Payment due:</strong> <span id="payment_due">৳ 0.00</span>
-                    </div>
                 </div>
             </div>
-
         </div>
-
-                   <div class="row mt-2">
-                        <div class="col-md-6 mx-auto text-center">
-                            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('New Purchase') }}</button>
-                            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
     </div>
-
-
-
+    <div class="row mt-2">
+        <div class="col-md-6 mx-auto text-center">
+            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('New Purchase') }}</button>
+            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</div>
 </form>
 <!-- /basic initialization -->
 @stop
 {{-- Script Section --}}
 @push('scripts')
 <script>
-    $('.select').select2();
-    // _formValidation();
-
+$('.select').select2();
+// _formValidation();
 </script>
 <script src="{{ asset('js/production/purchase.js') }}"></script>
 <script src="{{ asset('js/production/add_purchase.js') }}"></script>

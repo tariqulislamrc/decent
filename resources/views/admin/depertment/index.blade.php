@@ -16,7 +16,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('production_department.create')
-                        <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.department.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.department.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('Add New Department')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">

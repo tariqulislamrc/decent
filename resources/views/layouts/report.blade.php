@@ -69,7 +69,7 @@
     <section class="header-top text-center">
         <p class="h2 text-center text-color mb-3">Decent Footwear LTD </p>
         <p class="text-center mb-0"> 67, Nayapaltan City Heart 12/6, Dhaka-1000</p>
-        <p> Report Date :11-03-2020</p>
+        <p> Print Date :11-03-2020</p>
         <p class="text-center"> <span class="border rounded-pill px-4 py-2 border-dark font-weight-bold"> {{ isset($report_title)?$report_title:'' }} </span> </p>
     </section>
    @yield('content')
