@@ -60,11 +60,14 @@
         var sub_total = total_function();
         var discount_type = $('#discount_type').val();
         $('#show_subtotal').text(sub_total.toFixed(2));
+        $('#total_subtotal').val(sub_total);
+
         if(discount_type == 'fixed') {
             discount = sub_total - discount_amount;
         } else {
             discount = (sub_total * discount_amount) / 100;
         }
+        $('#show_discount_amount').text(discount.toFixed(2));
 
 
         if(sub_total == '') {

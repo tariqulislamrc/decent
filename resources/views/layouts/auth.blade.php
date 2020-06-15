@@ -19,9 +19,9 @@
       <div class="cover"></div>
     </section>
     <section class="login-content">
-      <div class="logo">
+      <div class="logo text-center">
         @if(get_option('logo'))
-          <img class="ml-4" src="{{asset('storage/logo')}}/{{get_option('logo')}}" alt="">
+          <img class="ml-4 " style="width: 100px;" src="{{asset('storage/logo')}}/{{get_option('logo')}}" alt="">
         @else 
           <img src="{{asset('logo.png')}}" alt="Company Logo">
         @endif

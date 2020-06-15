@@ -569,6 +569,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('orders/sort-order-date-wise', 'OrderController@sort_order_date_wise')->name('order.sort_order_date_wise');
 		Route::get('orders/show/{id}', 'OrderController@show')->name('order.show');
 		Route::get('order/update/{id}', 'OrderController@show_update_page')->name('update_invoice');
+		Route::patch('order/edit/{id}', 'OrderController@edit_the_transaction')->name('update_report');
 
 		// page-banner
 		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');

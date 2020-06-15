@@ -116,120 +116,218 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <div class="tile-body" id="data">
-                    <div class="row">
-                        {{-- Order Detailse --}}
-                        <div class="col-md-6 table-responsive">
-                            <h6 class="text-center">{{_lang('Order Details')}}</h6>
-                            <table class="table table-bordered table-striped">
-                                <tr>
-                                    <th width="20%">{{_lang('eCommerce Orderer Name')}}</th>
-                                    <td width="80%"><input type="text" name="client_name" class="text-center form-control" value="{{get_client_name($model->client_id)}}"></td>
-                                </tr>
-                                <tr>
-                                    <th width="50%">{{_lang('Phone')}}</th>
-                                    <td><input type="text" name="client_phone" class="text-center form-control" value="{{get_client_phone($model->client_id)}}"></td>
-                                </tr>
-                                <tr>
-                                    <th width="50%">{{_lang('Address')}}</th>
-                                    <td>
-                                        <div class="address_show">
-                                            <textarea name="client_address" class="form-control" cols="30" rows="2">{{get_client_address($model->client_id)}}</textarea>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th width="50%">{{_lang('City')}}</th>
-                                    <td>
-                                        <div><input required type="text" name="client_city" class="form-control" value="{{get_client_city($model->client_id)}}"> </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th width="50%">{{_lang('Note')}}</th>
-                                    <td>
-                                        <div><textarea name="note" id="note" class="form-control" cols="30" rows="2">{{$model->sell_note}}</textarea></div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        {{-- Product List --}}
-                        <div class="col-md-6">
-                                <label for="name">{{_lang('Select Product')}} <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" id="search_product" class="form-control" placeholder="Type Product Name">
-                               {{-- <select required data-placeholder="Select One" name="product_id" id="product_id"
-                                        class="form-control select">
-                                    <option value="" selected>Select One</option>
-                                </select>--}}
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-12 my-2 table-responsive">
-                        <h4 class="text-center">Order Invoice</h4>
-                        <table class="table table-bordered table-striped table-hover update_invoice_table">
-                            <thead>
-                                <tr>
-                                    <th><i class="fa fa-trash text-danger text-center" aria-hidden="true"></i></th>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $total = 0;
-                                @endphp
-                                @foreach ($sell_products as $item)
-                                    @php
-                                        $total += $item->total;
-                                    @endphp
-                                    <tr class="table_row_{{$item->id}}">
-                                        <td><i data-id="{{ $item->id }}" style="cursor: pointer;" class="fa fa-trash text-danger delete_row text-center" aria-hidden="true"></i></td>
+                <form action="{{ route('admin.eCommerce.update_report', $model->id) }}" id="content_form" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <div class="tile-body" id="data">
+                        <div class="row">
+                            {{-- Order Detailse --}}
+                            <div class="col-md-12 table-responsive">
+                                <h6 class="text-center">{{_lang('Order Details')}} - {{ $model->reference_no }} </h6>
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="text-center" width="20%">{{_lang('Status')}}</th>
+                                        <td width="80%" class="text-center"> {{ toWord($model->ecommerce_status) }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" width="20%">{{_lang('eCommerce Orderer Name')}}</th>
+                                        <td width="80%"><input readonly type="text" name="client_name" class="text-center form-control" value="{{get_client_name($model->client_id)}}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" width="50%">{{_lang('Phone')}}</th>
+                                        <td><input type="text" readonly name="client_phone" class="text-center form-control" value="{{get_client_phone($model->client_id)}}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" width="50%">{{_lang('Address')}}</th>
                                         <td>
-                                            {{get_product_name($item->product_id)}} - {{get_product_color($item->variation_id)}} - {{get_product_size($item->variation_id)}}
-                                            <input type="hidden" name="variation_id[]" value="{{get_product_color($item->variation_id)}}">
-                                        </td>
-                                        <td><input autocomplete="off" type="text" style="width: 50px;" name="quantity[]" class="text-center qty" value="{{round($item->quantity)}}"></td>
-                                        <td>
-                                            {{round($item->unit_price)}} 
-                                            <input type="hidden" name="price[]" class="price" value="{{round($item->unit_price)}}">
-                                        </td>
-                                        <td>
-                                            <span class="sub_total_text">{{round($item->total)}}</span>
-                                            <input type="hidden" name="sub_total[]"  class="sub_total" value="{{round($item->total)}}">
+                                            <div class="address_show">
+                                                <textarea readonly name="client_address" class="form-control text-center" cols="30" rows="2">{{get_client_address($model->client_id)}}</textarea>
+                                            </div>
                                         </td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="text-right">Subtotal</td>
-                                    <td>
-                                        <span id="show_subtotal">{{ number_format($total, 2) }}</span>                                        
-                                        <input type="hidden" id="total_subtotal" name="subtotal" value="{{ $total }}">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right">Coupon Discount ({{ $coupon_type == 'fixed' ? '+' : '%' }}) </td>
-                                    <td>
-                                        <input type="text" id="total_discount" name="total_discount" value="{{ number_format($coupon_amount, 2) }}">
-                                        {{ $coupon_type == 'fixed' ? '+' : '%' }}
-                                        <input type="hidden" id="discount_type" value="{{ $coupon_type }}">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right">Total</td>
-                                    <td>
-                                        <span class="total_payable_amount">{{ $total }}</span> 
-                                        <input type="hidden" id="total_payable_amount" name="net_total" value="{{ $total }}">
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                    <tr>
+                                        <th class="text-center" width="50%">{{_lang('City')}}</th>
+                                        <td>
+                                            <div><input readonly type="text" name="client_city" class="form-control text-center" value="{{get_client_city($model->client_id)}}"> </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" width="50%">{{_lang('Note')}}</th>
+                                        <td>
+                                            <div><textarea name="note" id="note" class="form-control" cols="30" rows="2">{{$model->sell_note}}</textarea></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" width="40%">Ship To Another Address</th>
+                                        <td class="text-center" width="60%">
+                                            <input type="hidden" name="shipping_status" value="{{ $model->shipping_status }}">
+                                            @if ($model->shipping_status == 'On')
+                                                <span class="badge badge-danger">Yes</span>
+                                            @else 
+                                                <span class="badge badge-success">No</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @if ($model->shipping_status == 'On')
+                                        <tr>
+                                            <th class="text-center">Shiping Client Full Name</th>
+                                            <td class="text-center"><input type="text" name="ship_another_full_name" class="text-center form-control" placeholder="Enter Shiping Client Full Name" required value="{{ $model->full_name }}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Shiping Client Email</th>
+                                            <td class="text-center"><input type="text" name="ship_another_email" class="text-center form-control" placeholder="Enter Shiping Client Email" required value="{{ $model->email }}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Shiping Client Phone</th>
+                                            <td class="text-center"><input type="text" name="ship_another_phone" class="text-center form-control" placeholder="Enter Shiping Client Phone Number" required value="{{ $model->phone }}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Shiping Client Address</th>
+                                            <td class="text-center"><input type="text" name="ship_another_address" class="text-center form-control" placeholder="Enter Shiping Client Address" required value="{{ $model->address }}"></td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-center">Shiping Client City</th>
+                                            <td class="text-center"><input type="text" name="ship_another_city" class="text-center form-control" placeholder="Enter Shiping Client City Name" required value="{{ $model->city }}"></td>
+                                        </tr>
+                                    @endif
+                                </table>
+                            </div>
+    
+                            <div class="col-md-12 my-3">
+                                <h4 class="text-center">Order Status Note</h4>
+                                   <div class="row">
+                                        @php
+                                            $query = App\models\eCommerce\OrderStatus::where('transaction_id', $model->id)->get();
+                                        @endphp
+                                        @if (count($query))
+                                            @foreach ($query as $element)
+                                               
+                                                <div class="card col-md-4 m-2">
+                                                    <div class="card-header">{{ toWord($element->status) }}</div>
+                                                    <div class="card-body"><b>Note : </b>{{ $element->note }} <br> <b>Updated User: </b> {{ $element->user ? $element->user->name : 'No User Found'}} </div>
+                                                </div>
+                                            @endforeach
+                                        @else 
+                                            <p class="text-center text-danger">No Order Status Note Found for this Transaction</p>
+                                        @endif
+                                   </div>
+                            </div>
+    
+                            {{-- Product List --}}
+                            <div class="col-md-12 my-3">
+                                <label for="name">{{_lang('Select Product')}}</label>
+                                <input type="text" id="search_product" class="form-control" placeholder="Type Product Name">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12 my-2 table-responsive">
+                            <h4 class="text-center">Order Invoice</h4>
+                            <table class="table table-bordered table-striped table-hover update_invoice_table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fa fa-trash text-danger text-center" aria-hidden="true"></i></th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $total = 0;
+                                    @endphp
+                                    @foreach ($sell_products as $item)
+                                        @php
+                                            $total += $item->total;
+                                        @endphp
+                                        <tr class="table_row_{{$item->id}}">
+                                            <td><i data-id="{{ $item->id }}" style="cursor: pointer;" class="fa fa-trash text-danger delete_row text-center" aria-hidden="true"></i></td>
+                                            <td>
+                                                {{get_product_name($item->product_id)}} - {{get_product_color($item->variation_id)}} - {{get_product_size($item->variation_id)}}
+                                                <input type="hidden" name="variation_id[]" value="{{$item->variation_id}}">
+                                                <input type="hidden" name="product_id[]" value="{{$item->product_id}}">
+                                            </td>
+                                            <td><input autocomplete="off" type="text" name="quantity[]" class="form-control qty" value="{{round($item->quantity)}}"></td>
+                                            <td>
+                                                <input type="text" name="price[]" class="form-control price" value="{{round($item->unit_price)}}">
+                                            </td>
+                                            <td>
+                                                <span class="sub_total_text">{{round($item->total)}}</span>
+                                                <input type="hidden" name="sub_total[]"  class="sub_total" value="{{round($item->total)}}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-right">Subtotal</td>
+                                        <td>
+                                            <span id="show_subtotal">{{ number_format($total, 2) }}</span>                                        
+                                            <input type="hidden" id="total_subtotal" name="subtotal" value="{{ $total }}">
+                                        </td>
+                                    </tr>
+                                    <td colspan="4" class="text-right">Coupon Discount <b>{{ number_format($coupon_amount, 2) }}{{ $coupon_type == 'fixed' ? '+' : '%' }}</b> </td>
+                                        <td>
+                                            @php
+                                                if ($coupon_type == 'fixed') {
+                                                    $discount = $coupon_amount;
+                                                } elseif($coupon_type == 'percentage') {
+                                                    $discount = ($total * $coupon_amount) / 100 ;
+                                                } else {
+                                                    $discount = 0;
+                                                }
+                                            @endphp
+                                            <span id="show_discount_amount">{{ number_format($discount, 2) }}</span>
+                                            <input type="hidden" id="discount_type" value="{{ $coupon_type }}">
+                                            <input type="hidden" name="discount" id="discount" value="0">
+                                            <input type="hidden" id="total_discount" name="total_discount" value="{{ number_format($coupon_amount, 2) }}">
+                                        </td>
+                                    <tr>
+                                        <td colspan="4" class="text-right">Total</td>
+                                        <td>
+                                            <span class="total_payable_amount">{{ number_format($total - $discount, 2) }}</span> 
+                                            <input type="hidden" id="total_payable_amount" name="net_total" value="{{ $total }}">
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+    
+                        {{-- Order Note --}}
+                        <div class="col-md-12 form-group">
+                            <label for="order_note">Order Note</label>
+                            <textarea required name="order_note" id="order_note" class="form-control" cols="30" rows="2" placeholder="Enter Order Note"></textarea>
+                        </div>
+
+                        {{-- Complain Note --}}
+                        <div class="col-md-12 form-group">
+                            <label for="complain_note">Complain Note</label>
+                            <textarea name="complain_note" id="complain_note" class="form-control" cols="30" rows="2" placeholder="Enter Complain Note"></textarea>
+                        </div>
+    
+                        {{-- Change Order Status --}}
+                        <div class="col-md-12 form-group">
+                            <label for="change_status">{{_lang('Change Order Status')}} </label>
+                            <select data-url="{{route('admin.eCommerce.order.change_status')}}" name="status" id="status" class="form-control select" required data-placeholder="Select Status">
+                                <option value="">Select Status</option>
+                                <option value="pending">{{_lang('Pending')}}</option>
+                                <option value="confirm">{{_lang('Confirm')}}</option>
+                                <option value="progressing">{{_lang('In Progressing')}}</option>
+                                <option value="shipment">{{_lang('In Shipment')}}</option>
+                                <option value="success">{{_lang('Success')}}</option>
+                                <option value="cancel">{{_lang('Cancel')}}</option>
+                                <option value="cancel">{{_lang('On Hold')}}</option>
+                                <option value="cancel">{{_lang('Payment Done')}}</option>
+                                <option value="cancel">{{_lang('Return')}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mx-auto">
+                            <button type="submit" class="btn btn-success btn-block" id="submit">Update Invoice</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -239,6 +337,8 @@
 {{-- Script Section --}}
 @push('scripts')
 <script>
+    _formValidation();
+    $('.select').select2({width:'100%'});
     // delete the row
     $(document).on('click', '.delete_row', function() {
         var row_id = $(this).data('id');
@@ -328,11 +428,16 @@
                     var sub_total = total_function();
                     var discount_type = $('#discount_type').val();
                     $('#show_subtotal').text(sub_total.toFixed(2));
+                    $('#total_subtotal').val(sub_total);
                     if(discount_type == 'fixed') {
                         discount = sub_total - discount_amount;
                     } else {
                         discount = (sub_total * discount_amount) / 100;
                     }
+
+                    $('#show_discount_amount').text(discount.toFixed(2));
+
+                    $('#discount').val(discount);
 
 
                     if(sub_total == '') {
@@ -389,11 +494,15 @@
         var sub_total = total_function();
         var discount_type = $('#discount_type').val();
         $('#show_subtotal').text(sub_total.toFixed(2));
+        $('#total_subtotal').val(sub_total);
+
         if(discount_type == 'fixed') {
             discount = sub_total - discount_amount;
         } else {
             discount = (sub_total * discount_amount) / 100;
         }
+        $('#discount').val(discount);
+        $('#show_discount_amount').text(discount.toFixed(2));
 
 
         if(sub_total == '') {

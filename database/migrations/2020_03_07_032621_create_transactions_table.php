@@ -41,7 +41,7 @@ class CreateTransactionsTable extends Migration
             $table->longText('transaction_note')->nullable();
             $table->integer('return_parent_id')->nullable();
             $table->integer('return')->default(0);
-            $table->enum('ecommerce_status', ['pending', 'confirm', 'progressing', 'shipment', 'success', 'cancel'])->nullable();	
+            $table->enum('ecommerce_status', ['pending', 'confirm', 'progressing', 'shipment', 'success', 'cancel', 'on_hold', 'payment_done', 'return'])->nullable();	
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
             $table->integer('created_by')->nullable();
