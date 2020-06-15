@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Edit Purchase'), 'modal' => 'lg'])
+@push('admin.css')
+<style>
+.table th, .table td {
+  padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
@@ -28,8 +35,8 @@
                     <label for="employee_id">{{_lang('Purchase By')}}
                     </label>
                     <div class="input-group">
-                        <select required data-placeholder="Select Purchase By" name="purchase_by" class="form-control">
-                            <option value="{{$model->purchase_by}}" selected>{{$model->employee->name}}</option>
+                        <select required data-placeholder="Select Purchase By" name="purchase_by" class="form-control" id="employee_id">
+                            <option value="{{$model->purchase_by}}" selected>{{$model->employee?$model->employee->name:''}}</option>
                         </select>
                     </div>
                 </div>
@@ -131,14 +138,14 @@
                     id="purchase_entry_table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Purchase Quantity</th>
-                            <th>Unit</th>
-                            <th>Price</th>
-                            <th>Line Total</th>
-                            <th>Waste</th>
-                            <th>Uses</th>
-                            <th><i class="fa fa-trash" aria-hidden="true"></i></th>
+                            <th width="25%">Product/Material</th>
+                            <th width="15%">Purchase Quantity</th>
+                            <th width="10%">Unit</th>
+                            <th width="10%">Price</th>
+                            <th width="15%">Line Total</th>
+                            <th width="10%">Waste</th>
+                            <th width="10%">Uses</th>
+                            <th width="5%"><i class="fa fa-trash" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
                     <tbody id="data">
@@ -147,10 +154,10 @@
                             <td>
                                 <input type="hidden" name="raw_material[]" value="{{ $item->raw_material_id }}" class="pid">
                                 <input type="hidden" name="product_id[]" value="{{ $item->product?$item->product->id:'' }}">
-                                 {{ $item->product?$item->product->name:'' }}({{  $item->product?$item->product->articel:'' }})
+                                 {{ $item->product?$item->product->name:'' }}({{  $item->material?$item->material->name:'' }})
                             </td>
                             <td>
-                                <input type="text" class="form-control qty" id="qty" name="qty[]"
+                                <input type="text" class="form-control input_number qty" id="qty" name="qty[]"
                                     value="{{ $item->qty }}">
                                     <input type="hidden" class="form-control qty" name="old_qty[]"
                                     value="{{ $item->qty }}">
@@ -163,7 +170,7 @@
                                 @endif
                             </td>
                             <td>
-                                <input type="text" class="form-control unit_price" id="unit_price" name="unit_price[]"
+                                <input type="text" class="form-control input_number unit_price" id="unit_price" name="unit_price[]"
                                     value="{{ $item->price }}">
                             </td>
                             <td>
@@ -171,7 +178,7 @@
                                     value="{{ $item->line_total }}">
                             </td>
                             <td>
-                                <input type="number" class="form-control waste" maxlength="2" id="waste" name="waste[]"
+                                <input type="text" class="form-control input_number waste" maxlength="2" id="waste" name="waste[]"
                                     value="{{ $item->waste }}">
                             </td>
                             <td>
@@ -223,7 +230,7 @@
                         <td>
                             <div class="form-group">
                                 <label for="discount_amount">Discount Amount:</label>
-                                <input class="form-control input_number" required="" name="discount_amount" type="text"
+                                <input class="form-control input_number" name="discount_amount" type="text"
                                     value="{{$model->discount}}" id="discount_amount">
                             </div>
                         </td>
@@ -240,7 +247,7 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td class="text-right">
-                            <input id="grand_total_hidden" name="final_total" type="hidden" value="0">
+                            <input id="grand_total_hidden" name="final_total" type="hidden" value="{{$model->net_total}}">
                             <b>Purchase Total: </b><span id="grand_total" class="display_currency"
                                 data-currency_symbol="true">৳ {{$model->net_total}}</span>
                         </td>

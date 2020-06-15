@@ -1,9 +1,10 @@
    <tr>
 	<td>
     <input type="hidden" name="raw_material[]" value="{{$item->id}}" class="pid">
+    {{ $item->name }}
 	</td>
 	<td>
-        <input type="text" class="form-control qty qty" id="qty" name="qty[]"
+        <input type="text" class="form-control input_number qty" id="qty" name="qty[]"
             value="">
     </td>
 	<td>
@@ -14,22 +15,21 @@
         @endif
 	</td>
 	<td>
-        <input type="text" class="form-control unit_price" id="unit_price" name="unit_price[]" value="{{ $item->price }}">
+        <input type="text" class="form-control input_number unit_price" id="unit_price" name="unit_price[]" value="{{ $item->price }}">
     </td>
     <td>
-        <input type="text" class="form-control price" id="price" readonly name="price[]"
+        <input type="text" class="form-control input_number price" id="price" readonly name="price[]"
             value="">
     </td>
     <td>
-        <input type="number" class="form-control waste" maxlength="2" id="waste" name="waste[]"
+        <input type="text" class="form-control input_number waste" maxlength="2" id="waste" name="waste[]"
             value="">
     </td>
     <td>
-        <input type="text" readonly class="form-control uses" id="uses" name="uses[]"
+        <input type="text" readonly class="form-control input_number uses" id="uses" name="uses[]"
             value="">
     </td>
 	<td>
 		<button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
 	</td>
 </tr>
-<script src="{{ asset('js/production/add_purchase.js') }}"></script>

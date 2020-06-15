@@ -11,7 +11,7 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-     <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
+{{--      <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a> --}}
 <form action="{{route('admin.request.store')}}" method="post" class="ajax_form"
     enctype="multipart/form-data">
     @csrf
@@ -68,13 +68,14 @@
                     <label for="product_id">{{_lang('Work Order')}}
                     </label>
                     <div class="input-group">
-                        <select class="form-control select" data-placeholder="Select Product" name="wo_id" required>
+                        <select class="form-control select" data-placeholder="Select Product" name="wo_id" required data-parsley-errors-container="#wo_error">
                             <option value="">Work Order</option>
                             @foreach ($work_orders as $element)
                                <option value="{{ $element->id }}">{{ $element->prefix }}-{{ $element->code }}</option>
                             @endforeach
                         </select>
                     </div>
+                        <span id="wo_error"></span>
                 </div>
             </div>
             @endif
@@ -101,10 +102,10 @@
                 <table class="table table-condensed table-bordered text-center table-striped" id="purchase_entry_table">
                     <thead class="bg-green text-light">
                         <tr>
-                            <th>Product Name</th>
-                            <th>Previous Request</th>
-                            <th>Request Quantity</th>
-                            <th><i class="fa fa-trash" aria-hidden="true"></i></th>
+                            <th width="45%">Product/Material</th>
+                            <th width="25%">Previous Request</th>
+                            <th width="25%">Request Quantity</th>
+                            <th width="5%"><i class="fa fa-trash" aria-hidden="true"></i></th>
                         </tr>
                     </thead>
                     <tbody id="data" class="bg-gray">
@@ -116,9 +117,9 @@
 
         <div class="form-group col-md-12" id="submit_btn" align="right" style="display:none">
             {{-- <input type="hidden" name="type[]" value=" "> --}}
-            <button type="submit" class="btn btn-primary" id="">{{_lang('Create')}}<i
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send Store Request')}}<i
                     class="icon-arrow-right14 position-right"></i></button>
-            <button type="button" class="btn btn-info" id="" style="display: none;">{{_lang('Processing')}}
+            <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
                 <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
     </div>

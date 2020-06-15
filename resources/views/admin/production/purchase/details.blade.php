@@ -20,7 +20,11 @@
             <h6>{{_lang('Purchase Details')}}(Reference No: #{{$model->reference_no}})</h6>
         </div>
         <div class="col-md-8" align="right">
-            @can('production_purchase.update')
+        @can('production_purchase.create')
+        <a class="btn btn-info btn-sm has-tooltip" data-original-title="null"
+            href="{{url('admin/production-purchase/request')}}"><i class="fa fa-plus-square"></i> {{_lang('New Purchase')}}</a>
+        @endcan
+        @can('production_purchase.update')
         <a class="btn btn-warning btn-sm has-tooltip" data-original-title="null"
             href="{{route('admin.production-purchase.edit',$model->id)}}"><i class="fa fa-edit"></i> {{_lang('Edit')}}</a>
         @endcan
@@ -93,6 +97,29 @@
                         <td>{{ $model->discount_amount }}</td>
                         <td>{{ $model->net_total }}</td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12 pt-3">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{ _lang('Material') }}</th>
+                        <th>{{ _lang('Quantity') }}</th>
+                        <th>{{ _lang('Unit Price') }}</th>
+                        <th>{{ _lang('Line Total') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($model->purchase as $item)
+                       <tr>
+                           <td>{{  $item->material?$item->material->name:'' }}</td>
+                           <td>{{ $item->qty }}</td>
+                           <td>{{ $item->price }}</td>
+                           <td>{{ $item->line_total }}</td>
+                       </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

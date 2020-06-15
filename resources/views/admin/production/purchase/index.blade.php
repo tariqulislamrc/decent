@@ -1,10 +1,10 @@
 @extends('layouts.app', ['title' => _lang('Production Purchases'), 'modal' => 'lg'])
 @push('admin.css')
-    <style>
-        .table th, .table td {
-         padding: 0.2rem 0.5rem;
-        }
-    </style>
+<style>
+table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting {
+    padding-right: 0px;
+}
+</style>
 @endpush
 {{-- Header Section --}}
 @section('page.header')
@@ -25,7 +25,7 @@
         <div class="tile">
             <h3 class="tile-title">
             @can('purchase.create')
-            <a data-placement="bottom" title="Create New Production Product" type="button" class="btn btn-info" href ="{{ route('admin.production-purchase.request') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
+            <a data-placement="bottom" title="Create New Production Product" type="button" class="btn btn-info" href ="{{ route('admin.production-purchase.request') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Purchase')}}</a>
             @endcan
             </h3>
             <div class="card">
