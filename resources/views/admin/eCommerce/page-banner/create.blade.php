@@ -13,6 +13,8 @@
                         <select required data-placeholder="Select Banner Page" name="page_name" id="page_name" class="form-control select">
                         <option value="">{{_lang('Select Banner Page')}}</option>
                         <option value="Product">{{_lang('Product Page')}}</option>
+                        <option value="Login">{{_lang('Login Page')}}</option>
+                        <option value="Register">{{_lang('Register Page')}}</option>
                         <option value="Category">{{_lang('Category Page')}}</option>
                         <option value="Contact">{{_lang('Contact Page')}}</option>
                         <option value="Cart">{{_lang('Cart Page')}}</option>
@@ -27,8 +29,8 @@
                     {{-- Select Banner Page --}}
                         <div class="col-md-12 form-group">
                             <label for="image">{{_lang('Upload Banner Image')}}
-                                <span style="display: none;" id="b">(Banner Size: 1920x325)</span>
-                                <span style="display: none;" id="a">(Banner Size: 1920x205)</span>
+                                <span class="text-danger"  style="display: none;" id="b">(Banner Size: 1920x325)</span>
+                                <span class="text-danger" style="display: none;" id="a">(Banner Size: 1920x205)</span>
                             </label>
                             <input required type="file" name="image" id="image" class="dropify"
                             data-default-file=""/>
@@ -66,7 +68,7 @@ _ImageUpload();
 
 $(document).on('change', '#page_name', function () {
     var value = $(this).val();
-    if (value == 'Product' || value == 'Category' || value == 'Contact') {
+    if (value == 'Product' || value == 'Category' || value == 'Contact' || value == 'Login' || value == 'Register') {
         $('#a').show();
         $('#b').hide();
     }else if(value == 'Cart' || value == 'Checkout' || value == 'Wishlist'){

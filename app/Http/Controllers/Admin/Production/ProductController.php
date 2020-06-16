@@ -85,6 +85,23 @@ class ProductController extends Controller
         return view('admin.production.product.create', compact('models', "categorys", "code_prefix", "uniqu_id"));
     }
 
+    public function slug($old_slug, $row = Null)
+    {
+        if(!$row){
+            $slug = $old_slug;
+            $row = 0;
+        }else{
+            $slug = $old_slug . '-'.$row;
+        }
+
+        $check_res = Product::where('product_slug', $slug)->first();
+        if($check_res) {
+            $slug = $this->slug($old_slug, $row+1);
+        }
+
+        return $slug;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -114,6 +131,9 @@ class ProductController extends Controller
 
         $product = new Product;
 
+        $slug = $this->slug(make_slug($request->name));
+        $product->product_slug = $slug;
+
         if ($request->hasFile('photo')) {
             $storagepath = $request->file('photo')->store('public/product');
             $fileName = basename($storagepath);
@@ -136,22 +156,24 @@ class ProductController extends Controller
         $id = $product->id;
 
 
-        for ($i = 0; $i < count($request->raw_material); $i++) {
-            $purchase = new ProductMaterial;
-            $purchase->product_id = $id;
-            $purchase->material_id = $request->raw_material[$i];
-            $purchase->qty = $request->qty[$i];
-            $purchase->price = $request->price[$i];
-            $purchase->unit_price = $request->unit_price[$i];
-            $purchase->waste = $request->waste[$i];
-            $purchase->uses = $request->uses[$i];
-            $purchase->status = $request->raw_status[$i];
-            $purchase->description = $request->raw_description[$i];
-            $purchase->unit_id = $request->unit[$i];
-            $purchase->created_by = auth()->user()->id;
-            $purchase->save();
+        if($request->raw_material != '') {
+            for ($i = 0; $i < count($request->raw_material); $i++) {
+                $purchase = new ProductMaterial;
+                $purchase->product_id = $id;
+                $purchase->material_id = $request->raw_material[$i];
+                $purchase->qty = $request->qty[$i];
+                $purchase->price = $request->price[$i];
+                $purchase->unit_price = $request->unit_price[$i];
+                $purchase->waste = $request->waste[$i];
+                $purchase->uses = $request->uses[$i];
+                $purchase->status = $request->raw_status[$i];
+                $purchase->description = $request->raw_description[$i];
+                $purchase->unit_id = $request->unit[$i];
+                $purchase->created_by = auth()->user()->id;
+                $purchase->save();
+            }
         }
-
+    
         generate_id("product", true);
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.production-product.variation', $id)]);

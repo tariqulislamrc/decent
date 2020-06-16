@@ -137,6 +137,12 @@
                         <th width="50%">{{_lang('Date')}}</th>
                         <td>{{formatDate($model->created_at)}}</td>
                     </tr>
+                    @if ($model->discount_type == 'Coupon')
+                        <tr>
+                            <td>Coupon Amount</td>
+                            <td>{{ number_format($model->discount, 2) }} </td>
+                        </tr>
+                    @endif
                 </table>
             </div>
 
@@ -215,20 +221,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="50%">{{_lang('Edit Information')}}</th>
-                                <td>
-                                    <div class="button_show"><button class="btn btn-info btn-block" type="button" id="edit">Edit  <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button> </div>
-                                    <div style="display:none;" class="button_hide">
-                                        <div class="row">
-                                            <div class="col-md-6 mt-2">
-                                                <button class="btn btn-primary btn-block " type="submit" id="submit">Save</button> 
-                                            </div>
-                                            <div class="col-md-6 mt-2">
-                                                <button class="btn btn-danger btn-block" type="button" id="cancel">Cancel </button> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                                <th class="text-center" colspan="2">
+                                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-primary btn-sm">Update The Invoice</button></a>
+                                </th>
                             </tr>
                         </table>
                     @else 
@@ -347,7 +342,7 @@
                                     <td class="text-center">{!!get_product_image($item->product_id)!!}</td>
                                     <td>{{get_product_color($item->variation_id)}}</td>
                                     <td>{{get_product_size($item->variation_id)}}</td>
-                                    <td>{{round($item->quantity)}} </td>
+                                    <td>{{round($item->quantity)}}</td>
                                     <td>{{round($item->unit_price)}} </td>
                                     <td>{{round($item->total)}} </td>
                                 </tr>
@@ -357,6 +352,12 @@
                         @endif
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Order Note --}}
+            <div class="col-md-12 form-group">
+                <label for="order_note">Order Note</label>
+                <textarea name="order_note" id="order_note" class="form-control" cols="30" rows="2" placeholder="Enter Order Note">{{ $model->sell_note }}</textarea>
             </div>
 
             {{-- Change Order Status --}}
@@ -397,12 +398,13 @@
     $('#change_status').change(function() {
         var val = $(this).val();
         var id = $('#id').val();
+        var note = $('#order_note').val();
         var url = $(this).data('url');
         $.ajax({
             type: 'GET',
             url: url,
             data: {
-                id: id, val: val
+                id: id, val: val, note:note
             },
             beforeSend: function() {
                 $('#show_loader_1').fadeIn();

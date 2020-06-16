@@ -61,9 +61,12 @@
                 </div>
             </div>
             <div class="col-md-12 text-center mt-3">
-                <p class="text-primary h2 mb-0"> <i class="fas fa-cart-plus"></i> </p>
-                <p class="h2 text-primary"> {{get_option('company_name')}} </p>
+                <div class="mt-logo">
+                    <img style="width:100px;" alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+               </div>
+                <p class="h2 text-primary"> {{get_option('site_title')}} </p>
                 <p class="mb-1">Order Invoice</p>
+                <p class="mb-1"> {{get_option('address')}} </p>
                 <p class="mb-1"> {{get_option('city')}} </p>
                 <p class="mb-1"> {{get_option('country')}} </p>
                 <p class="mb-1"> {{get_option('zip')}} </p>
@@ -73,11 +76,11 @@
         <div class="row">
             <div class="col-md-6">
                 <p class="mb-1 font-weight-bold"> BILL TO : </p>
-                <p class="h5"> {{get_option('company_name')}} </p>
-                <p class="mb-1"> {{get_option('address')}} </p>
-                <p class="mb-1"> {{get_option('city')}} </p>
-                <p class="mb-1"> {{get_option('country')}} </p>
-                <p class="mb-1"> {{get_option('zip')}} </p>
+                <p class="h5"> {{$client->name }} {{ $client->last_name }} </p>
+                <p class="mb-1"> {{ $client->address }} </p>
+                <p class="mb-1"> {{ $client->city }} </p>
+                <p class="mb-1"> {{ $client->post_code }} </p>
+                <p class="mb-1"> {{ $client->state}} ,Bangladesh </p>
             </div>
             <div class="col-md-6 text-right">
                 <p class="mb-1 font-weight-bold text-uppercase"> Invoice# </p>
@@ -107,35 +110,35 @@
                         <th scope="row">Item {{$key+1}}</th>
                         <td> {{$item->product->name}} </td>
                         <td> {{$item->quantity}} </td> 
-                        <td> ট {{$item->unit_price}} </td>
-                        <td> ট {{$item->total}}</td>
+                        <td class="text-right"> {{ get_option('currency') }} {{$item->unit_price}} </td>
+                        <td class="text-right"> {{ get_option('currency') }} {{$item->total}}</td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4" class="text-right">Subtotal</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->sub_total != null ? number_format($transaction->sub_total, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->sub_total != null ? number_format($transaction->sub_total, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
-                        <th colspan="4" class="text-right">Dscount Amount</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->discount_amount != null ? number_format($transaction->discount_amount, 2) : '0.00'}} </td>
+                        <th colspan="4" class="text-right">Coupon Amount</th>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->discount != null ? number_format($transaction->discount, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Shipping Charges</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->shipping_charges != null ? number_format($transaction->shipping_charges, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->shipping_charges != null ? number_format($transaction->shipping_charges, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Total Paid</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->paid != null ? number_format($transaction->paid, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->paid != null ? number_format($transaction->paid, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Total Due</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->due != null ? number_format($transaction->due, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }}{{ $transaction->due != null ? number_format($transaction->due, 2) : '0.00'}} </td>
                     </tr>
                     <tr>
                         <th colspan="4" class="text-right">Net Total</th>
-                        <td colspan="1" class="text-right">{{get_option('currency') && get_option('currency') != '' ? get_option('currency') : '$'}} {{ $transaction->net_total != null ? number_format($transaction->net_total, 2) : '0.00'}} </td>
+                        <td colspan="1" class="text-right">{{ get_option('currency') }} {{ $transaction->net_total != null ? number_format($transaction->net_total, 2) : '0.00'}} </td>
                     </tr>
                 </tfoot>
             </table>
@@ -148,7 +151,7 @@
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
                   <p class="text-uppercase font-weight-bold"> total </p>
-                  <p class="h1 text-primary">  ট {{$transaction_sale->sum('total')}}</p>
+                  <p class="h1 text-primary">  {{ get_option('currency') }} {{number_format($transaction_sale->sum('total'), 2)}}</p>
             </div>
         </div>
         <hr>
@@ -156,7 +159,7 @@
             <div class="col-md-6 text-center mx-auto">
                 <span class="font-weight-bold"> Power By &nbsp; </span> 
                 <img src="Logo2.png" alt="" style="width: 120px">
-                <p> <small>© {{date('Y')}} decentfootware.com, All Rights Reserved.Developed by SATT IT</small></p>
+                <p> <small>© {{date('Y')}} decentfootware.com, All Rights Reserved</small></p>
             </div>
         </div>
         

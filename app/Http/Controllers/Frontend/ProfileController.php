@@ -175,6 +175,14 @@ class ProfileController extends Controller
 
     }
 
+
+    // client_track
+    public function client_track(Request $request) {
+
+        return view('eCommerce.track');
+
+    }
+
     // client_track_code
     public function client_track_code(Request $request) {
         $code = $request->code;

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\eCommerce;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\ClientShippingAddress;
+use App\models\eCommerce\Coupon;
 use App\models\inventory\TransactionSellLine;
+use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\VariationBrandDetails;
@@ -30,8 +32,9 @@ class OrderController extends Controller
     public function change_status(Request $request) {
         $id = $request->id;
         $val = $request->val;
+        $note = $request->note;
         $model = Transaction::where('id', $id)->first();
-
+        $model->sell_note = $note;
         $status = $model->ecommerce_status;
         if($status == 'cancel') {
             if($val == 'progressing' || $val == 'shipment' || $val == 'success' || $val == 'cancel') {
@@ -161,7 +164,46 @@ class OrderController extends Controller
 
         // Activity Log
         activity()->log('Change Sipping Address for transaction id - ' . $request->transaction_id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully'), 'load' => true]);
+        return response()->json(['success' => true, 'chage_order_status' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully')]);
+
+    }
+
+    // show_update_page
+    public function show_update_page($id) {
+        $model = Transaction::findOrFail($id);
+
+        $sell_products = TransactionSellLine::where('transaction_id', $model->id)->get();
+
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+        // dd($brand_id);
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
+
+        // find the coupon
+        $coupon_id = $model->tek_marks;
+        if($coupon_id != '') {
+
+            $coupon = Coupon::where('id', $coupon_id)->first();
+            if($coupon) {
+                $coupon_amount = $coupon->discount_amount;
+                $coupon_type = $coupon->discount_type;
+            } else {
+                $coupon_amount = 0;
+                $coupon_type = 'None';
+            }
+
+        } else {
+            $coupon_amount = 0;
+            $coupon_type = 'None';
+        }
+
+        return view('admin.eCommerce.order.update', compact('model', 'sell_products', 'products', 'coupon_amount', 'coupon_type'));
 
     }
 }

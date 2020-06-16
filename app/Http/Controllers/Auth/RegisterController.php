@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -66,12 +67,12 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            // 'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,id,deleted_at'],
+            // 'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'phone' => ['required', 'numeric', 'min:10', 'unique:users,id,deleted_at'],
+            // 'address' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
         ]);
     }
 
@@ -89,16 +90,16 @@ class RegisterController extends Controller
         $model->client_type =       'ecommerce';
         $model->sub_type =       'ecommerce';
         $model->name        =       $data['name'];
-        $model->last_name   =       $data['last_name'];
-        $model->user_name   =       $data['username'];
-        $model->address     =       $data['address'];
+        // $model->last_name   =       $data['last_name'];
+        // $model->user_name   =       $data['username'];
+        // $model->address     =       $data['address'];
         $model->email       =       $data['email'];
         $model->mobile      =       $data['phone'];
         $model->tek_marks   =       'Created Client from Frontend';
         $model->save();
         $id = $model->id;
 
-        $data['id'] = $id;
+        // $data['id'] = $id;
         $uuid =  Str::uuid()->toString();
 
 
@@ -106,10 +107,10 @@ class RegisterController extends Controller
         $item->clients_id = $id;
         $item->user_type = 'Client';
         $item->name = $data['name'];
-        $item->surname = $data['last_name'];
+        // $item->surname = $data['last_name'];
         $item->first_name = $data['name'];
-        $item->last_name = $data['last_name'];
-        $item->username = $data['username'];
+        // $item->last_name = $data['last_name'];
+        // $item->username = $data['username'];
         $item->email = $data['email'];
         $item->phone = $data['phone'];
         $item->status = 'activated';
@@ -134,7 +135,13 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        return response()->json(['message' => trans('auth.logged_in'), 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+
+        $goto = session()->get('goto') ? session()->get('goto') : redirect()->intended($this->redirectPath())->getTargetUrl();
+        Session::put('goto', null);
+
+        return response()->json(['message' => trans('auth.logged_in'), 'goto' => $goto]);
+
+        // return response()->json(['message' => trans('auth.logged_in'), 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
 
         // return $this->registered($request, $user)
         //                 ?: redirect($this->redirectPath());

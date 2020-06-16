@@ -7,7 +7,7 @@
                 <div class="f-widget-about">
                     <div class="logo">
                         <a href="{{url('/')}}">
-                            <img alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
+                            <img style="width: 100px;" alt="Brand Logo" src="{{ get_option('logo') && get_option('logo') != '' ? asset('storage/logo'. '/' . get_option('logo')) : asset('frontend/images/mt-logo.png') }}">
                         </a>
                     </div>
                     <p>{{get_option('description')?get_option('description'):''}}</p>
@@ -28,7 +28,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             {{-- Footer Second Part --}}
             <nav class="col-xs-12 col-sm-8 col-md-5 mt-paddingbottomxs">
                 <div class="nav-widget-1">
@@ -39,15 +39,15 @@
                         @endphp
                         @foreach ($category as $item)
                         <li>
-                            <a href="{{route('category-product',$item->id)}}">
+                            <a href="{{route('category-product',$item->category_slug)}}">
                                 <span class="name">{{$item->name}}</span>
                             </a>
                         </li>
                         @endforeach
                     </ul>
                 </div>
-                
-                <div class="nav-widget-1" style="margin-left:50px">
+
+                <div class="nav-widget-1" >
                     <h3 class="f-widget-heading">Information</h3>
                     <ul class="list-unstyled f-widget-nav">
                         <li><a href="{{route('about')}}">About Us</a></li>

@@ -1,8 +1,11 @@
+@php
+    $banner = App\models\eCommerce\PageBanner::where('page_name', 'Register')->first();
+@endphp
 @extends('eCommerce.layouts.app')
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
-    <section class="mt-contact-banner" style="background-image: url(http://placehold.it/1920x205);">
+    <section class="mt-contact-banner" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
@@ -18,13 +21,6 @@
         </div>
     </section>
 
-    <!-- Mt Detail Section of the Page end -->
-    <!-- mt side widget end here -->
-    {{-- <div class="container">
-        <div class="or-divider" style="padding-bottom:20px;"><span class="txt">or</span></div>
-    </div> --}}
-    <!-- mt side widget start here -->
-    <!-- Mt Detail Section of the Page -->
     <section class="mt-detail-sec toppadding-zero" style="padding-bottom:20px; margin-top:20px">
         <div class="container">
             <div class="row">
@@ -32,63 +28,37 @@
                     <div class="holder" style="margin: 0;">
                         <div class="mt-side-widget">
                             <header>
-                                <h2 style="margin: 0 0 5px;">register</h2>
-                                <p>Don’t have an account?</p>
+                                <h2 style="margin: 0 0 5px;">Register</h2>
+                                <p>Don’t Have An Account?</p>
                             </header>
                             <form action="{{route('register')}}" method="post" id="content_form" autocomplete="off" style="margin: 0 0 80px;">
                                 @csrf
                                 <fieldset>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input autofocus type="text" name="name" required placeholder="First Name" class="input">
+                                            <input autofocus type="text" name="name" required placeholder="Enter Your Full Name" class="input">
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" name="last_name" required placeholder="Last Name" class="input">
+                                            <input type="text" name="phone" required placeholder="Enter Your Phone Number" class="input">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input autocomplete="nope" type="text" name="username" id="username" required placeholder="Username" class="input username">
-                                            <span id="usernameError" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6">
-                                            <input type="email" name="email" required placeholder="Your Email" class="input email">
+                                            <input type="email" name="email" required placeholder="Enter Your Email Address" class="input email">
                                             <span id="emailError" class="text-danger"></span>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-xs-12 col-sm-6">
-                                            <input type="text" name="phone" required placeholder="Your Phone" class="input">
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6">
-                                            <textarea placeholder="Address" required name="address" class="input"></textarea>
+                                            <input type="password" name="password" required placeholder="Password" class="input" id="password">
+                                            <small id="hint" class="text-danger">Please make sure that your password at least 8 character and use at least one capital word. We believe that your security is your hand</small>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-6">
-                                            <input type="password" name="password" required placeholder="Password" class="input">
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6">
-                                            <input type="password" name="password_confirmation" required placeholder="Re-type Password" class="input">
-                                            <input type="hidden" name="url" value="{{ url()->previous() }}">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn-type1">Register</button>
+                                    <button type="submit" id="submit" class="btn-type1 mt-5">Register</button>
+                                    <button type="button" style="display: none;" id="submiting" class="btn-type1 mt-5">Please Wait ...</button>
                                 </fieldset>
                             </form>
-                            <header>
-                                <h2 style="margin: 0 0 5px;">register with social</h2>
-                                <p>Create an account using social</p>
-                            </header>
-                            <ul class="mt-socialicons">
-                                <li class="mt-facebook"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li class="mt-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li class="mt-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li class="mt-dribbble"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li class="mt-pinterest"><a href="#"><i class="fa fa-openid"></i></a></li>
-                                <li class="mt-youtube"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                            </ul>
                         </div>
+
+                         <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">Already Registered <a href="{{route('login')}}" style="color: #327DBA;"> Sign in </a> here</span></div>
                     </div>
                 </div>
             </div>
@@ -105,35 +75,13 @@
 {{-- <script src="{{ asset('js/eCommerce/register.js') }}"></script> --}}
 <script>
     _formValidation();
-    $('.username').on('blur', function() {
-        var val = $(this).val();
-        
-        var val = val.trim();
-        if(val != '') {
-            $.ajax({
-                type:'GET',
-                url:'/member/check_user_name_is_exist_or_not',
-                data:{val : val},
-                success:function(data){
-                    $('#usernameError').html(data);
-                }
-            });
-        }
-    })
 
-    $('.email').on('blur', function() {
-        var val = $(this).val();
-        var val = val.trim();
-        if(val != '') {
-            $.ajax({
-                type:'GET',
-                url:'/member/check_email_is_exist_or_not',
-                data:{val : val},
-                success:function(data){
-                    $('#emailError').html(data);
-                }
-            });
-        }
-    });
+    // $('#password').focus(function() {
+    //     $('#hint').fadeIn();
+    // });
+
+    // $('#password').blur(function() {
+    //     $('#hint').fadeOut();
+    // });
 </script>
 @endpush

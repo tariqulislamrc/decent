@@ -27,6 +27,7 @@ Route::group(['middleware' => ['install']], function () {
 		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
 		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
+		Route::get('client-track', 'ProfileController@client_track')->name('track');
 		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
 		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
 
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['install']], function () {
 		// check_email_is_exist_or_not
 		Route::get('/check_email_is_exist_or_not', 'ProfileController@check_email_is_exist_or_not')->name('check_email_is_exist_or_not');
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
 
 	});
 
@@ -46,6 +48,8 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('terms-condition','Frontend\Front_End_Controller@termsCondition')->name('terms-condition');
 	Route::post('product-rating','Frontend\Front_End_Controller@productRating')->name('product-rating');
 	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
+	Route::get('category-offer/{slug}','Frontend\Front_End_Controller@category_offer')->name('category-offer');
+	Route::get('search-product', 'Frontend\Front_End_Controller@search_product')->name('search_product');
 
 	Route::get('blog',function(){
 		return view('eCommerce.blog');
@@ -65,6 +69,8 @@ Route::group(['middleware' => ['install']], function () {
 		return view('eCommerce.product_list_view');
 	})->name('product-list');
 
+	Route::get('offer-product/{slug}', 'Frontend\Front_End_Controller@offer_product')->name('offer-product');
+	Route::get('special-offer/{slug}', 'Frontend\Front_End_Controller@special_offer')->name('special-offer');
 	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
 	Route::get('get-price', 'Frontend\Front_End_Controller@get_price')->name('get-price');
 	Route::post('shopping-cart-add', 'Frontend\CartController@add_cart')->name('shopping-cart-add');
@@ -78,6 +84,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::post('shopping-checkout-store', 'Frontend\CartController@store_checkout')->name('shopping-checkout-store');
 	Route::get('shopping-checkout', 'Frontend\CartController@checkout')->name('shopping-checkout');
 	Route::get('welcome', 'Frontend\CartController@welcome')->name('welcome');
+	Route::get('invoice/{id}', 'Frontend\CartController@invoice')->name('invoice');
 	/* ====================================================
 			End Frontend Route
 	==========================================================*/
@@ -490,6 +497,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');
 		Route::resource('eCommerce-offer', 'eCommerceOfferController');
 
+		// special_offer
+		Route::get('add_to_special_offer_row', 'SpecialOfferController@add_to_special_offer_row')->name('add_to_special_offer_row');
+		Route::get('special-offer.datatable', 'SpecialOfferController@datatable')->name('special-offer.datatable');
+		Route::resource('special-offer', 'SpecialOfferController');
+
+		// Special Category
+		Route::get('special-category.datatable', 'SpecialCategoryController@datatable')->name('special-category.datatable');
+		Route::resource('special-category', 'SpecialCategoryController');
+
 		// feature-product
 		Route::get('feature-product/datatable','FeatureProductController@datatable')->name('feature-product.datatable');
 		Route::get('feature-product/status', 'FeatureProductController@status')->name('feature-product.change_status');
@@ -556,6 +572,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('orders/sort-order', 'OrderController@sort_order')->name('order.sort_order');
 		Route::get('orders/sort-order-date-wise', 'OrderController@sort_order_date_wise')->name('order.sort_order_date_wise');
 		Route::get('orders/show/{id}', 'OrderController@show')->name('order.show');
+		Route::get('order/update/{id}', 'OrderController@show_update_page')->name('update_invoice');
 
 		// page-banner
 		Route::get('page-banner/datatable', 'PageBannerController@datatable')->name('page-banner.datatable');
@@ -567,6 +584,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
      Route::get('eCommerce/customer','ClientController@ecustomer')->name('eCommerce.e_customer');
      Route::get('eCommerce/customer/view/{id}','ClientController@ecustomer_view')->name('e_customer.view');
+     Route::delete('eCommerce/customer/delete/{id}','ClientController@delete')->name('e_customer.delete');
 
 	//Sms Marketing:::::::::::::::::::
 	Route::group(['as' => 'smsmerketing.','prefix' => 'smsmerketing','namespace' => 'marketing'], function () {

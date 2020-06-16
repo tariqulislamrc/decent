@@ -118,7 +118,8 @@
                 <button class="tablinks" onclick="openCity(event, 'password_manager')">Password Manager</button>
                 <button class="tablinks" onclick="openCity(event, 'my_orders')">My Orders</button>
                 <button class="tablinks" onclick="openCity(event, 'my_cancel_orders')">My Cancel Order</button>
-                <button class="tablinks" onclick="openCity(event, 'track_order')">Track Order</button>
+                <button class="tablinks" ><a class='h4' href="{{route('shopping-cart-show')}}">Cart</a> </button>
+                
             </div>
 
             <div id="personal_info" class="tabcontent">
@@ -283,6 +284,7 @@
                                 <th>{{_lang('Total')}}</th>
                                 <th>{{_lang('Date')}}</th>
                                 <th>{{_lang('Status')}}</th>
+                                <th>{{_lang('Print')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -315,6 +317,7 @@
                                                 {{_lang('Cancel')}}
                                             @endif
                                         </td>
+                                        <td><a href="{{ route('invoice', $model->reference_no) }}" target="_blank"><i class="fa fa-print" aria-hidden="true"></i></a></td>
                                     </tr>
                                 @endforeach
                             @else 

@@ -88,20 +88,20 @@ if (!function_exists('get_language_list')) {
 }
 
 function gv($params, $keys, $default = Null) {
-	return (isset($params[$keys]) AND $params[$keys]) ? $params[$keys] : $default;
+	return (isset($params[$keys]) and $params[$keys]) ? $params[$keys] : $default;
 }
 
 function gbv($params, $keys) {
-	return (isset($params[$keys]) AND $params[$keys]) ? 1 : 0;
+	return (isset($params[$keys]) and $params[$keys]) ? 1 : 0;
 }
 
 if (!function_exists('get_option')) {
     function get_option($name, $default = null)
     {
-	
+
         if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
 			$setting = DB::table('settings')->where('name', $name)->first();
-	
+
             if ($setting and $setting->value) {
                 return $setting->value;
             }
@@ -360,8 +360,8 @@ function numer_padding($id = 1, $code_digits=3){
 	function current_designation($id){
 		$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
 
-		$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d AND $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
+		$designation = ($emp_d and $emp_d->designation->name)?$emp_d->designation->name:"";
+    	$dept_id = ($emp_d and $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
 
     	return $designation;
     }
@@ -369,7 +369,7 @@ function numer_padding($id = 1, $code_digits=3){
     function current_dept($id){
     	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
     	// $designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d AND $emp_d->department_id)?$emp_d->department_id:"";
+    	$dept_id = ($emp_d and $emp_d->department_id)?$emp_d->department_id:"";
     	$dept = App\models\employee\Department::where('id',$dept_id)->first();
     	return  $dept ? $dept->name: "";
 	}
@@ -527,7 +527,7 @@ function find_employee_earning_salary_using_employee_id($employee_id, $payroll_i
 	if($emp_salary) {
 
 		$earning = $emp_salary->total_earning;
-	
+
 	} else {
 
 		$earning = 0;
@@ -539,13 +539,13 @@ function find_employee_earning_salary_using_employee_id($employee_id, $payroll_i
 
 // find employee salary structure  deduction total using employee id
 function find_employee_deduction_salary_using_employee_id($employee_id, $payroll_id){
-	
+
 	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
 		$earning = $emp_salary->total_deduction;
-	
+
 	} else {
 
 		$earning = 0;
@@ -557,13 +557,13 @@ function find_employee_deduction_salary_using_employee_id($employee_id, $payroll
 
 // find employee total salary structure  deduction total using employee id
 function find_employee_total_salary_using_employee_id($employee_id, $payroll_id){
-	
+
 	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
 		$earning = $emp_salary->net_salary;
-	
+
 	} else {
 
 		$earning = 0;
@@ -665,7 +665,7 @@ function get_client_email($id) {
 function get_client_address($id) {
 	$client = Client::where('id', $id)->first();
 	if($client) {
-		
+
 		if($client->address != '' ) {
 			$address = $client->address ;
 		} else {
@@ -743,12 +743,12 @@ function getIp(){
 	function bangla_date()
 	{
 	$currentDate = date("l, F j, Y");
-	    
-	$engDATE = array(1,2,3,4,5,6,7,8,9,0, 'January', 'February', 'March','April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
-	    
-	$bangDATE = array('১','২','৩','৪','৫','৬','৭','৮','৯','০','জানুয়ারী','ফেব্রুয়ারী','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর','শনিবার','রবিবার','সোমবার','মঙ্গলবার',' বুধবার','বৃহস্পতিবার','শুক্রবার' ); 
 
-	$convertedDATE = str_replace($engDATE, $bangDATE, $currentDate); 
+	$engDATE = array(1,2,3,4,5,6,7,8,9,0, 'January', 'February', 'March','April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
+
+	$bangDATE = array('১','২','৩','৪','৫','৬','৭','৮','৯','০','জানুয়ারী','ফেব্রুয়ারী','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর','শনিবার','রবিবার','সোমবার','মঙ্গলবার',' বুধবার','বৃহস্পতিবার','শুক্রবার' );
+
+	$convertedDATE = str_replace($engDATE, $bangDATE, $currentDate);
 
 	return $convertedDATE;
 	}
@@ -776,23 +776,23 @@ function getIp(){
         }
         if (!empty($date)) {
             $query->whereDate('date', $date);
-        } 
+        }
 
 
         if (!empty($month)) {
             $query->whereMonth('date', $month);
-        }  
+        }
         if (!empty($year)) {
             $query->whereYear('date', $year);
-        }  
+        }
 
         if (!empty($year) && !empty($month)) {
             $query->whereMonth('date', $month)->whereYear('date', $year);
-        } 
+        }
         if (!auth()->user()->hasRole('Super Admin')) {
             $query->where('hidden',false);
-        }              
-      
+        }
+
 
         $trans_details = $query->get();
 
@@ -805,7 +805,7 @@ function getIp(){
         // $output['trans_due'] = $trans_details->sum('net_total') -
         //                             $trans_details->sum('total_paid');
         // $output['total_shipping_charges'] = $trans_details->sum('shipping_charges');
-  
+
         // return $output;
     }
 
@@ -816,7 +816,49 @@ function getIp(){
       if ($depert !=null) {
       	return true;
       }
-    }
+
+	}
+
+	// Sadik Work Start
+		// make_slug
+		function make_slug($string){
+
+			$string = remove_special_char($string);
+			$string = text_shorten($string);
+			$string = str_replace(' ', '-', $string);
+			return $string;
+		}
+
+		function text_shorten($text, $limit = 200){
+			$text = $text. " ";
+			$text = substr($text, 0, $limit);
+			$text = substr($text, 0, strrpos($text, ' '));
+			return $text;
+		}//textShorten
+
+		function remove_special_char($string) {
+			$string = html_entity_decode($string);
+			$string = strip_tags($string);
+
+			$string = htmlspecialchars($string);
+
+			$string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+			$string = str_replace(array('[\', \', ]','(', ')', '{', '}', '[', ']', '|', '?', '-', '_', ',', '~', '`', '/', '\\', '"', "'", ':'), '', $string);
+			$string = preg_replace('/\[.*\]/U', '', $string);
+
+			$string = preg_replace('/!|@|#|%|&/', '', $string);
+
+			$string = htmlentities($string, ENT_COMPAT, 'utf-8');
+			$string = str_replace('&times;', 'x', $string);
+			$string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+
+			$string = preg_replace('/\s+/u', ' ', trim($string)); // for multiple spaces
+			$string = preg_replace('/-+/', ' ', $string); //for multiple -
+			return strtolower(trim($string, ' '));
+		}
+
+	// Sadik Work Stop
+
 
 
     function convert_number_to_words($number)

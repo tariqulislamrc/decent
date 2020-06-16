@@ -1,7 +1,37 @@
 @extends('eCommerce.layouts.app')
-@push('admin.css')
+@push('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-@endpush
+
+    <style>
+        /* styles unrelated to zoom */
+
+        /* these styles are for the demo, but are not required for the plugin */
+        .zoom {
+            display:inline-block;
+            position: relative;
+        }
+
+        /* magnifying glass icon */
+        .zoom:after {
+            content:'';
+            display:block;
+            width:33px;
+            height:33px;
+            position:absolute;
+            top:0;
+            right:0;
+            background:url(icon.png);
+        }
+
+        .zoom img {
+            display: block;
+        }
+
+        .zoom img::selection { background-color: transparent; }
+
+    </style>
+
+    @endpush
 @push('seo_section')
     <meta name="title" content="{{$product->seo_title}}">
     <meta name="keyword" content="{{$product->keyword}}">
@@ -15,7 +45,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="slider">
-                        
+
                         <!-- Comment List of the Page -->
                         <ul class="list-unstyled comment-list">
                             <li><a href="#"><i class="fa fa-heart"></i>
@@ -27,18 +57,20 @@
                             {{-- <li><a href="#"><i class="fa fa-comments"></i>{}</a></li> --}}
                         </ul>
                         <!-- Comment List of the Page end -->
-                        
+
                         <!-- Product Slider of the Page -->
                         <div class="product-slider">
                             @foreach ($product->photo_details as $item)
                             <div class="slide">
-                                <img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/610x490'}}"
-                                    alt="image descrption">
+                                 <span class='zoom zoom_image'>
+                                <img class="zoom-img" src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
+                                     alt="image descrption">
+                                </span>
                             </div>
                             @endforeach
                         </div>
                         <!-- Product Slider of the Page end -->
-                        
+
                         <!-- Pagg Slider of the Page -->
                         <ul class="list-unstyled slick-slider pagg-slider">
                             @foreach ($product->photo_details as $item)
@@ -58,7 +90,7 @@
                         <input type="hidden" name="id" value="{{$product->id}}">
                         <input type="hidden" name="name" value="{{$product->name}}">
                         <div class="detial-holder">
-                            
+
                             <!-- Breadcrumbs of the Page -->
                             {{-- <ul class="list-unstyled breadcrumbs">
                                 <li><a href="#">Chairs <i class="fa fa-angle-right"></i></a></li>
@@ -88,16 +120,17 @@
                                 <li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$product->id}}" class="heart" style="cursor:pointer;">
                                     @php
                                         $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $product->id)->first();
-                                    @endphp	
+                                    @endphp
                                     @if ($check)
                                         <i class="fa fa-heart" aria-hidden="true"></i>
-                                    @else 	
+                                    @else
                                         <i class="fa fa-heart-o" aria-hidden="true"></i>
                                     @endif
                                     ADD TO WISHLIST</a></li>
                             </ul>
                             @php
                                 $variation = '';
+$variation_name = '';
                             @endphp
                             @foreach ($product->variation as $item)
                                 @php
@@ -237,14 +270,22 @@
 <!-- footer of the Page -->
 @endpush
 @push('scripts')
-<script src="{{asset('js/main.js')}}"></script>
-<script src="{{asset('backend/js/parsley.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('backend/js/parsley.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
-<script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
-<script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+    <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
+    <script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+
+    {{--<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>--}}
+    <script src='{{asset('frontend/js/jquery.zoom.js')}}'></script>
+    <script>
+        $(document).ready(function(){
+            $('.zoom_image').zoom();
+
+        });
+    </script>
 <script>
     $('#content_form').parsley();
 
@@ -285,9 +326,9 @@
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-		
+
 		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-		
+
 		$.ajax({
             type: 'GET',
             url: url,
@@ -296,7 +337,7 @@
             },
 			beforeSend: function() {
                 $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
-            }, 
+            },
             success: function (data) {
                 if(data.status == 'success') {
                     toastr.success(data.message);

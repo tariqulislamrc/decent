@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Employee Category'), 'modal' => 'xl'])
+@extends('layouts.app', ['title' => _lang('Ecommerce Order List'), 'modal' => 'xl'])
 @push('admin.css')
     <link rel="stylesheet" href="{{asset('backend/css/daterangepicker.css')}}">
 @endpush
@@ -34,7 +34,7 @@
                         <option value="cancel">{{_lang('Cancel')}}</option>
                         <option value="all">{{_lang('All Order')}}</option>
                     </select>
-                
+
                     <input data-url="{{route('admin.eCommerce.order.sort_order_date_wise')}}" type="text" class="form-control mt-3" id="date" autocomplete="off" >
 
                     <div class="text-center" id="show_loader" style="display:none;">
@@ -104,7 +104,7 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('backend/js/moment.min.js') }}"></script>
     <script src="{{ asset('backend/js/daterangepicker.min.js') }}"></script>
-    <script src="{{ asset('js/ecommerce/order.js') }}"></script>
+    <script src="{{ asset('js/eCommerce/order.js') }}"></script>
     <script>
         $('#sort_order').change(function() {
             var val = $(this).val();
@@ -117,7 +117,7 @@
                 },
                 beforeSend: function() {
                     $('#show_loader').fadeIn();
-                }, 
+                },
                 success: function (data) {
                     $('#data').html(data);
                     $('#show_loader').fadeOut();

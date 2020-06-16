@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\EcommerceOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use App\models\eCommerce\PrivacyPolicy;
 use App\models\eCommerce\AboutUs;
 use App\models\eCommerce\Seo;
@@ -18,6 +19,8 @@ use App\models\eCommerce\ContactUs;
 use App\models\eCommerce\HomePage;
 use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
+use App\models\eCommerce\SpecialOffer;
+use App\models\eCommerce\SpecialOfferItem;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
 use App\models\Production\Transaction;
@@ -27,7 +30,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class Front_End_Controller extends Controller{
-    
+
     public function index(){
 
         $product_id = [];
@@ -56,7 +59,7 @@ class Front_End_Controller extends Controller{
         $latest_product   = Product::orderBy('id','desc')->take(4)->get();
         return view('eCommerce.index',compact('general_products', 'seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product'));
     }
-    
+
     public function privacyPolicy(){
         $model = PrivacyPolicy::first();
         $banner = PageBanner::where('page_name','Contact')->first();
@@ -64,21 +67,38 @@ class Front_End_Controller extends Controller{
     }
 
     public function category_product($id){
-        $banner = PageBanner::where('page_name', 'Category')->first();
-        $products = Product::where('category_id', $id)->paginate(15);
+        // find the category
         $category = Category::with('product')->get();
+
+        $get_categoyr = Category::where('category_slug', $id)->firstOrFail();
+        $banner = PageBanner::where('page_name', 'Category')->first();
+        $products = Product::where('category_id', $get_categoyr->id)->paginate(15);
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
-        
+
     public function account()
     {
-        if (Auth::check()) {
-         return Redirect::to('home');
+        $banner = PageBanner::where('page_name', 'Login')->first();
+        if (Auth::guard('client')->check()) {
+            return Redirect::to('member/dashboard');
         } else {
-            return view('eCommerce.account');
+            return view('eCommerce.account', compact('banner'));
         }
     }
- 
+
+
+    // special_offer
+    public function special_offer($slug) {
+        $offer = SpecialOffer::where('offer_slug', $slug)->firstOrFail();
+        $items = SpecialOfferItem::where('special_offer_id', $offer->id)->get();
+        $banner = PageBanner::where('page_name', 'Category')->first();
+
+        // find the category
+        $category = Category::with('product')->get();
+
+        return view('eCommerce.special_offer', compact('offer', 'category', 'items','banner'));
+
+    }
 
     public function aboutUs(){
         $model = AboutUs::first();
@@ -125,7 +145,10 @@ class Front_End_Controller extends Controller{
     }
 
     public function product_details($id){
-        $product_rating = ProductRating::where('product_id',$id)->get();
+        // find the product
+        $model = Product::with('photo_details', 'variation')->where('product_slug',$id)->firstOrFail();
+        // find the product Rating
+        $product_rating = ProductRating::where('product_id',$model->id)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
         if ($total_row>0) {
@@ -133,7 +156,6 @@ class Front_End_Controller extends Controller{
         }else{
             $avarage_rating = 0;
         }
-        $model = Product::with('photo_details', 'variation')->findOrFail($id);
         return view('eCommerce.product_details', compact('model','product_rating','avarage_rating','total_row'));
     }
 
@@ -154,7 +176,7 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.offer_details', compact('model', 'product','product_rating','avarage_rating','total_row'));
     }
 
-    
+
     public function get_price(Request $request){
         $price = Variation::findOrFail($request->id);
         $qty = VariationBrandDetails::where('variation_id', $request->id)->first();
@@ -230,6 +252,55 @@ class Front_End_Controller extends Controller{
     public function invoice($id) {
         $transaction =  Transaction::where('reference_no',$id)->first();
         $transaction_sale = TransactionSellLine::where('transaction_id',$transaction->id)->get();
-        return view('eCommerce.invoice',compact('transaction','transaction_sale'));
+
+        // find the client
+        $client = Client::findOrFail($transaction->client_id);
+        return view('eCommerce.invoice',compact('transaction','transaction_sale', 'client'));
+    }
+
+    // category_offer
+    public function category_offer($slug) {
+        $category = Category::where('category_slug', $slug)->firstOrFail();
+
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->where('category_id', $category->id)->paginate(15);
+        $banner = PageBanner::where('page_name', 'Category')->first();
+
+        // All Categoyr
+        $category = Category::where('status', 1)->get();
+        return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
+    }
+
+    // offer_product
+    public function offer_product($slug) {
+        dd($slug);
+    }
+
+    // search_product
+    public function search_product(Request $request) {
+        $text = $request->text;
+        $product_id = [];
+        $brand_id = get_option('default_brand');
+
+        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->where('name', 'like', '%' .$text . '%')->paginate(15);
+        $banner = PageBanner::where('page_name', 'Category')->first();
+        // All Categoyr
+        $category = Category::where('status', 1)->get();
+
+        return view('eCommerce.search.search_result_ajax', compact('products', 'banner', 'category'));
     }
 }

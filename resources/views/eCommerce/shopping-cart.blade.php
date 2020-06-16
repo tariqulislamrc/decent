@@ -36,7 +36,7 @@
                         </li>
                         <li>
                             <span class="counter">03</span>
-                            <strong class="title">Order Complete</strong>
+                            <strong class="title">Order Request Complete</strong>
                         </li>
                     </ul>
                 </div>
@@ -110,8 +110,11 @@
                     <div  class="coupon-form">
                         <fieldset>
                             <div class="mt-holder">
-                                <input type="text" id="coupon-value"  class="form-control" placeholder="Your Coupon Code">
+                                <input type="text" autocomplete="off" id="coupon-value"  class="form-control" placeholder="Your Coupon Code">
+                                <input type="hidden" id="c_amount" value="0">
+                                <input type="hidden" id="c_type" value="0">
                                 <button type="button" data-url="{{route('coupon-check')}}" id="coupon-submit">APPLY</button>
+                                <button type="button" style="display: none; font-size:12px;" type="button" class="small" disabled id="submitting">Processing...</button>
                             </div>
                         </fieldset>
                     </div>
@@ -143,6 +146,14 @@
                                 </div>
                             </div>
                         </li>
+                        <li id="show_coupon_area" style="display: none;">
+                            <div class="txt-holder">
+                                <strong class="title sub-title pull-left">Coupon Amount</strong>
+                                <div class="txt pull-right">
+                                    <strong id="show_discount_amount">৳0.00</strong>
+                                </div>
+                            </div>
+                        </li>
                         <li style="border-bottom: none;">
                             <div class="txt-holder">
                                 <strong class="title sub-title pull-left">CART TOTAL</strong>
@@ -169,6 +180,41 @@
 <script src="{{ asset('js/eCommerce/cart.js') }}"></script>
 <script>
     _formValidation();
+    @if(session()->get('coupon_text'))
+    var total_hidden = $('#total_hidden').val();
+    var sub_total_hidden = $('#sub_total_hidden').val();
+
+    $.ajax({
+            url: "{{route('coupon-check')}}",
+            data: {
+                coupon: "{{session()->get('coupon_text')}}"
+            },
+            type: 'Get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+           if (data.status == 'success') {
+               var amt = data.coupon.discount_amount;
+
+                if (data.coupon.discount_type == 'percentage') {
+                    var total_amt = (total_hidden * amt) / 100;
+                    var sub_total = total_hidden - total_amt;
+
+                    $('#total').text(sub_total);
+                    $('#total_hidden').val(sub_total);
+                    $('#coupon_amt').val(total_amt);
+                    $('.mt-holder').hide('500');
+                } else {
+                    var sub_total = total_hidden - amt;
+                    $('#total').text(sub_total);
+                    $('#sub_total_hidden').val(sub_total);
+                     $('#coupon_amt').val(amt);
+                    $('.mt-holder').hide('500');
+                }
+            }
+        })
+    
+    @endif
 </script>
 @endpush
 

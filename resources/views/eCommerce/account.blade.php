@@ -1,16 +1,17 @@
 @extends('eCommerce.layouts.app')
 @push('main')
+
 <!-- Main of the Page -->
 <main id="mt-main">
-    <section class="mt-contact-banner"  style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
+    <section class="mt-contact-banner" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h1>SIGN IN or register</h1>
+                    <h1>SIGN IN OR REGISTER</h1>
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="{{url('/')}}">home <i class="fa fa-angle-right"></i></a></li>
-                            <li>register</li>
+                            <li><a href="{{url('/')}}">HOME <i class="fa fa-angle-right"></i></a></li>
+                            <li>REGISTER</li>
                         </ul>
                     </nav>
                 </div>
@@ -31,14 +32,15 @@
                             <form action="{{ route('login') }}" method="post" id="login">
                               @csrf
                                 <fieldset>
-                                    <input required type="text" placeholder="Username or email address" class="input" autofocus name="email" id="email">
+                                    <input required type="text" placeholder="Enter Your Phone Number Or Email Address" class="input" autofocus name="email" id="email">
                                     <input required type="password" placeholder="Password" class="input" name="password" id="password">
                                     <input type="hidden" name="user_type" value="Client">
                                     <div class="box">
                                         <span class="left"><input class="checkbox" type="checkbox" id="check1"><label
                                                 for="check1">Remember Me</label></span>
                                     </div>
-                                    <button type="submit" class="btn-type1">Login</button>
+                                    <button type="submit" id="submit" class="btn-type1">Login</button>
+                                    <button style="display: none;" type="button" disabled id="submiting" class="btn-type1">Please Wait ...</button>
                                 </fieldset>
                             </form>
                         </div>
@@ -62,4 +64,9 @@
 @push('scripts')
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="{{ asset('js/auth/login.js') }}"></script>
+<script>
+    $(function() {
+        $('#email').focus();
+    })
+</script>
 @endpush

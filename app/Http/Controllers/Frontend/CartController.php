@@ -15,14 +15,15 @@ use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session as FacadesSession;
 use Session;
 use View;
 
 class CartController extends Controller
 {
 
-   protected $transactionUtil;
-   public function __construct(TransactionUtil $transactionUtil)
+    protected $transactionUtil;
+    public function __construct(TransactionUtil $transactionUtil)
     {
         $this->transactionUtil = $transactionUtil;
     }
@@ -43,7 +44,7 @@ class CartController extends Controller
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Quantity Not Available')]);
         }
 
-         $a= Cart::add(array(
+        $a= Cart::add(array(
             'id' => $request->variation,
             'name' => $request->name,
             'price' => $request->price,
@@ -55,7 +56,7 @@ class CartController extends Controller
         $cart_total =  Cart::getTotal();
         $bdt = get_option('currency');
 
-        return response()->json(['success' => true, 'cart_total' => $cart_total , 'bdt'=>$bdt, 'status' => 'success', 'message' => _lang('Product Added To Cart Successfuly')]);
+        return response()->json(['success' => true, 'cart_total' => $cart_total , 'bdt'=>$bdt, 'status' => 'success', 'message' => _lang('Product Added To Cart Successfuly'), 'goto' => route('shopping-cart-show')]);
 
     }
 
@@ -119,6 +120,8 @@ class CartController extends Controller
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Coupon Already Used.')]);
             }
 
+            Session::put('coupon_text', $request->coupon);
+
             Session::put('coupon', $model);
             return response()->json(['success' => true, 'coupon' => $model, 'status' => 'success', 'message' => _lang('Coupon Code Match Successfuly')]);
 
@@ -130,6 +133,8 @@ class CartController extends Controller
 
 
     public function store_cart(Request $request){
+        
+
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
             Session::put('total', $request->total_hidden);
@@ -137,7 +142,8 @@ class CartController extends Controller
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
         } else {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
+            Session::put('goto', url()->previous());
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account','goto=cart')]);
         }
     }
 
@@ -150,8 +156,10 @@ class CartController extends Controller
             $user = auth('client')->user('clients_id');
             $client = Client::findOrFail($user->clients_id);
             $models = Cart::getContent();
+
             return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
+             dd(URL::previous());
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
         }
     }
@@ -184,7 +192,7 @@ class CartController extends Controller
         $code_prefix = get_option('invoice_code_prefix', 'INV-');
         $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
-        $uniqu_id = numer_padding($uniqu_id, $code_digits, );
+        $uniqu_id = numer_padding($uniqu_id, $code_digits);
         $invoice_no = $code_prefix . $uniqu_id;
 
         $payment = new Transaction();
@@ -196,6 +204,10 @@ class CartController extends Controller
         $payment->net_total = $request->total;
         $payment->sell_note = $request->order_note;
 
+        if(FacadesSession::get('coupon')) {
+            $payment->discount_type = 'Coupon';
+            $payment->discount = FacadesSession::get('coupon');
+        }
 
         $payment->sale_type = 'eCommerce';
         $payment->type = 'Credit';
@@ -213,6 +225,7 @@ class CartController extends Controller
             $payment->city = $request->forcity;
         }
         $payment->ecommerce_status = 'pending';
+        $payment->due = $request->total;
         $payment->save();
         $transaction_id = $payment->id;
 
@@ -231,11 +244,11 @@ class CartController extends Controller
             $transaction->save();
 
             $this->transactionUtil->decreaseProductQuantity(
-                               $request->product_id[$i],
-                               $request->variation_id[$i],
-                               get_option('default_brand'),
-                               $request->quantity[$i]
-                            );
+                $request->product_id[$i],
+                $request->variation_id[$i],
+                get_option('default_brand'),
+                $request->quantity[$i]
+            );
         }
 
         generate_id('purchase', true);
@@ -247,8 +260,17 @@ class CartController extends Controller
     // welcome
     public function welcome() {
         $banner = PageBanner::where('page_name', 'Welcome')->first();
-        $model = Transaction::orderBy('id', 'desc')->first();
-        $items = TransactionSellLine::where('transaction_id', $model->reference_no)->get();
-        return view('eCommerce.thank', compact('model', 'items','banner'));
+        $transaction = Transaction::orderBy('id', 'desc')->first();
+        $client = Client::findOrFail($transaction->client_id);
+        $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->reference_no)->get();
+        return view('eCommerce.thank', compact('transaction', 'client', 'transaction_sale','banner'));
+    }
+
+    // invoice
+    public function invoice($id) {
+        $transaction = Transaction::where('reference_no', $id)->firstOrFail();
+        $client = Client::findOrFail($transaction->client_id);
+        $transaction_sale  = TransactionSellLine::where('transaction_id', $transaction->id)->get();
+        return view('eCommerce.invoice', compact('transaction', 'client', 'transaction_sale'));
     }
 }
