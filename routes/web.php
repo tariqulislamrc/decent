@@ -384,7 +384,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		    Route::resource('client', 'ClientController');
 		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
 		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
-		    Route::get('client/payment-list/{id}','ClientController@getCustomerPayment')->name('getCustomerPayment');
+			Route::get('client/payment-list/{id}','ClientController@getCustomerPayment')->name('getCustomerPayment');
 
 		// Production Route End
 
@@ -492,6 +492,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('eCommerce-offer/datatable','eCommerceOfferController@datatable')->name('eCommerce-offer.datatable');
 		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');
 		Route::resource('eCommerce-offer', 'eCommerceOfferController');
+
+		// Production to ecommerce
+		Route::get('producion-to-ecommerce/datatable', 'ProductionToEcommerceController@datatable')->name('producion-to-ecommerce.datatable');
+		Route::resource('production-to-ecommerce', 'ProductionToEcommerceController');
 
 		// special_offer
 		Route::get('add_to_special_offer_row', 'SpecialOfferController@add_to_special_offer_row')->name('add_to_special_offer_row');

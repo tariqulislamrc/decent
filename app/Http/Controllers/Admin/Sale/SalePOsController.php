@@ -373,24 +373,34 @@ class SalePOsController extends Controller
 
     public function scannerappend1(Request $request)
     {
-         $row =$request->row;
-         $quantity =$request->quantity;
-         $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
-                ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
-                ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
-                ->where('variations.id', $request->variation_id)
-                ->select( 'p.id as product_id',
-                        'p.category_id',
-                        'vbd.qty_available',
-                        'variations.default_sell_price as selling_price',
-                        'variations.id as variation_id',
-                        'vbd.brand_id as brand_id',
-                        'variations.sub_sku as sku',
-                        'variations.name as vari_name'
-                    )
-                ->first();
+        $row =$request->row;
+        $quantity =$request->quantity;
+        $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
+            ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
+            ->where('variations.id', $request->variation_id)
+            ->select( 'p.id as product_id',
+                    'p.name as product_name',
+                    'p.category_id',
+                    'vbd.qty_available',
+                    'variations.default_sell_price as selling_price',
+                    'variations.id as variation_id',
+                    'vbd.brand_id as brand_id',
+                    'variations.sub_sku as sku',
+                    'variations.name as vari_name'
+                )
+            ->first();
 
-                return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
+        $page = $request->page;
+        if($page != 'ecommerce') {
+            $page == '';
+        }
+
+        if($page == 'ecommerce') {
+            return view('admin.eCommerce.production-to-ecommerce.itemlist',compact('data','quantity','row'));
+        }
+
+        return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
     }
 
 
