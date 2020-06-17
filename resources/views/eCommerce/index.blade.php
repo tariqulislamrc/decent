@@ -1,96 +1,40 @@
 @extends('eCommerce.layouts.app')
 @push('main')
-<!-- mt main start here -->
+@php
+    $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')->get();
+@endphp
 <main id="mt-main">
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
 
                 {{-- Banner Start --}}
-                <div class="banner-frame mt-paddingsmzero wow fadeInUp" data-wow-delay="0.4s">
-                    <div class="slider-7 mt-paddingbottomsm wow fadeInLeft" data-wow-delay="0.4s">
-                        <div class="slider banner-slider">
-                            @php
-                            $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')->get();
-                            @endphp
-                            @if (count($banner_slide) > 0)
-                            @foreach ($banner_slide as $item)
-                            <div class="s-holder">
-                                <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
-                                    alt="image description">
-                                <div class="s-box">
-                                    <strong class="s-title">{{$item->product->category->name}}</strong>
-                                    <span class="heading add">{{$item->heading}}</span>
-                                    <div class="s-txt">
-                                        <p>{{$item->sub_heading}}</p>
+                @if (count($banner_slide) > 0)
+                    <div class="banner-frame mt-paddingsmzero wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="slider-7 mt-paddingbottomsm wow fadeInLeft" data-wow-delay="0.4s">
+                            <div class="slider banner-slider">
+                                
+                                @foreach ($banner_slide as $item)
+                                <div class="s-holder">
+                                    <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
+                                        alt="image description">
+                                    <div class="s-box">
+                                        <strong class="s-title">{{$item->product->category->name}}</strong>
+                                        <span class="heading add">{{$item->heading}}</span>
+                                        <div class="s-txt">
+                                            <p>{{$item->sub_heading}}</p>
+                                        </div>
+                                        <a href="{{route('offer',$item->uuid)}}" class="s-shop">SHOP NOW</a>
                                     </div>
-                                    <a href="{{route('offer',$item->uuid)}}" class="s-shop">SHOP NOW</a>
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                            @else
-                            <div class="s-holder">
-                                <img src="http://placehold.it/765x580" alt="image description">
-                                <div class="s-box">
-                                    <strong class="s-title">No Offer Available</strong>
-                                    <span class="heading add">Add 765 X 589 Size Offer for show</span>
-                                    <div class="s-txt">
-                                        <p>
-                                            You Have to Add 765 X 589 Size Offer for show
-                                        </p>
-                                    </div>
-                                    {{-- <a href="{{route('offer',$item->uuid)}}" class="s-shop">SHOP NOW</a> --}}
-                                </div>
-                            </div>
-                            @endif
                         </div>
-                    </div>
 
-                    {{-- 415 X 225 --}}
-                    <div class="banner-box third wow fadeInRight" data-wow-delay="0.4s">
-                        @php
-                        $banner3 = App\models\eCommerce\SpecialOffer::where('status', 1)->get();
-                        @endphp
-                        @if (count($banner3) > 0)
-                            @foreach ($banner3 as $item)
-                                <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                    <img src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
-                                    <div class="holder">
-                                        <h2><span>{{$item->name}}</span><strong>{{$item->sub_heading}}</strong>
-                                        </h2>
-                                        <a class="btn-shop" href="{{route('special-offer',$item->offer_slug)}}">
-                                            <span>SHOP NOW</span>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                        <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                            <img src="http://placehold.it/415x225" alt="image description">
-                            <div class="holder">
-                                <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for show</strong>
-                                </h2>
-                                <a class="btn-shop" href="product-detail.html">
-												<span>SHOP NOW</span>
-												<i class="fa fa-angle-right"></i>
-											</a>
-                            </div>
-                        </div>
-                        <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                            <img src="http://placehold.it/415x225" alt="image description">
-                            <div class="holder">
-                                <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for show</strong>
-                                </h2>
-                                <a class="btn-shop" href="product-detail.html">
-												<span>SHOP NOW</span>
-												<i class="fa fa-angle-right"></i>
-											</a>
-                            </div>
-                        </div>
-                        @endif
+                        
                     </div>
-                </div>
+                @endif
+
                 {{-- Banner End --}}
                 <!-- F Promo Box style2 of the Page -->
                 <aside class="f-promo-box style2 wow fadeInUp" data-wow-delay="0.4s">
@@ -164,13 +108,6 @@
                     </div>
 
                     @endforeach
-                    @else
-                    <p style="margin: 0 0 9.5px;
-                    padding: 10px;
-                    font-size: 20px;
-                    background-color: #ddd;
-                    color: red;
-                    text-align: center;">Sorry. No Offer Category Found At This Moment.</p>
                     @endif
                 </div>
 
@@ -198,13 +135,6 @@
                                                 @foreach ($featur_product as $item)
                                                 @include('eCommerce.product')
                                                 @endforeach
-                                                @else
-                                                <p style="margin: 0 0 9.5px;
-														padding: 10px;
-														font-size: 20px;
-														background-color: #ddd;
-														color: red;
-														text-align: center;">Sorry. No Featured Product Found At This Moment.</p>
                                                 @endif
 
                                             </div>
@@ -242,13 +172,6 @@
                                                 @foreach ($featur_product as $item)
                                                 @include('eCommerce.product')
                                                 @endforeach
-                                                @else
-                                                <p style="margin: 0 0 9.5px;
-									padding: 10px;
-									font-size: 20px;
-									background-color: #ddd;
-									color: red;
-									text-align: center;">Sorry. No Best Selling Product Found At This Moment.</p>
                                                 @endif
                                             </div>
                                         </div>
@@ -346,9 +269,7 @@
                                                         <li><i class="fa fa-star-o"></i></li>
                                                     </ul>
                                                     <ul class="links">
-                                                        <li><a href="#" tabindex="-1"><i
-                                                                    class="icon-handbag"></i><span>Add to
-                                                                    Cart</span></a></li>
+                                                        <li><a href="#" tabindex="-1"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
                                                         <li><a href="#" tabindex="-1"><i
                                                                     class="icomoon icon-heart-empty"></i></a></li>
                                                         <li><a href="#popup1" class="lightbox" tabindex="-1"><i
@@ -532,13 +453,6 @@
                                 </div>
                             </div>
                             @endforeach
-                            @else
-                            <p style="margin: 0 0 9.5px;
-								padding: 10px;
-								font-size: 20px;
-								background-color: #ddd;
-								color: red;
-								text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
                             @endif
 
                         </div>
@@ -584,13 +498,7 @@
                                 </div>
                             </div>
                             @endforeach
-                            @else
-                            <p style="margin: 0 0 9.5px;
-									padding: 10px;
-									font-size: 20px;
-									background-color: #ddd;
-									color: red;
-									text-align: center;">Sorry. No Feature Product Found At This Moment.</p>
+                           
                             @endif
 
                         </div>

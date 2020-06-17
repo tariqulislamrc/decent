@@ -3,6 +3,7 @@
 use App\models\Client;
 use App\models\employee\EmployeeAttendanceType;
 use App\models\employee\EmployeeCategory;
+use App\models\Production\Brand;
 use App\models\Production\VariationTemplate;
 use Illuminate\Database\Seeder;
 use App\Setting;
@@ -90,6 +91,20 @@ class GeneralSettingSeeder extends Seeder
             'name' => 'Walking Customer',
             'mobile' => '017XXXXXXXX',
             'client_type' => 'client',
+        ]);
+
+        // Create a default brand : Decent Footwear
+        Brand::create([
+            'name' => 'Decent Footwear',
+            'owner_name' => 'Decent Footwear',
+            'email' => 'decentfootwearbd@gmail.com',
+            'phone' => '01700000000'
+        ]);
+
+        //  Create ecommerce default brand
+        Setting::create([
+            'name'      =>  'default_brand',
+            'value'     =>  '1',
         ]);
     }
 }
