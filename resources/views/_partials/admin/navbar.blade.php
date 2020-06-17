@@ -36,6 +36,7 @@
                 <li><a class="dropdown-item" href="{{ route('admin.eCommerce.order.index') }}"><i class="fa fa-first-order fa-lg"></i> Order</a></li>
 
                 <li><a class="dropdown-item" href="{{ route('admin.client.index') }}"><i class="fa fa-user fa-lg"></i> Client</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i class="fa fa-stop fa-lg"></i> Stock Trnsfer</a></li>
         
             </ul>
         

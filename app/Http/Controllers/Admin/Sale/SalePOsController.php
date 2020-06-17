@@ -106,7 +106,7 @@ class SalePOsController extends Controller
                     $return="";
                     if ($model->return_parent) {
                     $return = '<a style="cursor:pointer;color:#12f" data-url="' . route('admin.sale.return.show', $model->return_parent->return_parent_id) . '" class="btn_modal">' . ($model->net_total-($model->payment()->sum('amount')+$model->return_parent->net_total)). '</a>';
-                    }  
+                    }
                     return $return;
                  })
                 ->addColumn('action', function ($model) {
@@ -124,7 +124,7 @@ class SalePOsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    { 
+    {
         if (!auth()->user()->can('sale_pos.create')) {
             abort(403, 'Unauthorized action.');
         }
@@ -138,7 +138,7 @@ class SalePOsController extends Controller
      if (!auth()->user()->can('sale_pos.create')) {
             abort(403, 'Unauthorized action.');
         }
-       return view('admin.salePos.sale_add'); 
+       return view('admin.salePos.sale_add');
     }
 
     /**
@@ -170,7 +170,7 @@ class SalePOsController extends Controller
         $ym = Carbon::now()->format('Y/m');
 
         $row = Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
-        
+
         $ref_no = $ym.'/S-'.ref($row);
 
         $code_prefix = get_option('invoice_code_prefix');
@@ -183,7 +183,7 @@ class SalePOsController extends Controller
         }else{
             $invoice_no = $code_prefix . $uniqu_id;
         }
-       
+
         $variations =$request->variation;
         if (isset($variations)) {
         $transaction = $this->transactionUtil->createSellTransaction($input,$user_id,$ref_no,$invoice_no);
@@ -224,7 +224,7 @@ class SalePOsController extends Controller
     {
       throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to sale')]);
     }
-        
+
     }
 
     /**
@@ -281,16 +281,16 @@ class SalePOsController extends Controller
                 if ($this->transactionUtil->isReturnExist($id)) {
                    throw ValidationException::withMessages(['message' => _lang('This Transaction has return Item')]);
                 }
-        
+
                 $transaction = Transaction::where('id', $id)
                                 ->with(['sell_lines'])
                                 ->first();
-                
+
                 $delete_sale_lines = $transaction->sell_lines;
                 DB::beginTransaction();
 
                 $transaction_status = $transaction->status;
-                
+
                     //Delete sell_lines lines first
                     $delete_sale_line_ids = [];
                     foreach ($delete_sale_lines as $purchase_line) {
@@ -351,7 +351,7 @@ class SalePOsController extends Controller
             $query->orWhere('articel', 'like', '%' . $term . '%');
             $query->orWhere('prefix', 'like', '%' . $term . '%');
             $query->orWhere('sub_sku', 'like', '%' . $term . '%');
-           
+
         });
         }
          // if ($category_id != 'all') {
@@ -372,7 +372,7 @@ class SalePOsController extends Controller
             }
            $products->where(function ($query) use ($brand_id) {
                     $query->where('VBD.brand_id', $brand_id);
-                    
+
                 });
            $products = $products->select(
                 'products.id as product_id',
@@ -387,7 +387,7 @@ class SalePOsController extends Controller
             $products=$products->orderBy('products.id', 'DESC')
                      ->groupBy('variations.id')
             // ->select(
-            // 'VBD.qty_available as qty', 
+            // 'VBD.qty_available as qty',
             //        'variations.id as variation_id',
             //        'products.id as product_id'
             //    )
@@ -417,31 +417,41 @@ class SalePOsController extends Controller
         }
         else
         {
-           return response()->json(['status'=>false,'product'=>$data]); 
+           return response()->json(['status'=>false,'product'=>$data]);
         }
     }
 
     public function scannerappend1(Request $request)
     {
-         $row =$request->row;
-         $quantity =$request->quantity;
-         $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
-                ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
-                ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
-                ->where('variations.id', $request->variation_id)
-                ->select( 'p.id as product_id',
-                        'p.category_id',
-                        'p.name as pro_name',
-                        'vbd.qty_available',
-                        'variations.default_sell_price as selling_price',
-                        'variations.id as variation_id',
-                        'vbd.brand_id as brand_id',
-                        'variations.sub_sku as sku',
-                        'variations.name as vari_name'
-                    )
-                ->first();
+        $row =$request->row;
+        $quantity =$request->quantity;
+        $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
+            ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
+            ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
+            ->where('variations.id', $request->variation_id)
+            ->select( 'p.id as product_id',
+                    'p.name as product_name',
+                    'p.category_id',
+                    'vbd.qty_available',
+                    'variations.default_sell_price as selling_price',
+                    'variations.id as variation_id',
+                    'vbd.brand_id as brand_id',
+                    'variations.sub_sku as sku',
+                    'variations.name as vari_name'
+                )
+            ->first();
 
-                return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
+        $page = $request->page;
+        if($page != 'ecommerce') {
+            $page == '';
+        }
+
+        if($page == 'ecommerce') {
+            return view('admin.eCommerce.production-to-ecommerce.itemlist',compact('data','quantity','row'));
+        }
+
+
+        return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
     }
 
 
@@ -488,7 +498,7 @@ class SalePOsController extends Controller
         // }
 
         $payments = $payments_query->get();
-        return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments')); 
+        return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments'));
     }
 
 }
