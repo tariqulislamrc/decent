@@ -43,7 +43,7 @@
               <tr>
                   <td>{{ $loop->iteration }}</td>
                   <td>
-                    {{ $sale_line->product->product_name }}
+                    {{ $sale_line->product->name }}-{{$sale_line->variation?$sale_line->variation->name:''}}
                   </td>
                   <td><span class="display_currency" data-currency_symbol="true">{{ $sale_line->unit_price }}</span></td>
                   <td>{{$sale_line->quantity_returned}}</td>

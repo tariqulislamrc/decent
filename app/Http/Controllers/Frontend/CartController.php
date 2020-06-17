@@ -120,6 +120,8 @@ class CartController extends Controller
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Coupon Already Used.')]);
             }
 
+            Session::put('coupon_text', $request->coupon);
+
             Session::put('coupon', $model);
             return response()->json(['success' => true, 'coupon' => $model, 'status' => 'success', 'message' => _lang('Coupon Code Match Successfuly')]);
 
@@ -131,6 +133,8 @@ class CartController extends Controller
 
 
     public function store_cart(Request $request){
+        
+
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
             Session::put('total', $request->total_hidden);
@@ -138,6 +142,7 @@ class CartController extends Controller
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
         } else {
+            Session::put('goto', url()->previous());
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account','goto=cart')]);
         }
     }
@@ -154,6 +159,7 @@ class CartController extends Controller
 
             return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
+             dd(URL::previous());
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
         }
     }

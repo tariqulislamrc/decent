@@ -13,25 +13,31 @@ $route = 'admin.client.';
     @endif
     <input type="hidden" name="type" value="customer">
     <div class="row">
-      <div class="col-md-3">
+        <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('sub_type', _lang('Client Type').':') !!}
+            {!! Form::select('sub_type', ['retail'=>'Retail','wholesale'=>'WholeSale','ecommerce'=>'eCommerce'], null, ['class' => 'form-control select','id'=>'sub_type']); !!}
+        </div>
+      </div>
+      <div class="col-md-6">
         <div class="form-group">
           {{ Form::label('name', _lang('Name') , ['class' => 'col-form-label']) }}
           {{ Form::text('name', null, ['class' => 'form-control input_number', 'id'=>'name', 'placeholder' => _lang('Name'),'required'=>'','autofocus'=>true]) }}
         </div>
       </div>
-        <div class="col-md-3">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('email', _lang('Email') , ['class' => 'col-form-label']) }}
           {{ Form::text('email', null, ['class' => 'form-control input_number', 'id'=>'email', 'placeholder' => _lang('Email')]) }}
         </div>
       </div>
-        <div class="col-md-3">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('mobile', _lang('Mobile') , ['class' => 'col-form-label']) }}
           {{ Form::text('mobile', null, ['class' => 'form-control input_number', 'id'=>'mobile', 'placeholder' => _lang('Mobile'),'required'=>'','autofocus'=>true]) }}
         </div>
       </div>
-     <div class="col-md-3">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('alternate_number', _lang('Alternate Mobile') , ['class' => 'col-form-label']) }}
           {{ Form::text('alternate_number', null, ['class' => 'form-control input_number', 'id'=>'alternate_number', 'placeholder' => _lang('Alternate Mobile')]) }}
@@ -45,13 +51,13 @@ $route = 'admin.client.';
           {{ Form::text('country', 'Bangladesh', ['class' => 'form-control', 'id'=>'country', 'placeholder' => _lang('Country'),'required'=>'','autofocus'=>true]) }}
         </div>
       </div>
-        <div class="col-md-4">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('state', _lang('State') , ['class' => 'col-form-label']) }}
           {{ Form::text('state', null, ['class' => 'form-control', 'id'=>'state', 'placeholder' => _lang('State')]) }}
         </div>
       </div>
-       <div class="col-md-4">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('city', _lang('City') , ['class' => 'col-form-label']) }}
           {{ Form::text('city', null, ['class' => 'form-control', 'id'=>'city', 'placeholder' => _lang('City')]) }}
@@ -65,17 +71,37 @@ $route = 'admin.client.';
           {{ Form::text('landmark', null, ['class' => 'form-control', 'id'=>'landmark', 'placeholder' => _lang('Landmark')]) }}
         </div>
       </div>
-        <div class="col-md-4">
+      <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('landline', _lang('Landline') , ['class' => 'col-form-label']) }}
           {{ Form::text('landline', null, ['class' => 'form-control', 'id'=>'landline', 'placeholder' => _lang('Landline')]) }}
         </div>
       </div>
-
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('net_total', _lang('Opening Balance') , ['class' => 'col-form-label']) }}
           {{ Form::text('net_total', isset($opening_balance)?$opening_balance:null, ['class' => 'form-control', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
+        </div>
+      </div>
+    </div>
+    <h5>{{ _lang('Banking Info') }}</h5>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          {{ Form::label('bank_name', _lang('Bank Name') , ['class' => 'col-form-label']) }}
+          {{ Form::text('bank_name', null, ['class' => 'form-control', 'id'=>'bank_name', 'placeholder' => _lang('Bank Name')]) }}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          {{ Form::label('account_name', _lang('Bank Account') , ['class' => 'col-form-label']) }}
+          {{ Form::text('account_name', null, ['class' => 'form-control', 'id'=>'account_name', 'placeholder' => _lang('Bank Account')]) }}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          {{ Form::label('bank_holder', _lang('Bank Holder') , ['class' => 'col-form-label']) }}
+          {{ Form::text('bank_holder', null, ['class' => 'form-control', 'id'=>'bank_holder', 'placeholder' => _lang('Bank Holder')]) }}
         </div>
       </div>
     </div>

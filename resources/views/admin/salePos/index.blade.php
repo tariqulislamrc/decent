@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Sale List'), 'modal' => 'xl'])
+@push('admin.css')
+<style>
+.table th, .table td {
+padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
@@ -59,6 +66,7 @@
                             <th>{{_lang('Total Amount')}}</th>
                             <th>{{_lang('Total Paid')}}</th>
                             <th>{{_lang('Due')}}</th>
+                            <th>{{_lang('Balance')}}</th>
                             <th>{{_lang('action')}}</th>
                         </tr>
                     </thead>
@@ -168,6 +176,9 @@
                 }, {
                     data: 'due',
                     name: 'due'
+                },{
+                    data: 'return',
+                    name: 'return'
                 }, {
                     data: 'action',
                     name: 'action'

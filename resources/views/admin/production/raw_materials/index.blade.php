@@ -20,7 +20,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('raw_material.create')
-                        <button data-placement="bottom" title="Create raw materials for production" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-raw-materials.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create raw materials for production" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-raw-materials.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Raw Material')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">
@@ -32,6 +32,7 @@
                                 <th>{{_lang('Material name')}}</th>
                                 <th>{{_lang('price')}}</th>
                                 <th>{{_lang('Description')}}</th>
+                                <th>{{_lang('Stock')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>

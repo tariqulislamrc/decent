@@ -45,7 +45,7 @@
                     id="purchase_entry_table">
                     <thead class="bg-green text-light">
                         <tr>
-                            <th>Product Name</th>
+                            <th>Product/Material</th>
                             <th>Request Quantity</th>
                             <th>Approve Qty</th>
                             <th>Remaining Qty</th>

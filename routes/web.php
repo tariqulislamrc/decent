@@ -27,6 +27,7 @@ Route::group(['middleware' => ['install']], function () {
 		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
 		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');
 		Route::post('change-address-book', 'ProfileController@change_address_book')->name('change_address_book');
+		Route::get('client-track', 'ProfileController@client_track')->name('track');
 		Route::get('client-track-code', 'ProfileController@client_track_code')->name('client_track_code');
 		Route::get('change-password', 'ProfileController@chage_password')->name('chage_password');
 
@@ -351,6 +352,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('production-product/details/store/{id}', 'Production\ProductController@details_store')->name('production-product.details-store');
 
 			Route::get('products/list','Production\ProductController@product_list');
+			Route::get('product/status/{id}','Production\ProductController@get_product_status')->name('get_product.status');
+			Route::post('product/status','Production\ProductController@post_product_status')->name('post_product_status');
 			Route::resource('production-product', 'Production\ProductController');
 
 
@@ -373,6 +376,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-purchase/details/{id}', 'Production\PurchaseController@details')->name('production-purchase.details');
 			Route::get('production-purchase/payment/{id}', 'Production\PurchaseController@payment')->name('production-purchase.payment');
 			Route::patch('production-purchase/add_payment/{id}', 'Production\PurchaseController@add_payment')->name('production-purchase.add_payment');
+			Route::get('production-purchase/view/{id}','Production\PurchaseController@view')->name('purchase_view');
 			Route::resource('production-purchase', 'Production\PurchaseController');
 			// Client:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
@@ -625,11 +629,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('request/get_prev_request','StoreRequestController@get_prev_request')->name('request.get_reques_prev');
 		Route::get('depertment/flow/{id}','StoreRequestController@depertmentflow')->name('department.flow');
 		Route::delete('mainrequest/destroy/{id}','StoreRequestController@request_destroy')->name('mainrequest.destroy');
+		Route::get('store_request_print/{id}','StoreRequestController@store_request_print')->name('store_request_print');
+		Route::match(array('GET','PUT'),'approve-all-request/{id}', 'StoreRequestController@approve_all_request')->name('approve_all_request');
 		Route::resource('request', 'StoreRequestController');
 		//depertment report
 		Route::get('report/get-product','DepertmentReportController@get_variation_product')->name('report.get_variation_product');
 		Route::get('department/report/material','DepertmentReportController@material')->name('department.material.report');
 		Route::get('department/report/get-material','DepertmentReportController@get_depertment_material')->name('report.get_depertment_material');
+		Route::get('get_dstore_id','DepertmentReportController@get_dstore_id');
+		Route::get('every_matrial_report_print/{id}/{date?}','DepertmentReportController@every_matrial_report_print')->name('every_matrial_report_print');
+		Route::get('total_matrial_report_print/{id}','DepertmentReportController@total_matrial_report_print')->name('total_matrial_report_print');
 		Route::get('depertment/report/material/approve/{id}','DepertmentReportController@approve_request')->name('report.approve_request');
 		Route::post('report/store-material','DepertmentReportController@material_store')->name('report.material_store');
 		Route::resource('department/report', 'DepertmentReportController');
@@ -668,6 +677,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	 		Route::get('return/pos/{id}','SaleReturnController@return_sale')->name('return_sale');
 	 		Route::get('return/printpage/{id}','SaleReturnController@printpage')->name('return.printpage');
 	 		Route::resource('return','SaleReturnController');
+	 		Route::get('return-check','SaleReturnController@return_check');
 	 });
     //Payment
 	 Route::post('sales/payment','TransactionPaymentController@sales_payment')->name('sales.payment');

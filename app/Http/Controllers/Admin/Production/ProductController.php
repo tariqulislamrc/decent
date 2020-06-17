@@ -52,10 +52,10 @@ class ProductController extends Controller
 
                 })
                 ->editColumn('status', function ($document) {
-                    if ($document->status == 'Active') {
-                        return '<span class="badge badge-success">' . 'Active' . '</span>';
-                    } else if ($document->status == 'InActive') {
-                        return '<span class="badge badge-danger">' . 'Inactive' . '</span>';
+                    if ($document->status == 'Sample') {
+                        return '<a data-url="'.route('admin.get_product.status',$document->id).'" class="btn_modal" style="cursor:pointer"><span class="badge badge-success">' . 'Sample' . '</span></a>';
+                    } else if ($document->status == 'Production') {
+                        return '<a data-url="'.route('admin.get_product.status',$document->id).'" class="btn_modal" style="cursor:pointer"><span class="badge badge-danger">' . 'Production' . '</span></a>';
                     }
                 })
                 ->addColumn('action', function ($model) {
@@ -423,7 +423,7 @@ class ProductController extends Controller
             $variation->save();
         }
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'),'load'=>true]);
     }
 
 
@@ -473,7 +473,7 @@ class ProductController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'),'load'=>true]);
     }
 
 
@@ -556,6 +556,8 @@ class ProductController extends Controller
             $query->orWhere('articel', 'like', '%' . $term . '%');
             $query->orWhere('prefix', 'like', '%' . $term . '%');
             $query->orWhere('sub_sku', 'like', '%' . $term . '%');
+            $query->orWhere('variations.name', 'like', '%' . $term . '%');
+            // $query->orWhere('variation_brand_details.name', 'like', '%' . $term . '%');
            
         });
         }
@@ -793,5 +795,27 @@ public function product_report_print(Request $request)
             $products = $products->orderBy('VBD.qty_available', 'desc')
                         ->get();  
             return view('admin.report.product.product_report_print',compact('products'));        
+}
+
+public function get_product_status($id)
+{
+    $model=Product::find($id);
+    return view('admin.production.product.include.get_product_status',compact('model'));
+}
+
+public function post_product_status(Request $request)
+{
+    $model =Product::find($request->product_id);
+    for ($i=0; $i <count($request->variation_id) ; $i++) { 
+        $variation=Variation::find($request->variation_id[$i]);
+        $variation->default_purchase_price =$request->default_purchase_price[$i];
+        $variation->default_sell_price =$request->default_sell_price[$i];
+        $variation->save();
+    }
+    $model->status=$request->status;
+    $model->save();
+
+    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated')]);
+
 }
 }

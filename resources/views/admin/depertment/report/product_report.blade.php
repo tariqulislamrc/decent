@@ -14,10 +14,7 @@
 <form action="{{route('admin.report.store')}}" method="post" class="ajax_form"
     enctype="multipart/form-data">
     @csrf
-    <div class="card">
-        <div class="card-header">
-            <h6>{{_lang('Depertment Product Report')}}</h6>
-        </div>
+    <div class="card card-box border border-primary">
         <div class="card-body">
             <div class="row">
 
@@ -48,9 +45,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="data">
-                
-            </div>
+
+                <div class="row mt-2">
+                         <div class="col-md-6 mx-auto text-center">
+                            
+                            <button type="button" class="btn btn-primary btn-sm w-100" id="check_it">Get Product InWorkOrder</button>
+                            <button type="button" class="btn btn-sm btn-info w-100" id="checking" style="display: none;">
+                            <i class="fa fa-spinner fa-spin fa-fw"></i>Checking...</button>
+                        </div>
+                    </div> <br> <hr>
+                <div class="row" id="data">
+                    
+                </div>
         </div>
 
     </div>
@@ -61,26 +67,54 @@
 @push('scripts')
 <script>
 $('.select').select2();
-$(document).on('change', '#work_order_id,#department_id', function () {
-// it will get action url
-$('.pageloader').show();
+// $(document).on('change', '#work_order_id,#department_id', function () {
+// // it will get action url
+// $('.pageloader').show();
+//     var url = "";
+//     var id = $("#work_order_id").val();
+//     var depertment = $("#department_id").val();
+//         $.ajax({
+//             url: url,
+//             data: {
+//             id: id,
+//             depertment:depertment
+//             },
+//             type: 'Get',
+//             dataType: 'html'
+//         })
+//     .done(function (data) {
+//         $('.pageloader').hide();
+//           $('#data').html(data);
+//           $("#data").find('.select_custom').select2();
+//     })
+// });
+
+$(document).on('click', '#check_it', function () {
+    $("#check_it").hide();
+    $('#checking').show();
     var url = "{{ route('admin.report.get_variation_product') }}";
     var id = $("#work_order_id").val();
     var depertment = $("#department_id").val();
+    if (id =="" || depertment =="") {
+      toastr.error("Select depertment/WorkOrder first");
+       $("#check_it").show();
+       $('#checking').hide();
+    }else{
         $.ajax({
             url: url,
             data: {
-            id: id,
-            depertment:depertment
+            depertment:depertment,id:id
             },
             type: 'Get',
             dataType: 'html'
         })
     .done(function (data) {
-        $('.pageloader').hide();
+          $("#check_it").show();
+          $('#checking').hide();
           $('#data').html(data);
-          $("#data").find('.select_custom').select2();
+         $("#data").find('.select_custom').select2();
     })
+  }
 });
 _classformValidation();
 </script>

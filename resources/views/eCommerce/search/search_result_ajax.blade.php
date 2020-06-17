@@ -1,4 +1,4 @@
-@extends('eCommerce.layouts.app')   
+@extends('eCommerce.layouts.app')
 
 	@push('main')
 	 <!-- mt main start here -->
@@ -49,21 +49,22 @@
 								@if(count($hot_sale) > 0)
                                     @foreach ($hot_sale as $hot_sale_item)
                                     @php
-                                    
+
 										$find_price =  App\models\Production\Variation::where('product_id', $hot_sale_item->id)->get();
-										if(count($find_price) > 0) {
+										$per_product_price = 0;
+                                        if(count($find_price) > 0) {
 											$total_product_variation = count($find_price);
 											$price = 0;
-											
+
 											foreach($find_price as $row) {
 												$default_price = $row['default_sell_price'];
 												$price = $price + $default_price;
 											}
-									
+
 											$per_product_price = round($price / $total_product_variation) ;
-											
+
                                         }
-                                        
+
 									@endphp
 									<div class="mt-product4 mt-paddingbottom20">
 										<div class="img">
@@ -81,15 +82,15 @@
 											<span class="price">৳ {{$per_product_price}} </span>
 										</div>
 									</div>
-								@endforeach		
-								@else 
+								@endforeach
+								@else
 									<p style="margin: 0 0 9.5px;
 									padding: 10px;
 									font-size: 20px;
 									background-color: #ddd;
 									color: red;
 									text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
-								@endif							
+								@endif
 							</section>
 						</aside>
 						<div class="col-xs-12 col-sm-8 col-md-9 wow fadeInRight" data-wow-delay="0.4s">
@@ -130,7 +131,7 @@
 
 									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
 									$high = $high_price->default_sell_price != null ? $high_price->default_sell_price : 0;
-									
+
 								@endphp
 								<li>
 									<!-- mt product1 large start here -->
@@ -146,13 +147,13 @@
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
 															@php
 																$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
-															@endphp	
+															@endphp
 															@if ($check)
 																<i class="fa fa-heart" aria-hidden="true"></i>
-															@else 	
+															@else
 																<i class="fa fa-heart-o" aria-hidden="true"></i>
 															@endif
-															
+
 															</a></li>
 														{{-- <li><a href="#"><i class="icomoon icon-exchange"></i></a></li> --}}
 													</ul>
@@ -172,7 +173,7 @@
 								@endforeach
 							</ul><!-- mt productlisthold end here -->
 							{{ $products->links('eCommerce.paginate') }}
-							@else 
+							@else
 
 								<div id="NoProductFound">No Product Found For This Category</div>
 
@@ -189,9 +190,9 @@
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-		
+
 		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-		
+
 		$.ajax({
             type: 'GET',
             url: url,
@@ -200,7 +201,7 @@
             },
 			beforeSend: function() {
                 $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
-            }, 
+            },
             success: function (data) {
                 if(data.status == 'success') {
                     toastr.success(data.message);
@@ -213,4 +214,3 @@
 	})
 </script>
 @endpush
-	

@@ -21,7 +21,7 @@
             aria-hidden="true"></i>
         <span class="app-menu__label">{{_lang('Sale Pos')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
     </a>
-    <ul class="treeview-menu">
+    {{--<ul class="treeview-menu">
 
         <li class="mt-1">
             <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}"
@@ -45,15 +45,49 @@
                 {{_lang('All Sale')}}
             </a>
         </li>
+--}}
 
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('admin/admin/return') ? 'active':''}}"
-                href="{{ route('admin.sale.return.index') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Sale Return List')}}
-            </a>
-        </li>
-    </ul>
+            <ul class="treeview-menu">
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}"
+                       href="{{ route('admin.sale.pos.create') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Pos')}}
+                    </a>
+                </li>
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/add') ? 'active':''}}"
+                       href="{{ route('admin.sale.add') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Add Sale')}}
+                    </a>
+                </li>
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}"
+                       href="{{ route('admin.sale.pos.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('All Sale')}}
+                    </a>
+                </li>
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/return/create') ? 'active':''}}"
+                       href="{{ route('admin.sale.return.create') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Return Sale')}}
+                    </a>
+                </li>
+
+                <li class="mt-1">
+                    <a class="treeview-item {{Request::is('admin/sale/return') ? 'active':''}}"
+                       href="{{ route('admin.sale.return.index') }}">
+                        <i class="icon fa fa-circle-o"></i>
+                        {{_lang('Sale Return List')}}
+                    </a>
+                </li>
+            </ul>
 </li>
 @endcan
 

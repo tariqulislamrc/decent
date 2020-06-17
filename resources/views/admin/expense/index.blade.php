@@ -19,7 +19,7 @@
         <div class="tile">
             <h3 class="tile-title">
             @can('expense.create')
-            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.ex.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.ex.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('create')}}</button>
             @endcan
             </h3>
             <div class="card">
@@ -80,4 +80,7 @@
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
 <script src="{{ asset('js/expense/expense.js') }}"></script>
+<script>
+    _componentSelect2Normal();
+</script>
 @endpush

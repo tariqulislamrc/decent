@@ -11,7 +11,7 @@
 @section('content')
 <!-- Basic initialization -->
 <p class="text-right"> 
-<a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a>
+{{-- <a class="btn btn-danger" href="{!!  url()->previous() !!}"><i class="fa fa-backward" aria-hidden="true"></i>{{ _lang('Go Back') }}</a> --}}
 </p>
 <div class="tile">
     <div class="row">
@@ -57,7 +57,7 @@ $('.pageloader').show();
         })
     .done(function (data) {
         $('.pageloader').hide();
-          $('#data').html(data);
+        $('#data').html(data);
     })
 });
 </script>

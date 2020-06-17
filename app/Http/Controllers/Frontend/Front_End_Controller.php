@@ -108,7 +108,7 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.special_offer', compact('offer', 'category', 'items','banner'));
 
     }
- 
+
     public function aboutUs(){
         $model = AboutUs::first();
         $our_team = OurTeam::all();
@@ -261,7 +261,7 @@ class Front_End_Controller extends Controller{
     public function invoice($id) {
         $transaction =  Transaction::where('reference_no',$id)->first();
         $transaction_sale = TransactionSellLine::where('transaction_id',$transaction->id)->get();
-        
+
         // find the client
         $client = Client::findOrFail($transaction->client_id);
         return view('eCommerce.invoice',compact('transaction','transaction_sale', 'client'));
@@ -270,10 +270,10 @@ class Front_End_Controller extends Controller{
     // category_offer
     public function category_offer($slug) {
         $category = Category::where('category_slug', $slug)->firstOrFail();
-        
+
         $product_id = [];
         $brand_id = get_option('default_brand');
-        
+
         $product = EcommerceProduct::all();
 
         foreach ($product as $value) {
@@ -293,7 +293,8 @@ class Front_End_Controller extends Controller{
         $text = $request->text;
         $product_id = [];
         $brand_id = get_option('default_brand');
-        
+
+
         $product = EcommerceProduct::all();
 
         foreach ($product as $value) {

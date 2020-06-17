@@ -88,7 +88,7 @@
 	<script src="{{asset('backend/js/toastr.min.js')}}"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 	<script src="{{asset('frontend')}}/js/main.js"></script>
-	
+
 	@stack('scripts')
 	<script>
         $.ajaxSetup({
@@ -96,7 +96,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
 		});
-        
+
         $(document).ready(function() {
             /*
             * For Logout

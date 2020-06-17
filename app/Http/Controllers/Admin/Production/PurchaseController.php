@@ -83,6 +83,9 @@ class PurchaseController extends Controller
                         return 'N/A';
                     }
                 })
+                 ->editColumn('reference_no', function ($model) {
+                  return '<a title="view Details" data-url="'.route('admin.purchase_view',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f">'.$model->reference_no.'</a>';
+                 })
                 ->editColumn('payment_status', function ($document) {
                     if ($document->payment_status == 'Paid') {
                         return '<span class="badge badge-success">' . 'Paid' . '</span>';
@@ -94,7 +97,7 @@ class PurchaseController extends Controller
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.purchase.action', compact('model'));
-                })->rawColumns(['action','status', 'payment_status','total'])->make(true);
+                })->rawColumns(['action','status', 'payment_status','total','reference_no'])->make(true);
         }
     }
 
@@ -255,7 +258,7 @@ class PurchaseController extends Controller
 
         // Activity Log
         activity()->log('Created a Purchase - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => route('admin.production-purchase.create')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => route('admin.production-purchase.details',$id)]);
     }
 
     /**
@@ -344,6 +347,7 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $model = Transaction::findOrFail($id);
+        $due =$request->final_total-$model->paid;
         $model->reference_no = $request->reference_no;
         $model->date = $request->purchase_date;
         $model->status = $request->status;
@@ -352,6 +356,7 @@ class PurchaseController extends Controller
         $model->discount_type = $request->discount_type;
         $model->discount_amount = $request->total_discount_amount;
         $model->net_total = $request->final_total;
+        $model->due = $due;
         $model->stuff_note = $request->stuff_notes;
         $model->sell_note = $request->sell_notes;
         $model->transaction_note = $request->transaction_notes;
@@ -377,9 +382,9 @@ class PurchaseController extends Controller
             $purchase->save();
 
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
-            $stock = $raw->stock;
-            $old_qty = $request->old_qty[$i];
-            $new_stock = ($stock - $old_qty) + $request->qty[$i];
+            $stock = $raw->stock;  
+            $old_qty = ($raw->stock-$request->old_qty[$i]?$request->old_qty[$i]:0);
+            $new_stock = $old_qty + $request->qty[$i];
             $raw->stock = $new_stock;
             $raw->save();
         }
@@ -387,7 +392,7 @@ class PurchaseController extends Controller
 
         // Activity Log
         activity()->log('Updated a Purchase - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfuly')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfuly'),'goto' => route('admin.production-purchase.details',$id)]);
     }
 
     /**
@@ -402,9 +407,10 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $type = Transaction::where('id', $id)->delete();
-//        $type = TransactionPayment::where('transaction_id', $id)->delete();
-//        $type = Purchase::where('transaction_id', $id)->delete();
+        $model = Transaction::where('id', $id);
+        $payment = TransactionPayment::where('transaction_id', $id)->delete();
+        $purchase = Purchase::where('transaction_id', $id)->delete();
+        $model->delete();
 
         return response()->json(['message' => 'Data Deleted Success full', 'goto' => route('admin.production-purchase.index')]);
     }
@@ -543,5 +549,14 @@ class PurchaseController extends Controller
     {
         $models = ProductMaterial::where('product_id', $request->id)->get();
         return view('admin.production.purchase.product-material', compact('models'));
+    }
+
+    public function view($id)
+    {
+     if (!auth()->user()->can('purchase.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $model =Transaction::find($id);
+        return view('admin.production.purchase.view',compact('model'));
     }
 }

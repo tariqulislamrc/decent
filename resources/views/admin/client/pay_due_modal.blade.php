@@ -39,6 +39,8 @@
 			<div class="col-md-6">
 				<div class="card-body">
 					<strong>{{ _lang('Customer') }}: </strong>{{ $contact_details->name }}<br>
+					<strong>{{ _lang('Email') }}: </strong>{{ $contact_details->email }}<br>
+					<strong>{{ _lang('Mobile') }}: </strong>{{ $contact_details->mobile }}<br>
 					<br><br>
 				</div>
 			</div>

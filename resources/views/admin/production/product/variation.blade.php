@@ -45,12 +45,12 @@
                                     {{ $item->name }}
                                 </th>
                                 @endforeach
-                                <th>
+                               {{--  <th>
                                     {{_lang('Purchase Price')}}
                                 </th>
                                 <th>
                                     {{_lang('Sell Price')}}
-                                </th>
+                                </th> --}}
                                 <th width="10%">
                                     <a data-placement="bottom" id="addVariation" title="Add More Variation Product" type="button" class="btn btn-success text-light" data-url="{{ route('admin.production-product.variation_add', $model->id) }}"><i class="fa fa-plus-square mr-2"
                                             aria-hidden="true"></i></i>{{_lang('Add')}}</a>
@@ -61,6 +61,8 @@
                             <tr>
                                 <td>
                                     <input type="text" name="variation[sub_sku][0]" class="form-control" value="{{ $model->articel }}-0">
+                                    <input type="hidden" name="variation[default_purchase_price][0]" class="form-control" value="0.00">
+                                    <input type="hidden" name="variation[default_sell_price][0]" class="form-control" value="0.00">
                                 </td>
                                 @foreach ($variations as $item)
                                 <td>
@@ -73,14 +75,14 @@
                                     </select> 
                                 </td>
                                 @endforeach
-                                <td>
-                                    <input type="text" name="variation[default_purchase_price][0]" class="form-control" value="">
+                             {{--    <td>
+                                    <input type="text" name="variation[default_purchase_price][0]" class="form-control" value="0.00">
                                 </td>
                                 <td>
-                                    <input type="text" name="variation[default_sell_price][0]" class="form-control" value="">
-                                </td>
+                                    <input type="text" name="variation[default_sell_price][0]" class="form-control" value="0.00">
+                                </td> --}}
                                 <td>
-                                    <button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
+                                    <button type="button" name="remove" class="btn btn-danger btn-sm remmove"><i class="fa fac-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>

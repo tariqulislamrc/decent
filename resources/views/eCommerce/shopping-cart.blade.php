@@ -36,7 +36,7 @@
                         </li>
                         <li>
                             <span class="counter">03</span>
-                            <strong class="title">Order Complete</strong>
+                            <strong class="title">Order Request Complete</strong>
                         </li>
                     </ul>
                 </div>
@@ -180,6 +180,41 @@
 <script src="{{ asset('js/eCommerce/cart.js') }}"></script>
 <script>
     _formValidation();
+    @if(session()->get('coupon_text'))
+    var total_hidden = $('#total_hidden').val();
+    var sub_total_hidden = $('#sub_total_hidden').val();
+
+    $.ajax({
+            url: "{{route('coupon-check')}}",
+            data: {
+                coupon: "{{session()->get('coupon_text')}}"
+            },
+            type: 'Get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+           if (data.status == 'success') {
+               var amt = data.coupon.discount_amount;
+
+                if (data.coupon.discount_type == 'percentage') {
+                    var total_amt = (total_hidden * amt) / 100;
+                    var sub_total = total_hidden - total_amt;
+
+                    $('#total').text(sub_total);
+                    $('#total_hidden').val(sub_total);
+                    $('#coupon_amt').val(total_amt);
+                    $('.mt-holder').hide('500');
+                } else {
+                    var sub_total = total_hidden - amt;
+                    $('#total').text(sub_total);
+                    $('#sub_total_hidden').val(sub_total);
+                     $('#coupon_amt').val(amt);
+                    $('.mt-holder').hide('500');
+                }
+            }
+        })
+    
+    @endif
 </script>
 @endpush
 

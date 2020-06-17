@@ -91,13 +91,14 @@ class StoreRequestController extends Controller
                 'request_date'=>'required',
 
         ]);
-        $total_qty =array_sum($request->qty);
-       
-        if ($total_qty==0) {
-          throw ValidationException::withMessages(['message' => _lang('No Zero Qty Send Or enter non numeric value encounter')]);
-        }
 
         if (isset($request->raw_material_id)) {
+             $rstq =$request->qty?$request->qty:0;
+              $total_qty =array_sum($rstq);
+             
+              if ($total_qty==0) {
+                throw ValidationException::withMessages(['message' => _lang('No Zero Qty Send Or enter non numeric value encounter')]);
+              }
             $store =new DepertmentStore;
             $store->dstore_id =rand();
             $store->depertment_id =$request->depertment_id;
@@ -120,11 +121,19 @@ class StoreRequestController extends Controller
           }
         }
 
-          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
+          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created'),'window'=>route('admin.store_request_print',$store->id)]);
       }
       else{
         throw ValidationException::withMessages(['message' => _lang('First Select Item Then Send Request')]);
       }
+    }
+
+
+
+    public function store_request_print($id)
+    {
+      $model =DepertmentStore::with(['store_request'])->findOrFail($id);
+      return view('admin.depertment.request.store_request_print',compact('model'));
     }
 
     /**
@@ -204,6 +213,64 @@ class StoreRequestController extends Controller
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'goto'=>route('admin.request.index')]);
     }
 
+    public function approve_all_request(Request $request,$id)
+    {
+        if (!auth()->user()->can('store_request.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+       if ($request->isMethod('get')) {
+
+           $models =DepertmentStore::with(['store_request'])->findOrFail($id);
+
+           return view('admin.depertment.request.approve_all_request',compact('models'));
+       }
+       else
+       {
+        if (isset($request->raw_material_id)) {
+          $total_qty =0;
+          for ($i=0; $i <count($request->raw_material_id) ; $i++) { 
+            if ($request->qty[$i]>0) {
+              $model =StoreRequest::findOrFail($request->store_request_id[$i]);
+               if (($request->qty[$i]+$model->approve_qty)>$model->qty) {
+                   throw ValidationException::withMessages(['message' => _lang('Request Qty >Approve Qty')]);
+                 }
+
+                  $total_qty+=$request->qty[$i];
+                  $model->approve_qty =$model->approve_qty+$request->qty[$i];
+                  $model->approve_date=date('Y-m-d');
+                  $model->status=$request->status;
+                  $model->note=$request->note;
+                  $model->updated_by=auth()->user()->id;
+                  $model->save();
+
+                  $approve =new ApproveStoreItem;
+                  $approve->depertment_id=$request->depertment_id[$i];
+                  $approve->raw_material_id=$request->raw_material_id[$i];
+                  $approve->work_order_id=$request->work_order_id[$i];
+                  $approve->store_request_id=$model->id;
+                  $approve->qty=$request->qty[$i];
+                  $approve->note=$request->note;
+                  $approve->updated_by=auth()->user()->id;
+                  $approve->approve_date=date('Y-m-d');
+                  $approve->save();
+
+                  //row material stock update
+                  $material=$approve->material;
+                  $material->stock =$material->stock-$request->qty[$i];
+                  $material->save();
+                  $this->status_change($id);
+            }
+          }
+
+           if($total_qty <= 0){
+               throw ValidationException::withMessages(['message' => _lang('You Cant Approve Zero Quantity')]);
+              }
+
+          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'goto'=>route('admin.request.index')]);
+        }
+       }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -215,17 +282,28 @@ class StoreRequestController extends Controller
          if (!auth()->user()->can('store_request.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $model =StoreRequest::find($id)->delete();
+        $model =StoreRequest::find($id);
+        if ($model->approve_qty==0) {
+           $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
+        }else{
+           throw ValidationException::withMessages(['message' =>'Can not Delete Because Item already approve this Request']);
+        }
     }
 
 
     public function request_destroy($id)
     {
-       $model =DepertmentStore::find($id);
-       $model->store_request()->delete();
-       $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
+       $approve =StoreRequest::where('depertment_store_id',$id)->sum('approve_qty');
+       if ($approve==0) {
+         $model =DepertmentStore::find($id);
+         $model->store_request()->delete();
+         $model->delete();
+          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
+       }
+       else{
+          throw ValidationException::withMessages(['message' =>'Can not Delete Because Item already approve this Request']);
+       }
     }
 
     private function status_change($id)

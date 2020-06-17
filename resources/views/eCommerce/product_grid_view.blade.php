@@ -1,4 +1,4 @@
-@extends('eCommerce.layouts.app')   
+@extends('eCommerce.layouts.app')
 
 	@push('main')
 	 <!-- mt main start here -->
@@ -50,28 +50,30 @@
 									@foreach ($hot_sale as $hot_sale_item)
 									@php
 										$find_price =  App\models\Production\Variation::where('product_id', $hot_sale_item->id)->get();
-										if(count($find_price) > 0) {
+										$per_product_price = 0;
+
+if(count($find_price) > 0) {
 											$total_product_variation = count($find_price);
 											$price = 0;
-											
+
 											foreach($find_price as $row) {
 												$default_price = $row['default_sell_price'];
 												$price = $price + $default_price;
 											}
-									
+
 											$per_product_price = round($price / $total_product_variation) ;
-											
+
 										}
 									@endphp
 									<div class="mt-product4 mt-paddingbottom20">
 										<div class="img">
-											<a href="{{route('product-details',$hot_sale_item->id)}}">
+											<a href="{{route('product-details',$hot_sale_item->product_slug)}}">
 												<img src="{{isset($hot_sale_item->photo) && $hot_sale_item->photo != null ?asset('storage/product/'.$hot_sale_item->photo): asset('img/product.jpg')}}">
 											</a>
 										</div>
 										<div class="text">
 											<div class="frame">
-												<strong><a href="{{route('product-details',$hot_sale_item->id)}}">{{$hot_sale_item->name}}</a></strong>
+												<strong><a href="{{route('product-details',$hot_sale_item->product_slug)}}">{{$hot_sale_item->name}}</a></strong>
 												<ul class="mt-stars">
 													<li class="list-group-item count_rating" data-score={{$hot_sale_item->avarage_retting}}>
 												</ul>
@@ -79,15 +81,15 @@
 											<span class="price">৳ {{$per_product_price}} </span>
 										</div>
 									</div>
-								@endforeach		
-								@else 
+								@endforeach
+								@else
 									<p style="margin: 0 0 9.5px;
 									padding: 10px;
 									font-size: 20px;
 									background-color: #ddd;
 									color: red;
 									text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
-								@endif							
+								@endif
 							</section>
 						</aside>
 						<div class="col-xs-12 col-sm-8 col-md-9 wow fadeInRight" data-wow-delay="0.4s">
@@ -124,11 +126,11 @@
 								@foreach ($products as $item)
 								@php
 									$low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-									$low = $low_price->default_sell_price != null ? $low_price->default_sell_price : 0;
+									$low = $low_price ? $low_price->default_sell_price != null ? $low_price->default_sell_price : 0 : 0;
 
 									$high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-									$high = $high_price->default_sell_price != null ? $high_price->default_sell_price : 0;
-									
+									$high = $high_price ? $high_price->default_sell_price != null ? $high_price->default_sell_price : 0 : 0;
+
 								@endphp
 								<li>
 									<!-- mt product1 large start here -->
@@ -136,7 +138,7 @@
 										<div class="box">
 											<div class="b1">
 												<div class="b2">
-													<a href="{{route('product-details',$item->id)}}">
+													<a href="{{route('product-details',$item->product_slug)}}">
 														<img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="image description">
 													</a>
 													{{-- <ul class="mt-stars">
@@ -146,17 +148,17 @@
 														<li><i class="fa fa-star-o"></i></li>
 													</ul> --}}
 													<ul class="links">
-														<li><a href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+														<li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >
 															@php
 																$check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
-															@endphp	
+															@endphp
 															@if ($check)
 																<i class="fa fa-heart" aria-hidden="true"></i>
-															@else 	
+															@else
 																<i class="fa fa-heart-o" aria-hidden="true"></i>
 															@endif
-															
+
 															</a></li>
 														{{-- <li><a href="#"><i class="icomoon icon-exchange"></i></a></li> --}}
 													</ul>
@@ -164,7 +166,7 @@
 											</div>
 										</div>
 										<div class="txt">
-											<strong class="title"><a href="{{route('product-details',$item->id)}}">{{$item->name}}</a></strong>
+											<strong class="title"><a href="{{route('product-details',$item->product_slug)}}">{{$item->name}}</a></strong>
 											@if ($low == $high)
 												<span class="price">{{get_option('currency')}} <span>{{$low}}</span></span>
 											@else
@@ -176,7 +178,7 @@
 								@endforeach
 							</ul><!-- mt productlisthold end here -->
 							{{ $products->links('eCommerce.paginate') }}
-							@else 
+							@else
 
 								<div id="NoProductFound">No Product Found For This Category</div>
 
@@ -193,9 +195,9 @@
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-		
+
 		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-		
+
 		$.ajax({
             type: 'GET',
             url: url,
@@ -204,7 +206,7 @@
             },
 			beforeSend: function() {
                 $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
-            }, 
+            },
             success: function (data) {
                 if(data.status == 'success') {
                     toastr.success(data.message);
@@ -217,4 +219,3 @@
 	})
 </script>
 @endpush
-	

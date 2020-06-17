@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Production Work Order'), 'modal' => 'lg'])
+@push('admin.css')
+<style>
+.table th, .table td {
+padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
@@ -20,7 +27,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('production_work_order.create')
-                        <a data-placement="bottom" title="Create New Production Work Order" type="button" class="btn btn-info" href ="{{ route('admin.production-work-order.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
+                        <a data-placement="bottom" title="Create New Production Work Order" type="button" class="btn btn-info" href ="{{ route('admin.production-work-order.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Work Order')}}</a>
                     @endcan
                 </h3>
                 <div class="tile-body">

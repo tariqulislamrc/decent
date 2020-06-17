@@ -3,6 +3,7 @@
 use App\Models\Employee\EmployeeShift;
 use App\User;
 use App\models\Client;
+use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ApproveStoreItem;
@@ -88,20 +89,20 @@ if (!function_exists('get_language_list')) {
 }
 
 function gv($params, $keys, $default = Null) {
-	return (isset($params[$keys]) AND $params[$keys]) ? $params[$keys] : $default;
+	return (isset($params[$keys]) and $params[$keys]) ? $params[$keys] : $default;
 }
 
 function gbv($params, $keys) {
-	return (isset($params[$keys]) AND $params[$keys]) ? 1 : 0;
+	return (isset($params[$keys]) and $params[$keys]) ? 1 : 0;
 }
 
 if (!function_exists('get_option')) {
     function get_option($name, $default = null)
     {
-	
+
         if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
 			$setting = DB::table('settings')->where('name', $name)->first();
-	
+
             if ($setting and $setting->value) {
                 return $setting->value;
             }
@@ -360,8 +361,8 @@ function numer_padding($id = 1, $code_digits=3){
 	function current_designation($id){
 		$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
 
-		$designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d AND $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
+		$designation = ($emp_d and $emp_d->designation->name)?$emp_d->designation->name:"";
+    	$dept_id = ($emp_d and $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
 
     	return $designation;
     }
@@ -369,7 +370,7 @@ function numer_padding($id = 1, $code_digits=3){
     function current_dept($id){
     	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
     	// $designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d AND $emp_d->department_id)?$emp_d->department_id:"";
+    	$dept_id = ($emp_d and $emp_d->department_id)?$emp_d->department_id:"";
     	$dept = App\models\employee\Department::where('id',$dept_id)->first();
     	return  $dept ? $dept->name: "";
 	}
@@ -453,6 +454,13 @@ function report_product_flow($dept_id,$wrk_id,$v_id,$id)
   return $value;
 }
 
+
+function get_product($id)
+{
+	$name =Product::select('name','id')->find($id);
+	return $name->name;
+}
+
 function rawMaterialUseQty($id){
 	$value =MaterialReport::where('done_material_report_id',$id);
 
@@ -527,7 +535,7 @@ function find_employee_earning_salary_using_employee_id($employee_id, $payroll_i
 	if($emp_salary) {
 
 		$earning = $emp_salary->total_earning;
-	
+
 	} else {
 
 		$earning = 0;
@@ -539,13 +547,13 @@ function find_employee_earning_salary_using_employee_id($employee_id, $payroll_i
 
 // find employee salary structure  deduction total using employee id
 function find_employee_deduction_salary_using_employee_id($employee_id, $payroll_id){
-	
+
 	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
 		$earning = $emp_salary->total_deduction;
-	
+
 	} else {
 
 		$earning = 0;
@@ -557,13 +565,13 @@ function find_employee_deduction_salary_using_employee_id($employee_id, $payroll
 
 // find employee total salary structure  deduction total using employee id
 function find_employee_total_salary_using_employee_id($employee_id, $payroll_id){
-	
+
 	$emp_salary = EmployeeSalary::where('employee_id', $employee_id)->where('id', $payroll_id)->first();
 
 	if($emp_salary) {
 
 		$earning = $emp_salary->net_salary;
-	
+
 	} else {
 
 		$earning = 0;
@@ -665,7 +673,7 @@ function get_client_email($id) {
 function get_client_address($id) {
 	$client = Client::where('id', $id)->first();
 	if($client) {
-		
+
 		if($client->address != '' ) {
 			$address = $client->address ;
 		} else {
@@ -743,12 +751,12 @@ function getIp(){
 	function bangla_date()
 	{
 	$currentDate = date("l, F j, Y");
-	    
-	$engDATE = array(1,2,3,4,5,6,7,8,9,0, 'January', 'February', 'March','April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
-	    
-	$bangDATE = array('১','২','৩','৪','৫','৬','৭','৮','৯','০','জানুয়ারী','ফেব্রুয়ারী','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর','শনিবার','রবিবার','সোমবার','মঙ্গলবার',' বুধবার','বৃহস্পতিবার','শুক্রবার' ); 
 
-	$convertedDATE = str_replace($engDATE, $bangDATE, $currentDate); 
+	$engDATE = array(1,2,3,4,5,6,7,8,9,0, 'January', 'February', 'March','April', 'May', 'June', 'July', 'August','September', 'October', 'November', 'December', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
+
+	$bangDATE = array('১','২','৩','৪','৫','৬','৭','৮','৯','০','জানুয়ারী','ফেব্রুয়ারী','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর','শনিবার','রবিবার','সোমবার','মঙ্গলবার',' বুধবার','বৃহস্পতিবার','শুক্রবার' );
+
+	$convertedDATE = str_replace($engDATE, $bangDATE, $currentDate);
 
 	return $convertedDATE;
 	}
@@ -776,23 +784,23 @@ function getIp(){
         }
         if (!empty($date)) {
             $query->whereDate('date', $date);
-        } 
+        }
 
 
         if (!empty($month)) {
             $query->whereMonth('date', $month);
-        }  
+        }
         if (!empty($year)) {
             $query->whereYear('date', $year);
-        }  
+        }
 
         if (!empty($year) && !empty($month)) {
             $query->whereMonth('date', $month)->whereYear('date', $year);
-        } 
+        }
         if (!auth()->user()->hasRole('Super Admin')) {
             $query->where('hidden',false);
-        }              
-      
+        }
+
 
         $trans_details = $query->get();
 
@@ -805,7 +813,7 @@ function getIp(){
         // $output['trans_due'] = $trans_details->sum('net_total') -
         //                             $trans_details->sum('total_paid');
         // $output['total_shipping_charges'] = $trans_details->sum('shipping_charges');
-  
+
         // return $output;
     }
 
@@ -816,9 +824,10 @@ function getIp(){
       if ($depert !=null) {
       	return true;
       }
+
 	}
-	
-	// Sadik Work Start 
+
+	// Sadik Work Start
 		// make_slug
 		function make_slug($string){
 
@@ -857,4 +866,119 @@ function getIp(){
 		}
 
 	// Sadik Work Stop
+
+
+
+    function convert_number_to_words($number)
+	{
+
+		$hyphen      = '-';
+		$conjunction = '  ';
+		$separator   = ' ';
+		$negative    = 'negative ';
+		$decimal     = ' point ';
+		$dictionary  = array(
+			0                   => 'Zero',
+			1                   => 'One',
+			2                   => 'Two',
+			3                   => 'Three',
+			4                   => 'Four',
+			5                   => 'Five',
+			6                   => 'Six',
+			7                   => 'Seven',
+			8                   => 'Eight',
+			9                   => 'Nine',
+			10                  => 'Ten',
+			11                  => 'Eleven',
+			12                  => 'Twelve',
+			13                  => 'Thirteen',
+			14                  => 'Fourteen',
+			15                  => 'Fifteen',
+			16                  => 'Sixteen',
+			17                  => 'Seventeen',
+			18                  => 'Eighteen',
+			19                  => 'Nineteen',
+			20                  => 'Twenty',
+			30                  => 'Thirty',
+			40                  => 'Fourty',
+			50                  => 'Fifty',
+			60                  => 'Sixty',
+			70                  => 'Seventy',
+			80                  => 'Eighty',
+			90                  => 'Ninety',
+			100                 => 'Hundred',
+			1000                => 'Thousand',
+			1000000             => 'Million',
+			1000000000          => 'Billion',
+			1000000000000       => 'Trillion',
+			1000000000000000    => 'Quadrillion',
+			1000000000000000000 => 'Quintillion'
+		);
+
+		if (!is_numeric($number)) {
+			return false;
+		}
+
+		if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
+			// overflow
+			trigger_error(
+				'convert_number_to_words only accepts numbers between -' . PHP_INT_MAX . ' and ' . PHP_INT_MAX,
+				E_USER_WARNING
+			);
+			return false;
+		}
+
+		if ($number < 0) {
+			return $negative . convert_number_to_words(abs($number));
+		}
+
+		$string = $fraction = null;
+
+		if (strpos($number, '.') !== false) {
+			list($number, $fraction) = explode('.', $number);
+		}
+
+		switch (true) {
+			case $number < 21:
+				$string = $dictionary[$number];
+				break;
+			case $number < 100:
+				$tens   = ((int) ($number / 10)) * 10;
+				$units  = $number % 10;
+				$string = $dictionary[$tens];
+				if ($units) {
+					$string .= $hyphen . $dictionary[$units];
+				}
+				break;
+			case $number < 1000:
+				$hundreds  = $number / 100;
+				$remainder = $number % 100;
+				$string = $dictionary[$hundreds] . ' ' . $dictionary[100];
+				if ($remainder) {
+					$string .= $conjunction . convert_number_to_words($remainder);
+				}
+				break;
+			default:
+				$baseUnit = pow(1000, floor(log($number, 1000)));
+				$numBaseUnits = (int) ($number / $baseUnit);
+				$remainder = $number % $baseUnit;
+				$string = convert_number_to_words($numBaseUnits) . ' ' . $dictionary[$baseUnit];
+				if ($remainder) {
+					$string .= $remainder < 100 ? $conjunction : $separator;
+					$string .= convert_number_to_words($remainder);
+				}
+				break;
+		}
+
+		if (null !== $fraction && is_numeric($fraction)) {
+			$string .= $decimal;
+			$words = array();
+			foreach (str_split((string) $fraction) as $number) {
+				$words[] = $dictionary[$number];
+			}
+			$string .= implode(' ', $words);
+		}
+
+		return $string ;
+	}
 ?>

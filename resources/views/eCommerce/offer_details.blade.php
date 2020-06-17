@@ -1,7 +1,37 @@
 @extends('eCommerce.layouts.app')
-@push('admin.css')
+@push('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-@endpush
+
+    <style>
+        /* styles unrelated to zoom */
+
+        /* these styles are for the demo, but are not required for the plugin */
+        .zoom {
+            display:inline-block;
+            position: relative;
+        }
+
+        /* magnifying glass icon */
+        .zoom:after {
+            content:'';
+            display:block;
+            width:33px;
+            height:33px;
+            position:absolute;
+            top:0;
+            right:0;
+            background:url(icon.png);
+        }
+
+        .zoom img {
+            display: block;
+        }
+
+        .zoom img::selection { background-color: transparent; }
+
+    </style>
+
+    @endpush
 @push('seo_section')
     <meta name="title" content="{{$product->seo_title}}">
     <meta name="keyword" content="{{$product->keyword}}">
@@ -32,8 +62,10 @@
                         <div class="product-slider">
                             @foreach ($product->photo_details as $item)
                             <div class="slide">
-                                <img src="{{$item->photo?asset('storage/product/'.$item->photo):'http://placehold.it/610x490'}}"
-                                    alt="image descrption">
+                                 <span class='zoom zoom_image'>
+                                <img class="zoom-img" src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
+                                     alt="image descrption">
+                                </span>
                             </div>
                             @endforeach
                         </div>
@@ -238,14 +270,22 @@ $variation_name = '';
 <!-- footer of the Page -->
 @endpush
 @push('scripts')
-<script src="{{asset('js/main.js')}}"></script>
-<script src="{{asset('backend/js/parsley.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    <script src="{{asset('backend/js/parsley.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
-<script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
-<script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
-<!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+    <script src="{{ asset('js/eCommerce/product_details.js') }}"></script>
+    <script src="{{asset('frontend/js/jquery.raty.js')}}"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
+
+    {{--<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>--}}
+    <script src='{{asset('frontend/js/jquery.zoom.js')}}'></script>
+    <script>
+        $(document).ready(function(){
+            $('.zoom_image').zoom();
+
+        });
+    </script>
 <script>
     $('#content_form').parsley();
 

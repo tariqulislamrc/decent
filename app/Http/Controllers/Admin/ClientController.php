@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Utilities\TransactionUtil;
 use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
@@ -21,6 +22,12 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+   protected $transactionUtil;
+   public function __construct(TransactionUtil $transactionUtil)
+    {
+        $this->transactionUtil = $transactionUtil;
+    }
+    
     public function index()
     {
       if (!auth()->user()->can('client.create')) {
@@ -32,7 +39,7 @@ class ClientController extends Controller
     public function datatable(Request $request){
        if ($request->ajax()) {
             $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
-                    ->select('clients.name','clients.email', 'state', 'country', 'landmark', 'mobile', 'clients.id','t.hidden as hidden',
+                    ->select('clients.name','clients.email','clients.sub_type', 'state', 'country', 'landmark', 'mobile', 'clients.id','t.hidden as hidden',
                         DB::raw("SUM(IF(t.transaction_type = 'Sale', net_total, 0)) as total_invoice"),
                         DB::raw("SUM(IF(t.transaction_type = 'Sale', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
                         DB::raw("SUM(IF(t.transaction_type = 'sale_return', net_total, 0)) as total_sell_return"),
@@ -42,7 +49,10 @@ class ClientController extends Controller
                         )
               
                     ->groupBy('clients.id');
-                    $document->where('clients.client_type','client');
+                    // $document->where('clients.client_type','client');
+                    if (!empty($request->sub_type)) {
+                      $document->where('clients.sub_type',$request->sub_type);
+                    }
                     if (!auth()->user()->hasRole('Super Admin')) {
                         $document->where('clients.hidden',false);
                     }
@@ -53,7 +63,7 @@ class ClientController extends Controller
                 '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
                 
                   )
-                    ->addColumn(
+                ->addColumn(
                 'due',
                 '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
                   
@@ -62,9 +72,14 @@ class ClientController extends Controller
                 'return_due',
                 '<span class="display_currency return_due" data-orig-value="{{$total_sell_return - $sell_return_paid}}" data-currency_symbol=true data-highlight=false>{{$total_sell_return - $sell_return_paid }}</span>'
                 )
+                ->addColumn(
+                'sub_type',
+                '<span class="badge btn-danger">{{$sub_type}}</span>'
+                  
+                )
                 ->addColumn('action', function ($model) {
                     return view('admin.client.action', compact('model'));
-                })->rawColumns(['action','landmark','due','return_due'])->make(true);
+                })->rawColumns(['action','landmark','due','return_due','sub_type'])->make(true);
         }
     }
 
@@ -172,7 +187,7 @@ class ClientController extends Controller
         ]);
 
          $input = $request->only(['type',
-                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
+                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email','bank_name','bank_holder','account_name','sub_type']);
          $input['created_by'] = auth()->user()->id;
          $input['client_type']='client';
          $contact = Client::create($input);
@@ -184,11 +199,13 @@ class ClientController extends Controller
         $ref_no = $ym.'/Open-'.ref($row);
         $transaction = Transaction::create([
         'client_id'=>$contact->id,
-        'date'=>Carbon::now(),
+        'date'=>date('Y-m-d'),
         'type'=>'Debit',
         'reference_no'=>$ref_no,
+        'payment_status' => 'due',
         'transaction_type'=>'opening_balance',
         'net_total'=>$request->net_total,
+        'due'=>$request->net_total,
         'created_by'=>auth()->user()->id,
         ]);
 
@@ -208,7 +225,7 @@ class ClientController extends Controller
         ]);
 
          $input = $request->only(['type',
-                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
+                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email','bank_name','bank_holder','account_name','sub_type']);
          $input['created_by'] = auth()->user()->id;
          $input['client_type']='client';
          $contact = Client::create($input);
@@ -291,7 +308,7 @@ class ClientController extends Controller
         ]);
 
          $input = $request->only(['type',
-                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email']);
+                'name', 'mobile', 'landline', 'alternate_number', 'city', 'state', 'country', 'landmark', 'email','bank_name','bank_holder','account_name','sub_type']);
          $input['updated_by'] = auth()->user()->id;
          $contact =Client::find($id);
          $contact->update($input);
@@ -310,7 +327,7 @@ class ClientController extends Controller
                 $ob_transaction->net_total = $amount;
                 $ob_transaction->save();
                 //Update opening balance payment status
-                // $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
+                $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
             } else {
                 //Add opening balance
                 if (!empty($request->input('net_total'))) {
@@ -319,14 +336,17 @@ class ClientController extends Controller
                         $row = Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() + 1 : 1;
                         
                         $ref_no = $ym.'/Open-'.ref($row);
+
                         $transaction = Transaction::create([
-                        'client_id'=>$contact->id,
-                        'date'=>Carbon::now(),
-                        'type'=>'Debit',
-                        'reference_no'=>$ref_no,
-                        'transaction_type'=>'opening_balance',
-                        'net_total'=>$request->net_total,
-                        'created_by'=>auth()->user()->id,
+                          'client_id'=>$contact->id,
+                          'date'=>date('Y-m-d'),
+                          'type'=>'Debit',
+                          'reference_no'=>$ref_no,
+                          'payment_status' => 'due',
+                          'transaction_type'=>'opening_balance',
+                          'net_total'=>$request->net_total,
+                          'due'=>$request->net_total,
+                          'created_by'=>auth()->user()->id,
                         ]);
                 }
             }

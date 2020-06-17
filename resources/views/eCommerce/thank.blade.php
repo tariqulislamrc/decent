@@ -38,7 +38,7 @@
                         </li>
                         <li class="active">
                             <span class="counter">03</span>
-                            <strong class="title">Order Complete</strong>
+                            <strong class="title">Order Request Completed</strong>
                         </li>
                     </ul>
                     <!-- Process List of the Page end -->

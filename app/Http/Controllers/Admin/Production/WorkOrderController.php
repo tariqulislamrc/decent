@@ -154,9 +154,9 @@ class WorkOrderController extends Controller
     
             $ym = Carbon::now()->format('Y/m');
     
-            $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Sale')->withTrashed()->get()->count() + 1 : 1;
+            $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() + 1 : 1;
             
-            $ref_no = $ym.'/S-'.ref($row);
+            $ref_no = $ym.'/Wo-'.ref($row);
     
             $tx->due = $request->due;
             $tx->paid = $request->paid;
@@ -194,7 +194,7 @@ class WorkOrderController extends Controller
                 $line_purchase->qty = $request->quantity[$i];
                 $line_purchase->price = $request->price[$i];
                 $line_purchase->sub_total = $request->sub_total[$i];
-//                $line_purchase->net_total = $request->net_total[$i];
+                $line_purchase->net_total = $request->sub_total[$i];
                 $line_purchase->status = 0;
                 $line_purchase->hidden = 0;
                 $line_purchase->tek_marks = 0;

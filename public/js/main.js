@@ -1100,3 +1100,58 @@ function __sum_status_html(table, class_name) {
 }
 
 
+$(document).on('keypress', 'input.input_number', function(event) {
+     var is_decimal = $(this).data('decimal');
+
+     if (is_decimal == 0) {
+         if (__currency_decimal_separator == '.') {
+             var regex = new RegExp(/^[0-9,-]+$/);
+         } else {
+             var regex = new RegExp(/^[0-9.-]+$/);
+         }
+     } else {
+         var regex = new RegExp(/^[0-9.,-]+$/);
+     }
+
+     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+     if (!regex.test(key)) {
+         event.preventDefault();
+         return false;
+     }
+ });
+
+
+function myFunction(url) {
+    window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
+}
+    $(document).on('click', '.btn_modal', function(e) {
+            
+            e.preventDefault();
+            //open modal
+            $('#modal_remote').modal('toggle');
+            // it will get action url
+            var url = $(this).data('url');
+            // leave it blank before ajax call
+            $('.modal-body').html('');
+            // load ajax loader
+            $('#modal-loader').show();
+            $.ajax({
+                    url: url,
+                    type: 'Get',
+                    dataType: 'html'
+                })
+                .done(function(data) {
+                    $('.modal-body').html(data).fadeIn(); // load response
+                    $('#modal-loader').hide();
+                    $('#customer_name').focus();
+                    _modalFormValidation();
+                    _remortClassFormValidation();
+                    _componentDatePicker();
+                    _componentSelect2Normal();
+                })
+                .fail(function(data) {
+                    $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
+                    $('#modal-loader').hide();
+                });
+        });
+
