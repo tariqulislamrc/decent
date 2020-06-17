@@ -7,6 +7,7 @@
         <thead>
           <tr>
             <th>{{ _lang('Date') }}</th>
+            <th>{{ _lang('Store ID') }}</th>
             <th>{{ _lang('Status') }}</th>
             <th>{{ _lang('Total Materials Qty') }}</th>
             <th>{{ _lang('Action') }}</th>
@@ -17,6 +18,7 @@
           {{--  {{ dd($category) }} --}}
           <tr>
             <td>{{ formatDate($store->request_date) }}</td>
+            <td>{{ $store->dstore_id }}</td>
             <td>
               {{ $store->status }}
             </td>
@@ -25,7 +27,11 @@
             </td>
             <td>
               @can('store_request.view')
-              <a href="{{ route('admin.report.approve_request',$store->id) }}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('View') }}
+              <a href="{{ route('admin.report.approve_request',$store->id) }}" class="btn btn-success btn-sm" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i>{{ _lang('Submit Report') }}
+              </a>
+              @endcan
+              @can('store_request.view')
+              <a onclick="myFunction('{{route('admin.total_matrial_report_print',$store->id)}}')" class="btn btn-warning text-light btn-sm"><i class="fa fa-print" aria-hidden="true"></i>{{ _lang('Print') }}
               </a>
               @endcan
               @can('store_request.delete')

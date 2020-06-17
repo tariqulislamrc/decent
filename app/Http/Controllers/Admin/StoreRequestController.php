@@ -282,17 +282,28 @@ class StoreRequestController extends Controller
          if (!auth()->user()->can('store_request.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $model =StoreRequest::find($id)->delete();
+        $model =StoreRequest::find($id);
+        if ($model->approve_qty==0) {
+           $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted'),'load'=>true]);
+        }else{
+           throw ValidationException::withMessages(['message' =>'Can not Delete Because Item already approve this Request']);
+        }
     }
 
 
     public function request_destroy($id)
     {
-       $model =DepertmentStore::find($id);
-       $model->store_request()->delete();
-       $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
+       $approve =StoreRequest::where('depertment_store_id',$id)->sum('approve_qty');
+       if ($approve==0) {
+         $model =DepertmentStore::find($id);
+         $model->store_request()->delete();
+         $model->delete();
+          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]); 
+       }
+       else{
+          throw ValidationException::withMessages(['message' =>'Can not Delete Because Item already approve this Request']);
+       }
     }
 
     private function status_change($id)

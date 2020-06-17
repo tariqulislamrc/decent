@@ -463,6 +463,7 @@ $("#item").on('click', '.btn_remove', function() {
         net_total =sub_total-discount;
 
         var tax =pos_order_tax(net_total,discount);
+        $('#tax_amount').val(tax);
         net_total =net_total+tax;
 
         shipping_charges =shipping();

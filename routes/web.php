@@ -636,6 +636,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('report/get-product','DepertmentReportController@get_variation_product')->name('report.get_variation_product');
 		Route::get('department/report/material','DepertmentReportController@material')->name('department.material.report');
 		Route::get('department/report/get-material','DepertmentReportController@get_depertment_material')->name('report.get_depertment_material');
+		Route::get('get_dstore_id','DepertmentReportController@get_dstore_id');
+		Route::get('every_matrial_report_print/{id}/{date?}','DepertmentReportController@every_matrial_report_print')->name('every_matrial_report_print');
+		Route::get('total_matrial_report_print/{id}','DepertmentReportController@total_matrial_report_print')->name('total_matrial_report_print');
 		Route::get('depertment/report/material/approve/{id}','DepertmentReportController@approve_request')->name('report.approve_request');
 		Route::post('report/store-material','DepertmentReportController@material_store')->name('report.material_store');
 		Route::resource('department/report', 'DepertmentReportController');

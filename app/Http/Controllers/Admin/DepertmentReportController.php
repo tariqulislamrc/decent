@@ -262,9 +262,21 @@ class DepertmentReportController extends Controller
         return view('admin.depertment.report.material',compact('depertments'));
     }
 
+
+    public function get_dstore_id(Request $request)
+    {
+        $model=DepertmentStore::orderBy('id','DESC')->where('depertment_id',$request->department_id)->select('id','dstore_id','request_date')->get();
+        return response()->json($model);
+    }
+
     public function get_depertment_material(Request $request)
     {
-        $materials =DepertmentStore::orderBy('id','DESC')->where('depertment_id',$request->depertment)->get();
+        $materials =DepertmentStore::query();
+          if (!empty($request->dstore_id)) {
+             $materials=$materials->where('id',$request->dstore_id);
+          }
+          $materials=$materials->orderBy('id','desc')->where('depertment_id',$request->depertment)->get();
+
        return view('admin.depertment.report.include.get_material',compact('materials'));
     }
 
@@ -287,6 +299,7 @@ class DepertmentReportController extends Controller
                    throw ValidationException::withMessages(['message' => _lang('Too Large Qty Instead of Approve Qty ')]);
                }
                $model =new MaterialReport;
+               $model->depertment_store_id=$request->depertment_store_id;
                $model->store_request_id =$request->store_request_id[$i];
                $model->depertment_id=$request->depertment_id[$i];
                $model->raw_material_id =$request->raw_material_id[$i];
@@ -302,7 +315,22 @@ class DepertmentReportController extends Controller
          throw ValidationException::withMessages(['message' => _lang('You Cant Send Zero Quantity')]);
         }
 
-    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Reported Generated'),'load'=>true]);
+    return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Reported Generated'),'window'=>route('admin.every_matrial_report_print',$request->depertment_store_id),'load'=>true]);
+    }
+
+
+    public function every_matrial_report_print($id,$date=null)
+    {
+        $toDay =$date?$date:date('Y-m-d');
+        $model =MaterialReport::where('depertment_store_id',$id)->where('date',$toDay)->get();
+        return view('admin.depertment.report.every_matrial_report_print',compact('model'));
+    }
+
+
+    public function total_matrial_report_print($id)
+    {
+        $model =MaterialReport::where('depertment_store_id',$id)->get();
+        return view('admin.depertment.report.total_matrial_report_print',compact('model'));
     }
 
     //   ecommerce_report

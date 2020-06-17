@@ -3,6 +3,7 @@
 use App\Models\Employee\EmployeeShift;
 use App\User;
 use App\models\Client;
+use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ApproveStoreItem;
@@ -451,6 +452,13 @@ function report_product_flow($dept_id,$wrk_id,$v_id,$id)
 {
   $value =ProductFlow::where('depertment_id',$dept_id)->where('variation_id',$v_id)->where('work_order_id',$wrk_id)->where('done_depertment_id',$id)->sum('qty');
   return $value;
+}
+
+
+function get_product($id)
+{
+	$name =Product::select('name','id')->find($id);
+	return $name->name;
 }
 
 function rawMaterialUseQty($id){

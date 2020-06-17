@@ -34,6 +34,7 @@
 					<td>
 						<span>{{ _lang('Tax') }}</span> <br>
 						<input type="text" name="tax" class="form-control input_number" id="tax_calculation_amount">
+						<input type="hidden" name="tax_amount" class="form-control input_number" id="tax_amount">
 					</td>
 					<td>
 						<span>{{ _lang('Shipping') }}</span> <br>

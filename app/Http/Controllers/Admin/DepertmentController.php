@@ -8,6 +8,7 @@ use App\models\depertment\Depertment;
 use App\models\depertment\DepertmentEmployee;
 use App\models\depertment\DepertmentIgCategory;
 use App\models\depertment\DepertmentStore;
+use App\models\depertment\ProductFlow;
 use App\models\employee\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -179,8 +180,15 @@ class DepertmentController extends Controller
       if (!auth()->user()->can('production_department.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $model =Depertment::find($id)->forceDelete();
+        $count1 = DepertmentStore::where('depertment_id', $id)->count();
+        $count2 = ProductFlow::where('depertment_id', $id)->count();
+        if ($count1 == 0 && $count2==0) {
+        $model =Depertment::find($id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);
+         }else
+         {
+          throw ValidationException::withMessages(['message' =>'Depertment Cannot Delete Because its use in Store or Product Report']);
+         }
     }
 
 
