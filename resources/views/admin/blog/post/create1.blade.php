@@ -1,18 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Blog Posts Create'), 'modal' => 'lg'])
-{{-- Header Section --}}
-@section('page.header')
-    <div class="app-title">
-        <div>
-            <h1 data-placement="bottom" title="Posts for Blog."><i class="fa fa-universal-access mr-4"></i> {{_lang('Blog Posts')}}</h1>
-            <p>{{_lang('Create Post for Blog. Here you can Add Blog Posts')}}</p>
-        </div>
-    </div>
-@stop
-
-{{-- Main Section --}}
-@section('content')
-<!-- Basic initialization -->
-   <div class="card">
+<div class="card">
     <div class="card-header">
         <h6>{{_lang('Add New Blog Post')}}</h6>
     </div>
@@ -90,18 +76,9 @@
         </form>
     </div>
 </div>
-<!-- /basic initialization -->
-@stop
 
-{{-- Script Section --}}
-@push('scripts')
-    <script type="text/javascript" src="{{asset('backend/js/plugins/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('backend/js/plugins/dataTables.bootstrap.min.js')}}"></script>
-    <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-    {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
-    <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/eCommerce/blog-post.js') }}"></script>
-        <script>
+
+<script>
 
     $('.select').select2();
         $(document).ready(function () {
@@ -213,5 +190,3 @@
 
         _ImageUpload();
 </script>
-@endpush
-

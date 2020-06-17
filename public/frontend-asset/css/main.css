@@ -9085,7 +9085,7 @@ a:hover {
 -------------------------------------------------------------------*/
 
 .mt-blog-detail.fullwidth {
-	margin: 0 0 162px;
+	/* margin: 0 0 162px; */
 }
 
 .mt-blog-detail.style4 {
@@ -9352,7 +9352,7 @@ a:hover {
 	font-size: 14px;
 	line-height: 27px;
 	font-weight: 200;
-	margin: 0 0 105px;
+	margin: 0 0 10px;
 	color: #494949;
 }
 
@@ -9423,7 +9423,7 @@ a:hover {
 }
 
 .blog-post.style3 {
-	margin: 0 0 97px;
+	/* margin: 0 0 97px; */
 	position: relative;
 }
 

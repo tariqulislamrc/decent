@@ -23,6 +23,7 @@
                         <option value="dashboard">{{_lang('Dashboard Page')}}</option>
                         <option value="Welcome">{{_lang('Welcome Page')}}</option>
                         <option value="login">{{_lang('Sing Up and Sing In')}}</option>
+                        <option value="blog">{{_lang('Blog Page')}}</option>
                     </select>
                     </div>
 

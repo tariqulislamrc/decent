@@ -8,7 +8,7 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 text-center">
-								<h1>BLOG LIST FULL WITH</h1>
+								<h1>BLOG</h1>
 							</div>
 						</div>
 					</div>
@@ -27,11 +27,11 @@
 									</ul>
 								</nav>
 								<!-- Breadcrumbs of the Page end -->
-								<ul class="list-unstyled align-right">
+								{{-- <ul class="list-unstyled align-right">
 									<li>
 										Categories <a href="#"><i class="fa fa-bars"></i></a>
 									</li>
-								</ul>
+								</ul> --}}
 							</div>
 						</div>
 						<div class="row">
@@ -40,7 +40,7 @@
                 @foreach ($posts as $model)
 								<article class="blog-post detail">
 									<div class="img-holder">
-										<a href="{{route('post-details',$model->post_slug)}}"><img src="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1200x350'}}" alt="image description"></a>
+										<a href="{{route('post-details',$model->post_slug)}}"><img style="max-height: 350px;" src="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1200x350'}}" alt="image description"></a>
 										{{-- <ul class="list-unstyled comment-nav">
 											<li><a href="#"><i class="fa fa-comments"></i>12</a></li>
 											<li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>
@@ -50,7 +50,7 @@
 									<div class="blog-txt">
 										<h2><a style="text-transform: uppercase" href="{{route('post-details',$model->post_slug)}}">{!!$model->title!!}</a></h2>
 										<ul class="list-unstyled blog-nav">
-											<li> <a ><i class="fa fa-clock-o"></i>{{formatDate($model->date)}}</a></li>
+											<li> <a ><i class="fa fa-clock-o"></i>{{formatDate1($model->date)}}</a></li>
                     <li> <a href="{{route('category-details',$model->category->category_slug)}}"><i class="fa fa-list"></i>{{$model->category?$model->category->name:''}}</a></li>
 										</ul>
 										<p>{!!limit($model->details)!!}</p>

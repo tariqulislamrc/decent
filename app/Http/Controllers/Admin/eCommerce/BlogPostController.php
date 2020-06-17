@@ -37,7 +37,7 @@ class BlogPostController extends Controller
                     return '<img src="' . $url . '" border="0" width="90" height="60" class="img-rounded" align="center" />';
                 })
                 ->editColumn('date', function ($model) {
-                    return formatDate($model->date);
+                    return formatDate1($model->date);
                 })
                 ->editColumn('status', function ($model) {
                     if ($model->status == 'Active') {

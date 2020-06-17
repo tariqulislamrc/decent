@@ -17,7 +17,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('blog_post.create')
-                        <button data-placement="bottom" title="Create New Blog Posts" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.blog-post.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <a data-placement="bottom" title="Create New Blog Posts" type="button" class="btn btn-info" href ="{{ route('admin.blog-post.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
                     @endcan
                 </h3>
                 <div class="tile-body">
@@ -52,5 +52,6 @@
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/blog-post.js') }}"></script>
+
 @endpush
 

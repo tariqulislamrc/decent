@@ -419,6 +419,12 @@ function formatDate($date)
 	}
 }
 
+function formatDate1($date)
+{
+	$dtobj = Carbon\Carbon::parse($date);
+		return $dtformat = $dtobj->format('M jS, Y');
+}
+
 	function designation_category($id){
 		$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
 		$d_id = $emp_d->designation_id;

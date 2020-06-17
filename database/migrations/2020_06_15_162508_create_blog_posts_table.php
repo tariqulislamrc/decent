@@ -20,7 +20,7 @@ class CreateBlogPostsTable extends Migration
             $table->string('title')->nullable();
             $table->string('post_slug')->nullable();
             $table->string('image')->nullable();
-            $table->string('date')->nullable();
+            $table->date('date')->nullable();
             $table->string('status')->nullable();
             $table->longText('details')->nullable();
             $table->timestamp('deleted_at')->nullable();

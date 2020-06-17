@@ -660,9 +660,9 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 @can('blog.view')
 {{-- Account Section--}}
 <li class="treeview {{ (Request::is('admin/blog*')) ? ' is-expanded' : '' }}">
-    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle"
+    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-rss-square"
             aria-hidden="true"></i>
-        <span class="app-menu__label">{{_lang('Blog')}}</span><i class="treeview-indicator fa fa-rss-square"></i>
+        <span class="app-menu__label">{{_lang('Blog')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
     </a>
     <ul class="treeview-menu">
 
