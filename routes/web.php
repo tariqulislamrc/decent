@@ -40,6 +40,12 @@ Route::group(['middleware' => ['install']], function () {
 
 	});
 
+
+	// Blog Section
+	Route::get('blog','Frontend\BlogController@index')->name('blog');
+	Route::get('post-details/{id}', 'Frontend\BlogController@post_details')->name('post-details');
+	Route::get('category-details/{id}', 'Frontend\BlogController@category_details')->name('category-details');
+
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 	Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
@@ -50,10 +56,6 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('eCommerce/invoice-create/{id}','Frontend\Front_End_Controller@invoice')->name('eCommerce.invoice.create');
 	Route::get('category-offer/{slug}','Frontend\Front_End_Controller@category_offer')->name('category-offer');
 	Route::get('search-product', 'Frontend\Front_End_Controller@search_product')->name('search_product');
-
-	Route::get('blog',function(){
-		return view('eCommerce.blog');
-	})->name('blog');
 
 	Route::get('wishlist', 'Frontend\Front_End_Controller@wishlist')->name('wishlist');
 
@@ -488,6 +490,14 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     	Route::resource('sendmail', 'SendMailController');
 	});
 
+
+		// Blog Section::::::::::::::::
+		Route::get('blog-category/datatable', 'eCommerce\BlogCategoryController@datatable')->name('blog-category.datatable');
+		Route::resource('blog-category', 'eCommerce\BlogCategoryController');
+
+
+		Route::get('blog-post/datatable', 'eCommerce\BlogPostController@datatable')->name('blog-post.datatable');
+		Route::resource('blog-post', 'eCommerce\BlogPostController');
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
