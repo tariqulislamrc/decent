@@ -24,7 +24,7 @@
                                                 <div class="s-txt">
                                                     <p>{{$item->sub_heading}}</p>
                                                 </div>
-                                                <a href="{{route('offer',$item->uuid)}}" class="s-shop">SHOP NOW</a>
+                                                <a href="{{route('offer',$item->slug)}}" class="s-shop">SHOP NOW</a>
                                             </div>
                                         </div>
                                     @endforeach

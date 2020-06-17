@@ -170,7 +170,7 @@ class Front_End_Controller extends Controller{
 
     public function offer_details($uuid){
         // offer
-        $model = EcommerceOffer::where('uuid',$uuid)->firstOrFail();
+        $model = EcommerceOffer::where('slug',$uuid)->firstOrFail();
         // product
         $product = Product::with('photo_details', 'variation')->where('id',$model->product_id)->first();
         $product_rating = ProductRating::where('product_id',$model->product_id)->get();
