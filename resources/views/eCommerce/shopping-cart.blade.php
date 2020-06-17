@@ -11,7 +11,7 @@
                     <!-- Breadcrumbs of the Page -->
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
-                            <li><a href="index.html">Home <i class="fa fa-angle-right"></i></a></li>
+                            <li><a href="{{ url('/') }} ">Home <i class="fa fa-angle-right"></i></a></li>
                             <li>Shopping Cart</li>
                         </ul>
                     </nav>
