@@ -5,7 +5,7 @@
             @foreach ($variations as $variation)
             <td>{{ $variation->name }}</td>
             @endforeach
-            <td>{{ $depert_name->name }} {{ _lang('Qty') }}</td>
+            <td>{{ $depert_name->name }} {{ _lang('Qty') }}({{ _lang('Pair') }})</td>
         </tr>
     </thead>
         <tbody class="bg-gray">
@@ -29,6 +29,7 @@
     <tfoot class="bg-gray">
     <tr>
         <td colspan="{{ $variations->count()+1 }}">
+            <label for="">{{ _lang('Sending Depertment') }}</label> <br>
             <select class="form-control select_custom" data-placeholder="Select Depertment" name="send_depertment_id" required>
                 <option value="">Select One</option>
                 @foreach ($depertments as $depertment_value)
@@ -38,7 +39,8 @@
         </td>
         <td>
             @if ($products->count()>0)
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Report')}}<i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+            <br>
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Report')}}</button>
             <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
             <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
             @endif

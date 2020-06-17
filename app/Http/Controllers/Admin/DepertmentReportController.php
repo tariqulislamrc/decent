@@ -52,7 +52,7 @@ class DepertmentReportController extends Controller
 
     public function get_variation_product(Request $request)
     {
-         if (!auth()->user()->can('submit_product_to_department.create')) {
+        if (!auth()->user()->can('submit_product_to_department.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -125,7 +125,7 @@ class DepertmentReportController extends Controller
             $rq_qty =$request->req_qty[$i];
             $done_qty =$request->done_qty[$i];
             if (($done_qty+$request->qty[$i])>$rq_qty) {
-               throw ValidationException::withMessages(['message' => _lang('Qty Greater than Total Qty')]);
+               throw ValidationException::withMessages(['message' => _lang('Requested Qty Greater than Total Qty').' '.$request->name_product[$i]]);
             }
             if ($request->department_id==$request->send_depertment_id) {
                throw ValidationException::withMessages(['message' => _lang('Requested Dept and Sending Dept Not Same')]);
@@ -155,7 +155,7 @@ class DepertmentReportController extends Controller
             $rq_qty =$request->req_qty[$i];
             $done_qty =$request->done_qty[$i];
             if (($done_qty+$request->qty[$i])>$rq_qty) {
-               throw ValidationException::withMessages(['message' => _lang('Qty Greater than Total Qty')]);
+               throw ValidationException::withMessages(['message' => _lang('Requested Qty Greater than Total Qty').' '.$request->name_product[$i]]);
             }
             $model =new ProductFlow;
             $model->depertment_id=$request->department_id;
@@ -200,9 +200,19 @@ class DepertmentReportController extends Controller
         }
 
 
-    return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully.', 'load' => true]);
+    return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully.','window'=>route('admin.submit_product_report_print',[$request->department_id,$request->work_order_id]), 'load' => true]);
     }
+    
 
+
+    public function submit_product_report_print($dept,$wo,$sdate=null,$edate=null)
+    {
+        if ($sdate==null) {
+            $model =ProductFlow::where('depertment_id',$dept)->where('work_order_id',$wo)->where('date',date('Y-m-d'))->get();
+        }
+
+        return view('admin.depertment.report.submit_product_report_print',compact('model'));
+    }
     /**
      * Display the specified resource.
      *

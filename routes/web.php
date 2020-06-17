@@ -652,6 +652,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('depertment/report/material/approve/{id}','DepertmentReportController@approve_request')->name('report.approve_request');
 		Route::post('report/store-material','DepertmentReportController@material_store')->name('report.material_store');
 		Route::resource('department/report', 'DepertmentReportController');
+		Route::get('submit_product_report_print/{dept}/{wo}{sdate?}{edate?}','DepertmentReportController@submit_product_report_print')->name('submit_product_report_print');
 
 
 
@@ -787,6 +788,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  Route::post('job-work/payment','TransactionPaymentController@jobwork_payment')->name('job_work.post_payment');
 	  Route::get('job-work/printpayment/{id}','JobworkController@printpayment')->name('job_work.printpayment');
 	  Route::delete('job_work/destroy/{id}','JobworkController@destroy')->name('job_work.destroy');
+
+	  //Paircosting:::::::::::
+	  route::resource('paircosting','PairCostingController');
 
 	});
 

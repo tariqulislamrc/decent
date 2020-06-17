@@ -28,4 +28,8 @@ class ProductFlow extends Model
    public function send_depertment(){
         return $this->belongsTo(Depertment::class,'send_depertment_id','id');
    }
+
+   public function depertment(){
+        return $this->belongsTo(Depertment::class,'depertment_id','id');
+   }
 }

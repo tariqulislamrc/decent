@@ -1,13 +1,13 @@
 <table class="table table-bordered">
     <thead class="bg-green text-light">
         <tr>
-            <td>{{ _lang('Name') }}</td>
+            <td width="25%">{{ _lang('Name') }}</td>
             @foreach ($variations as $variation)
-            <td>{{ $variation->name }}</td>
+            <td width="8%">{{ $variation->name }}</td>
             @endforeach
-            <td>{{ _lang('Request Qty') }}</td>
-            <td>{{ _lang('Done Qty') }}</td>
-            <td>{{ $depert_name->name }} {{ _lang('Qty') }}</td>
+            <td width="20%">{{ _lang('Request Qty') }}({{ _lang('Pair') }})</td>
+            <td width="20%">{{ _lang('Done Qty') }}({{ _lang('Pair') }})</td>
+            <td width="18%">{{ $depert_name->name }} {{ _lang('Qty') }}({{ _lang('Pair') }})</td>
         </tr>
     </thead>
     <tbody class="bg-gray">
@@ -16,6 +16,7 @@
             <td>
                 {{ get_product($product->product_id) }}
                 {{ $product->variation->name }}
+                <input type="hidden" name="name_product[]" value="{{ get_product($product->product_id) }}-{{ $product->variation->name }}">
                 <input type="hidden" name="variation_id[]" value="{{ $product->variation_id }}">
                 <input type="hidden" name="product_id[]" value="{{ $product->product_id }}">
                 <input type="hidden" name="done_depertment_id[]" value="{{ $product->id }}">
@@ -37,9 +38,10 @@
     <input type="hidden" name="flow_type" value="final">
     <tfoot class="bg-gray">
     <tr>
-        <td colspan="{{ $variations->count()+3 }}">
+        <td colspan="{{ $variations->count()+4 }}">
+            <small class="text-danger">{{ _lang('If Submited Final Report Product Quantity add to stock value') }}</small> <br>
             @if ($products->count()>0)
-            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Final Report')}}<i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Send & Submit Final Report')}}</button>
             <button type="button" class="btn btn-info" id="submiting" style="display: none;">{{_lang('Processing')}}
             <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
             @endif
