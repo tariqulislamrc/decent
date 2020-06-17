@@ -74,6 +74,23 @@ class eCommerceOfferController extends Controller
         return $per_product_price;
     }
 
+    public function slug($old_slug, $row = Null)
+    {
+        if(!$row){
+            $slug = $old_slug;
+            $row = 0;
+        }else{
+            $slug = $old_slug . '-'.$row;
+        }
+
+        $check_res = EcommerceOffer::where('slug', $slug)->first();
+        if($check_res) {
+            $slug = $this->slug($old_slug, $row+1);
+        }
+
+        return $slug;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -94,7 +111,11 @@ class eCommerceOfferController extends Controller
 
         $uuid = Str::uuid()->toString();
 
+        $slug = $this->slug(make_slug($request->heading));
+
+
         $model = new EcommerceOffer;
+        $model->slug = $slug;
         $model->uuid = $uuid;
         $model->size = $request->size;
         $model->product_id = $request->product_id;

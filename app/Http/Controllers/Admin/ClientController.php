@@ -9,6 +9,7 @@ use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\email\EmailTemolate;
 use App\models\inventory\TransactionSellLine;
+use App\models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -126,7 +127,14 @@ class ClientController extends Controller
     // delete
     public function delete($id) {
         $model = Client::findOrFail($id);
-        $model->delete();
+        if($model) {
+            $model->delete();
+        }
+
+        $user = User::where('clients_id', $id)->first();
+        if($user) {
+            $user->delete();
+        }
 
         $trans = Transaction::where('client_id', $model->id)->get();
         if($trans) {
@@ -148,6 +156,7 @@ class ClientController extends Controller
                         $tsp->delete();
                     }
                 }
+                $item->delete();
             }
         }
 
