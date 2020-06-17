@@ -16,6 +16,7 @@ use App\models\Production\Product;
 use App\models\eCommerce\OurTeam;
 use App\models\eCommerce\OurWorkspace;
 use App\models\eCommerce\ContactUs;
+use App\models\eCommerce\EcommerceProduct;
 use App\models\eCommerce\HomePage;
 use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
@@ -35,8 +36,7 @@ class Front_End_Controller extends Controller{
 
         $product_id = [];
         $brand_id = get_option('default_brand');
-        // dd($brand_id);
-        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+        $product = EcommerceProduct::all();
 
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
@@ -44,7 +44,7 @@ class Front_End_Controller extends Controller{
 
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
 
-        $general_products = Product::OrderBy('id', 'desc')->take(4)->get();
+        $general_products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
 
         $seo  = Seo::first();
         $slider = Slider::all();
@@ -72,7 +72,16 @@ class Front_End_Controller extends Controller{
 
         $get_categoyr = Category::where('category_slug', $id)->firstOrFail();
         $banner = PageBanner::where('page_name', 'Category')->first();
-        $products = Product::where('category_id', $get_categoyr->id)->paginate(15);
+        $brand_id = get_option('default_brand');
+        $product = EcommerceProduct::all();
+
+        $product_id = [];
+
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->where('category_id', $get_categoyr->id)->paginate(15);
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
 
@@ -135,7 +144,7 @@ class Front_End_Controller extends Controller{
         $banner = PageBanner::where('page_name', 'Product')->first();
         $product_id = [];
         $brand_id = get_option('default_brand');
-        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+        $product = EcommerceProduct::all();
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
         }
@@ -265,7 +274,7 @@ class Front_End_Controller extends Controller{
         $product_id = [];
         $brand_id = get_option('default_brand');
 
-        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+        $product = EcommerceProduct::all();
 
         foreach ($product as $value) {
             $product_id[] = $value->product_id;
@@ -279,18 +288,14 @@ class Front_End_Controller extends Controller{
         return view('eCommerce.product_grid_view', compact('category', 'products','banner'));
     }
 
-    // offer_product
-    public function offer_product($slug) {
-        dd($slug);
-    }
-
     // search_product
     public function search_product(Request $request) {
         $text = $request->text;
         $product_id = [];
         $brand_id = get_option('default_brand');
 
-        $product = VariationBrandDetails::where('brand_id', $brand_id)->get();
+
+        $product = EcommerceProduct::all();
 
         foreach ($product as $value) {
             $product_id[] = $value->product_id;

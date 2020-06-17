@@ -12,9 +12,11 @@
 		@can('sms_marketing.create')
 		<a class="dropdown-item cursour" id="content_managment" data-url="{{route('admin.brand.sms',$model->id)}}"><i class="fa fa-commenting" aria-hidden="true"></i>{{ _lang('Send Sms') }}</a>
 		@endcan
-		@can('production_brands.delete')
-		<a class="dropdown-item cursour" id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.production-brands.destroy',$model->id) }}"><i class="fa fa-trash"></i>{{ _lang('Trash') }}</a>
-		@endcan
+		@if ($model->id != 1)
+			@can('production_brands.delete')
+				<a class="dropdown-item cursour" id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.production-brands.destroy',$model->id) }}"><i class="fa fa-trash"></i>{{ _lang('Trash') }}</a>
+			@endcan
+		@endif
 	</div>
 </div>
 

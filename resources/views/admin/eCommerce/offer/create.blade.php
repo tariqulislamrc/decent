@@ -12,9 +12,7 @@
                     <label for="size">{{_lang('Select Size')}}</label>
                     <select data-parsley-errors-container="#parsley-error-select-size" name="size" id="size" class="form-control select" data-placeholder="Select Size" required>
                         <option value="">{{_lang('Select Size')}}</option>
-                        <option value="415 X 225">415 X 225</option>
                         <option value="765 X 580">765 X 580</option>
-                        <option value="400 X 210">400 X 210</option>
                         <option value="590 X 250">590 X 250</option>
                     </select>
                     <span id="parsley-error-select-size"></span>

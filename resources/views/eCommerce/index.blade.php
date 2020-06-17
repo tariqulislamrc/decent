@@ -1,29 +1,25 @@
 @extends('eCommerce.layouts.app')
 @push('main')
-    <!-- mt main start here -->
+    @php
+        $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')->get();
+    @endphp
     <main id="mt-main">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
 
                     {{-- Banner Start --}}
-                    <div class="banner-frame mt-paddingsmzero wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="slider-7 mt-paddingbottomsm wow fadeInLeft" data-wow-delay="0.4s">
-                            <div class="slider banner-slider">
-                                @php
-                                    $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')->get();
-                                @endphp
-                                @if (count($banner_slide) > 0)
+                    @if (count($banner_slide) > 0)
+                        <div class="banner-frame mt-paddingsmzero wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="slider-7 mt-paddingbottomsm wow fadeInLeft" data-wow-delay="0.4s">
+                                <div class="slider banner-slider">
+
                                     @foreach ($banner_slide as $item)
                                         <div class="s-holder">
-                                            <img
-                                                src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
-                                                alt="image description">
+                                            <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/765x580'}}"
+                                                 alt="image description">
                                             <div class="s-box">
-                                                <strong
-                                                    class="s-title">{{$item->product->category ? $item->product->category->name : ''}}</strong>
-
-
+                                                <strong class="s-title">{{$item->product->category ? $item->product->category->name : ''}}</strong>
                                                 <span class="heading add">{{$item->heading}}</span>
                                                 <div class="s-txt">
                                                     <p>{{$item->sub_heading}}</p>
@@ -32,73 +28,13 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @else
-                                    <div class="s-holder">
-                                        <img src="http://placehold.it/765x580" alt="image description">
-                                        <div class="s-box">
-                                            <strong class="s-title">No Offer Available</strong>
-                                            <span class="heading add">Add 765 X 589 Size Offer for show</span>
-                                            <div class="s-txt">
-                                                <p>
-                                                    You Have to Add 765 X 589 Size Offer for show
-                                                </p>
-                                            </div>
-                                            {{-- <a href="{{route('offer',$item->uuid)}}" class="s-shop">SHOP NOW</a> --}}
-                                        </div>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
 
-                        {{-- 415 X 225 --}}
-                        <div class="banner-box third wow fadeInRight" data-wow-delay="0.4s">
-                            @php
-                                $banner3 = App\models\eCommerce\SpecialOffer::where('status', 1)->get();
-                            @endphp
-                            @if (count($banner3) > 0)
-                                @foreach ($banner3 as $item)
-                                    <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                        <img
-                                            src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}"
-                                            alt="Special Image {{$loop->index + 1}}">
-                                        <div class="holder">
-                                            <h2><span>{{$item->name}}</span><strong>{{$item->sub_heading}}</strong>
-                                            </h2>
-                                            <a class="btn-shop" href="{{route('special-offer',$item->offer_slug)}}">
-                                                <span>SHOP NOW</span>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                    <img src="http://placehold.it/415x225" alt="image description">
-                                    <div class="holder">
-                                        <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for
-                                                show</strong>
-                                        </h2>
-                                        {{--<a class="btn-shop" href="product-detail.html">
-                                            <span>SHOP NOW</span>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>--}}
-                                    </div>
-                                </div>
-                                <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                    <img src="http://placehold.it/415x225" alt="image description">
-                                    <div class="holder">
-                                        <h2><span>No Offer Available</span><strong>Add 765 X 589 Size Offer for
-                                                show</strong>
-                                        </h2>
-                                        {{--<a class="btn-shop" href="product-detail.html">
-                                            <span>SHOP NOW</span>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>--}}
-                                    </div>
-                                </div>
-                            @endif
+
                         </div>
-                    </div>
+                    @endif
+
                     {{-- Banner End --}}
                 <!-- F Promo Box style2 of the Page -->
                     <aside class="f-promo-box style2 wow fadeInUp" data-wow-delay="0.4s">
@@ -160,13 +96,11 @@
                         @if (count($offer_categories) > 0)
                             @foreach ($offer_categories as $item)
                                 <div class="banner-9">
-                                    <img
-                                        src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_category/'. $item->cover_image) : 'http://placehold.it/765x580'}}"
-                                        alt="image description">
+                                    <img src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_category/'. $item->cover_image) : 'http://placehold.it/765x580'}}"
+                                         alt="image description">
                                     <div class="holder">
-                                        <h2><span>{{$item->category ?$item->category->name : ""}}</span></h2>
-                                        <a class="btn-shop"
-                                           href="{{route('category-offer',$item->category->category_slug)}}">
+                                        <h2><span>{{$item->category ? $item->category->name : ''}}</span></h2>
+                                        <a class="btn-shop" href="{{route('category-offer',$item->category->category_slug)}}">
                                             <span>SHOP NOW</span>
                                             <i class="fa fa-angle-right"></i>
                                         </a>
@@ -174,13 +108,6 @@
                                 </div>
 
                             @endforeach
-                        @else
-                            <p style="margin: 0 0 9.5px;
-                    padding: 10px;
-                    font-size: 20px;
-                    background-color: #ddd;
-                    color: red;
-                    text-align: center;">Sorry. No Offer Category Found At This Moment.</p>
                         @endif
                     </div>
 
@@ -208,14 +135,6 @@
                                                         @foreach ($featur_product as $item)
                                                             @include('eCommerce.product')
                                                         @endforeach
-                                                    @else
-                                                        <p style="margin: 0 0 9.5px;
-														padding: 10px;
-														font-size: 20px;
-														background-color: #ddd;
-														color: red;
-														text-align: center;">Sorry. No Featured Product Found At This
-                                                            Moment.</p>
                                                     @endif
 
                                                 </div>
@@ -253,13 +172,6 @@
                                                         @foreach ($featur_product as $item)
                                                             @include('eCommerce.product')
                                                         @endforeach
-                                                    @else
-                                                        <p style="margin: 0 0 9.5px;
-									padding: 10px;
-									font-size: 20px;
-									background-color: #ddd;
-									color: red;
-									text-align: center;">Sorry. No Best Selling Product Found At This Moment.</p>
                                                     @endif
                                                 </div>
                                             </div>
@@ -279,14 +191,10 @@
                         @if (count($banner) > 0)
                             @foreach ($banner as $item)
                                 <div class="banner-15 right">
-                                    <img
-                                        src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/590X250'}}"
-                                        alt="image description">
+                                    <img src="{{$item->image && $item->image != '' ? asset('storage/offer/'. $item->image) : 'http://placehold.it/590X250'}}"
+                                         alt="image description">
                                     <div class="holder">
-                                        <h2>{{$item->product->category ? $item->product->category->name : ''}}
-                                            <strong>{{$item->heading}}</strong></h2>
-
-
+                                        <h2>{{$item->product->category ? $item->product->category->name : ''}}<strong>{{$item->heading}}</strong></h2>
                                         <a class="btn-shop" href="{{route('offer',$item->uuid)}}">
                                             <span>SHOP NOW</span>
                                             <i class="fa fa-angle-right"></i>
@@ -307,15 +215,12 @@
                             <p>FURNITURE DESIGNS IDEAS</p>
                         </div>
                         <!-- tabs slider start here -->
-                        <div class="tabs-slider row slick-initialized slick-slider">
-                            <button type="button" data-role="none"
-                                    class="slick-prev slick-arrow" aria-label="Previous" role="button"
-                                    style="display: block;">Previous
-                            </button>
+                        <div class="tabs-slider row slick-initialized slick-slider"><button type="button" data-role="none"
+                                                                                            class="slick-prev slick-arrow" aria-label="Previous" role="button"
+                                                                                            style="display: block;">Previous</button>
                             <!-- slide start here -->
                             <div aria-live="polite" class="slick-list draggable">
-                                <div class="slick-track" role="listbox"
-                                     style="opacity: 1; width: 4182px; left: -1230px;">
+                                <div class="slick-track" role="listbox" style="opacity: 1; width: 4182px; left: -1230px;">
                                     <div class="slide slick-slide slick-cloned" data-slick-index="-5" aria-hidden="true"
                                          tabindex="-1" style="width: 246px;">
                                         <!-- mt product1  start here -->
@@ -364,9 +269,7 @@
                                                             <li><i class="fa fa-star-o"></i></li>
                                                         </ul>
                                                         <ul class="links">
-                                                            <li><a href="#" tabindex="-1"><i
-                                                                        class="icon-handbag"></i><span>Add to
-                                                                    Cart</span></a></li>
+                                                            <li><a href="#" tabindex="-1"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
                                                             <li><a href="#" tabindex="-1"><i
                                                                         class="icomoon icon-heart-empty"></i></a></li>
                                                             <li><a href="#popup1" class="lightbox" tabindex="-1"><i
@@ -480,8 +383,7 @@
                                                         <a href="product-detail.html" tabindex="-1"><img
                                                                 src="images/products/img35.jpg" alt="image description"></a>
                                                         <ul class="links add">
-                                                            <li><a href="#" tabindex="-1"><i
-                                                                        class="icon-handbag"></i></a>
+                                                            <li><a href="#" tabindex="-1"><i class="icon-handbag"></i></a>
                                                             </li>
                                                             <li><a href="#" tabindex="-1"><i
                                                                         class="icomoon icon-heart-empty"></i></a></li>
@@ -502,8 +404,7 @@
                             </div><!-- slide end here -->
 
                             <button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next"
-                                    role="button" style="display: block;">Next
-                            </button>
+                                    role="button" style="display: block;">Next</button>
                         </div>
                         <!-- tabs slider end here -->
                     </div>
@@ -525,9 +426,7 @@
                                             $default_price = $row['default_sell_price'];
                                             $price = $price + $default_price;
                                             }
-
                                             $per_product_price = round($price / $total_product_variation) ;
-
                                             }
                                         @endphp
                                         <div class="mt-product4 mt-paddingbottom20">
@@ -548,18 +447,10 @@
                                                     </ul>
                                                 </div>
                                                 {{-- <del class="off">$75,00</del> --}}
-                                                <span
-                                                    class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                                <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
                                             </div>
                                         </div>
                                     @endforeach
-                                @else
-                                    <p style="margin: 0 0 9.5px;
-								padding: 10px;
-								font-size: 20px;
-								background-color: #ddd;
-								color: red;
-								text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
                                 @endif
 
                             </div>
@@ -577,9 +468,7 @@
                                             $default_price = $row['default_sell_price'];
                                             $price = $price + $default_price;
                                             }
-
                                             $per_product_price = round($price / $total_product_variation) ;
-
                                             }
                                         @endphp
                                         <div class="mt-product4 mt-paddingbottom20">
@@ -605,13 +494,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @else
-                                    <p style="margin: 0 0 9.5px;
-									padding: 10px;
-									font-size: 20px;
-									background-color: #ddd;
-									color: red;
-									text-align: center;">Sorry. No Feature Product Found At This Moment.</p>
+
                                 @endif
 
                             </div>
@@ -627,9 +510,7 @@
                                         $default_price = $row['default_sell_price'];
                                         $price = $price + $default_price;
                                         }
-
                                         $per_product_price = round($price / $total_product_variation) ;
-
                                         }
                                     @endphp
                                     <div class="mt-product4 mt-paddingbottom20">
@@ -649,8 +530,7 @@
                                                 </ul>
                                             </div>
                                             {{-- <del class="off">$75,00</del> --}}
-                                            <span
-                                                class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
+                                            <span class="price">৳ {{isset($per_product_price)?$per_product_price:''}}</span>
                                         </div>
                                     </div>
                                 @endforeach
@@ -662,9 +542,8 @@
                                     <div class="mt-product4 mt-paddingbottom20">
                                         <div class="img">
                                             <a href="{{route('product-details',$item->product_slug)}}">
-                                                <img
-                                                    src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
-                                                    alt="Top Rated Products Image">
+                                                <img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}"
+                                                     alt="Top Rated Products Image">
                                             </a>
                                         </div>
                                         <div class="text">
@@ -707,14 +586,11 @@
             readOnly: true,
             halfShow: true //read only
         });
-
         $(document).on('click', '.heart', function () {
             var id = $(this).data('id');
             var ip = '{{getIp()}}';
             var url = $(this).data('url');
-
             $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -735,7 +611,6 @@
                 }
             });
         })
-
     </script>
 
     <script>
@@ -743,6 +618,5 @@
         toastr.warning('{{Session::get('
         error ')}}');
         @endif
-
     </script>
 @endpush
