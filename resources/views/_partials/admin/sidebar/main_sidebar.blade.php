@@ -415,6 +415,13 @@
 </li>
 @endcan
 
+{{-- Job Work --}}
+@can('paircosting.view')
+<li data-placement="bottom" title="Pair Costing"><a
+        class="app-menu__item {{ Request::is('admin/paircosting/create*') ? ' active' : '' }}"
+        href="{{ route('admin.paircosting.create') }}"><i class="app-menu__icon fa fa-ils" aria-hidden="true"></i><span
+            class="app-menu__label">{{_lang('Pair Costing')}}</span></a></li>
+@endcan
 
 {{-- Job Work --}}
 @can('job_work.view')
@@ -428,7 +435,7 @@
 <li class="treeview {{ Request::is('admin/request*') ? ' is-expanded' : '' }}">
     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-archive"
             aria-hidden="true"></i>
-        <span class="app-menu__label">{{_lang('Store')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
+        <span class="app-menu__label">{{_lang('Store Management')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
     </a>
     <ul class="treeview-menu">
         @can('store_request.view')

@@ -22,24 +22,37 @@ padding: 0.2rem 0.5rem;
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <select class="form-control status_select" id="status">
+                    <option value="">All</option>
+                    <option value="requisition">Requisition</option>
+                    <option value="Not">Not Requisition</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
                     @can('production_work_order.create')
-                        <a data-placement="bottom" title="Create New Production Work Order" type="button" class="btn btn-info" href ="{{ route('admin.production-work-order.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Work Order')}}</a>
+                        <a data-placement="bottom" title="Create New Production Work Order" type="button" class="btn btn-info" href ="{{ route('admin.production-work-order.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Work Order')}}</a>
                     @endcan
                 </h3>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.work-order.datatable') }}">
                         <thead>
                             <tr>
-                                <th>{{_lang('id')}}</th>
                                 <th>{{_lang('Code')}}</th>
                                 <th>{{_lang('Name')}}</th>
                                 <th>{{_lang('Work Orde Date')}}</th>
                                 <th>{{_lang('Delivery Date')}}</th>
                                 <th>{{_lang('P. Status')}}</th>
+                                <th>{{_lang('Status')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>
@@ -62,5 +75,10 @@ padding: 0.2rem 0.5rem;
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/production/work_order.js') }}"></script>
+    <script>
+    $('.status_select').select2({
+        width: '88%'
+    });
+    </script>
 @endpush
 

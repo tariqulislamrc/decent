@@ -72,9 +72,9 @@ $(document).on('click', '#check_it', function () {
           $('#checking').hide();
           $('#data').html(data);
           $("#data").find('.select_custom').select2();
+          _classformValidation();
     })
   }
 });
-_classformValidation();
 </script>
 @endpush

@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Admin\Production;
 
-use App\models\Production\Variation;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\models\inventory\TransactionSellLine;
-use App\models\Production\WorkOrder;
-use App\models\Production\WorkOrderProduct;
-use Illuminate\Http\Response;
-use Illuminate\View\View;
-use Yajra\Datatables\Datatables;
 use App\models\Production\Brand;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\RawMaterial;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
+use App\models\Production\Variation;
+use App\models\Production\WorkOrder;
+use App\models\Production\WorkOrderProduct;
+use App\models\depertment\ProductFlow;
+use App\models\depertment\StoreRequest;
+use App\models\inventory\TransactionSellLine;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use Yajra\Datatables\Datatables;
 
 class WorkOrderController extends Controller
 {
@@ -41,7 +44,11 @@ class WorkOrderController extends Controller
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
-            $document = WorkOrder::where('status', '!=', 'requisition')->get();
+            $document = WorkOrder::query();
+            if (!empty($request->status)) {
+                $document =$document->where('status', $request->status);
+            }
+            $document->orderBy('id','DESC')->get();
             return DataTables::of($document)
                 ->addIndexColumn()
                 ->editColumn('code', function ($document) {
@@ -54,9 +61,18 @@ class WorkOrderController extends Controller
                         return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
                     }
                 })
+
+                ->editColumn('status', function ($document) {
+                   if ($document->status=='requisition') {
+                       return '<span class="badge badge-info">Requisition</span>';
+                   }
+                   else{
+                      return '<span class="badge badge-danger">Not Requisition</span>';
+                   }
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.work_order.action', compact('model'));
-                })->rawColumns(['action', 'payment_status'])->make(true);
+                })->rawColumns(['action', 'payment_status','status'])->make(true);
         }
     }
 
@@ -108,7 +124,7 @@ class WorkOrderController extends Controller
         $model->type = $request->type;
         $model->date = $request->date;
         $model->delivery_date = $request->delivery_date;
-        $model->status = 0;
+        $model->status = "Not";
         $model->hidden = 0;
         $model->tek_marks = 0;
         $model->created_by = Auth::user()->id;
@@ -365,9 +381,15 @@ class WorkOrderController extends Controller
         if (!auth()->user()->can('workorder.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $model = WorkOrder::findOrFail($id);
-        $model->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
+        $count1 = StoreRequest::where('work_order_id', $id)->count();
+        $count2 = ProductFlow::where('work_order_id', $id)->count();
+        if ($count1 == 0 && $count2==0) {
+            $model = WorkOrder::findOrFail($id);
+            $model->delete();
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
+        }else{
+           throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
+        }
     }
 
     public function item(Request $request)
