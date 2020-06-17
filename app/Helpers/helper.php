@@ -18,6 +18,7 @@ use App\models\employee\EmployeeDesignation;
 use App\models\employee\EmployeeSalary;
 use App\models\employee\IdGenerator;
 use App\models\employee\PayrollTransaction;
+// use Str;
 
 if (!function_exists('_lang')) {
 	function _lang($string = '') {
@@ -385,24 +386,38 @@ function numer_padding($id = 1, $code_digits=3){
 			return  $days;
     }
 
-	function formatDate($date){
+	function formatMonth($date){
 		$dtobj = Carbon\Carbon::parse($date);
-		if(get_option('date_format') == 'y-m-d'){
-			return $dtformat = $dtobj->format('F jS, Y');
-		}
-		if(get_option('date_format') == 'Y-m-d'){
-			return $dtformat = $dtobj->format('M jS, Y');
-		}
-		if(get_option('date_format') == 'h-i-s'){
-			return $dtformat = $dtobj->format('g:i A');
-		}
-		if(get_option('date_format') == 'time'){
-			return $dtformat = $dtobj->format('h:i A');
-		}
-		else{
-			return $dtformat = $dtobj->format('F jS Y, g:i A');
-		}
+		return $dtformat = $dtobj->format('F');
 	}
+	function formatDate2($date){
+		$dtobj = Carbon\Carbon::parse($date);
+		return $dtformat = $dtobj->format('j');
+	}
+
+	 function limit($limit)
+    {
+        return Str::words($limit, '100');
+    }
+
+function formatDate($date)
+{
+	$dtobj = Carbon\Carbon::parse($date);
+	if (get_option('date_format') == 'y-m-d') {
+		return $dtformat = $dtobj->format('F jS, Y');
+	}
+	if (get_option('date_format') == 'Y-m-d') {
+		return $dtformat = $dtobj->format('M jS, Y');
+	}
+	if (get_option('date_format') == 'h-i-s') {
+		return $dtformat = $dtobj->format('g:i A');
+	}
+	if (get_option('date_format') == 'time') {
+		return $dtformat = $dtobj->format('h:i A');
+	} else {
+		return $dtformat = $dtobj->format('F jS Y, g:i A');
+	}
+}
 
 	function designation_category($id){
 		$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();

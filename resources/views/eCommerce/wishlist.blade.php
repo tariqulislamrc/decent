@@ -1,6 +1,6 @@
-                
-                
-@extends('eCommerce.layouts.app')         
+
+
+@extends('eCommerce.layouts.app')
 @push('main')
 <main id="mt-main">
     <section class="mt-contact-banner mt-banner-22 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
@@ -26,16 +26,16 @@
       <div class="container">
 
           @if (count($products) > 0)
-        
+
           <div class="row border">
             @foreach ($products as $item)
             @php
               $low_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'DESC')->first();
-              $low = $low_price->default_sell_price;
+              $low = $low_price ? $low_price->default_sell_price : 0;
 
               $high_price = App\models\Production\Variation::where('product_id',$item->id)->orderBy('default_sell_price', 'ASC')->first();
-              $high = $high_price->default_sell_price;
-              
+              $high = $high_price ? $high_price->default_sell_price : 0;
+
             @endphp
           <div class="col-xs-12 col-sm-2">
             <div class="img-holder">
@@ -49,7 +49,7 @@
           </div>
 
           <div class="col-xs-12 col-sm-2">
-            <strong class="product-name">{{get_option('currency') ? get_option('currency') : 'BDT'}} 
+            <strong class="product-name">{{get_option('currency') ? get_option('currency') : 'BDT'}}
               @if ($low == $high)
                                             {{$low}}
                                         @else
@@ -70,8 +70,8 @@
 
           @endforeach
           </div>
-              
-          @else 
+
+          @else
             <div class="text-center">No Product Found On Your Wishlist</div>
           @endif
 
@@ -89,7 +89,7 @@ $(document).on('click', '.delete', function() {
     var ip = '{{getIp()}}';
     var url = $(this).data('url');
 $(this).html(' <i class="fa fa-spinner fa-spin"></i>');
-    
+
     $.ajax({
   type: 'GET',
   url: url,
