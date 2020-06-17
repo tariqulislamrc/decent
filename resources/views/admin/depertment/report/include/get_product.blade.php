@@ -12,6 +12,7 @@
             @foreach ($products as $product)
             <tr>
                 <td>
+                    {{ get_product($product->product_id) }}
                     {{ $product->name }}
                     <input type="hidden" name="variation_id[]" value="{{ $product->id }}">
                     <input type="hidden" name="product_id[]" value="{{ $product->product_id }}">
