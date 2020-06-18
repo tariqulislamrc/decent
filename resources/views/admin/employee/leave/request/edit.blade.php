@@ -7,6 +7,7 @@
             <h6 class="mt-3">
                 {{$model->employee->name}} ({{$model->employee->prefix}}{{numer_padding($model->employee->code, get_option('digits_employee_code'))}}) <br>
                 {{current_designation($model->employee_id)}} <br></h6>
+            <input type="hidden" name="employee" value="{{$model->employee->id}}">
         </div>
 
         {{-- Leave Type --}}
@@ -62,11 +63,6 @@
     </div>
 </form>
 <script type="text/javascript">
-    $('.date').datepicker({
-        format: "yyyy/mm/dd",
-        autoclose: true,
-        todayHighlight: true
-    });
     $('.select').select2({
         width: '100%'
     });

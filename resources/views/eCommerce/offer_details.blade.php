@@ -326,9 +326,7 @@ $variation_name = '';
 		var id = $(this).data('id');
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
-
-		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
-
+        
 		$.ajax({
             type: 'GET',
             url: url,
@@ -340,6 +338,8 @@ $variation_name = '';
             },
             success: function (data) {
                 if(data.status == 'success') {
+                    $("#icon").removeClass("fa-heart-o");
+                    $("#icon").addClass(" fa-heart");
                     toastr.success(data.message);
                 }
 				if(data.status == 'warning') {

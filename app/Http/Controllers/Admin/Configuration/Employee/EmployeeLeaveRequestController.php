@@ -120,13 +120,16 @@ class EmployeeLeaveRequestController extends Controller
             $models =  Employee::where('user_id', $id)->firstOrFail();
             $user_id = $models->id;
         }
-
+        
         if ($employee_id) {
-            $model =  EmployeeLeaveAllocation::where('employee_id', $employee_id)->firstOrFail();
+            $model =  EmployeeLeaveAllocation::where('employee_id', $employee_id)->first();
         }else{
-            $model =  EmployeeLeaveAllocation::where('employee_id', $user_id)->firstOrFail();
+            $model =  EmployeeLeaveAllocation::where('employee_id', $user_id)->first();
         }
 
+        if($model == null){
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This Employee has not any leave Allocation')]);
+        }
 
         $alocation_details =  EmployeeLeaveAllocationDetail::where('employee_leave_allocation_id', $model->id)->where('employee_leave_type_id', $leave_type)->firstOrFail();
         $total = $alocation_details->allotted - $alocation_details->used;
@@ -270,8 +273,8 @@ class EmployeeLeaveRequestController extends Controller
     public function update(Request $request, $id)
     {
         $leave_type = $request->leave_type;
-        $uid = Auth::user()->id;
-        $models =  Employee::where('user_id', $uid)->firstOrFail();
+        $employee_id = $request->employee;
+        $user_id = Auth::user()->id;
 
         if ($request->hasFile('file')) {
             $file = EmployeeLeaveRequest::findOrFail($id);
@@ -285,14 +288,13 @@ class EmployeeLeaveRequestController extends Controller
             $fileName = $request->old_file;
         }
 
+        $model =  EmployeeLeaveAllocation::where('employee_id', $employee_id)->first();
 
-        $user_id = $models->user_id;
-        $employee_id = $request->employee;
-        if ($employee_id) {
-            $model =  EmployeeLeaveAllocation::where('employee_id', $employee_id)->firstOrFail();
-        } else {
-            $model =  EmployeeLeaveAllocation::where('employee_id', $user_id)->firstOrFail();
+        if ($model == null) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This Employee has not any leave Allocation')]);
         }
+
+
         $alocation_details =  EmployeeLeaveAllocationDetail::where('employee_leave_allocation_id', $model->id)->where('employee_leave_type_id', $leave_type)->firstOrFail();
         $total = $alocation_details->allotted - $alocation_details->used;
 
