@@ -1,0 +1,200 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use App\models\eCommerce\PageBanner;
+
+class LoginController extends Controller {
+	/*
+		        |--------------------------------------------------------------------------
+		        | Login Controller
+		        |--------------------------------------------------------------------------
+		        |
+		        | This controller handles authenticating users for the application and
+		        | redirecting them to your home screen. The controller uses a trait
+		        | to conveniently provide its functionality to your applications.
+		        |
+	*/
+
+	use AuthenticatesUsers;
+
+	/**
+	 * Where to redirect users after login.
+	 *
+	 * @var string
+	 */
+	protected $redirectTo = '/member/dashboard';
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		$this->middleware('guest:client')->except('logout');
+	}
+
+	    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm(Request $request){
+        $banner = PageBanner::where('page_name', 'login')->first();
+        return view('eCommerce.account',compact('banner'));
+    }
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request) {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/login');
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request) {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
+    // public function login(Request $request)
+    // {
+    //    $this->validate($request, [
+    //         'email' => 'required', 
+    //         'password' => 'required',
+    //     ]);
+
+    //     $user_data = array(
+    //         'email'  => $request->get('email'),
+    //         'password' => $request->get('password'),
+    //         'user_type'=>'Client'
+    //     );
+
+    //     if(!Auth::attempt($user_data)){
+    //         return redirect('users');
+    //     }
+
+    //     if ( Auth::check() ) {
+    //         return response()->json(['message' => 'Successfully Login', 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+    //     }
+    // }
+
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request) {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request) {
+        return $request->only($this->username(), 'password','user_type');
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request) {
+        $request->session()->regenerate();
+        
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $this->guard()->user())
+        ?: redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user) {
+
+        $goto = session()->get('goto') ? session()->get('goto') : redirect()->intended($this->redirectPath())->getTargetUrl();
+        Session::put('goto', null);
+        return response()->json(['message' => trans('auth.logged_in'), 'goto' => $goto]);
+
+
+        // return response()->json(['message' => 'Successfully Login', 'goto' => redirect()->intended($this->redirectPath())->getTargetUrl()]);
+    }
+
+    /**
+     * Get the failed login response instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request) {
+        
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username() {
+        return 'email';
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request) {
+        return response()->json(['message' => 'Successfully Logout', 'goto' => url('/')]);
+    }
+
+	protected function guard()
+    {
+        return Auth::guard('client');
+    }
+
+}
