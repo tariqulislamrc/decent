@@ -40,6 +40,6 @@ class EmailQueueJob implements ShouldQueue
         $list = $this->list;
 
         $subject = $this->subject;
-         Mail::to($list)->queue(new SendEmailTest($emailTemplate,$subject));
+        Mail::to($list)->queue(new SendEmailTest($emailTemplate,$subject));
     }
 }
