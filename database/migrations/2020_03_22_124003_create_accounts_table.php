@@ -17,7 +17,8 @@ class CreateAccountsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('account_number');
-            $table->enum('account_type', ['saving_current', 'capital','deposite','withdraw'])->nullable();
+            // $table->enum('account_type', ['saving_current', 'capital','deposite','withdraw'])->nullable();
+            $table->string('account_type')->nullable();
             $table->text('note')->nullable();
             $table->integer('created_by')->nullable();
             $table->boolean('hidden')->default(0);

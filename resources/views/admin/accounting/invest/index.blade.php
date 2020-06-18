@@ -16,7 +16,7 @@
         <div class="tile">
             <h3 class="tile-title">
             @can('accounting.create')
-            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.accounting.investment.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('create')}}</button>
+            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.accounting.investment.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New InvestMent Account')}}</button>
             @endcan
             </h3>
             <div class="tile-body">

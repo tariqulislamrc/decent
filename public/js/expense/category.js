@@ -90,6 +90,9 @@ var DatatableSelect = function() {
                 }, {
                     data: 'name',
                     name: 'name'
+                },{
+                    data: 'note',
+                    name: 'note'
                 }, {
                     data: 'action',
                     name: 'action'

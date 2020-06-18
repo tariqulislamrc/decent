@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         {!! Form::label('transaction_type', _lang('Transection Type') . ':') !!}
                                         <div class="input-group">
-                                            {!! Form::select('transaction_type', ['' => _lang('All'),'debit' => _lang('Debit'), 'credit' => _lang('Credit')], '', ['class' => 'form-control']) !!}
+                                            {!! Form::select('transaction_type', ['' => _lang('All'),'Debit' => _lang('Debit'), 'Credit' => _lang('Credit')], '', ['class' => 'form-control select']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +137,25 @@
                     });
     });
 
-        $('#transaction_date_range').daterangepicker(
+    $('#transaction_date_range').daterangepicker({
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment(),
+                minDate: moment().local().subtract(2, 'years'),
+                maxDate: moment().local(),
+                dateLimit: {
+                    days: 90
+                },
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                drops: 'down',
+                applyClass: 'btn-sm bg-slate',
+                cancelClass: 'btn-sm btn-light'
+        });
             $("#transaction_date_range").on('apply.daterangepicker',function(start,end){
                 var start = '';
                 var end = '';
@@ -150,7 +168,6 @@
                 account_book.ajax.url( '{{route('admin.accounting.investment.show',$investment->id)}}?start_date=' + start + '&end_date=' + end + '&type=' + transaction_type ).load();
                 
             })
-        );
 
         $('#transaction_type').change( function(){
                 var start = '';
@@ -192,6 +209,6 @@
 
     return sum;
 }
-
+   _componentSelect2Normal();
 </script>
 @endpush

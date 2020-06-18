@@ -20,7 +20,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('expense.create')
-                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Expense Category')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">
@@ -29,6 +29,7 @@
                             <tr>
                                 <th>{{_lang('id')}}</th>
                                 <th>{{_lang('Name')}}</th>
+                                <th>{{_lang('Description')}}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>
                         </thead>

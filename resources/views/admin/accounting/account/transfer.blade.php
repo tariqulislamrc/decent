@@ -1,22 +1,22 @@
 <div class="card">
 	<div class="card-body">
-		{!! Form::open(['route' => 'admin.accounting.account.postDeposit', 'class' => 'form-validate-jquery', 'id' => 'content_form', 'files' => true, 'method' => 'POST']) !!}
+		{!! Form::open(['route' => 'admin.accounting.account.postFundtransfer', 'class' => 'form-validate-jquery', 'id' => 'content_form', 'files' => true, 'method' => 'POST']) !!}
 		<div class="form-group">
-			<strong>{{ _lang('Account Name') }}</strong>:
-			{{$account->name}}
-			{!! Form::hidden('account_id', $account->id) !!}
+			<strong>{{ _lang('Selected Account') }}</strong>:
+			    {{$from_account->name}}
+                {!! Form::hidden('from_account', $from_account->id) !!}
 		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="form-group">
-					{{ Form::label('amount', _lang('Amount') , ['class' => 'col-form-label']) }}
-					{{ Form::text('amount', null, ['class' => 'form-control input_number', 'id'=>'amount', 'placeholder' => _lang('Amount'),'required'=>'','autofocus'=>true]) }}
+					{{ Form::label('to_account', _lang('To Account') , ['class' => 'col-form-label']) }}
+					{!! Form::select('to_account', $to_accounts, null, ['class' => 'form-control select', 'required' ]); !!}
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="form-group">
-					{{ Form::label('from_account', _lang('Form Account') , ['class' => 'col-form-label']) }}
-					{!! Form::select('from_account', $from_accounts, null, ['class' => 'form-control select', 'required' ]); !!}
+					{{ Form::label('amount', _lang('Amount') , ['class' => 'col-form-label']) }}
+					{{ Form::text('amount', null, ['class' => 'form-control input_number', 'id'=>'amount', 'placeholder' => _lang('Amount'),'required'=>'','autofocus'=>true]) }}
 				</div>
 			</div>
 			<div class="col-md-12">
@@ -35,7 +35,7 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto text-center">
 				
-				{{ Form::submit(isset($model) ? _lang('Update'):_lang('Deposit'), ['class' => 'btn btn-primary btn-sm w-100 ', 'id' => 'submit']) }}
+				{{ Form::submit(isset($model) ? _lang('Update'):_lang('Transfer'), ['class' => 'btn btn-primary btn-sm w-100 ', 'id' => 'submit']) }}
 				<button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
 			</div>
 		</div>

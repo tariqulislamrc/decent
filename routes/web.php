@@ -767,6 +767,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
         Route::get('getAccountBalance/{id}','AccountController@getAccountBalance')->name('getAccountBalance');
         Route::get('account/getDeposit/{id}','AccountController@getDeposit')->name('account.getDeposit');
         Route::post('account/getDeposit','AccountController@postDeposit')->name('account.postDeposit');
+        Route::get('account/getFundTransfer/{id}','AccountController@getFundTransfer')->name('account.getFundTransfer');
+        Route::post('account/getFundtransfer','AccountController@postFundTransfer')->name('account.postFundtransfer');
         Route::delete('account/closed/{id}','AccountController@close')->name('account_closed');
         Route::get('payment/account','AccountController@payment_account')->name('payment_account');
         Route::get('getLinkAccount/{id}','AccountController@getLinkAccount')->name('getLinkAccount');

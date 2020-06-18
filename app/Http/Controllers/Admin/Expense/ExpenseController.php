@@ -132,7 +132,8 @@ class ExpenseController extends Controller
         $account_transaction->amount =$request->amount;
         $account_transaction->investment_account_id=$request->investment_account_id;
         $account_transaction->expense_id=$model->id;
-        $account_transaction->type='debit';
+        $account_transaction->type='Debit';
+        $account_transaction->acc_type='investment';
         $account_transaction->sub_type='expense';
         $account_transaction->operation_date=Carbon::parse(date('Y-m-d'))->format('Y-m-d H:i:s');
         $account_transaction->created_by = auth()->user()->id;
@@ -224,6 +225,7 @@ class ExpenseController extends Controller
         if (!auth()->user()->can('expense.delete')) {
             abort(403, 'Unauthorized action.');
         }
+        $count =AccountTransaction::where('expense_id',$id)->delete();
         $model =Expense::find($id)->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
     }

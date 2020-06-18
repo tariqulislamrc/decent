@@ -11,4 +11,9 @@ class InvestmentAccount extends Model
      
     protected $guarded = ['id'];
 
+     public function expense()
+    {
+        return $this->hasMany('App\models\Expense\Expense');
+    }
+
 }

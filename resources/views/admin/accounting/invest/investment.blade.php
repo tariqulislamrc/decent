@@ -10,7 +10,7 @@
 			<div class="col-md-12">
 				<div class="form-group">
 					{{ Form::label('amount', _lang('Investment Amount') , ['class' => 'col-form-label']) }}
-					{{ Form::text('amount', null, ['class' => 'form-control', 'id'=>'amount', 'placeholder' => _lang('Investment Amount'),'required'=>'','autofocus'=>true]) }}
+					{{ Form::text('amount', null, ['class' => 'form-control input_number', 'id'=>'amount', 'placeholder' => _lang('Investment Amount'),'required'=>'','autofocus'=>true]) }}
 				</div>
 			</div>
 			<div class="col-md-12">

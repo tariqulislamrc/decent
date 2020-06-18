@@ -91,6 +91,9 @@ var DatatableSelect = function() {
                     data: 'account_number',
                     name: 'account_number'
                 },{
+                    data: 'account_type',
+                    name: 'account_type'
+                },{
                     data: 'note',
                     name: 'note'
                 },{

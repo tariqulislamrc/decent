@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\admin\Expense;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Expense\Expense;
 use App\models\Expense\ExpenseCategory;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
 class ExpenseCategoryController extends Controller
 {
@@ -125,7 +127,12 @@ class ExpenseCategoryController extends Controller
         if (!auth()->user()->can('expense.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $category =ExpenseCategory::find($id)->delete();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
+        $count =Expense::where('expense_category_id',$id)->count();
+        if ($count==0) {
+            $category =ExpenseCategory::find($id)->delete();
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
+         }else{
+              throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Category is already use in Expenses')]);
+         }
     }
 }

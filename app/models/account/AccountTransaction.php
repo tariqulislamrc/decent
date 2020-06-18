@@ -22,9 +22,15 @@ class AccountTransaction extends Model
         return $this->belongsTo(Account::class, 'account_id');
     }
 
-  public function user(){
+    public function user(){
         return $this->belongsTo('App\User','created_by','id');
    }
+
+
+    public function transfer_transaction()
+    {
+        return $this->belongsTo(AccountTransaction::class, 'transfer_transaction_id');
+    }
 
         /**
      * Creates new account transaction
@@ -39,7 +45,7 @@ class AccountTransaction extends Model
             'acc_type' => !empty($data['acc_type'])?$data['acc_type']:'investment',
             'type' => $data['type'],
             'sub_type' => !empty($data['sub_type']) ? $data['sub_type'] : null,
-            'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : Carbon::now(),
+            'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : date('Y-m-d'),
             'created_by' => $data['created_by'],
             'transaction_id' => !empty($data['transaction_id']) ? $data['transaction_id'] : null,
             'transaction_payment_id' => !empty($data['transaction_payment_id']) ? $data['transaction_payment_id'] : null,
@@ -59,8 +65,13 @@ class AccountTransaction extends Model
      * @param  string $transaction_type
      * @return string
      */
-    public static function updateAccountTransaction($transaction_payment, $transaction_type)
+    public static function updateAccountTransaction($transaction_payment, $transaction_type,$acc_type=null)
     {
+       if ($acc_type==null) {
+          $acc_type='investment';
+       }else{
+        $acc_type=$acc_type;
+       }
         if (!empty($transaction_payment->account_id)) {
             $account_transaction = AccountTransaction::where(
                 'transaction_payment_id',
@@ -75,7 +86,7 @@ class AccountTransaction extends Model
                 $accnt_trans_data = [
                     'amount' => $transaction_payment->amount,
                     'account_id' => $transaction_payment->account_id,
-                    'acc_type'=>'account',
+                    'acc_type'=>$acc_type,
                     'type' => self::getAccountTransactionType($transaction_type),
                     'operation_date' => $transaction_payment->operation_date,
                     'created_by' => $transaction_payment->created_by,
@@ -104,6 +115,8 @@ class AccountTransaction extends Model
             'sale_return' => 'Debit',
             'work_order'=>'Credit',
             'eCommerce'=>'Credit',
+            'eCommerce'=>'Credit',
+            'job_work'=>'Debit'
         ];
 
         return $account_transaction_types[$tansaction_type];

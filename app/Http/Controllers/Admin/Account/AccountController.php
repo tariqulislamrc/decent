@@ -28,7 +28,7 @@ class AccountController extends Controller
                 $join->on('AT.account_id', '=', 'accounts.id');
                 $join->whereNull('AT.deleted_at');
              })
-                ->select(['name', 'account_number', 'accounts.note', 'accounts.id',
+                ->select(['name', 'account_number', 'accounts.note','accounts.account_type', 'accounts.id',
                     'is_closed', DB::raw("SUM( IF(AT.type='Credit', amount, -1*amount) ) as balance")])
                 ->groupBy('accounts.id');
 
@@ -45,6 +45,9 @@ class AccountController extends Controller
 
             return DataTables::of($accounts)
                 ->addIndexColumn()
+                 ->editColumn('account_type', function ($model) {
+                        return toWord($model->account_type);
+                    })
                  ->editColumn('balance', function ($model) {
                                 return '<span class="display_currency" data-currency_symbol="true">' . number_format($model->balance,2) . '</span>';
                     })
@@ -93,11 +96,9 @@ class AccountController extends Controller
             abort(403, 'Unauthorized action.');
         }
         if (request()->ajax()) {
-                $input = $request->only(['name', 'account_number', 'note']);
+                $input = $request->only(['name', 'account_number', 'note','account_type']);
                 $user_id = auth()->user()->id;
                 $input['created_by'] = $user_id;
-                $input['account_type'] = 'saving_current';
-               
                 $account = Account::create($input);
 
                 //Opening Balance
@@ -110,14 +111,14 @@ class AccountController extends Controller
                         'acc_type'=>'account',
                         'type' => 'Credit',
                         'sub_type' => 'opening_balance',
-                        'operation_date' => Carbon::now(),
+                        'operation_date' => date('Y-m-d'),
                         'created_by' => $user_id
                     ];
 
                     AccountTransaction::createAccountTransaction($ob_transaction_data);
                 }
 
-                 return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
+                 return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('IAccount Created Successfully')]);
         }
     }
 
@@ -127,7 +128,7 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
      if (!auth()->user()->can('accounting.view')) {
             abort(403, 'Unauthorized action.');
@@ -142,17 +143,17 @@ class AccountController extends Controller
                 'A.id'
             )
                             ->where('A.id', $id)
-                            ->with(['transaction', 'transaction.client'])
+                            ->with(['transaction', 'transaction.client','transaction.employee'])
                             ->select(['type', 'amount', 'operation_date',
                                 'sub_type', 'transfer_transaction_id',
-                                DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.account_id  =account_transactions.account_id AND AT.deleted_at IS NULL) as balance'),
+                                DB::raw('(SELECT SUM(IF(AT.type="Credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.account_id  =account_transactions.account_id AND AT.deleted_at IS NULL) as balance'),
                                 'transaction_id',
                                 'account_transactions.id'
                                 ])
                              ->groupBy('account_transactions.id')
                              ->orderBy('account_transactions.operation_date', 'desc');
             if (!empty(request()->input('type'))) {
-                $accounts->where('type', request()->input('type'));
+                $accounts->where('account_transactions.type',request()->input('type'));
             }
 
             $start_date = request()->input('start_date');
@@ -167,13 +168,13 @@ class AccountController extends Controller
                                 if ($row->type == 'Debit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
-                                return '';
+                                return '0.00';
                             })
                             ->addColumn('credit', function ($row) {
                                 if ($row->type == 'Credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
-                                return '';
+                                return '0.00';
                             })
                             ->editColumn('balance', function ($row) {
                                 return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->balance,2) . '</span>';
@@ -184,9 +185,9 @@ class AccountController extends Controller
                             ->editColumn('sub_type', function ($row) {
                                 $details = '';
                                 if (!empty($row->sub_type)) {
-                                    $details = _lang($row->sub_type);
+                                    $details = toWord($row->sub_type);
                                     if (in_array($row->sub_type, ['fund_transfer', 'deposit']) && !empty($row->transfer_transaction)) {
-                                        if ($row->type == 'credit') {
+                                        if ($row->type == 'Credit') {
                                             $details .= ' ( ' . _lang('Account from') .': ' . $row->transfer_transaction->account->name . ')';
                                         } else {
                                             $details .= ' ( ' . _lang('Account to') .': ' . $row->transfer_transaction->account->name . ')';
@@ -195,11 +196,19 @@ class AccountController extends Controller
                                 } else {
                                     if (!empty($row->transaction->type)) {
                                         if ($row->transaction->transaction_type == 'Purchase') {
-                                            $details = '<b>' . _lang('Supplier') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
-                                            _lang('Reference No') . ':</b> ' . $row->transaction->invoice_no;
+                                            $details = '<b>' . _lang('Supplier') . ':</b> ' . $row->transaction->employee->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
                                         } elseif ($row->transaction->transaction_type == 'Sale') {
                                             $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
                                             _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'sale_return') {
+                                            $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'opening_balance') {
+                                            $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'job_work') {
+                                            $details = 'Job Work';
                                         }
                                     }
                                 }
@@ -210,7 +219,7 @@ class AccountController extends Controller
                                 $action = '';
                                 if ($row->sub_type == 'fund_transfer' || $row->sub_type == 'deposit') {
                                      if (auth()->user()->can("accounting.delete")) {
-                                    $action = '<button type="button" class="btn btn-danger btn-xs delete_account_transaction" id="delete_item" data-url="' . action('Admin\Account\AccountController@destroy', [$row->id]) . '"><i class="fa fa-trash"></i> ' . _lang('Delete') . '</button>';
+                                    $action = '<button type="button" class="btn btn-danger btn-sm delete_account_transaction" id="delete_item" data-url="' . action('Admin\Account\AccountController@destroy', [$row->id]) . '"><i class="fa fa-trash"></i> ' . _lang('Delete') . '</button>';
                                  }
                                 }
                                 return $action;
@@ -257,11 +266,13 @@ class AccountController extends Controller
         }
         if ($request->ajax()) {
         try{
-            $input = $request->only(['name', 'account_number', 'note']);
+            $input = $request->only(['name', 'account_number', 'note','account_type']);
 
                 $account = Account::findOrFail($id);
                 $account->name = $input['name'];
                 $account->account_number = $input['account_number'];
+                $account->account_number = $input['account_number'];
+                $account->account_type = $input['account_type'];
                 $account->note = $input['note'];
                 $account->save();
                 return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Update')]);
@@ -336,31 +347,6 @@ class AccountController extends Controller
     }
 
 
-        /**
-     * Shows deposit form.
-     * @param  int $id
-     * @return Response
-     */
-    public function getDeposit($id)
-    {
-        if (!auth()->user()->can('accounting.create')) {
-            abort(403, 'Unauthorized action.');
-        }
-        
-        if (request()->ajax()) {
-
-            
-            $account = Account::NotClosed()
-                            ->find($id);
-
-            $from_accounts = Account::where('id', '!=', $id)
-                            // ->where('account_type', 'capital')
-                            ->NotClosed()
-                            ->pluck('name', 'id');
-            return view('admin.accounting.account.deposit')
-                ->with(compact('account', 'account', 'from_accounts'));
-        }
-    }
 
         /**
      * Closes the specified account.
@@ -389,6 +375,123 @@ class AccountController extends Controller
         }
     }
 
+
+       /**
+     * Shows form to transfer fund.
+     * @param  int $id
+     * @return Response
+     */
+    public function getFundTransfer($id)
+    {
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        if (request()->ajax()) {
+            
+            $from_account = Account::NotClosed()
+                            ->find($id);
+
+            $to_accounts = Account::where('id', '!=', $id)
+                            ->NotClosed()
+                            ->pluck('name', 'id');
+
+            return view('admin.accounting.account.transfer')
+                ->with(compact('from_account', 'to_accounts'));
+        }
+    }
+
+
+        /**
+     * Transfers fund from one account to another.
+     * @return Response
+     */
+    public function postFundTransfer(Request $request)
+    {
+        if (!auth()->user()->can('account.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        if (request()->ajax()) {
+            try {
+
+                $amount = $request->input('amount');
+                $from = $request->input('from_account');
+                $to = $request->input('to_account');
+                $note = $request->input('note');
+                if (!empty($amount)) {
+                    $debit_data = [
+                        'amount' => $amount,
+                        'account_id' => $from,
+                        'type' => 'Debit',
+                        'acc_type'=>'account',
+                        'sub_type' => 'fund_transfer',
+                        'created_by' => auth()->user()->id,
+                        'note' => $note,
+                        'transfer_account_id' => $to,
+                        'operation_date' =>$request->input('operation_date'),
+                    ];
+
+                    DB::beginTransaction();
+                    $debit = AccountTransaction::createAccountTransaction($debit_data);
+
+                    $credit_data = [
+                            'amount' => $amount,
+                            'account_id' => $to,
+                            'type' => 'Credit',
+                            'acc_type'=>'account',
+                            'sub_type' => 'fund_transfer',
+                            'created_by' => auth()->user()->id,
+                            'note' => $note,
+                            'transfer_account_id' => $from,
+                            'transfer_transaction_id' => $debit->id,
+                            'operation_date' => $request->input('operation_date'),
+                        ];
+
+                    $credit = AccountTransaction::createAccountTransaction($credit_data);
+
+                    $debit->transfer_transaction_id = $credit->id;
+                    $debit->save();
+                    DB::commit();
+                }
+                
+           return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Update')]);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
+ 
+            }
+
+        }
+    }
+
+
+       /**
+     * Shows deposit form.
+     * @param  int $id
+     * @return Response
+     */
+    public function getDeposit($id)
+    {
+        if (!auth()->user()->can('accounting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        if (request()->ajax()) {
+
+            
+            $account = Account::NotClosed()
+                            ->find($id);
+
+            $from_accounts = Account::where('id', '!=', $id)
+                            // ->where('account_type', 'capital')
+                            ->NotClosed()
+                            ->pluck('name', 'id');
+            return view('admin.accounting.account.deposit')
+                ->with(compact('account', 'account', 'from_accounts'));
+        }
+    }
 
         /**
      * Deposits amount.
@@ -472,6 +575,7 @@ class AccountController extends Controller
                                         'T.invoice_no',
                                         'T.transaction_type as transaction_type',
                                         'T.id as transaction_id',
+                                        'T.return_parent_id',
                                         'A.name as account_name',
                                         'A.account_number',
                                         'transaction_payments.id as payment_id',
@@ -497,7 +601,7 @@ class AccountController extends Controller
                     ->addColumn('action', function ($row) {
                          if (auth()->user()->can("accounting.update")) {
                         $action = '<button type="button" class="btn btn-info 
-                        btn-sm" id="content_managment" data-url="' .route('admin.accounting.getLinkAccount',$row->id) .'" data-container=".view_modal">' . _lang('Link Account') .'</button>';
+                        btn-sm" id="content_managment" data-url="' .route('admin.accounting.getLinkAccount',$row->payment_id) .'" data-container=".view_modal">' . _lang('Link Account') .'</button>';
                         }
                         return $action;
                     })
@@ -509,26 +613,24 @@ class AccountController extends Controller
                         return $account;
                     })
                     ->addColumn('transaction_number', function ($row) {
-                        $html = $row->reference_no;
+                        $html = '';
                         if ($row->transaction_type == 'Sale') {
-                            $html = '<button type="button" class="btn btn-link"
+                            $html = '<button type="button" class="btn btn-success btn-sm"
                                     id="content_managment" data-url="' .route('admin.sale.pos.view',$row->transaction_id) .'" data-container=".view_modal">' . $row->reference_no . '</button>';
                         } elseif ($row->transaction_type == 'Purchase') {
-                            $html = '<button type="button" class="btn btn-link"
-                                    id="content_managment" data-url="' . route('admin.sale.pos.view',$row->transaction_id) .'" data-container=".view_modal">' . $row->reference_no . '</button>';
+                            $html = '<button type="button" class="btn btn-info btn-sm"
+                                    id="content_managment" data-url="' . route('admin.purchase_view',$row->transaction_id) .'" data-container=".view_modal">' . $row->reference_no . '</button>';
+                        }
+                        elseif ($row->transaction_type == 'sale_return') {
+                            $html = '<button type="button" class="btn btn-info btn-sm"
+                                    id="content_managment" data-url="' . route('admin.sale.return.show',$row->return_parent_id) .'" data-container=".view_modal">' . $row->reference_no . '</button>';
+                        }else{
+                            $html='<span class="badge badge-danger">'.$row->reference_no.'</span>';
                         }
                         return $html;
                     })
                     ->editColumn('type', function ($row) {
-                        $type = $row->transaction_type;
-                        if ($row->transaction_type == 'Sale') {
-                            $type = _lang('Sale');
-                        } elseif ($row->transaction_type == 'Purchase') {
-                            $type = _lang('Purchase');
-                        } elseif ($row->transaction_type == 'Expense') {
-                            $type = _lang('Expense');
-                        }
-                        return $type;
+                       return $type ='<span class="badge badge-info">'.toWord($row->transaction_type).'</span>';
                     })
                     ->filterColumn('account', function ($query, $keyword) {
                         $query->where('A.name', 'like', ["%{$keyword}%"])
@@ -592,8 +694,9 @@ class AccountController extends Controller
                     $child_payment = TransactionPayment::where('parent_id', $payment->id)->first();
                     $payment_type = !empty($child_payment->transaction->transaction_type) ? $child_payment->transaction->transaction_type : null;
                 }
+                $acc_type='account';
 
-                AccountTransaction::updateAccountTransaction($payment, $payment_type);
+                AccountTransaction::updateAccountTransaction($payment, $payment_type,$acc_type);
           return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Link To Account')]);
             }
 
@@ -618,7 +721,7 @@ class AccountController extends Controller
                 '=',
                 'A.id'
             )
-                            ->with(['transaction', 'transaction.client'])
+                            ->with(['transaction', 'transaction.client','transaction.employee'])
                             ->select(['type', 'amount', 'operation_date',
                                 'sub_type', 'transfer_transaction_id',
                                 DB::raw('(SELECT SUM(IF(AT.type="credit", AT.amount, -1 * AT.amount)) from account_transactions as AT WHERE AT.operation_date <= account_transactions.operation_date AND AT.acc_type="account" AND AT.deleted_at IS NULL) as balance'),
@@ -650,12 +753,14 @@ class AccountController extends Controller
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
 
                                 }
+                                return '0.00';
                                
                             })
                             ->addColumn('credit', function ($row) {
                                 if ($row->type == 'Credit') {
                                     return '<span class="display_currency" data-currency_symbol="true">' . number_format($row->amount,2) . '</span>';
                                 }
+                                return '0.00';
                                
                             })
                             ->editColumn('balance', function ($row) {
@@ -667,7 +772,7 @@ class AccountController extends Controller
                             ->editColumn('sub_type', function ($row) {
                                 $details = '';
                                 if (!empty($row->sub_type)) {
-                                    $details = _lang( $row->sub_type);
+                                    $details = toWord( $row->sub_type);
                                     if (in_array($row->sub_type, ['fund_transfer', 'deposit']) && !empty($row->transfer_transaction)) {
                                         if ($row->type == 'Credit') {
                                             $details .= ' ( ' . _lang('Form') .': ' . $row->transfer_transaction->account->name . ')';
@@ -676,13 +781,22 @@ class AccountController extends Controller
                                         }
                                     }
                                 } else {
+
                                     if (!empty($row->transaction->transaction_type)) {
                                         if ($row->transaction->transaction_type == 'Purchase') {
-                                            $details = '<b>' . _lang('Supplier') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
-                                            _lang('Reference') . ':</b> ' . $row->transaction->reference_no;
+                                            $details = '<b>' . _lang('Supplier') . ':</b> ' . $row->transaction->employee->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
                                         } elseif ($row->transaction->transaction_type == 'Sale') {
                                             $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
-                                            _lang('Reference') . ':</b> ' . $row->transaction->reference_no;
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'sale_return') {
+                                            $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'opening_balance') {
+                                            $details = '<b>' . _lang('Customer') . ':</b> ' . $row->transaction->client->name . '<br><b>'.
+                                            _lang('Reference No') . ':</b> ' . $row->transaction->reference_no;
+                                        }elseif ($row->transaction->transaction_type == 'job_work') {
+                                            $details = 'Job Work';
                                         }
                                     }
                                 }
