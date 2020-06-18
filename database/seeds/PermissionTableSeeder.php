@@ -277,6 +277,9 @@ public function run() {
 			['name' => 'job_work.update'],
 			['name' => 'job_work.delete'],
 
+			['name' => 'paircosting.view'],
+			['name' => 'paircosting.create'],
+
 			['name' => 'store_request.view'],
 			['name' => 'store_request.create'],
 			['name' => 'store_request.update'],

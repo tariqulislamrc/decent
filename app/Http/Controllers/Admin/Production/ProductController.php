@@ -13,6 +13,8 @@ use App\models\Production\RawMaterial;
 use App\models\Production\Variation;
 use App\models\Production\VariationTemplate;
 use App\models\Production\VariationTemplateDetails;
+use App\models\depertment\ProductFlow;
+use App\models\inventory\TransactionSellLine;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -298,20 +300,26 @@ class ProductController extends Controller
         if (!auth()->user()->can('production_product.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $type = Product::findOrFail($id);
-        $name = $type->name;
+        $count1 =ProductFlow::where('product_id',$id)->count();
+        $count2 =TransactionSellLine::where('product_id',$id)->count();
+        if ($count1 ==0 && $count2==0) {
+            $type = Product::findOrFail($id);
+            $name = $type->name;
 
-        if ($type->photo) {
-            $image_path = public_path() . '/storage/product/' . $type->photo;
-            unlink($image_path);
+            if ($type->photo) {
+                $image_path = public_path() . '/storage/product/' . $type->photo;
+                unlink($image_path);
+            }
+
+            $type->delete();
+
+            // Activity Log
+            activity()->log('Delete a Production Product - ' . $name);
+
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.production-product.index')]);
+        }else{
+            throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Product is already Order/in Process')]);
         }
-
-        $type->delete();
-
-        // Activity Log
-        activity()->log('Delete a Production Product - ' . $name);
-
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.production-product.index')]);
     }
 
     public function category(Request $request)

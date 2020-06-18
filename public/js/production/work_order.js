@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran="";
 var DatatableSelect = function () {
 
 
@@ -47,7 +47,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+         emran =$('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -79,14 +79,15 @@ var DatatableSelect = function () {
             order: [0, 'asc'],
             processing: true,
             serverSide: true,
-
-            ajax: $('.content_managment_table').data('url'),
+            ajax: { 
+                url: $('.content_managment_table').data('url'),
+                data: function(d) {
+                    d.status = $('select#status').val();
+                },
+              },
             columns: [
                 // { data: 'checkbox', name: 'checkbox' },
-                {
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                }, {
+                 {
                     data: 'code',
                     name: 'code'
                 }, {
@@ -101,6 +102,9 @@ var DatatableSelect = function () {
                 }, {
                     data: 'payment_status',
                     name: 'payment_status'
+                },{
+                    data: 'status',
+                    name: 'status'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -110,6 +114,7 @@ var DatatableSelect = function () {
 
 
     };
+
 
     var _componentRemoteModalLoad = function () {
         $(document).on('click', '#content_managment', function (e) {
@@ -583,3 +588,11 @@ $(function () {
     });
 
 });
+
+
+ $('select#status').on(
+        'change',
+        function() {
+            emran.ajax.reload(null, false);
+        }
+    );

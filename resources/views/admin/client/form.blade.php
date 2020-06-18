@@ -22,25 +22,25 @@ $route = 'admin.client.';
       <div class="col-md-6">
         <div class="form-group">
           {{ Form::label('name', _lang('Name') , ['class' => 'col-form-label']) }}
-          {{ Form::text('name', null, ['class' => 'form-control input_number', 'id'=>'name', 'placeholder' => _lang('Name'),'required'=>'','autofocus'=>true]) }}
+          {{ Form::text('name', null, ['class' => 'form-control', 'id'=>'name', 'placeholder' => _lang('Name'),'required'=>'','autofocus'=>true]) }}
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('email', _lang('Email') , ['class' => 'col-form-label']) }}
-          {{ Form::text('email', null, ['class' => 'form-control input_number', 'id'=>'email', 'placeholder' => _lang('Email')]) }}
+          {{ Form::text('email', null, ['class' => 'form-control', 'id'=>'email', 'placeholder' => _lang('Email')]) }}
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('mobile', _lang('Mobile') , ['class' => 'col-form-label']) }}
-          {{ Form::text('mobile', null, ['class' => 'form-control input_number', 'id'=>'mobile', 'placeholder' => _lang('Mobile'),'required'=>'','autofocus'=>true]) }}
+          {{ Form::text('mobile', null, ['class' => 'form-control', 'id'=>'mobile', 'placeholder' => _lang('Mobile'),'required'=>'','autofocus'=>true]) }}
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('alternate_number', _lang('Alternate Mobile') , ['class' => 'col-form-label']) }}
-          {{ Form::text('alternate_number', null, ['class' => 'form-control input_number', 'id'=>'alternate_number', 'placeholder' => _lang('Alternate Mobile')]) }}
+          {{ Form::text('alternate_number', null, ['class' => 'form-control', 'id'=>'alternate_number', 'placeholder' => _lang('Alternate Mobile')]) }}
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@ $route = 'admin.client.';
       <div class="col-md-4">
         <div class="form-group">
           {{ Form::label('net_total', _lang('Opening Balance') , ['class' => 'col-form-label']) }}
-          {{ Form::text('net_total', isset($opening_balance)?$opening_balance:null, ['class' => 'form-control', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
+          {{ Form::text('net_total', isset($opening_balance)?$opening_balance:null, ['class' => 'form-control input_number', 'id'=>'net_total', 'placeholder' => _lang('Opening Balance')]) }}
         </div>
       </div>
     </div>

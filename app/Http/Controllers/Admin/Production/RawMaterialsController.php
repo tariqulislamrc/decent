@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Production;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Production\ProductMaterial;
 use App\models\Production\RawMaterial;
 use App\models\Production\Unit;
-use Yajra\Datatables\Datatables;
+use App\models\depertment\StoreRequest;
 use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Yajra\Datatables\Datatables;
 
 class RawMaterialsController extends Controller
 {
@@ -210,10 +213,16 @@ class RawMaterialsController extends Controller
         if (!auth()->user()->can('raw_material.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $type = RawMaterial::findOrFail($id);
-        $name = $type->name;
-        $type->delete();
-        activity()->log('Delete a Raw Materials - ' . $name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
+        $count1 =ProductMaterial::where('material_id',$id)->count();
+        $count2 =StoreRequest::where('raw_material_id',$id)->count();
+        if ($count1==0 && $count2==0) {
+            $type = RawMaterial::findOrFail($id);
+            $name = $type->name;
+            $type->delete();
+            activity()->log('Delete a Raw Materials - ' . $name);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
+        }else{
+             throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Material is already use in other section')]);
+        }
     }
 }

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
 use App\models\Production\Brand;
+use App\models\Production\Product;
+use App\models\Production\VariationBrandDetails;
 use App\models\email\EmailTemolate;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Yajra\Datatables\Datatables;
 
 
@@ -187,12 +190,17 @@ class BrandsController extends Controller
         if (!auth()->user()->can('production_brands.delete')) {
             abort(403, 'Unauthorized action.');
         }
+        $count1 =VariationBrandDetails::where('brand_id',$id)->count();
+        if ($count1 ==0) {
         $type = Brand::findOrFail($id);
         $name = $type->name;
         $type->delete();
 
         activity()->log('Delete a Brand - ' . $name);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'load'=>true]);
+      }else{
+        throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Brand is already use in other section')]);
+      }
     }
 
   public function email($id)

@@ -4,7 +4,7 @@
 	</button>
 	<div class="dropdown-menu">
 		@can('job_work.update')
-		<a href="{{route('admin.job_work.edit',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Details') }}
+		<a href="{{route('admin.job_work.edit',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Accept Details') }}
 		</a>
 		@endcan
         @can('job_work.update')
