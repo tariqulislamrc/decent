@@ -60,7 +60,7 @@
 
           <div class="col-xs-12 col-sm-2">
             <form action="#" class="coupon-form">
-                <a href="{{route('product-details',$item->id)}}"><button type="button" style="margin-top: 15px;">APPLY</button></a>
+                <a href="{{route('product-details',$item->product_slug)}}"><button type="button" style="margin-top: 15px;">APPLY</button></a>
             </form>
           </div>
 

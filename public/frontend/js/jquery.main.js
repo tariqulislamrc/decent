@@ -73,7 +73,7 @@ function initSlickSlider() {
 		infinite: true,
 		adaptiveHeight: true
 	});
-    /*jQuery('.tabs-slider').slick({
+    jQuery('.tabs-slider').slick({
         slidesToShow: 5,
         slidesToScroll: 1,
         responsive: [
@@ -102,7 +102,7 @@ function initSlickSlider() {
               }
             }
         ]
-    });*/
+    });
 	jQuery('.tabs-sliderlg').slick({
 		slidesToShow: 4,
 		slidesToScroll: 1,

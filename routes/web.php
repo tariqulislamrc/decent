@@ -511,6 +511,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('producion-to-ecommerce/datatable', 'ProductionToEcommerceController@datatable')->name('producion-to-ecommerce.datatable');
 		Route::resource('production-to-ecommerce', 'ProductionToEcommerceController');
 
+		Route::get('curier-print', 'OrderController@get_curier_print')->name('curier-print');
+
 		// special_offer
 		Route::get('add_to_special_offer_row', 'SpecialOfferController@add_to_special_offer_row')->name('add_to_special_offer_row');
 		Route::get('special-offer.datatable', 'SpecialOfferController@datatable')->name('special-offer.datatable');

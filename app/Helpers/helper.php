@@ -403,20 +403,20 @@ function numer_padding($id = 1, $code_digits=3){
 function formatDate($date)
 {
 	$dtobj = Carbon\Carbon::parse($date);
-	if (get_option('date_format') == 'y-m-d') {
+	// if (get_option('date_format') == 'y-m-d') {
 		return $dtformat = $dtobj->format('F jS, Y');
-	}
-	if (get_option('date_format') == 'Y-m-d') {
-		return $dtformat = $dtobj->format('M jS, Y');
-	}
-	if (get_option('date_format') == 'h-i-s') {
-		return $dtformat = $dtobj->format('g:i A');
-	}
-	if (get_option('date_format') == 'time') {
-		return $dtformat = $dtobj->format('h:i A');
-	} else {
-		return $dtformat = $dtobj->format('F jS Y, g:i A');
-	}
+	// }
+	// if (get_option('date_format') == 'Y-m-d') {
+	// 	return $dtformat = $dtobj->format('M jS, Y');
+	// }
+	// if (get_option('date_format') == 'h-i-s') {
+	// 	return $dtformat = $dtobj->format('g:i A');
+	// }
+	// if (get_option('date_format') == 'time') {
+	// 	return $dtformat = $dtobj->format('h:i A');
+	// } else {
+	// 	return $dtformat = $dtobj->format('F jS Y, g:i A');
+	// }
 }
 
 function formatDate1($date)

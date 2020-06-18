@@ -1,6 +1,7 @@
-<table class="table table-hover table-bordered content_managment_table">
+<table class="table table-hover table-sm table-bordered content_managment_table">
     <thead>
         <tr>
+            <th>{{_lang('#')}}</th>
             <th>{{_lang('ID')}}</th>
             <th>{{_lang('Payment Type')}}</th>
             <th>{{_lang('Track Code')}}</th>
@@ -16,6 +17,7 @@
     <tbody>
         @foreach ($models as $model)
             <tr>
+                <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control"></td>
                 <td>{{$loop->index + 1}}</td>
                 <td>{{$model->payment_status}}</td>
                 <td>{{$model->reference_no}}</td>
@@ -35,12 +37,19 @@
                         {{_lang('In Shipment')}}
                     @elseif( $model->ecommerce_status == 'success')
                         {{_lang('Success')}}
+                    @elseif( $model->ecommerce_status == 'return')
+                        {{_lang('Return')}}
+                    @elseif( $model->ecommerce_status == 'payment_done')
+                        {{_lang('Payment Done')}}
                     @else 
                         {{_lang('Cancel')}}
                     @endif
                 </td>
                 <td>
-                    <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{route('admin.eCommerce.order.show',$model->id)}}" ><i class="fa fa-shopping-bag"></i></button>
+                    <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
+                        <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
+                    </a>
+                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
                 </td>
             </tr>
         @endforeach

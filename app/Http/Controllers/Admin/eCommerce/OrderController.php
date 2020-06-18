@@ -8,6 +8,7 @@ use App\models\Client;
 use App\Utilities\TransactionUtil;
 use App\models\eCommerce\ClientShippingAddress;
 use App\models\eCommerce\Coupon;
+use App\models\eCommerce\EcommerceProduct;
 use App\models\eCommerce\OrderStatus;
 use App\models\inventory\TransactionSellLine;
 use App\models\Production\Product;
@@ -43,83 +44,27 @@ class OrderController extends Controller
     public function change_status(Request $request) {
         $id = $request->id;
         $val = $request->val;
-        $note = $request->note;
         $model = Transaction::where('id', $id)->first();
-        $model->sell_note = $note;
-        $status = $model->ecommerce_status;
-        if($status == 'cancel') {
-            if($val == 'progressing' || $val == 'shipment' || $val == 'success' || $val == 'cancel') {
-                return response()->json(['success' => true, 'html' => 'cancel', 'status' => 'danger', 'message' => _lang('First Make the Order Pending Or Confirm')]);
-            }
-        }
-
-        if ($val == 'pending') {
-            $data = 'Pending';
-        } elseif ($val == 'confirm') {
-            
-            // find all products from transaction sell line table
-            $fapftslt = TransactionSellLine::where('transaction_id', $id)->get();
-            foreach($fapftslt as $item) {
-                $product_id = $item->product_id;
-                $variation_id = $item->variation_id;
-                $upgrade_qty = $item->quantity;
-                
-                // make the quantity low in main available taable
-                $table = VariationBrandDetails::where('product_id', $product_id)->where('variation_id', $variation_id)->first();
-                $old_qty = $table->qty_available;
-                $new_qty = round($old_qty) - round($upgrade_qty);
-                $table->qty_available = $new_qty;
-                $table->save();
-            }
-            $data = 'Confirm';
-        } elseif ($val == 'progressing') {
-            $data = 'In Progressing';
-        } elseif ($val == 'shipment') {
-            $data = 'In Shipment';
-        } elseif ($val == 'success') {
-            $data = 'Success';
-                $transaction_payment = new TransactionPayment();
-                $transaction_payment->transaction_id = $model->id;
-                $transaction_payment->method = $model->payment_status;
-                $transaction_payment->payment_date = $model->date;
-                $transaction_payment->amount = $model->net_total;
-                $transaction_payment->type = 'credit';
-                $transaction_payment->save();
+        if($val == 'return') {
+            $model->ecommerce_status = 'return';
         } else {
-            // find all products from transaction sell line table
-            $fapftslt = TransactionSellLine::where('transaction_id', $id)->get();
-            foreach($fapftslt as $item) {
-                $product_id = $item->product_id;
-                $variation_id = $item->variation_id;
-                $upgrade_qty = $item->quantity;
-                
-                // make the quantity low in main available taable
-                $table = VariationBrandDetails::where('product_id', $product_id)->where('variation_id', $variation_id)->first();
-                $old_qty = $table->qty_available;
-                $new_qty = round($old_qty) + round($upgrade_qty);
-                $table->qty_available = $new_qty;
-                $table->save();
-            }
-            $data = 'Cancel';
+            $model->ecommerce_status = 'payment_done';
         }
 
-        if($model) {
-            $model->ecommerce_status = $val;
-            $model->save();
+        $model->save();
 
-            // Activity Log
-            activity()->log('Change Order Status - ' . $model->reference_no);
-            return response()->json(['success' => true, 'html' => $data, 'status' => 'success', 'message' => _lang('Order Status Change Successfully')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Status is Successfully Changed!'), 'load' => true]);
 
-        } else {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Order Not Found')]);
-        }
     }
 
     // sort_order
     public function sort_order(Request $request) {
         $val = $request->val;
-        $models = Transaction::where('ecommerce_status', $val)->orderBy('id', 'desc')->get();
+        if($val == 'all') {
+            $models = Transaction::where('ecommerce_status', '!=', null)->orderBy('id', 'desc')->get();
+        } else {
+            $models = Transaction::where('ecommerce_status', $val)->orderBy('id', 'desc')->get();
+        }
         return view('admin.eCommerce.order.data', compact('models'));
     }
 
@@ -193,9 +138,11 @@ class OrderController extends Controller
         }
 
         // if status is confirm then no option for status pending
-        if($model->ecommerce_status != 'pending'  && $request->status != 'pending') {
+        if($model->ecommerce_status != 'pending'  && $request->status == 'pending') {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. You can not go back to Pending Status')]);
         }
+
+        // dd($model->ecommerce_status);
 
         // is the status is calcel 
         if($request->status == 'cancel') {
@@ -227,26 +174,30 @@ class OrderController extends Controller
         }
 
         // add new transaction sell line for this transaction 
-        for ($i = 0; $i < count($request->product_id); $i++) {
+        if ($request->status == 'success') {
+            for ($i = 0; $i < count($request->product_id); $i++) {
 
-            $transaction = new TransactionSellLine();
-            $transaction->transaction_id = $id;
-            $transaction->client_id = $client->id;
-            $transaction->product_id = $request->product_id[$i];
-            $transaction->variation_id = $request->variation_id[$i];
-            $transaction->quantity = $request->quantity[$i];
-            $transaction->unit_price  = $request->price[$i];
-            $total = ($request->quantity[$i]) * ($request->price[$i]);
-            $transaction->total = $total;
-            $transaction->save();
-
-            $this->transactionUtil->decreaseProductQuantity(
-                $request->product_id[$i],
-                $request->variation_id[$i],
-                get_option('default_brand'),
-                $request->quantity[$i]
-            );
+                $transaction = new TransactionSellLine();
+                $transaction->transaction_id = $id;
+                $transaction->client_id = $client->id;
+                $transaction->product_id = $request->product_id[$i];
+                $transaction->variation_id = $request->variation_id[$i];
+                $transaction->quantity = $request->quantity[$i];
+                $transaction->unit_price  = $request->price[$i];
+                $total = ($request->quantity[$i]) * ($request->price[$i]);
+                $transaction->total = $total;
+                $transaction->save();
+    
+                $ecommerce_product = EcommerceProduct::where('product_id', $request->product_id[$i])->where('variation_id', $request->variation_id[$i])->first();
+                if($ecommerce_product) {
+                    $avaiable_stock = $ecommerce_product->quantity;
+                    $new_stock = $avaiable_stock - $request->quantity[$i];
+                    $ecommerce_product->quantity = $new_stock;
+                    $ecommerce_product->save();
+                }
+            }
         }
+
         // update transaction table
         if($request->status == 'success') {
             $model->payment_status = 'Paid';
@@ -281,7 +232,33 @@ class OrderController extends Controller
 
 
         // return
-        return response()->json(['success' => true,  'status' => 'success', 'message' => _lang('Order Status Change Successfully')]);
+        return response()->json(['success' => true,  'status' => 'success', 'message' => _lang('Order Status Change Successfully'), 'load' => true]);
 
+    }
+
+    // get_curier_print
+    public function get_curier_print(Request $request) {
+        $data = [];
+        
+        for($i = 0; $i < count($request->check); $i++) {
+            $id = $request->check[$i];
+            $trans = Transaction::where('id', $id)->first();
+            if($trans) {
+                $items = TransactionSellLine::where('transaction_id', $id)->get();
+                if($items) {
+                    foreach ($items as $item) {
+                        $data[] = [
+                            'Artical' => $item->product->articel,
+                            'Name' => $item->product->name,
+                            'Quantity' => $item->quantity,
+                            'Size' => $item->variation->name,
+                            'Invoice' => $trans->reference_no,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view('admin.eCommerce.order.print', compact('data'));
     }
 }

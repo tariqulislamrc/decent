@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => _lang('Production to eCommerce '), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Ecommerce Stock '), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
@@ -47,7 +47,7 @@
     <script type="text/javascript" src="{{asset('backend/js/plugins/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('backend/js/plugins/dataTables.bootstrap.min.js')}}"></script>
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-    {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
+    <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script>
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/production-to-ecommerce.js') }}"></script>
 @endpush
