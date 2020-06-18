@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
 use App\models\Production\Category;
+use App\models\Production\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
@@ -220,14 +222,21 @@ class CategoryController extends Controller
        if (!auth()->user()->can('production_category.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $type = Category::findOrFail($id);
-        $name = $type->name;
-        $type->delete();
+        $count =Product::where('category_id',$id)->count();
+        if ($count==0) {
+            $type = Category::findOrFail($id);
+            $name = $type->name;
+            $type->delete();
 
-        // Activity Log
-        activity()->log('Delete a Production Category - ' . $name);
+            // Activity Log
+            activity()->log('Delete a Production Category - ' . $name);
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.production-category.index')]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'goto' => route('admin.production-category.index')]);
+        }else{
+
+        throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Category is already use in other section')]);
+      }
+
     }
 
 

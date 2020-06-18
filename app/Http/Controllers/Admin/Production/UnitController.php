@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\admin\Production;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Production\RawMaterial;
 use App\models\Production\Unit;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
 
 class UnitController extends Controller
@@ -171,10 +173,15 @@ class UnitController extends Controller
         if (!auth()->user()->can('unit.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $unit= Unit::find($id);
-        $unit->delete();
-        if ($unit) {
-            return response()->json(['success' => true, 'status' => 'success', 'message' => 'Information Delete Successfully.']);
+        $count =RawMaterial::where('unit_id',$id)->count();
+        if ($count==0) {
+            $unit= Unit::find($id);
+            $unit->delete();
+            if ($unit) {
+                return response()->json(['success' => true, 'status' => 'success', 'message' => 'Information Delete Successfully.']);
+            }
+        }else{
+            throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Unit is already use in other section')]);
         }
     }
 }

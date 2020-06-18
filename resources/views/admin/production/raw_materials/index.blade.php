@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Production Raw Materials'), 'modal' => 'lg'])
+@push('admin.css')
+<style>
+.table th, .table td {
+padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">

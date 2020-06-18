@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => _lang('Production Brands'), 'modal' => 'lg'])
+@push('admin.css')
+<style>
+.table th, .table td {
+padding: 0.2rem 0.5rem;
+}
+</style>
+@endpush
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
@@ -20,7 +27,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('production_brand.create')
-                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-brands.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.production-brands.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Add New Brand')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">
