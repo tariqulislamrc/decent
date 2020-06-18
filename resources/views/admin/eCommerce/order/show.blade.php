@@ -1,4 +1,21 @@
-@php
+@extends('layouts.app', ['title' => _lang('Ecommerce Order List'), 'modal' => 'xl'])
+@push('admin.css')
+    <link rel="stylesheet" href="{{asset('backend/css/daterangepicker.css')}}">
+@endpush
+{{-- Header Section --}}
+@section('page.header')
+    <div class="app-title">
+        <div>
+            <h1 data-placement="bottom" title="E-Commerce Order List."><i class="fa fa-shopping-cart mr-4"></i> {{_lang('E-Commerce Order List') .'-' . $model->reference_no}}</h1>
+            <p>{{_lang('View all request for E-Commerce Order List')}}</p>
+        </div>
+    </div>
+@stop
+
+{{-- Main Section --}}
+@section('content')
+    <div class="row">
+        @php
 
     $find_shiping_address = App\models\eCommerce\ClientShippingAddress::where('transaction_id', $model->id)->first();
     if($find_shiping_address) {
@@ -220,11 +237,6 @@
                                     <div style="display:none;" class="note_hide"><textarea name="note" id="note" class="form-control" cols="30" rows="2">{{$model->sell_note}}</textarea></div>
                                 </td>
                             </tr>
-                            <tr>
-                                <th class="text-center" colspan="2">
-                                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-primary btn-sm">Update The Invoice</button></a>
-                                </th>
-                            </tr>
                         </table>
                     @else 
                         <table class="table table-bordered table-striped">
@@ -354,31 +366,8 @@
                 </table>
             </div>
 
-            {{-- Order Note --}}
-            <div class="col-md-12 form-group">
-                <label for="order_note">Order Note</label>
-                <textarea name="order_note" id="order_note" class="form-control" cols="30" rows="2" placeholder="Enter Order Note">{{ $model->sell_note }}</textarea>
-            </div>
-
-            {{-- Change Order Status --}}
-            <div class="col-md-6 form-group">
-                <div class="text-center" id="show_loader_1" style="display:none;">
-                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                </div>
-                <input type="hidden" name="id" id="id" value="{{$model->id}}">
-                <label for="change_status">{{_lang('Change Order Status')}} </label>
-                <select data-url="{{route('admin.eCommerce.order.change_status')}}" name="change_status" id="change_status" class="form-control select">
-                    <option {{$model->ecommerce_status == 'pending' ? 'selected' : ""}} value="pending">{{_lang('Pending')}}</option>
-                    <option {{$model->ecommerce_status == 'confirm' ? 'selected' : ""}} value="confirm">{{_lang('Confirm')}}</option>
-                    <option {{$model->ecommerce_status == 'progressing' ? 'selected' : ""}} value="progressing">{{_lang('In Progressing')}}</option>
-                    <option {{$model->ecommerce_status == 'shipment' ? 'selected' : ""}} value="shipment">{{_lang('In Shipment')}}</option>
-                    <option {{$model->ecommerce_status == 'success' ? 'selected' : ""}} value="success">{{_lang('Success')}}</option>
-                    <option {{$model->ecommerce_status == 'cancel' ? 'selected' : ""}} value="cancel">{{_lang('Cancel')}}</option>
-                </select>
-            </div>
-
             {{-- Get An Invoice --}}
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="">{{_lang('Generate An Invoice')}} </label>
                 <a href="{{route('admin.eCommerce.order.pdf',$model->reference_no)}}" target="blank"><button type="button" class="btn btn-primary btn-block text-center">{{_lang('Print Invoice')}}</button></a>
             </div>
@@ -386,75 +375,12 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function(){
-        var change_status = $("#change_status").val();
-        if(change_status =="success"){
-            $('#change_status').prop('disabled', true);
-        }else{
-            $('#change_status').prop('disabled', false);
-        }
-    });
-    $('#change_status').change(function() {
-        var val = $(this).val();
-        var id = $('#id').val();
-        var note = $('#order_note').val();
-        var url = $(this).data('url');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data: {
-                id: id, val: val, note:note
-            },
-            beforeSend: function() {
-                $('#show_loader_1').fadeIn();
-            }, 
-            success: function (data) {
-                if(data.status == 'success') {
-                    toastr.success(data.message);
-                    if(data.html) {
-                        $('#order_status').html(data.html);
-                    }
-                }
-                if(data.status == 'danger') {
-                    toastr.error(data.message);
-                }
-                $('#show_loader_1').fadeOut();
-            }
-        });
-    });
+    </div>
+<!-- /basic initialization -->
+@stop
 
-    $('#edit').click(function() {
-        $('.name_show').fadeOut();
-        $('.name_hide').fadeIn();
-        $('.phone_show').fadeOut();
-        $('.phone_hide').fadeIn();
-        $('.email_show').fadeOut();
-        $('.email_hide').fadeIn();
-        $('.address_show').fadeOut();
-        $('.address_hide').fadeIn();
-        $('.city_show').fadeOut();
-        $('.city_hide').fadeIn();
-        $('.note_show').fadeOut();
-        $('.note_hide').fadeIn();
-        $('.button_show').fadeOut();
-        $('.button_hide').fadeIn();
-    });
+{{-- Script Section --}}
+@push('scripts')
+  
+@endpush
 
-    $('#cancel').click(function() {
-        $('.name_show').fadeIn();
-        $('.name_hide').fadeOut();
-        $('.phone_show').fadeIn();
-        $('.phone_hide').fadeOut();
-        $('.email_show').fadeIn();
-        $('.email_hide').fadeOut();
-        $('.address_show').fadeIn();
-        $('.address_hide').fadeOut();
-        $('.city_show').fadeIn();
-        $('.city_hide').fadeOut();
-        $('.note_show').fadeIn();
-        $('.note_hide').fadeOut();
-        $('.button_show').fadeIn();
-        $('.button_hide').fadeOut();
-    });
-</script>

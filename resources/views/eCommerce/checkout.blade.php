@@ -188,7 +188,7 @@
                                                 <th scope="row"> {{$model->name}} ({{$model->quantity}})</th>
                                                 <th scope="row"> {{$model->price}} </th>
                                                 <td class="text-right font-weight-bold">
-                                                    {{($model->price)*($model->quantity)}} </td>
+                                                    {{number_format(($model->price)*($model->quantity), 2)}} </td>
                                                 <input type="hidden" name="product_id[]"
                                                     value="{{$model->attributes->product_id}}">
                                                 <input type="hidden" name="variation_id[]" value="{{$model->id}}">
@@ -207,7 +207,7 @@
                                     <div class="txt-holder">
                                         <strong class="title sub-title pull-left">CART SUBTOTAL</strong>
                                         <div class="txt pull-right">
-                                            <span>{{get_option('currency')}} {{Cart::getSubTotal()}}</span>
+                                            <span>{{get_option('currency')}} {{number_format(Cart::getSubTotal(), 2)}}</span>
                                             <input type="hidden" name="sub_total" value="{{Cart::getSubTotal()}}">
                                         </div>
                                     </div>
@@ -224,7 +224,7 @@
                                     <div class="txt-holder">
                                         <strong class="title sub-title pull-left">COUPON AMOUNT</strong>
                                         <div class="txt pull-right">
-                                            <span>{{get_option('currency')}} {{Session::get('coupon')}}</span>
+                                            <span>{{get_option('currency')}} {{number_format(Session::get('coupon'), 2)}}</span>
                                             <input type="hidden" name="coupon" value="{{Session::get('coupon')}}">
                                         </div>
                                     </div>
@@ -233,8 +233,8 @@
                                     <div class="txt-holder">
                                         <strong class="title sub-title pull-left">ORDER TOTAL</strong>
                                         <div class="txt pull-right">
-                                            <span>{{get_option('currency')}} {{Session::get('total')}}</span>
-                                            <input type="hidden" name="total" value="{{Session::get('total')}}">
+                                            <span>{{get_option('currency')}} {{Session::get('total') != Cart::getSubTotal() ? Session::get('total') : number_format(Session::get('total') - Session::get('coupon'), 2) }}</span>
+                                            <input type="hidden" name="total" value="{{Session::get('total') != Cart::getSubTotal() ? Session::get('total') : Session::get('total') - Session::get('coupon') }}">
                                         </div>
                                     </div>
                                 </li>

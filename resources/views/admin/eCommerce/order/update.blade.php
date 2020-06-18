@@ -203,13 +203,15 @@
                                         @if (count($query))
                                             @foreach ($query as $element)
                                                
-                                                <div class="card col-md-4 m-2">
+                                                <div class="card col-md-3 m-2">
                                                     <div class="card-header">{{ toWord($element->status) }}</div>
                                                     <div class="card-body"><b>Note : </b>{{ $element->note }} <br> <b>Updated User: </b> {{ $element->user ? $element->user->name : 'No User Found'}} </div>
                                                 </div>
                                             @endforeach
                                         @else 
-                                            <p class="text-center text-danger">No Order Status Note Found for this Transaction</p>
+                                            <div class="col-md-12">
+                                                <p class="text-center text-danger">No Order Status Note Found for this Transaction</p>
+                                            </div>
                                         @endif
                                    </div>
                             </div>
@@ -307,25 +309,38 @@
                         </div>
     
                         {{-- Change Order Status --}}
-                        <div class="col-md-12 form-group">
-                            <label for="change_status">{{_lang('Change Order Status')}} </label>
-                            <select data-url="{{route('admin.eCommerce.order.change_status')}}" name="status" id="status" class="form-control select" required data-placeholder="Select Status">
-                                <option value="">Select Status</option>
-                                <option value="pending">{{_lang('Pending')}}</option>
-                                <option value="confirm">{{_lang('Confirm')}}</option>
-                                <option value="progressing">{{_lang('In Progressing')}}</option>
-                                <option value="shipment">{{_lang('In Shipment')}}</option>
-                                <option value="success">{{_lang('Success')}}</option>
-                                <option value="cancel">{{_lang('Cancel')}}</option>
-                                <option value="cancel">{{_lang('On Hold')}}</option>
-                                <option value="cancel">{{_lang('Payment Done')}}</option>
-                                <option value="cancel">{{_lang('Return')}}</option>
-                            </select>
-                        </div>
+                        {{-- {{ dd($model->ecommerce_status) }} --}}
+                        @if ($model->ecommerce_status != 'success' && $model->ecommerce_status != 'return' && $model->ecommerce_status != 'payment_done')
+                            <div class="col-md-12 form-group">
+                                <label for="change_status">{{_lang('Change Order Status')}} </label>
+                                <select data-parsley-errors-container="#change_order_status" data-url="{{route('admin.eCommerce.order.change_status')}}" name="status" id="status" class="form-control select" required data-placeholder="Select Status">
+                                    <option value="">Select Status</option>
+                                    <option value="pending">{{_lang('Pending')}}</option>
+                                    <option value="confirm">{{_lang('Confirm')}}</option>
+                                    <option value="progressing">{{_lang('In Progressing')}}</option>
+                                    <option value="shipment">{{_lang('In Shipment')}}</option>
+                                    <option value="success">{{_lang('Success')}}</option>
+                                    <option value="cancel">{{_lang('Cancel')}}</option>
+                                    <option value="cancel">{{_lang('On Hold')}}</option>
+                                    <option value="cancel">{{_lang('Payment Done')}}</option>
+                                    <option value="cancel">{{_lang('Return')}}</option>
+                                </select>
+                                <span id="change_order_status"></span>
+                            </div>
 
-                        <div class="col-md-6 mx-auto">
-                            <button type="submit" class="btn btn-success btn-block" id="submit">Update Invoice</button>
-                        </div>
+                            <div class="col-md-6 mx-auto">
+                                <button type="submit" class="btn btn-success btn-block" id="submit">Update Invoice</button>
+                            </div>
+                        @else 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" data-url="{{ route('admin.eCommerce.order.change_status') }}" data-id="{{ $model->id }}" class="btn btn-danger return btn-sm btn-block">Return</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" data-url="{{ route('admin.eCommerce.order.change_status') }}" data-id="{{ $model->id }}" class="btn btn-success payment_done btn-sm btn-block">Payment Done</button>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -459,6 +474,68 @@
 
         // console.log(net_total);
     }
+
+    $('.return').click(function() {
+        var id = $(this).data('id');
+        var url = $(this).data('url');
+        $('.return').html('Please Wait ...');
+        $('.return').attr('disabled', '1');
+        val = 'return';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                id: id, val:val
+            },
+            success: function (data) {
+                if(data.status == 'success') {
+                    toastr.success(data.message);
+                    if (data.load) {
+                        setTimeout(function () {
+
+                            window.location.href = "";
+                        }, 1000);
+                    }
+                }
+                if(data.status == 'danger') {
+                    toastr.error(data.message);
+                }
+                $('.return').html('Return');
+                $('.return').removeAttr('disabled');
+            }
+        });
+    });
+
+    $('.payment_done').click(function() {
+        var id = $(this).data('id');
+        var url = $(this).data('url');
+        $('.payment_done').html('Please Wait ...');
+        $('.payment_done').attr('disabled', '1');
+        val = 'payment_done';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                id: id, val:val
+            },
+            success: function (data) {
+                if(data.status == 'success') {
+                    toastr.success(data.message);
+                    if (data.load) {
+                        setTimeout(function () {
+
+                            window.location.href = "";
+                        }, 1000);
+                    }
+                }
+                if(data.status == 'danger') {
+                    toastr.error(data.message);
+                }
+                $('.payment_done').html('Payment Done');
+                $('.payment_done').removeAttr('disabled');
+            }
+        });
+    });
 
     function total_function()
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\eCommerce;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\eCommerce\EcommerceProduct;
 use App\models\Production\Product;
 use App\models\Production\Variation;
 use Yajra\DataTables\DataTables;
@@ -65,7 +66,14 @@ class HotSaleProductController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $product_id = [];
+        $product = EcommerceProduct::all();
+        
+        foreach ($product as $value) {
+            $product_id[] = $value->product_id;
+        }
+
+        $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->get();
         return view('admin.eCommerce.hotsale.create', compact('products'));
     }
 

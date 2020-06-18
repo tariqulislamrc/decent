@@ -123,9 +123,11 @@ class CartController extends Controller
             Session::put('coupon_text', $request->coupon);
 
             Session::put('coupon', $model);
+            Session::put('discount', $model->discount_amount);
+            Session::put('discount_type', $model->discount_type);
             return response()->json(['success' => true, 'coupon' => $model, 'status' => 'success', 'message' => _lang('Coupon Code Match Successfuly')]);
 
-        }else{
+        } else {
             return response()->json(['success' => true, 'status' => 'error', 'message' => _lang('Coupon Code Doesnot Match')]);
         }
 
@@ -133,7 +135,6 @@ class CartController extends Controller
 
 
     public function store_cart(Request $request){
-        
 
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
@@ -149,7 +150,6 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        //dd('hello');
         $banner = PageBanner::where('page_name', 'Checkout')->first();
 
         if (auth('client')->check() == true) {
@@ -159,7 +159,6 @@ class CartController extends Controller
 
             return view('eCommerce.checkout', compact('models', 'client','banner'));
         } else {
-             dd(URL::previous());
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Please Login First'), 'goto' => route('account')]);
         }
     }
@@ -205,10 +204,13 @@ class CartController extends Controller
         $payment->sell_note = $request->order_note;
 
         if(FacadesSession::get('coupon')) {
-            $payment->discount_type = 'Coupon';
-            $payment->discount = FacadesSession::get('coupon');
+            $payment->discount = Session::get('discount');
+            $payment->discount_type = Session::get('discount_type');
+            $payment->discount_amount = $request->coupon;
         }
 
+        $payment->shipping_charges = 0;
+        $payment->paid = 0;
         $payment->sale_type = 'eCommerce';
         $payment->type = 'Credit';
         $payment->brand_id= get_option('default_brand');
@@ -252,6 +254,12 @@ class CartController extends Controller
         }
 
         generate_id('purchase', true);
+
+        Session::put('coupon', null);
+        Session::put('total', null);
+        Session::put('discount', null);
+        Session::put('discount_type', null);
+        Session::put('coupon_text', null);
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Order Complete Successfuly'), 'goto' => route('welcome')]);
 

@@ -59,7 +59,7 @@
 
                 <h3>DECENT FOOTWEAR</h3>
 
-                <p><a href="{{ route('invoice', $transaction->reference_no) }}" target="_blank">Print Your Invoice Copy</a></p>
+                <p style="text-decoration:underline;"><a style="color: blue;" href="{{ route('invoice', $transaction->reference_no) }}" target="_blank">Print Your Invoice Copy</a></p>
             </div>
         </div>
     </div><!-- Mt Process Section of the Page end -->

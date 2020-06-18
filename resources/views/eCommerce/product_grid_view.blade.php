@@ -141,12 +141,7 @@ if(count($find_price) > 0) {
 													<a href="{{route('product-details',$item->product_slug)}}">
 														<img src="{{$item->photo && $item->photo != '' ?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="image description">
 													</a>
-													{{-- <ul class="mt-stars">
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star"></i></li>
-														<li><i class="fa fa-star-o"></i></li>
-													</ul> --}}
+													
 													<ul class="links">
 														<li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
 														<li><a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;" >

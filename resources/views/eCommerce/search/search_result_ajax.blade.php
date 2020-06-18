@@ -83,13 +83,7 @@
 										</div>
 									</div>
 								@endforeach
-								@else
-									<p style="margin: 0 0 9.5px;
-									padding: 10px;
-									font-size: 20px;
-									background-color: #ddd;
-									color: red;
-									text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
+								
 								@endif
 							</section>
 						</aside>

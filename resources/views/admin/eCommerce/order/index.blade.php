@@ -32,6 +32,8 @@
                         <option value="shipment">{{_lang('In Shipment')}}</option>
                         <option value="success">{{_lang('Success')}}</option>
                         <option value="cancel">{{_lang('Cancel')}}</option>
+                        <option value="return">{{_lang('Return')}}</option>
+                        <option value="payment_done">{{_lang('Payment Done')}}</option>
                         <option value="all">{{_lang('All Order')}}</option>
                     </select>
 
@@ -49,46 +51,56 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <div class="tile-body table-responsive" id="data">
-                    <table class="table table-hover table-bordered content_managment_table">
-                        <thead>
-                            <tr>
-                                <th>{{_lang('ID')}}</th>
-                                <th>{{_lang('Payment Type')}}</th>
-                                <th>{{_lang('Track Code')}}</th>
-                                <th>{{_lang('Subtotal')}}</th>
-                                <th>{{_lang('Shipping Name')}}</th>
-                                <th>{{_lang('Phone')}}</th>
-                                <th>{{_lang('Total')}}</th>
-                                <th>{{_lang('Date')}}</th>
-                                <th>{{_lang('Status')}}</th>
-                                <th>{{_lang('Action')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($models as $model)
+                <form target="blank" action="{{ route('admin.eCommerce.curier-print') }}" method="GET">
+                    <div class="tile-body table-responsive" id="data">
+                        <table class="table table-sm table-hover table-bordered content_managment_table">
+                            <thead>
                                 <tr>
-                                    <td>{{$loop->index + 1}}</td>
-                                    <td>{{$model->payment_status}}</td>
-                                    <td>{{$model->reference_no}}</td>
-                                    <td>{{get_option('currency') ? 'BDT' : get_option('currenct') }} {{$model->sub_total}}</td>
-                                    <td>{{get_client_name($model->client_id)}}</td>
-                                    <td>{{get_client_phone($model->client_id)}}</td>
-                                    <td>{{get_option('currency') ? 'BDT' : get_option('currenct') }} {{$model->net_total}}</td>
-                                    <td>{{formatDate($model->created_at)}}</td>
-                                    <td>
-                                        @if ($model->ecommerce_status == 'pending')
-                                            {{_lang('Pending')}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{route('admin.eCommerce.order.show',$model->id)}}" ><i class="fa fa-shopping-bag"></i></button>
-                                    </td>
+                                    <th>{{_lang('#')}}</th>
+                                    <th>{{_lang('ID')}}</th>
+                                    <th>{{_lang('P. Type')}}</th>
+                                    <th>{{_lang('Track Code')}}</th>
+                                    <th>{{_lang('Subtotal')}}</th>
+                                    <th>{{_lang('Shipping Name')}}</th>
+                                    <th>{{_lang('Phone')}}</th>
+                                    <th>{{_lang('Total')}}</th>
+                                    <th>{{_lang('Date')}}</th>
+                                    <th>{{_lang('Status')}}</th>
+                                    <th>{{_lang('Action')}}</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach ($models as $model)
+                                    <tr>
+                                        <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control"></td>
+                                        <td>{{$loop->index + 1}}</td>
+                                        <td>{{$model->payment_status}}</td>
+                                        <td>{{$model->reference_no}}</td>
+                                        <td>{{get_option('currency') ? 'BDT' : get_option('currenct') }} {{$model->sub_total}}</td>
+                                        <td>{{get_client_name($model->client_id)}}</td>
+                                        <td>{{get_client_phone($model->client_id)}}</td>
+                                        <td>{{get_option('currency') ? 'BDT' : get_option('currenct') }} {{$model->net_total}}</td>
+                                        <td>{{formatDate($model->created_at)}}</td>
+                                        <td>
+                                            @if ($model->ecommerce_status == 'pending')
+                                                {{_lang('Pending')}}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
+                                                <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
+                                            </a>
+                                            <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4 mx-auto">
+                        <button class="btn btn-primary btn-sm btn-block">Print for Curier</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

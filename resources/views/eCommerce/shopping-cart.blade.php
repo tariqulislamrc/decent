@@ -42,8 +42,7 @@
                 </div>
             </div>
         </div>
-    </div><!-- Mt Process Section of the Page end -->
-    <!-- Mt Product Table of the Page -->
+    </div>
 
 <form action="{{route('shopping-cart-store')}}" method="post" id="content_form">
 	@csrf
@@ -121,8 +120,8 @@
                 </div>
             </div>
         </div>
-    </div><!-- Mt Product Table of the Page end -->
-    <!-- Mt Detail Section of the Page -->
+    </div>
+
     <section class="mt-detail-sec style1 wow fadeInUp" data-wow-delay="0.4s">
         <div class="container">
             <div class="row">
@@ -203,6 +202,7 @@
                     $('#total').text(sub_total);
                     $('#total_hidden').val(sub_total);
                     $('#coupon_amt').val(total_amt);
+                    $('#show_discount_amount').html(total_amt);
                     $('.mt-holder').hide('500');
                 } else {
                     var sub_total = total_hidden - amt;
@@ -210,10 +210,16 @@
                     $('#sub_total_hidden').val(sub_total);
                      $('#coupon_amt').val(amt);
                     $('.mt-holder').hide('500');
+                    $('#show_discount_amount').html(amt);
+
                 }
             }
+
+            if(amt != 0) {
+                    $('#show_coupon_area').fadeIn();
+                }
         })
-    
+        
     @endif
 </script>
 @endpush

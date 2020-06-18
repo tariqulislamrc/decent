@@ -1,5 +1,5 @@
 @php
-    $find_shiping_address = App\models\eCommerce\ClientShippingAddress::where('transaction_id', $model->id)->first();
+    $find_shiping_address = App\models\Production\Transaction::where('shipping_status', '!=', null)->first();
     if($find_shiping_address) {
         $x = 1;
     } else {
@@ -18,10 +18,10 @@
             <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $model->client->email }} </span></p>
             <p><span class="font-weight-bold text-color h5"> Contact : {{ $model->client->mobile }} </span>  </p>
         @else 
-            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ $find_shiping_address->client_name }} </span></p>
-            <p> <span class="font-weight-bold text-color h5 text-justify"> Address : {{ $find_shiping_address->client_address }} </span></p>
-            <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $find_shiping_address->client_email }} </span></p>
-            <p><span class="font-weight-bold text-color h5"> Contact : {{ $find_shiping_address->client_phone }} </span>  </p>
+            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ $find_shiping_address->full_name }} </span></p>
+            <p> <span class="font-weight-bold text-color h5 text-justify"> Address : {{ $find_shiping_address->address }} {{ $find_shiping_address->city}} </span></p>
+            <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $find_shiping_address->email }} </span></p>
+            <p><span class="font-weight-bold text-color h5"> Contact : {{ $find_shiping_address->phone }} </span>  </p>
         @endif
     </div>
 <div class="col-md-4 ml-auto">
@@ -61,21 +61,21 @@
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Sub Total') }}</td>
         <td> {{ get_option('currency') ? get_option('currency') : 'BDT'}} {{ $model->sub_total }} </td>
     </tr>
-    @if ($element->discount)
+    @if ($model->discount)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
         <td> {{ get_option('currency') ? get_option('currency') : 'BDT'}} {{ $model->discount_amount }} </td>
     </tr>
     @endif
 
-    @if ($element->tax)
+    @if ($model->tax)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Discount Amount') }}</td>
         <td> {{ get_option('currency') ? get_option('currency') : 'BDT'}} {{ $model->tax }} </td>
     </tr>
     @endif
 
-    @if ($element->shipping_charges)
+    @if ($model->shipping_charges)
     <tr>
         <td class="text-right h5 font-weight-bold" colspan="3"> {{ _lang('Shipping Charge') }}</td>
         <td> {{ get_option('currency') ? get_option('currency') : 'BDT'}} {{ $model->shipping_charges }} </td>
@@ -98,7 +98,7 @@
 </tbody>
 </table>
 </div>
-<p class="h2 text-capitalize mt-4 text-center"> In Words : ........................................................................................................</p>
+{{-- <p class="h2 text-capitalize mt-4 text-center"> In Words : ........................................................................................................</p> --}}
 <br><br>
 <div class="row mt-5 mb-3 text-center">
 <div class="col-md-12">

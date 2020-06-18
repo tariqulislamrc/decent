@@ -466,7 +466,7 @@
         <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
 
         {{-- stock transfer --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Stock Trnsfer')}}</a></li>
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Ecommerce Stock')}}</a></li>
 
         {{--Ecommerce Orders --}}
         <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
