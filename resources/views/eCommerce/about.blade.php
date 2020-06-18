@@ -62,18 +62,18 @@
                   @if (count($our_team))
 
                       @foreach ($our_team as $our_team_item)
-                        <div class="holder">
+                        <div class="holder"> 
 
                         <!-- col of the Page -->
                             <div class="col wow fadeInLeft" data-wow-delay="0.4s">
                     <div class="img-holder">
                       <a href="#">
                         <img src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
-                        <ul class="list-unstyled social-icon">
+                        {{-- <ul class="list-unstyled social-icon">
                           <li><i class="fa fa-twitter"></i></li>
                           <li> <i class="fa fa-facebook"></i></li>
                           <li><i class="fa fa-linkedin"></i></li>
-                        </ul>
+                        </ul> --}}
                       </a>
                     </div>
                     <div class="mt-txt">
