@@ -82,19 +82,20 @@ class ReportController extends Controller
         return view('admin.report.customer');
     }
  
- public function monthly_report(Request $request)
- {
-     if (!auth()->user()->can('report.monthly')) {
+    public function monthly_report(Request $request)
+    {
+        if (!auth()->user()->can('report.monthly')) {
             abort(403, 'Unauthorized action.');
-         }
-   if ($request->ajax()) {
-	   	$date =$request->month;
-	   	$ex =explode('-', $date);
-	   	$year=$ex[0];
-	   	$month=$ex[1];
-        $days =days_in_month($month, $year);
-        return view('admin.report.monthly_ajax',compact('days','month','year'));
-   }
+        }
+        
+        if ($request->ajax()) {
+	   	    $date =$request->month;
+	   	    $ex =explode('-', $date);
+	   	    $year=$ex[0];
+	   	    $month=$ex[1];
+            $days =days_in_month($month, $year);
+            return view('admin.report.monthly_ajax',compact('days','month','year'));
+        }
 
    	    $month =date('m');
         $year =date('Y');
@@ -102,16 +103,16 @@ class ReportController extends Controller
         return view('admin.report.monthly',compact('days','month','year'));
  }
 
-  public function yearly_report(Request $request)
- {
-     if (!auth()->user()->can('report.yearly')) {
+    public function yearly_report(Request $request)
+    {
+        if (!auth()->user()->can('report.yearly')) {
             abort(403, 'Unauthorized action.');
-         }
-     if ($request->ajax()) {
-	   	$year =$request->year;
-        return view('admin.report.yearly_ajax',compact('year'));
-     }
-        $year =date('Y');
-        return view('admin.report.yearly',compact('year'));
- }
+        }
+        if ($request->ajax()) {
+	   	    $year =$request->year;
+            return view('admin.report.yearly_ajax',compact('year'));
+        }
+            $year =date('Y');
+            return view('admin.report.yearly',compact('year'));
+    }
 }
