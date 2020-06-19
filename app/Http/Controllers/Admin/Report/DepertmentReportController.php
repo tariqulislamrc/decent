@@ -11,6 +11,7 @@ use App\models\depertment\DepertmentStore;
 use App\models\depertment\MaterialReport;
 use App\models\depertment\ProductFlow;
 use App\models\depertment\StoreRequest;
+use App\models\Production\Product;
 use Illuminate\Http\Request;
 
 class DepertmentReportController extends Controller

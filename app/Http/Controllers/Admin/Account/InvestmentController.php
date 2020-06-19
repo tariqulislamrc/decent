@@ -156,11 +156,7 @@ class InvestmentController extends Controller
                                 if ($row->type == 'Debit') {
                                     return '<span class="display_currency debit" data-currency_symbol="true" data-orig-value="'.$row->amount.'">' . number_format($row->amount,2) . '</span>';
                                 }
-<<<<<<< HEAD
                                 return '0.00';
-=======
-                                return '';
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
                             })
                   ->addColumn('credit', function ($row) {
                                 if ($row->type == 'Credit') {
@@ -172,13 +168,8 @@ class InvestmentController extends Controller
          }
 
        $investment = InvestmentAccount::find($id);
-<<<<<<< HEAD
        $credit =AccountTransaction::where('investment_account_id',$id)->where('type','Credit')->sum('amount');
        $debit =AccountTransaction::where('investment_account_id',$id)->where('type','Debit')->sum('amount');
-=======
-       $credit =AccountTransaction::where('investment_account_id',$id)->where('type','credit')->sum('amount');
-       $debit =AccountTransaction::where('investment_account_id',$id)->where('type','debit')->sum('amount');
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
        $balance =$credit-$debit;
                             
         return view('admin.accounting.invest.show')
@@ -243,11 +234,8 @@ class InvestmentController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $model=InvestmentAccount::findOrFail($id);
-<<<<<<< HEAD
         //Expense Delete
         $model->expense->delete();
-=======
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
     }
@@ -290,10 +278,7 @@ class InvestmentController extends Controller
                     'amount' => $amount,
                     'investment_account_id' => $investment_account_id,
                     'type' => 'Credit',
-<<<<<<< HEAD
                     'acc_type' => 'investment',
-=======
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
                     'sub_type' => 'deposit',
                     'operation_date' => $request->input('operation_date'),
                     'created_by' => auth()->user()->id,
