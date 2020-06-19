@@ -171,19 +171,30 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="paid">{{ _lang('Paid') }} </label>
                                             <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
                                         </div>
                                     </div>
-                                      <div class="col-md-4">
+                                      <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="due">{{ _lang('Due') }} </label>
                                             <input type="text" class="form-control due" name="due" id="due" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                     <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="account_id">{{ _lang('Account') }} </label>
+                                            <select name="account_id" class="form-control select" id="account_id">
+                                                <option value="">Select Account</option>
+                                                @foreach ($accounts as $element)
+                                                   <option>{{ $element->name }}({{ toWord($element->account_type) }})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="paid">{{ _lang('Method') }} </label>
                                             <select name="method" class="form-control method">

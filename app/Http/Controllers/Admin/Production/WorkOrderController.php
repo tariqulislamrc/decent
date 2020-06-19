@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
+use App\Utilities\TransactionUtil;
 use App\models\Production\Brand;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
@@ -12,6 +13,8 @@ use App\models\Production\TransactionPayment;
 use App\models\Production\Variation;
 use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
+use App\models\account\Account;
+use App\models\account\AccountTransaction;
 use App\models\depertment\ProductFlow;
 use App\models\depertment\StoreRequest;
 use App\models\inventory\TransactionSellLine;
@@ -32,6 +35,12 @@ class WorkOrderController extends Controller
      *
      * @return Factory|View
      */
+   protected $transactionUtil;
+   public function __construct(TransactionUtil $transactionUtil)
+    {
+        $this->transactionUtil = $transactionUtil;
+    }
+
     public function index()
     {
         if (!auth()->user()->can('workorder.view')) {
@@ -92,8 +101,9 @@ class WorkOrderController extends Controller
         $code_digits = get_option('digits_work_order_code');
         $uniqu_id = generate_id('workorder', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
+        $accounts=Account::where('is_closed', 0)->get();
 
-        return view('admin.production.work_order.create', compact('brand', 'models', 'code_prefix', 'code_digits', 'uniqu_id'));
+        return view('admin.production.work_order.create', compact('brand', 'models', 'code_prefix', 'code_digits', 'uniqu_id','accounts'));
     }
 
     /**
@@ -140,7 +150,7 @@ class WorkOrderController extends Controller
             $model->discount_type = $request->discount_type;
             $model->discount_amount = (($request->discount == null) ? 0 : $request->discount);
             $model->tax = (($request->tax == null) ? 0 : $request->tax);
-            $model->tax = (($request->shiping_charge == null) ? 0 : $request->shiping_charge);
+            $model->shiping_charge = (($request->shiping_charge == null) ? 0 : $request->shiping_charge);
             $model->total_payable = $request->total_payable_amount;
             $model->paid = $request->paid;
             $model->due = $request->due;
@@ -162,11 +172,6 @@ class WorkOrderController extends Controller
             $tx = new Transaction;
             $tx->sell_note = $request->sell_note;
             $tx->stuff_note = $request->stuff_note;
-            if( $request->paid == $request->total_payable_amount) {
-                $tx->payment_status = 1;
-            } else {
-                $tx->payment_status = 0;
-            }
     
             $ym = Carbon::now()->format('Y/m');
     
@@ -196,8 +201,15 @@ class WorkOrderController extends Controller
             $tp->method = $request->method;
             $tp->payment_date = date('y-m-d');
             $tp->amount = $request->paid;
+            $tp->account_id =$request->account_id;
             $tp->type = 'Credit';
+            $tp->created_by =auth()->user()->id;
             $tp->save();
+
+           if ($request->account_id) {
+              $this->account_transaction($tp->id,$request->account_id);
+            }
+              $this->transactionUtil->updatePaymentStatus($tx->id, $tx->net_total);
         }
 
         if ($success) {
@@ -227,7 +239,8 @@ class WorkOrderController extends Controller
     // pay_form
     public function pay_form($id) {
         $model = WorkOrder::findOrFail($id);
-        return view('admin.production.work_order.pay', compact('model'));
+        $accounts=Account::where('is_closed', 0)->get();
+        return view('admin.production.work_order.pay', compact('model','accounts'));
     }
 
     // pay_bill
@@ -274,8 +287,15 @@ class WorkOrderController extends Controller
         $tp->method = $request->method;
         $tp->payment_date = date('y-m-d');
         $tp->amount = $request->paid;
+        $tp->account_id =$request->account_id;
         $tp->type = 'Credit';
+        $tp->created_by =auth()->user()->id;
         $tp->save();
+
+         if ($request->account_id) {
+            $this->account_transaction($tp->id,$request->account_id);
+         }
+          $this->transactionUtil->updatePaymentStatus($tx->id, $tx->net_total);
 
          // Activity Log
          activity()->log('Pay a Work order By - ' . Auth::user()->id);
@@ -547,4 +567,19 @@ class WorkOrderController extends Controller
         return view('admin.production.work_order.print', compact('model', 'work_order', 'items', 'brand', 'lines'));
 
     }
+
+    private function account_transaction($payment_id,$account_id)
+        {
+            $payment = TransactionPayment::findOrFail($payment_id);
+            $payment->account_id = $account_id;
+            $payment->save();
+            $payment_type = !empty($payment->transaction->transaction_type) ? $payment->transaction->transaction_type : null;
+            if (empty($payment_type)) {
+                $child_payment = TransactionPayment::where('parent_id', $payment->id)->first();
+                $payment_type = !empty($child_payment->transaction->transaction_type) ? $child_payment->transaction->transaction_type : null;
+            }
+            $acc_type ='account';
+
+            AccountTransaction::updateAccountTransaction($payment, $payment_type,$acc_type);
+        }
 }
