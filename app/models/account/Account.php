@@ -15,9 +15,12 @@ class Account extends Model
     public static function accountTypes()
     {
         return [
-            '' => _lang('Not Applicable'),
+            // '' => _lang('Not Applicable'),
             'saving_current' => _lang('Saving Current'),
-            'capital' => _lang('Capital')
+            'capital' => _lang('Capital'),
+            'bank_account' => _lang('Bank Account'),
+            'direct_income' => _lang('Direct Income'),
+            'unsecured_loan' => _lang('Unsecured Loan'),
         ];
     }
 
