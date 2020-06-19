@@ -351,16 +351,18 @@ class DepertmentReportController extends Controller
 
     // ecommerce_report_date_wise
     public function ecommerce_report_date_wise(Request $request) {
-        $date = $request->start;
-        $ex = explode('to', $date);
-        $start = $ex[0];
-        $end = trim($ex[1]);
+        $status = $request->status;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
 
-        $start_date = formatDate($start);
-        $end_date = formatDate($end);
+        if($status == 'all') {
+            $models = Transaction::where('ecommerce_status', '!=', NULL)->where('date', '>=', $start_date)->where('date', '<=', $end_date)->get();
+
+        } else {
+            $models = Transaction::where('ecommerce_status', $status)->where('date', '>=', $start_date)->where('date', '<=', $end_date)->get();
+        }
         
-        $models = Transaction::where('ecommerce_status', '!=', NULL)->where('ecommerce_status', '!=', 'pending')->where('ecommerce_status', '!=', 'cancel')->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
-        return view('admin.report.eCommerce.data', compact('models', 'start_date', 'end_date', 'date'));
+        return view('admin.report.ecommerce.data', compact('models', 'start_date', 'end_date', 'status'));
     }
 
     // ecommerce_report_pdf
