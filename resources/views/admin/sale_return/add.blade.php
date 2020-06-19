@@ -116,6 +116,12 @@
                         <input type="text" name="discount" class="form-control" id="discount" value="{{ $discount }}">
                     </div>
                 </div>
+                <div class="col-sm-4">
+                     <div class="form-group">
+                        {{ Form::label('method', _lang('Payment Account')) }}
+                        {!! Form::select('account_id', $accounts,$account_id, ['class' => 'form-control account_id select', 'required']); !!}
+                     </div>
+                </div>
                  <input type="hidden" name="discount_amount" id="discount_amount" class="return_discount" value="{{ $discount_amount }}">
             </div>
             @php

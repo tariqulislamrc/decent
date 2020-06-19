@@ -25,6 +25,11 @@
                     <label for="">Reference No</label>
                     <input type="text" name="check_no" class="form-control">
                 </div>
+
+                 <div class="col-md-12 reference_no">
+                    <label for="">Payment Account</label>
+                    {!! Form::select('account_id', $accounts,null, ['class' => 'form-control select', 'required']); !!}
+                </div>
                 <div class="col-md-12">
                     <label for="amount">
                         {{ _lang('Amount') }}
@@ -41,8 +46,8 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-6 mx-auto text-center">
-                    <button type="submit" class="btn btn-primary btn-lg w-100" id="submit">{{ _lang('Payment') }}</button>
-                    <button type="button" class="btn btn-primary btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+                    <button type="submit" class="btn btn-primary btn-sm w-100" id="submit">{{ _lang('Payment') }}</button>
+                    <button type="button" class="btn btn-primary btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }}  <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                 </div>
             </div>
         </form>
@@ -65,6 +70,7 @@
                     <th>#</th>
                     <th> @lang('Date')</th>
                     <th> @lang('Reference No')</th>
+                    <th> @lang('Payment Account')</th>
                     <th> @lang('Amount')</th>
                     <th> @lang('Payment mode')</th>
                     <th> @lang('Payment note')</th>
@@ -75,10 +81,11 @@
                     <td>{{ $loop->index+1 }}</td>
                     <td>{{ $pay->payment_date }}</td>
                     <td>{{ $pay->payment_ref_no }}</td>
+                    <td>{{ $pay->payment_account?$pay->payment_account->name:'' }}</td>
                     <td>{{ $pay->amount }}</td>
                     <td>{{ $pay->method }}</td>
                     <td>{{ $pay->note }}</td>
-                    <td><button class="btn btn-sm btn-primary" onclick="myFunction()"><i class="fa fa-print" aria-hidden="true"></i></button></td>
+                    <td><button class="btn btn-sm btn-primary" onclick="myFunction('{{ route('admin.sale.pos.printpayment',$pay->id) }}')"><i class="fa fa-print" aria-hidden="true"></i></button></td>
                 </tr>
                 @endforeach
             </tbody>

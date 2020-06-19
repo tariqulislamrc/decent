@@ -11,14 +11,14 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             {{ Form::label('paid', _lang('Paid')) }}
                                             {{ Form::text('paid', null, ['class' => 'form-control input_number paid', 'id'=>'paid', 'placeholder' => _lang('Paid')]) }}
                                         </div>
                                         
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             {{ Form::label('method', _lang('Method')) }}
                                              <select name="method" class="form-control method">
@@ -28,6 +28,13 @@
                                              </select>
                                         </div>
                                         
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            {{ Form::label('method', _lang('Payment Account')) }}
+                                            {!! Form::select('account_id', $accounts,null, ['class' => 'form-control select', 'required']); !!}
+                                            
+                                        </div> 
                                     </div>
                                     <div class="col-md-12 reference_no" style="display:none">
                                          {{ Form::label('check_no', _lang('Reference')) }}

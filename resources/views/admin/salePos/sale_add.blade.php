@@ -139,19 +139,26 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="paid">{{ _lang('Paid') }} </label>
                                     <input type="text" class="form-control input_number paid" name="paid" id="paid">
                                 </div>
                             </div>
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="due">{{ _lang('Due') }} </label>
                                     <input type="text" class="form-control due" name="due" id="due" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                          
+                            <div class="col-md-3">
+                            <div class="form-group">
+                                {{ Form::label('method', _lang('Payment Account')) }}
+                                {!! Form::select('account_id', $accounts,null, ['class' => 'form-control account_id select', 'required']); !!}
+                             </div>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="paid">{{ _lang('Method') }} </label>
                                     <select name="method" class="form-control method">
@@ -182,8 +189,8 @@
                 </div>
                    <div class="row mt-2">
                         <div class="col-md-6 mx-auto text-center">
-                            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('New Sale') }}</button>
-                            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+                            <button type="submit" id="submit" class="btn btn-primary btn-sm w-100">{{ _lang('New Sale') }}</button>
+                            <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
                         </div>
                     </div>
             </div>
@@ -200,6 +207,7 @@
 {{-- Script Section --}}
 @push('scripts')
 <script>
+    $('.account_id').select2();
         //get customer
     $('#customer_id').select2({
         ajax: {

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Utilities\TransactionUtil;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
+use App\models\account\Account;
+use App\models\account\AccountTransaction;
 use App\models\inventory\ReturnTransaction;
 use App\models\inventory\TransactionSellLine;
 use Carbon\Carbon;
@@ -139,13 +141,22 @@ class SaleReturnController extends Controller
         $sale = Transaction::where('transaction_type', 'Sale')
                         ->with(['sell_lines', 'client', 'return_parent',  'sell_lines.product'])
                         ->find($id);
-
+        $account_id =null;
+        $return_id=null;
+        if (isset($sale->return_parent)) {
+        $return_id =$sale->return_parent->id;
+        }
+        $account_exit=TransactionPayment::where('transaction_id',$return_id)->first();
+        if (isset($account_exit)) {
+           $account_id =$account_exit->account_id;
+        }
+        $accounts = Account::forDropdown(false, false);
         foreach ($sale->sell_lines as $key => $value) {
             $qty_available = $value->qty;
 
             $sale->sell_lines[$key]->formatted_qty_available = $qty_available;
         }
-       return view('admin.sale_return.add',compact('sale'));
+       return view('admin.sale_return.add',compact('sale','accounts','account_id'));
     }
 
     /**
@@ -257,6 +268,10 @@ class SaleReturnController extends Controller
                 $return_payment=TransactionPayment::create($payment_data);
             }
 
+            if ($request->account_id) {
+              $this->account_transaction($return_payment->id,$request->account_id);
+            }
+
             //update payment status
             $this->transactionUtil->updatePaymentStatus($return_transaction->id, $return_transaction->net_total);
 
@@ -348,4 +363,21 @@ class SaleReturnController extends Controller
         $model =Transaction::with(['return_parent', 'sell_lines', 'sell_lines.product'])->find($id);;
         return view('admin.sale_return.printpage',compact('model'));
     }
+
+
+    private function account_transaction($payment_id,$account_id)
+    {
+        $payment = TransactionPayment::findOrFail($payment_id);
+        $payment->account_id = $account_id;
+        $payment->save();
+        $payment_type = !empty($payment->transaction->transaction_type) ? $payment->transaction->transaction_type : null;
+        if (empty($payment_type)) {
+            $child_payment = TransactionPayment::where('parent_id', $payment->id)->first();
+            $payment_type = !empty($child_payment->transaction->transaction_type) ? $child_payment->transaction->transaction_type : null;
+        }
+        $acc_type ='account';
+
+        AccountTransaction::updateAccountTransaction($payment, $payment_type,$acc_type);
+    }
+
 }
