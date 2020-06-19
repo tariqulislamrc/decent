@@ -132,15 +132,16 @@ class PayrollTransectionController extends Controller
 
         $investment_account_id = $request->investment_account_id;
 
-        $payroll = Payrolls::where('employee_id', $request->employee_id)->where('payment_status', '!=', 'Paid')->first();
-        
-        if(!$payroll) {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('No Unpaid payroll found for this Employee')]);
-        }
-        $payroll_id = $payroll->id;
-
         // Date of transaction cannot be less than payroll end date.
         if($request->head == 'Salary Payment') {
+
+            $payroll = Payrolls::where('employee_id', $request->employee_id)->where('payment_status', '!=', 'Paid')->first();
+        
+            if(!$payroll) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('No Unpaid payroll found for this Employee')]);
+            }
+            $payroll_id = $payroll->id;
+
             $payroll_end_date = $payroll->end_date;
             $date_of_tx = $request->date;
             if(strtotime($date_of_tx) < strtotime($payroll_end_date)) {
@@ -218,7 +219,6 @@ class PayrollTransectionController extends Controller
             
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Salary Payment Paid Successfully')]);
         
-
         } elseif ($request->head == 'Advance Payment') {
             
             $model = new PayrollTransaction;
@@ -444,5 +444,16 @@ class PayrollTransectionController extends Controller
 
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Transection Deleted Successfully')]);
+    }
+
+    // print
+    public function print($id) {
+        $model = PayrollTransaction::findOrFail($id);
+        $emp = Employee::findOrFail($model->employee_id);
+        $employee = $emp->name;
+        $head = $model->head;
+
+        // dd($model);
+        return view('admin.employee.payroll.transection.print', compact('model', 'employee', 'head'));
     }
 }
