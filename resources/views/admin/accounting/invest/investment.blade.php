@@ -4,7 +4,7 @@
 		<div class="form-group">
 			<strong>{{ _lang('Account Name') }}</strong>:
 			{{$investment->name}}
-			{!! Form::hidden('investment_account_id', $investment->id) !!}
+			{!! Form::hidden('investment_account_id', $investment->id) !!} 
 		</div>
 		<div class="row">
 			<div class="col-md-12">
