@@ -351,7 +351,7 @@ class SaleReturnController extends Controller
                 $sale_return->delete();
 
                 //Delete account transactions
-                // AccountTransaction::where('transaction_id', $id)->delete();
+                AccountTransaction::where('transaction_id', $id)->delete();
 
                 DB::commit();
 
