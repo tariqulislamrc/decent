@@ -11,6 +11,7 @@
 		@endcan
 		@can('accounting.create')
 		<a id="content_managment" data-url="{{route('admin.accounting.account.getDeposit',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Deposit') }}</a>
+		<a id="content_managment" data-url="{{route('admin.accounting.account.getFundTransfer',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Transfer') }}</a>
 		@endcan
 		@can('accounting.delete')
 

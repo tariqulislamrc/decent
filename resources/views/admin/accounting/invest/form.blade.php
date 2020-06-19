@@ -29,7 +29,7 @@ $route = 'admin.accounting.investment.';
         <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('opening_balance', _lang('Opening Investment') , ['class' => 'col-form-label']) }}
-          {{ Form::text('opening_balance', null, ['class' => 'form-control', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Investment')]) }}
+          {{ Form::text('opening_balance', null, ['class' => 'form-control input_number', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Investment')]) }}
         </div>
       </div>
       @endif

@@ -68,11 +68,27 @@
 <script src="{{ asset('backend/js/picker/daterangepicker.js') }}"></script>
 <script src="{{ asset('backend/js/picker/moment-timezone-with-data.min.js') }}"></script>
 <script>
+      _componentSelect2Normal();
 if ($('#date_filter').length == 1) {
     $('#date_filter').daterangepicker({
-        autoUpdateInput: false,
-
-    });
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment(),
+                minDate: moment().local().subtract(2, 'years'),
+                maxDate: moment().local(),
+                dateLimit: {
+                    days: 90
+                },
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                drops: 'down',
+                applyClass: 'btn-sm bg-slate',
+                cancelClass: 'btn-sm btn-light'
+        });
     $('#date_filter').on('apply.daterangepicker', function(ev, picker) {
         var start = '';
         var end = '';

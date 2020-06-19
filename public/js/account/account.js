@@ -91,12 +91,10 @@ var DatatableSelect = function() {
                     data: 'account_number',
                     name: 'account_number'
                 },{
-<<<<<<< HEAD
                     data: 'account_type',
                     name: 'account_type'
                 },{
-=======
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
+
                     data: 'note',
                     name: 'note'
                 },{
