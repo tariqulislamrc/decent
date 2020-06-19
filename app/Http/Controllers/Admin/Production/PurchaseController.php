@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
+use App\Utilities\TransactionUtil;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\Purchase;
@@ -10,10 +11,13 @@ use App\models\Production\RawMaterial;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\WorkOrder;
+use App\models\account\AccountTransaction;
+use App\models\account\InvestmentAccount;
 use App\models\employee\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseController extends Controller
@@ -23,6 +27,11 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+   protected $transactionUtil;
+   public function __construct(TransactionUtil $transactionUtil)
+    {
+        $this->transactionUtil = $transactionUtil;
+    }
     public function index()
     {
         if (!auth()->user()->can('purchase.view')) {
@@ -127,7 +136,8 @@ class PurchaseController extends Controller
         $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
 
         $ref_no = $ym.'/P-'.ref($row);
-        return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no'));
+        $inves_account =InvestmentAccount::all(); 
+        return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no','inves_account'));
     }
 
     /**
@@ -175,13 +185,7 @@ class PurchaseController extends Controller
             $brand_id = $brand->brand_id;
         }
 
-        if ($request->payment == 0) {
-            $type = 'Due';
-        } else if($request->payment_due_hidden > 0){
-            $type = 'Partial';
-        }else{
-            $type = 'Paid';
-        }
+        if (isset($request->raw_material)) {
 
         $model = new Transaction;
 
@@ -201,7 +205,6 @@ class PurchaseController extends Controller
         $model->net_total = $request->final_total;
         $model->paid = $request->payment;
         $model->due = $request->payment_due_hidden;
-        $model->payment_status = $type;
         $model->stuff_note = $request->stuff_notes;
         $model->sell_note = $request->sell_notes;
         $model->transaction_note = $request->transaction_notes;
@@ -250,15 +253,39 @@ class PurchaseController extends Controller
             $payment->amount = $request->payment;
             $payment->note = $request->payment_note;
             $payment->type = 'Debit';
+            $payment->investment_account_id =$request->investment_account_id;
+            $payment->payment_type='investment';
             $payment->created_by = auth()->user()->id;
             $payment->save();
         }
+
+
+        if ($request->investment_account_id) {
+               $acc_transaction =new AccountTransaction;
+               $acc_transaction->investment_account_id =$request->investment_account_id;
+               $acc_transaction->transaction_id =$model->id;
+               $acc_transaction->transaction_payment_id =$payment->id;
+               $acc_transaction->type ='Debit';
+               $acc_transaction->acc_type ='investment';
+               $acc_transaction->amount =$request->payment;
+               $acc_transaction->reff_no =$model->reference_no;
+               $acc_transaction->operation_date =date('Y-m-d');
+               $acc_transaction->note ='Purchase';
+               $acc_transaction->created_by =auth()->user()->id;
+               $acc_transaction->save();
+        }
+
+        $this->transactionUtil->updatePaymentStatus($model->id, $model->net_total);
 
         generate_id('Purchase', true);
 
         // Activity Log
         activity()->log('Created a Purchase - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => route('admin.production-purchase.details',$id)]);
+      } else
+        {
+          throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to Purchase')]);
+        }
     }
 
     /**
@@ -281,7 +308,8 @@ class PurchaseController extends Controller
     public function payment($id)
     {
         $model = Transaction::findOrFail($id);
-        return view('admin.production.purchase.payment', compact('model'));
+        $inves_account =InvestmentAccount::all(); 
+        return view('admin.production.purchase.payment', compact('model','inves_account'));
     }
 
     public function add_payment(Request $request, $id)
@@ -289,11 +317,17 @@ class PurchaseController extends Controller
         if (!auth()->user()->can('purchase.view')) {
             abort(403, 'Unauthorized action.');
         }
-        if ($request->due_amount > 0) {
-            $type = 'Partial';
-        }else if($request->due_amount == 0){
-            $type = 'Paid';
-        }
+        $transaction = Transaction::find($id);
+
+         if ($transaction->paid+$request->paid_amount>$transaction->net_total) {
+             throw ValidationException::withMessages(['message' => _lang('Payble Amount Not> Net Total')]);
+          }
+
+        $previously_paid = $transaction->paid;
+        $previously_due = $transaction->due;
+        $transaction->paid = round(($previously_paid + $request->get('paid_amount')), 2);
+        $transaction->due = $previously_due-$request->get('paid_amount');
+        $transaction->save();
 
         $payment = new TransactionPayment;
         $payment->transaction_id = $id;
@@ -303,15 +337,27 @@ class PurchaseController extends Controller
         $payment->amount = $request->paid_amount;
         $payment->note = $request->payment_note;
         $payment->type = 'Debit';
+        $payment->acc_type ='investment';
+        $payment->investment_account_id =$request->investment_account_id;
         $payment->created_by = auth()->user()->id;
         $payment->save();
+     
+    if ($request->investment_account_id) {
+           $acc_transaction =new AccountTransaction;
+           $acc_transaction->investment_account_id =$request->investment_account_id;
+           $acc_transaction->transaction_id =$transaction->id;
+           $acc_transaction->transaction_payment_id =$payment->id;
+           $acc_transaction->type ='Debit';
+           $acc_transaction->acc_type ='investment';
+           $acc_transaction->amount =$request->paid_amount;
+           $acc_transaction->reff_no =$transaction->reference_no;
+           $acc_transaction->operation_date =date('Y-m-d');
+           $acc_transaction->note ='Purchase';
+           $acc_transaction->created_by =auth()->user()->id;
+           $acc_transaction->save();
+        }
 
-        $transaction = Transaction::findOrFail($id);
-        $new_paid = $transaction->paid + $request->paid_amount;
-        $transaction->paid = $new_paid;
-        $transaction->payment_status = $type;
-        $transaction->due = $request->due_amount;
-        $transaction->save();
+         $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
 
         // Activity Log
         activity()->log('Add Payment - ' . Auth::user()->id);

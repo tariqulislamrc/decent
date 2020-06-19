@@ -10,6 +10,8 @@ use App\models\Production\TransactionPayment;
 use App\models\Production\VariationTemplate;
 use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
+use App\models\account\AccountTransaction;
+use App\models\account\InvestmentAccount;
 use App\models\depertment\Depertment;
 use App\models\depertment\ProductFlow;
 use Carbon\Carbon;
@@ -96,8 +98,9 @@ class JobworkController extends Controller
                 ->select('variations.*')
                 ->distinct('product_id')
                 ->get();
+        $inves_account =InvestmentAccount::all();        
                 if (isset($products)) {
-                	 return view('admin.job_work.get_product',compact('variations','products')); 
+                	 return view('admin.job_work.get_product',compact('variations','products','inves_account')); 
                 }
               
         
@@ -115,7 +118,7 @@ class JobworkController extends Controller
         $row = Transaction::where('transaction_type', 'job_work')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'job_work')->withTrashed()->get()->count() + 1 : 1;
         
         $ref_no = $ym.'/job-'.ref($row);
-        $transaction_data['date']=Carbon::now()->format('Y-m-d H:i:s');
+        $transaction_data['date']=date('Y-m-d');
         $transaction_data['type']='Debit';
         $transaction_data['reference_no']=$ref_no;
         $transaction_data['transaction_type']='job_work';
@@ -146,15 +149,32 @@ class JobworkController extends Controller
           }
          }
 
-           if (!empty($transaction_data['paid'])) {
+       if (!empty($transaction_data['paid'])) {
             $payment =new TransactionPayment;
             $payment->transaction_id=$transaction->id;
             $payment->method ='Cash';
             $payment->payment_date =$transaction_data['date'];
             $payment->amount =$request->paid;
             $payment->type ='Debit';
+            $payment->investment_account_id =$request->investment_account_id;
+            $payment->payment_type='investment';
             $payment->created_by =auth()->user()->id;
             $payment->save();
+        }
+
+        if ($request->investment_account_id) {
+               $acc_transaction =new AccountTransaction;
+               $acc_transaction->investment_account_id =$request->investment_account_id;
+               $acc_transaction->transaction_id =$transaction->id;
+               $acc_transaction->transaction_payment_id =$payment->id;
+               $acc_transaction->type ='Debit';
+               $acc_transaction->acc_type ='investment';
+               $acc_transaction->amount =$request->paid;
+               $acc_transaction->reff_no =$transaction->reference_no;
+               $acc_transaction->operation_date =date('Y-m-d');
+               $acc_transaction->note ='Job Work';
+               $acc_transaction->created_by =auth()->user()->id;
+               $acc_transaction->save();
         }
 
         //Update payment status
@@ -232,14 +252,12 @@ class JobworkController extends Controller
                                         ->first();
       $payments_query = TransactionPayment::where('transaction_id', $id);
 
-            // $accounts_enabled = false;
-            // if ($this->moduleUtil->isModuleEnabled('account')) {
-            //     $accounts_enabled = true;
-            //     $payments_query->with(['payment_account']);
-            // }
+
+      $payments_query->with(['pay_investment']);
 
        $payments = $payments_query->get();
-        return view('admin.job_work.makepayment_modal',compact('transaction','payments')); 
+       $inves_account =InvestmentAccount::all(); 
+        return view('admin.job_work.makepayment_modal',compact('transaction','payments','inves_account')); 
     }
 
 
@@ -266,6 +284,8 @@ public function destroy($id)
 
   $model->job_works()->delete();
   $model->payment()->delete();
+//Delete account transactions
+  AccountTransaction::where('transaction_id', $id)->delete();
   $model->delete();
 
   return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Deleted')]);

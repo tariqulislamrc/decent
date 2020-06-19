@@ -220,7 +220,7 @@ padding: 0.2rem 0.5rem;
     <div class="card mt-3">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="amount">Amount:</label>
                     <div class="input-group  mb-3">
                         <div class="input-group-append">
@@ -230,7 +230,18 @@ padding: 0.2rem 0.5rem;
                         name="payment" type="text" value="0.00">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="investment_account_id">{{ _lang('Pay Account') }} </label>
+                        <select name="investment_account_id" id="investment_account_id" class="form-control select">
+                            <option value="">Select Account</option>
+                            @foreach ($inves_account as $element)
+                                <option value="{{ $element->id }}">{{ $element->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="method">Payment Method:</label>
                         <div class="input-group">
@@ -249,7 +260,7 @@ padding: 0.2rem 0.5rem;
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="transaction">Transaction No.</label>
                         <input class="form-control" placeholder="Transaction No." id="transaction"
@@ -275,8 +286,8 @@ padding: 0.2rem 0.5rem;
     </div>
     <div class="row mt-2">
         <div class="col-md-6 mx-auto text-center">
-            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('New Purchase') }}</button>
-            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+            <button type="submit" id="submit" class="btn btn-primary btn-sm w-100">{{ _lang('New Purchase') }}</button>
+            <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
     </div>
 </div>
