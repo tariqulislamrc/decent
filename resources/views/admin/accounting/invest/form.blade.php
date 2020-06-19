@@ -29,7 +29,7 @@ $route = 'admin.accounting.investment.';
         <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('opening_balance', _lang('Opening Investment') , ['class' => 'col-form-label']) }}
-          {{ Form::text('opening_balance', null, ['class' => 'form-control input_number', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Investment')]) }}
+          {{ Form::text('opening_balance', null, ['class' => 'form-control', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Investment')]) }}
         </div>
       </div>
       @endif
@@ -44,8 +44,8 @@ $route = 'admin.accounting.investment.';
     <div class="row">
       <div class="col-md-6 mx-auto text-center">
         
-        {{ Form::submit(isset($model) ? _lang('Update'):_lang('Create'), ['class' => 'btn btn-primary btn-sm w-100 ', 'id' => 'submit']) }}
-        <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+        {{ Form::submit(isset($model) ? _lang('Update'):_lang('Create'), ['class' => 'btn btn-primary btn-lg w-100 ', 'id' => 'submit']) }}
+        <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
       </div>
     </div>
     {!! Form::close() !!}

@@ -72,7 +72,9 @@
                             <tbody>
                                 @foreach ($models as $model)
                                     <tr>
-                                        <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control"></td>
+
+                                        <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control check"></td>
+
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{$model->payment_status}}</td>
                                         <td>{{$model->reference_no}}</td>
@@ -88,9 +90,11 @@
                                         </td>
                                         <td>
                                             <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
-                                                <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
+
+                                                <button type="button" class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
                                             </a>
-                                            <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+                                            <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -98,7 +102,8 @@
                         </table>
                     </div>
                     <div class="col-md-4 mx-auto">
-                        <button class="btn btn-primary btn-sm btn-block">Print for Curier</button>
+
+                        <button title="Please Select Order First" id="print" disabled class="btn btn-primary btn-sm btn-block">Print for Curier</button>
                     </div>
                 </form>
             </div>
@@ -118,6 +123,16 @@
     <script src="{{ asset('backend/js/daterangepicker.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/order.js') }}"></script>
     <script>
+
+        $(document).on('click', '.check', function() {
+            if(this.checked) {
+                $('#print').removeAttr('disabled');
+            } else {
+                $('#print').attr('disabled', '1');
+            }
+        });
+
+
         $('#sort_order').change(function() {
             var val = $(this).val();
             var url = $(this).data('url');

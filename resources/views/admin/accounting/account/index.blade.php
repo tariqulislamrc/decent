@@ -1,12 +1,5 @@
 @extends('layouts.app', ['title' => _lang('Account'), 'modal' => 'lg'])
 {{-- Header Section --}}
-@push('admin.css')
-<style>
-.table th, .table td {
-padding: 0.2rem 0.5rem;
-}
-</style>
-@endpush
 @section('page.header')
 <div class="app-title">
     <div>
@@ -23,7 +16,7 @@ padding: 0.2rem 0.5rem;
         <div class="tile">
             <h3 class="tile-title">
             @can('accounting.create')
-            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.accounting.account.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Account')}}</button>
+            <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.accounting.account.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('create')}}</button>
             @endcan
             </h3>
             <div class="tile-body">
@@ -45,7 +38,6 @@ padding: 0.2rem 0.5rem;
                         <tr>
                             <td>{{ _lang('Name') }}</td>
                             <th>{{_lang('Account No')}}</th>
-                            <th>{{_lang('Account Type')}}</th>
                             <th>{{_lang('Note')}}</th>
                             <th>{{_lang('Balance')}}</th>
                             <th>{{_lang('action')}}</th>

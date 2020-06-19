@@ -90,9 +90,12 @@ var DatatableSelect = function() {
                 }, {
                     data: 'name',
                     name: 'name'
+<<<<<<< HEAD
                 },{
                     data: 'note',
                     name: 'note'
+=======
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
                 }, {
                     data: 'action',
                     name: 'action'

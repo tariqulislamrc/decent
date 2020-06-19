@@ -7,7 +7,7 @@
             <p>{{_lang('Create Expense Category. Here you can Add, Edit & Delete The production Brands')}}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-           
+
         </ul>
     </div>
 @stop
@@ -20,7 +20,9 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('expense.create')
-                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Expense Category')}}</button>
+
+                        <button data-placement="bottom" title="Create New Production Brands" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.expense.category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Expense Category')}}</button>
+
                     @endcan
                 </h3>
                 <div class="tile-body">
@@ -34,7 +36,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                 </div>

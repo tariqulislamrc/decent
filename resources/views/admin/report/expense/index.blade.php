@@ -17,6 +17,8 @@
 	</div>
 	<div class="card-body">
 		<form action="{{route('admin.report.expense.get_expense_report')}}" method="post" enctype="multipart/form-data" target="_blank">
+
+
 			@csrf
 			<div class="row">
 				<div class="col-md-4 form-group">
@@ -68,12 +70,23 @@
 					</div>
 				</div>
 				<div class="col-md-6 mx-auto">
-					<button type="submit" class="btn btn-block btn-info">{{ _lang('Get Expense Report') }}</button>
+
+					<button id="submit" type="button" data-url="{{route('admin.report.expense.get_expense_report')}}" class="btn btn-block btn-info">{{ _lang('Get Expense Report') }}</button>
+					<button style="display: none;" id="submiting" type="button" disabled class="btn btn-block btn-info">{{ _lang(' Processing... ') }}</button>
+
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
+
+<div class="card mt-3">
+    <div class="card-header">Requested Report</div>
+    <div id="report_data" class="card-body">
+
+    </div>
+</div>
+
 <!-- /basic initialization -->
 @stop
 {{-- Script Section --}}
@@ -81,5 +94,55 @@
 <script>
 $('.select').select2();
 _componentDatefPicker();
+
+
+$(function() {
+	$('#submit').hide();
+	$('#submiting').show();
+
+	var expense_category_id = $('#expense_category_id').val();
+	var investment_account_id = $('#investment_account_id').val();
+	var user_id = $('#user_id').val();
+	var sDate = $('#sDate').val();
+	var eDate = $('#eDate').val();
+
+	get_data(expense_category_id, investment_account_id, user_id, sDate, eDate);
+});
+
+$('#submit').click(function() {
+	$('#submit').hide();
+	$('#submiting').show();
+
+	var expense_category_id = $('#expense_category_id').val();
+	var investment_account_id = $('#investment_account_id').val();
+	var user_id = $('#user_id').val();
+	var sDate = $('#sDate').val();
+	var eDate = $('#eDate').val();
+
+	get_data(expense_category_id, investment_account_id, user_id, sDate, eDate);
+});
+
+function get_data(expense_category_id, investment_account_id, user_id, sDate, eDate) {
+	var url = $('#submit').data('url');
+	$.ajax({
+        url: url,
+        data: {
+            expense_category_id: expense_category_id,
+            investment_account_id: investment_account_id,
+            user_id: user_id,
+            sDate: sDate,
+            eDate: eDate
+        },
+        type: 'POST',
+        dataType: 'html'
+    })
+    .done(function(data) {
+        $('#report_data').html(data);
+        toastr.success('Report Genarate');
+        $('#submit').show();
+        $('#submiting').hide();
+    });
+}
+
 </script>
 @endpush

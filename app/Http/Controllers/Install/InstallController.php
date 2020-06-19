@@ -83,7 +83,11 @@ class InstallController extends Controller
     {
         Installer::updateSettings($request->all());
         Installer::finalTouches();
+<<<<<<< HEAD
 		return redirect('login');
+=======
+		return redirect('admin/login');
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
     }
     
 }

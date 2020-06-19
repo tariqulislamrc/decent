@@ -32,15 +32,15 @@ class ExpenseController extends Controller
 
 
     public function datatable(Request $request){
-       if ($request->ajax()) {
-           $document = Expense::query();
+        if ($request->ajax()) {
+            $document = Expense::query();
             if (request()->has('investment_account_id')) {
                 $investment_account_id = request()->get('investment_account_id');
                 if (!empty($investment_account_id)) {
                     $document=$document->where('investment_account_id', $investment_account_id);
                 }
             }
-             if (request()->has('employee_id')) {
+            if (request()->has('employee_id')) {
                 $employee_id = request()->get('employee_id');
                 if (!empty($employee_id)) {
                     $document=$document->where('employee_id', $employee_id);
@@ -58,25 +58,25 @@ class ExpenseController extends Controller
             $document=$document->get();
             return DataTables::of($document)
                 ->addIndexColumn()
-                 ->editColumn('date', function ($model) {
-                  return formatDate($model->date);
-                 })
-                 ->editColumn('category', function ($model) {
-                  return $model->category?$model->category->name:'';
-                 }) 
-                  ->editColumn('employee', function ($model) {
-                  return $model->employee?$model->employee->name:'None';
-                 })
-                 ->editColumn('e_amount', function ($model) {
+                ->editColumn('date', function ($model) {
+                    return formatDate($model->date);
+                })
+                ->editColumn('category', function ($model) {
+                    return $model->category?$model->category->name:'';
+                })
+                ->editColumn('employee', function ($model) {
+                    return $model->employee?$model->employee->name:'None';
+                })
+                ->editColumn('e_amount', function ($model) {
                     if (auth()->user()->can('view_expense.amount')) {
                         return $model->amount;
                     }else{
                         return 'N/A';
                     }
-                 })
-                 ->editColumn('account', function ($model) {
-                  return $model->investment?$model->investment->name:'';
-                 })
+                })
+                ->editColumn('account', function ($model) {
+                    return $model->investment?$model->investment->name:'';
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.expense.action', compact('model'));
                 })->rawColumns(['action','category','date','account','e_amount','employee'])->make(true);
@@ -187,7 +187,7 @@ class ExpenseController extends Controller
         if (!auth()->user()->can('expense.update')) {
             abort(403, 'Unauthorized action.');
         }
-         $validator = $request->validate([
+        $validator = $request->validate([
             'expense_category_id'=>'required|integer',
             'investment_account_id'=>'required|integer',
             'amount'=>'required|numeric',

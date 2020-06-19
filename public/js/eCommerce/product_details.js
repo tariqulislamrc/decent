@@ -18,7 +18,8 @@
                 $('#product_price').val(data.price.default_sell_price);
                 $('#price').html('BDT ' + data.price.default_sell_price);
                 if (data.qty) {
-                    $('#qty').html('( ' + data.qty.qty_available + ' pieces available )');
+
+                    $('#qty').html('( ' + data.qty + ' pieces available )');
                 } else {
                     $('#qty').html('(Out Of Stock)');
                 }

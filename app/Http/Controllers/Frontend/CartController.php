@@ -10,6 +10,10 @@ use App\models\Production\Transaction;
 use App\models\Production\VariationBrandDetails;
 use App\models\eCommerce\Coupon;
 use App\models\eCommerce\PageBanner;
+<<<<<<< HEAD
+=======
+use App\models\eCommerce\EcommerceProduct;
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 use App\models\inventory\TransactionSellLine;
 use Cart;
 use Illuminate\Http\Request;
@@ -34,11 +38,20 @@ class CartController extends Controller
             'variation' => 'required',
             'qty' => 'required'
         ]);
+<<<<<<< HEAD
 
         $qty_available = 0;
         $qty = VariationBrandDetails::where('variation_id', $request->variation)->first();
         if ($qty) {
             $qty_available = $qty->qty_available;
+=======
+        
+
+        $qty_available = 0;
+        $qty = EcommerceProduct::where('variation_id', $request->variation)->first();
+        if ($qty) {
+            $qty_available = $qty->quantity;
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
         }
         if ($request->qty > $qty_available) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Quantity Not Available')]);

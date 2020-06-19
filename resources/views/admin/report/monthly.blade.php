@@ -2,6 +2,7 @@
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
+
     <div>
         <h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
             {{_lang('Monthly Report')}}</h1>
@@ -45,7 +46,7 @@
                               @php
                                 $date =Carbon\Carbon::createFromDate($year, $month, $i);
                                 $date = $date->format('Y-m-d');
-                              
+
                                 @endphp
                             <tr>
                                 <td>{{ $i }}</td>
@@ -65,7 +66,7 @@
                                         $expense=App\models\Expense\Expense::whereDate('date',$date)->where('hidden',false)->sum('amount');
                                     @endphp
                                     @endrole
-                                   
+
                                     {{ $expense }}
                                 </td>
                             </tr>
@@ -80,7 +81,7 @@
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('net_total') }}</td>
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('total_paid') }}</td>
                             <td>{{ ovarallreport('Purchase',null,null,null,$month)->sum('net_total') - ovarallreport('Purchase',null,null,null,$month)->sum('total_paid') }}</td>
-                             <td> 
+                             <td>
                                 @role('Super Admin')
                                     @php
                                         $expense_month=App\models\Expense\Expense::whereMonth('date',$month)->sum('amount');
@@ -89,7 +90,7 @@
                                      @php
                                         $expense_month=App\models\Expense\Expense::whereMonth('date',$month)->where('hidden',false)->sum('amount');
                                     @endphp
-                                 @endrole   
+                                 @endrole
                                     {{ $expense_month }}
                              </td>
                         </tr>

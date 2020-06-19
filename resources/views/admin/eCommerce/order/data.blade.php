@@ -17,7 +17,8 @@
     <tbody>
         @foreach ($models as $model)
             <tr>
-                <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control"></td>
+
+                <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control check"></td>
                 <td>{{$loop->index + 1}}</td>
                 <td>{{$model->payment_status}}</td>
                 <td>{{$model->reference_no}}</td>
@@ -41,15 +42,17 @@
                         {{_lang('Return')}}
                     @elseif( $model->ecommerce_status == 'payment_done')
                         {{_lang('Payment Done')}}
-                    @else 
+                    @else
                         {{_lang('Cancel')}}
                     @endif
                 </td>
                 <td>
                     <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
-                        <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
+
+                        <button type="button" class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
                     </a>
-                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+                    <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+
                 </td>
             </tr>
         @endforeach

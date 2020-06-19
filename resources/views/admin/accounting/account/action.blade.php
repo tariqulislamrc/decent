@@ -1,5 +1,5 @@
 <div class="dropdown">
-	<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 	{{ _lang('Action') }}
 	</button>
 	<div class="dropdown-menu">
@@ -10,10 +10,7 @@
 		<a href="{{route('admin.accounting.account.show',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Details') }}</a>
 		@endcan
 		@can('accounting.create')
-		<a id="content_managment" data-url="{{route('admin.accounting.account.getDeposit',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-bug" aria-hidden="true"></i>{{ _lang('Deposit') }}</a>
-		@endcan
-		@can('accounting.update')
-		<a id="content_managment" data-url="{{route('admin.accounting.account.getFundTransfer',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-undo" aria-hidden="true"></i>{{ _lang('Fund Transfer') }}</a>
+		<a id="content_managment" data-url="{{route('admin.accounting.account.getDeposit',$model->id)}}" class="dropdown-item cursour"><i class="fa fa-eye-slash" aria-hidden="true"></i>{{ _lang('Deposit') }}</a>
 		@endcan
 		@can('accounting.delete')
 

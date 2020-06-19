@@ -10,7 +10,7 @@
 			<div class="col-md-12">
 				<div class="form-group">
 					{{ Form::label('amount', _lang('Amount') , ['class' => 'col-form-label']) }}
-					{{ Form::text('amount', null, ['class' => 'form-control input_number', 'id'=>'amount', 'placeholder' => _lang('Amount'),'required'=>'','autofocus'=>true]) }}
+					{{ Form::text('amount', null, ['class' => 'form-control', 'id'=>'amount', 'placeholder' => _lang('Amount'),'required'=>'','autofocus'=>true]) }}
 				</div>
 			</div>
 			<div class="col-md-12">
@@ -35,8 +35,8 @@
 		<div class="row">
 			<div class="col-md-6 mx-auto text-center">
 				
-				{{ Form::submit(isset($model) ? _lang('Update'):_lang('Deposit'), ['class' => 'btn btn-primary btn-sm w-100 ', 'id' => 'submit']) }}
-				<button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+				{{ Form::submit(isset($model) ? _lang('Update'):_lang('Deposit'), ['class' => 'btn btn-primary btn-lg w-100 ', 'id' => 'submit']) }}
+				<button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
 			</div>
 		</div>
 		{!! Form::close() !!}

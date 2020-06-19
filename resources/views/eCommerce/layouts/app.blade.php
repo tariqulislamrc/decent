@@ -97,6 +97,8 @@
             }
 		});
 
+        toastr.options = { "preventDuplicates": true,};
+
         $(document).ready(function() {
             /*
             * For Logout

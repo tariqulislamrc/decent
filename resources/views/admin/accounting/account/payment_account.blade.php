@@ -70,24 +70,9 @@
 <script>
 if ($('#date_filter').length == 1) {
     $('#date_filter').daterangepicker({
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment(),
-                minDate: moment().local().subtract(2, 'years'),
-                maxDate: moment().local(),
-                dateLimit: {
-                    days: 90
-                },
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                drops: 'down',
-                applyClass: 'btn-sm bg-slate',
-                cancelClass: 'btn-sm btn-light'
-        });
+        autoUpdateInput: false,
+
+    });
     $('#date_filter').on('apply.daterangepicker', function(ev, picker) {
         var start = '';
         var end = '';

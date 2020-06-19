@@ -5,5 +5,8 @@
     @can('employee_attendance_type.delete')
         <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.attendance-attendance-type.destroy',$model->id)  }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>
     @endcan
+@else
+    <p class="text-danger">This is Default Option. <br> You Can't Change it.</p>
+
 @endif
 

@@ -24,12 +24,7 @@
                     {{-- <span class="off">15% Off</span> --}}
                     <span class="new">NEW</span>
                 </span>
-                <ul class="mt-stars">
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star"></i></li>
-                    <li><i class="fa fa-star-o"></i></li>
-                </ul>
+
                 <ul class="links">
                     <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
                     <li>

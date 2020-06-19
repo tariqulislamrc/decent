@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AccountTransaction extends Model
 {
     use SoftDeletes;
-    
+
     protected $guarded = ['id'];
 
     public function transaction()
@@ -17,22 +17,16 @@ class AccountTransaction extends Model
         return $this->belongsTo('App\models\Production\Transaction','transaction_id');
     }
 
-   public function account()
+    public function account()
     {
         return $this->belongsTo(Account::class, 'account_id');
     }
 
     public function user(){
         return $this->belongsTo('App\User','created_by','id');
-   }
-
-
-    public function transfer_transaction()
-    {
-        return $this->belongsTo(AccountTransaction::class, 'transfer_transaction_id');
     }
 
-        /**
+    /**
      * Creates new account transaction
      * @return obj
      */
@@ -45,7 +39,7 @@ class AccountTransaction extends Model
             'acc_type' => !empty($data['acc_type'])?$data['acc_type']:'investment',
             'type' => $data['type'],
             'sub_type' => !empty($data['sub_type']) ? $data['sub_type'] : null,
-            'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : date('Y-m-d'),
+            'operation_date' => !empty($data['operation_date']) ? $data['operation_date'] : Carbon::now(),
             'created_by' => $data['created_by'],
             'transaction_id' => !empty($data['transaction_id']) ? $data['transaction_id'] : null,
             'transaction_payment_id' => !empty($data['transaction_payment_id']) ? $data['transaction_payment_id'] : null,
@@ -58,20 +52,15 @@ class AccountTransaction extends Model
         return $account_transaction;
     }
 
-        /**
+    /**
      * Updates transaction payment from transaction payment
      * @param  obj $transaction_payment
      * @param  array $inputs
      * @param  string $transaction_type
      * @return string
      */
-    public static function updateAccountTransaction($transaction_payment, $transaction_type,$acc_type=null)
+    public static function updateAccountTransaction($transaction_payment, $transaction_type)
     {
-       if ($acc_type==null) {
-          $acc_type='investment';
-       }else{
-        $acc_type=$acc_type;
-       }
         if (!empty($transaction_payment->account_id)) {
             $account_transaction = AccountTransaction::where(
                 'transaction_payment_id',
@@ -86,7 +75,7 @@ class AccountTransaction extends Model
                 $accnt_trans_data = [
                     'amount' => $transaction_payment->amount,
                     'account_id' => $transaction_payment->account_id,
-                    'acc_type'=>$acc_type,
+                    'acc_type'=>'account',
                     'type' => self::getAccountTransactionType($transaction_type),
                     'operation_date' => $transaction_payment->operation_date,
                     'created_by' => $transaction_payment->created_by,
@@ -99,7 +88,7 @@ class AccountTransaction extends Model
         }
     }
 
-        /**
+    /**
      * Gives account transaction type from payment transaction type
      * @param  string $payment_transaction_type
      * @return string
@@ -115,8 +104,6 @@ class AccountTransaction extends Model
             'sale_return' => 'Debit',
             'work_order'=>'Credit',
             'eCommerce'=>'Credit',
-            'eCommerce'=>'Credit',
-            'job_work'=>'Debit'
         ];
 
         return $account_transaction_types[$tansaction_type];

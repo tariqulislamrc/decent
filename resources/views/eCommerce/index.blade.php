@@ -50,7 +50,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                                         </a>
                                     </div>
                                 </div>
-                            @endforeach                                            
+                            @endforeach
                         @endif
                     </div>
                 </div>
@@ -217,7 +217,10 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                                         <div class="box">
                                             <div class="b1">
                                                 <div class="b2">
-                                                    <a href="{{ route('product-details', $product->product_slug) }}"><img src="{{isset($item->photo) && $item->photo != ''?asset('storage/product/'.$item->photo): asset('img/product.jpg') }}" alt="image description"></a>
+
+
+
+                                                    <a href="{{ route('product-details', $product->product_slug) }}"><img src="{{isset($product->photo) && $product->photo != ''?asset('storage/product/'.$product->photo): asset('img/product.jpg') }}" alt="image description"></a>
                                                     <span class="caption">
                                                         <span class="new">new</span>
                                                     </span>
@@ -231,19 +234,21 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
 																<i class="fa fa-heart" aria-hidden="true"></i>
 															@else
 																<i class="fa fa-heart-o" aria-hidden="true"></i>
-															@endif    
+															@endif
                                                         </a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="txt">
-                                        <strong class="title"><a href="product-detail.html">{{ $product->name }}</a></strong>
+
+                                        <strong class="title"><a href="{{ route('product-details', $product->product_slug) }}">{{ $product->name }}</a></strong>
+
                                             <span class="price">{{ get_option('currency') }} <span>{{ $price ? number_format($price->default_sell_price, 2) : 0.00}}</span></span>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach    
+                            @endforeach
                         @endif
                     </div>
                 </div>
@@ -274,9 +279,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                     @endif
                 </div>
                 {{-- Banner Part End Here --}}
-
-                
-
+1
                 <div class="mt-smallproducts mt-nopaddingtopxs wow fadeInUp" data-wow-delay="0.4s">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-3 mt-paddingbottomsm">
@@ -406,7 +409,9 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                         <div class="col-xs-12 col-sm-6 col-md-3">
                             <h3 class="heading">Top Rated Products</h3>
                             <!-- mt product4 start here -->
-                            @foreach ($products as $item)
+
+                            @foreach ($top_rated as $item)
+
                             @php
                                 $price = App\models\Production\Variation::where('product_id', $product->id)->first();
                             @endphp

@@ -1,4 +1,4 @@
-@extends('eCommerce.layouts.app')     
+@extends('eCommerce.layouts.app')
 @push('css')
 
 <style>
@@ -28,12 +28,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1 class="text-center">My Account</h1>
+                    <h1 class="text-center">Track Order</h1>
                     <!-- Breadcrumbs of the Page -->
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
                             <li><a href="{{url('/')}}">Home <i class="fa fa-angle-right"></i></a></li>
-                            <li>My Account</li>
+                            <li>Track Your Order</li>
                         </ul>
                     </nav>
                     <!-- Breadcrumbs of the Page end -->
@@ -41,7 +41,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Mt Product Table of the Page -->
     <div class="mt-product-table wow fadeInUp" data-wow-delay="0.4s">
 
@@ -49,7 +49,7 @@
             <div class='row'>
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                
+
                 <h3>Track Order</h3>
                 <p>Here you can track all of your order stattus from here</p>
                 <div class="mt-5">
@@ -61,12 +61,14 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button data-url="{{route('member.client_track_code')}}" type="button" name="track_code" id="track_code" class="brn btn-info btn-lg">Track</button>
-                        <button type="button" class="btn btn-primary btn-lg" disabled  id="track_code_submitting" style="display: none;">{{_lang('Tracking')}} <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></button>
+
+                        <button data-url="{{route('member.client_track_code')}}" type="button" name="track_code" id="track_code" class="brn mx-5 btn-info btn-sm">Track</button>
+                        <button type="button" class="btn mx-5 btn-primary btn-sm" disabled  id="track_code_submitting" style="display: none;">{{_lang('Tracking')}} <i class="fa fa-spinner fa-spin fa-fw"></i></button>
+
                     </div>
 
                     <div id="track_status">
-                        
+
                     </div>
                 </div>
             </div>
@@ -77,7 +79,7 @@
 
 
 
-    </div>    
+    </div>
 
 </main>
 <!-- footer of the Page -->
@@ -115,6 +117,9 @@
                     $('#track_code_submitting').hide();
                 }
             });
+
+        } else {
+            toastr.warning('Please Enter Your Tracking Code First');
         }
     });
 

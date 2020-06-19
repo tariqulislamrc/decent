@@ -1,4 +1,4 @@
-@extends('eCommerce.layouts.app')   
+@extends('eCommerce.layouts.app')
 	@push('main')
 		<main id="mt-main">
 			<section class="mt-contact-banner style4 wow fadeInUp" data-wow-delay="0.4s" style="background-image: url({{isset($banner)?asset('storage/page/'.$banner->image):'http://placehold.it/1920x325'}});">
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 			</section>
-                
+
             <div class="container">
 				<div class="row">
 					<aside id="sidebar" class="col-xs-12 col-sm-4 col-md-3 wow fadeInLeft" data-wow-delay="0.4s">
@@ -46,14 +46,14 @@
                                     if(count($find_price) > 0) {
                                         $total_product_variation = count($find_price);
                                         $price = 0;
-                                        
+
                                         foreach($find_price as $row) {
                                             $default_price = $row['default_sell_price'];
                                             $price = $price + $default_price;
                                         }
-                                
+
                                         $per_product_price = round($price / $total_product_variation) ;
-                                        
+
                                     }
                                 @endphp
                                 <div class="mt-product4 mt-paddingbottom20">
@@ -72,18 +72,18 @@
                                         <span class="price">৳ {{$per_product_price}} </span>
                                     </div>
                                 </div>
-                            @endforeach		
-                            @else 
+                            @endforeach
+                            @else
                                 <p style="margin: 0 0 9.5px;
                                 padding: 10px;
                                 font-size: 20px;
                                 background-color: #ddd;
                                 color: red;
                                 text-align: center;">Sorry. No Hot Sale Product Found At This Moment.</p>
-                            @endif							
+                            @endif
 						</section>
 					</aside>
-                        
+
                     <div class="col-xs-12 col-sm-8 col-md-9 wow fadeInRight" data-wow-delay="0.4s">
 						@if (count($items) > 0)
 							<ul class="mt-productlisthold list-inline">
@@ -93,19 +93,23 @@
                                     $variation = App\models\Production\Variation::where('id', $item->variation_id)->firstOrFail();
                                 @endphp
 								<li>
-                                    
+
                                 <div class="mt-product1 large">
 									<div class="box">
 										<div class="b1">
 											<div class="b2">
+
                                                 <a href="{{route('offer-product',$product->product_slug)}}"> <img src="{{$product->photo && $product->photo != '' ?asset('storage/product/'.$product->photo): asset('img/product.jpg') }}" alt="image description"> </a>
+
                                                 <span class="caption">
                                                     <span class="off">
                                                     @if ($item->discount_type == 'Percentages')
-                                                        
+
                                                     @else
-                                                        ৳
-                                                    @endif    
+
+                                                        {{ get_option('currency') }}
+
+                                                    @endif
                                                     {{ $item->discount_amount }}{{ $item->discount_type == 'Percentages' ? '%' : ''}} Off</span>
                                                 </span>
                                                 <form action="{{route('shopping-cart-add')}}" method="post" id="content_form">
@@ -121,13 +125,15 @@
                                                         </li>
                                                     </ul>
                                                 </form>
-												
+
 											</div>
 										</div>
 									</div>
                                     <div class="txt">
+
                                         <strong class="title"><a href="{{route('offer-product',$product->product_slug)}}">{{$product->name}} | {{$variation->name}}</a></strong>
                                         <span class="price">৳<span>{{ number_format($item->price_with_dis, 2) }}</span></span>
+
                                     </div>
 								</div>
 							</li>
@@ -144,4 +150,3 @@
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="{{asset('js/eCommerce/offer_product.js')}}"></script>
 @endpush
-	

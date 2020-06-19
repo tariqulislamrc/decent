@@ -697,9 +697,27 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 	 Route::group(['as' => 'report.', 'prefix' => 'report'], function () {
 
+
           Route::get('/',function(){
           	return view('admin.report.index');
           })->name('index');
+
+        Route::get('/',function(){
+          	return view('admin.report.index');
+		})->name('index');
+
+		// Employee Report Route Start From Here
+		Route::get('employee-salary-report', 'Report\EmployeeReportController@employee_salary_report')->name('employee-salary-report');
+		Route::post('employee-salary-report-ajax', 'Report\EmployeeReportController@employee_salary_report_ajax')->name('employee-salary-report-ajax');
+		Route::get('employee-advance-payment-report', 'Report\EmployeeReportController@employee_advance_payment_report')->name('employee-advance-payment-report');
+		Route::post('employee-advance-payment-report-ajax', 'Report\EmployeeReportController@employee_advance_payment_report_ajax')->name('employee-advance-payment-report-ajax');
+		Route::get('employee-advance-return-report', 'Report\EmployeeReportController@employee_advance_return_report')->name('employee-advance-return-report');
+		Route::post('employee-advance-return-report-ajax', 'Report\EmployeeReportController@employee_advance_return_report_ajax')->name('employee-advance-return-report-ajax');
+		Route::get('employee-other-payment-report', 'Report\EmployeeReportController@employee_other_payment_report')->name('employee-other-payment-report');
+		Route::post('employee-other-payment-report-ajax', 'Report\EmployeeReportController@employee_other_payment_report_ajax')->name('employee-other-payment-report-ajax');
+
+		// Employee Report Route End Here
+
 
         Route::group(['as' => 'depertment.', 'prefix' => 'depertment','namespace' => 'Report'], function () {
 
@@ -767,8 +785,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
         Route::get('getAccountBalance/{id}','AccountController@getAccountBalance')->name('getAccountBalance');
         Route::get('account/getDeposit/{id}','AccountController@getDeposit')->name('account.getDeposit');
         Route::post('account/getDeposit','AccountController@postDeposit')->name('account.postDeposit');
+
         Route::get('account/getFundTransfer/{id}','AccountController@getFundTransfer')->name('account.getFundTransfer');
         Route::post('account/getFundtransfer','AccountController@postFundTransfer')->name('account.postFundtransfer');
+
         Route::delete('account/closed/{id}','AccountController@close')->name('account_closed');
         Route::get('payment/account','AccountController@payment_account')->name('payment_account');
         Route::get('getLinkAccount/{id}','AccountController@getLinkAccount')->name('getLinkAccount');

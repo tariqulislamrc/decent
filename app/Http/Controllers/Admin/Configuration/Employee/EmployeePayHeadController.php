@@ -29,12 +29,20 @@ class EmployeePayHeadController extends Controller
                 ->editColumn('is_active',function($model){
                     return $model->is_active == 1? '<span class="badge badge-success">Active</span>':'<span class="badge badge-danger">Inactive</span>';
                 })
+<<<<<<< HEAD
                 ->editColumn('alias',function($model){
+=======
+                ->editColumn('type',function($model){
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
                     return $model->type == 'Earning' ? '<span class="badge badge-success">Earning</span>' : '<span class="badge badge-danger">Deduction</span>';
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.pay-head.action', compact('model'));
+<<<<<<< HEAD
                 })->rawColumns(['action', 'alias', 'is_active'])->make(true);
+=======
+                })->rawColumns(['action', 'type', 'is_active'])->make(true);
+>>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
         }
     }
 

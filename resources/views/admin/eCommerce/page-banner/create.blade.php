@@ -24,6 +24,7 @@
                         <option value="Welcome">{{_lang('Welcome Page')}}</option>
                         <option value="login">{{_lang('Sing Up and Sing In')}}</option>
                         <option value="blog">{{_lang('Blog Page')}}</option>
+                        <option value="Track Order">{{_lang('Track Order Page')}}</option>
                     </select>
                     </div>
 
@@ -76,7 +77,7 @@ $(document).on('change', '#page_name', function () {
         $('#b').show();
         $('#a').hide();
     }
-            
+
 });
 
   </script>

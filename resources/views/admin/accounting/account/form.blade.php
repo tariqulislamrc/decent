@@ -12,14 +12,6 @@ $route = 'admin.accounting.account.';
     {!! Form::open(['route' => $route.'store', 'class' => 'form-validate-jquery', 'id' => 'content_form', 'files' => true, 'method' => 'POST']) !!}
     @endif
     <div class="row">
-        <div class="col-md-12">
-        <div class="form-group">
-          {{ Form::label('account_type', _lang('Account Type') , ['class' => 'col-form-label']) }}
-            {!! Form::select('account_type', $account_types, null, ['class' => 'form-control select', 'required' ]); !!}
-            {{-- <small class="text-danger">Not Editable</small> --}}
-        </div>
-      </div>
-
       <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('name', _lang('Account Name') , ['class' => 'col-form-label']) }}
@@ -37,8 +29,7 @@ $route = 'admin.accounting.account.';
         <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('opening_balance', _lang('Opening Balance') , ['class' => 'col-form-label']) }}
-          {{ Form::text('opening_balance', null, ['class' => 'form-control input_number', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Balance')]) }}
-          <small class="text-danger">Not Editable</small>
+          {{ Form::text('opening_balance', null, ['class' => 'form-control', 'id'=>'opening_balance', 'placeholder' => _lang('Opening Balance')]) }}
         </div>
       </div>
       @endif
@@ -53,8 +44,8 @@ $route = 'admin.accounting.account.';
     <div class="row">
       <div class="col-md-6 mx-auto text-center">
         
-        {{ Form::submit(isset($model) ? _lang('Update'):_lang('Create'), ['class' => 'btn btn-primary btn-sm w-100 ', 'id' => 'submit']) }}
-        <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+        {{ Form::submit(isset($model) ? _lang('Update'):_lang('Create'), ['class' => 'btn btn-primary btn-lg w-100 ', 'id' => 'submit']) }}
+        <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
       </div>
     </div>
     {!! Form::close() !!}

@@ -662,8 +662,6 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 </li>
 @endcan
 
-@endif
-
 @can('blog.view')
 {{-- Account Section--}}
 <li class="treeview {{ (Request::is('admin/blog*')) ? ' is-expanded' : '' }}">
@@ -693,6 +691,10 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 @endcan
 
 
+@endif
+
+
+
 <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
         href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
             class="app-menu__label">{{_lang('Report')}}</span></a>
@@ -705,6 +707,7 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
         <span class="app-menu__label">{{_lang('Department Report')}}</span>
         <i class="treeview-indicator fa fa-angle-right"></i>
     </a>
+
     <ul class="treeview-menu">
         <li class="mt-1">
             <a class="treeview-item {{Request::is('admin/report/depertment/product/report') ? 'active':''}}"
@@ -744,6 +747,47 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
     </ul>
 </li>
 @endcan
+
+{{-- Employee Report --}}
+
+@can('report.employee')
+<li class="treeview {{ Request::is('admin/report/employee*') ? ' is-expanded' : '' }}">
+    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users" aria-hidden="true"></i> <span class="app-menu__label">{{_lang('Employee Report')}}</span> <i class="treeview-indicator fa fa-angle-right"></i> </a>
+
+    <ul class="treeview-menu">
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/report/employee-salary-report') ? 'active':''}}"
+                href="{{ route('admin.report.employee-salary-report') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Salary Report')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/report/employee-advance-payment-report') ? 'active':''}}"
+                href="{{ route('admin.report.employee-advance-payment-report') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Advance Payment Report')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/report/employee-advance-return-report') ? 'active':''}}"
+                href="{{ route('admin.report.employee-advance-return-report') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Advance Return Details')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/report/employee-other-payment-report') ? 'active':''}}"
+                href="{{ route('admin.report.employee-other-payment-report') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Other Payment Report')}}
+            </a>
+        </li>
+    </ul>
+</li>
+@endcan
+
+{{-- Employee Report End --}}
 @can('report.ecommerce')
 {{-- Ecommerce Report --}}
 <li><a class="app-menu__item {{ Request::is('admin/report/eCommerce-report') ? ' active' : '' }}"

@@ -79,25 +79,9 @@
 <script>
 $('.select').select2();
 $(document).ready(function() {
-     $('#transaction_date_range').daterangepicker({
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment(),
-                minDate: moment().local().subtract(2, 'years'),
-                maxDate: moment().local(),
-                dateLimit: {
-                    days: 90
-                },
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                drops: 'down',
-                applyClass: 'btn-sm bg-slate',
-                cancelClass: 'btn-sm btn-light'
-        });
+    $('#transaction_date_range').daterangepicker({
+        autoUpdateInput: false,
+    });
     $("#transaction_date_range").on('apply.daterangepicker', function(start, end) {
         var start = '';
         var end = '';

@@ -106,7 +106,7 @@ class ProfileController extends Controller
 
     // change_personal_info
     public function change_personal_info(Request $request) {
-        
+
         $id = $request->id;
         $name = $request->name;
         $last_name = $request->last_name;
@@ -179,7 +179,8 @@ class ProfileController extends Controller
     // client_track
     public function client_track(Request $request) {
 
-        return view('eCommerce.track');
+        $banner = PageBanner::where('page_name', 'Track Order')->first();
+        return view('eCommerce.track', compact('banner'));
 
     }
 
@@ -207,10 +208,10 @@ class ProfileController extends Controller
             $output .= '
             <div class="card">
                 <div class="container">
-                    <h4><b>Order Tracking Successtull !!!</b></h4> 
+                    <h4><b>Order Tracking Successtull !!!</b></h4>
                     <p>
                         Your Order Code <b> '.$code.' </b> is in <b> '.$data.' </b>  Condition
-                    </p> 
+                    </p>
                 </div>
             </div>
             ';
@@ -221,10 +222,10 @@ class ProfileController extends Controller
             $output .= '
             <div class="card" style="background:#F2DEDE">
                 <div class="container">
-                    <h4><b>Order Tracking Unsuccessfull !!!</b></h4> 
+                    <h4><b>Order Tracking Unsuccessfull !!!</b></h4>
                     <p>
                         Your Order Code <b> '.$code.' </b> is not a valid Track Code. <br>Please Enter Correct Tracking Code.
-                    </p> 
+                    </p>
                 </div>
             </div>
             ';
@@ -235,13 +236,13 @@ class ProfileController extends Controller
     // chage_password
     public function chage_password(Request $request) {
         $email_or_username = $request->email_or_username;
-        
+
         if($email_or_username == '') {
-            
+
             return response()->json(['success' => true, 'status' => 'danger', 'message' => 'Email Or Username Field is Required']);
-        
+
         } else {
-            
+
             $user = User::where('username', $email_or_username)->first();
             if(!$user) {
                 $user = User::where('email', $email_or_username)->first();

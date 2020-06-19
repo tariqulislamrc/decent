@@ -104,7 +104,10 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        toastr.options = {"positionClass": "{{get_option('notification_format')}} "};
+
+
+        toastr.options = {"positionClass": "{{get_option('notification_format')}} ",   "preventDuplicates": true,};
+
 
         $(document).ready(function () {
             var customtimestamp = parseInt($("#jqclock").data("time"));

@@ -23,9 +23,9 @@ class ExpenseCategoryController extends Controller
         return view('admin.expense.category.index');
     }
 
-       public function datatable(Request $request){
-       if ($request->ajax()) {
-           $document = ExpenseCategory::all();
+    public function datatable(Request $request){
+        if ($request->ajax()) {
+            $document = ExpenseCategory::all();
             return DataTables::of($document)
                 ->addIndexColumn()
                 ->addColumn('action', function ($model) {
@@ -58,7 +58,7 @@ class ExpenseCategoryController extends Controller
         if (!auth()->user()->can('expense.create')) {
             abort(403, 'Unauthorized action.');
         }
-       $validator = $request->validate([
+        $validator = $request->validate([
             'name'=>'required|max:250',
         ]);
 
@@ -131,8 +131,8 @@ class ExpenseCategoryController extends Controller
         if ($count==0) {
             $category =ExpenseCategory::find($id)->delete();
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Delete')]);
-         }else{
-              throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Category is already use in Expenses')]);
-         }
+        }else{
+            throw ValidationException::withMessages(['message' => _lang('Do not delete Because this Category is already use in Expenses')]);
+        }
     }
 }
