@@ -26,11 +26,7 @@ class SettingController extends Controller
   	   	 	$validator = Validator::make($request->all(), [
 			'logo' => 'mimes:jpeg,bmp,png,jpg|max:2000',
 			'favicon' => 'mimes:jpeg,bmp,png,jpg|max:2000',
-<<<<<<< HEAD
 		    ]);
-=======
-            ]);
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 
 	        if ($validator->fails()) {
                 return response()->json(['success' => false, 'status' => 'danger', 'message' => $validator->errors()]);
@@ -86,11 +82,6 @@ class SettingController extends Controller
                     $file_path = "public/logo/".$oldFile;
                     Storage::delete($file_path);
                 }
-<<<<<<< HEAD
-            } else {
-            	$logo['name']='logo';
-                $logo['value'] = $request->get('oldLogo','');
-=======
 
                 if(Setting::where('name', "logo")->exists()){
                     Setting::where('name','=',"logo")->update($logo);
@@ -99,7 +90,6 @@ class SettingController extends Controller
                     Setting::insert($logo);
                 }
     
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
             }
 
             if($request->hasFile('favicon')) {
@@ -114,11 +104,6 @@ class SettingController extends Controller
                     $file_path = "public/logo/".$oldFile;
                     Storage::delete($file_path);
                 }
-<<<<<<< HEAD
-            } else {
-            	$data1['name']='favicon';
-                $data1['value'] = $request->get('oldfavicon','');
-=======
 
                 if(Setting::where('name', "favicon")->exists()){
                     Setting::where('name','=',"favicon")->update($data1);
@@ -126,35 +111,8 @@ class SettingController extends Controller
                     $data1['created_at'] = Carbon::now();
                     Setting::insert($data1);
                 }
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
             }
-
-            // check enable_http
-            // $enable_http = get_option('enable_https');
-            // dd($enable_http);
-
-
-
-            // dd($request->enable_https);
-
-<<<<<<< HEAD
-            if(Setting::where('name', "logo")->exists()){
-				Setting::where('name','=',"logo")->update($logo);
-			} else {
-				$logo['created_at'] = Carbon::now();
-				Setting::insert($logo);
-			}
-
-			if(Setting::where('name', "favicon")->exists()){
-				Setting::where('name','=',"favicon")->update($data1);
-			} else {
-				$data1['created_at'] = Carbon::now();
-				Setting::insert($data1);
-			}
-=======
-            
 			
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 			return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Configuration Updated'), 'load' => true]);
   	    }
     }

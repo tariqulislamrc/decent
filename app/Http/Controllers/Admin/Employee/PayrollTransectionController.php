@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin\employee;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\account\AccountTransaction;
+use App\models\account\InvestmentAccount;
 use App\models\employee\Employee;
 use App\models\employee\Payrolls;
 use App\models\employee\PayrollTransaction;
@@ -67,7 +69,8 @@ class PayrollTransectionController extends Controller
     public function create()
     {
         $employees = Employee::all();
-        return view('admin.employee.payroll.transection.create', compact('employees'));
+        $accounts = InvestmentAccount::all();
+        return view('admin.employee.payroll.transection.create', compact('employees', 'accounts'));
     }
 
     // ajax 
@@ -124,7 +127,10 @@ class PayrollTransectionController extends Controller
             'amount'    =>   'required',
             'payment_method'    =>   'required',
             'head'              =>  'required',
+            'investment_account_id' =>  'required',
         ]);
+
+        $investment_account_id = $request->investment_account_id;
 
         $payroll = Payrolls::where('employee_id', $request->employee_id)->where('payment_status', '!=', 'Paid')->first();
         
@@ -199,6 +205,16 @@ class PayrollTransectionController extends Controller
             $model->tx_type = 'Salary Payment';
             $model->additional_note = $request->additional_note;
             $model->save();
+
+            $acc_trans = new AccountTransaction;
+            $acc_trans->investment_account_id = $investment_account_id;
+            $acc_trans->acc_type = 'investment';
+            $acc_trans->type  = 'Debit';
+            $acc_trans->amount = $request->amount;
+            $acc_trans->reff_no = rand(1, 100000000);
+            $acc_trans->operation_date = date('Y-m-d');
+            $acc_trans->payroll_transaction_id = $model->id;
+            $acc_trans->save();
             
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Salary Payment Paid Successfully')]);
         
@@ -232,6 +248,16 @@ class PayrollTransectionController extends Controller
             $model->tx_type = 'Advance Payment';
             $model->additional_note = $request->additional_note;
             $model->save();
+
+            $acc_trans = new AccountTransaction;
+            $acc_trans->investment_account_id = $investment_account_id;
+            $acc_trans->acc_type = 'investment';
+            $acc_trans->type  = 'Debit';
+            $acc_trans->amount = $request->amount;
+            $acc_trans->reff_no = rand(1, 100000000);
+            $acc_trans->operation_date = date('Y-m-d');
+            $acc_trans->payroll_transaction_id = $model->id;
+            $acc_trans->save();
             
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Payment Advanced Successfully')]);
         
@@ -275,6 +301,16 @@ class PayrollTransectionController extends Controller
             $model->tx_type = 'Advance Return';
             $model->additional_note = $request->additional_note;
             $model->save();
+
+            $acc_trans = new AccountTransaction;
+            $acc_trans->investment_account_id = $investment_account_id;
+            $acc_trans->acc_type = 'investment';
+            $acc_trans->type  = 'Debit';
+            $acc_trans->amount = $request->amount;
+            $acc_trans->reff_no = rand(1, 100000000);
+            $acc_trans->operation_date = date('Y-m-d');
+            $acc_trans->payroll_transaction_id = $model->id;
+            $acc_trans->save();
             
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Payment Advanced Return Successfully')]);
 
@@ -307,6 +343,16 @@ class PayrollTransectionController extends Controller
             $model->tx_type = 'Other Payment';
             $model->additional_note = $request->additional_note;
             $model->save();
+
+            $acc_trans = new AccountTransaction;
+            $acc_trans->investment_account_id = $investment_account_id;
+            $acc_trans->acc_type = 'investment';
+            $acc_trans->type  = 'Debit';
+            $acc_trans->amount = $request->amount;
+            $acc_trans->reff_no = rand(1, 100000000);
+            $acc_trans->operation_date = date('Y-m-d');
+            $acc_trans->payroll_transaction_id = $model->id;
+            $acc_trans->save();
             
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang(' Other Payment Successfully')]);
 

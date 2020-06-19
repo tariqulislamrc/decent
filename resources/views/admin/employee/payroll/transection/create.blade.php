@@ -11,6 +11,18 @@
             @csrf
             <div class="row">
 
+                {{-- Investment Account --}}
+                <div class="col-md-12 form-group">
+                    <label for="investment_account_id">Investment Account <span class="text-danger">*</span></label>
+                    <select required name="investment_account_id" id="investment_account_id" class="form-control select" data-placeholder="Select Investment Account" data-parsley-errors-container="#investment_account_id_error">
+                        <option value="">Select Investment Account</option>
+                        @foreach ($accounts as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }} (<small>{{ $item->account_number}} </small> ) </option>
+                        @endforeach
+                    </select>
+                    <span id="investment_account_id_error"></span>
+                </div>
+
                 {{-- Head --}}
                 <div class="col-md-12 form-group">
                     <label for="head">{{_lang('Head')}}</label>

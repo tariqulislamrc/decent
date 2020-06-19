@@ -39,10 +39,6 @@ class UiController extends Controller
 			$model->phone =$request->phone;
 
 			if($request->hasFile('image')) {
-<<<<<<< HEAD
-
-=======
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 				$model = User::findOrFail(Auth::user()->id);
 				$storagepath = $request->file('image')->store('public/user/photo/');
 				$fileName = basename($storagepath);
@@ -84,11 +80,7 @@ class UiController extends Controller
 			activity()->log('Update User Information from Profile.');
 
 
-<<<<<<< HEAD
-			return response()->json([ 'load' => true, 'message' => _lang('Profile Update.')]);
-=======
 			return response()->json([ 'success' => true, 'load' => true, 'message' => _lang('Profile Update.')]);
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 		}
    	}
 
@@ -97,11 +89,7 @@ class UiController extends Controller
 	{
 		if ($request->ajax()) {
 			$validator = $request->validate([
-<<<<<<< HEAD
 			'password' => ['required', 'string', 'min:6', 'confirmed'],
-=======
-				'password' => ['required', 'string', 'min:6', 'confirmed'],
->>>>>>> cc56cbbef62decc173aa33e4aa6b615c608bc4c1
 			]);
 
 			$id =Auth::user()->id;
