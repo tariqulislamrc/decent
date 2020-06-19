@@ -24,4 +24,9 @@ class WorkOrder extends Model
     {
         return $this->hasMany(WopMaterial::class, 'wo_id', 'id');
     }
+
+    public function transaction()
+    {
+        return $this->belongsTo('App\models\Production\Transaction');
+    }
 }

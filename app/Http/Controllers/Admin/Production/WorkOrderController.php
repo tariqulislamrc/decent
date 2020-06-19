@@ -405,6 +405,13 @@ class WorkOrderController extends Controller
         $count2 = ProductFlow::where('work_order_id', $id)->count();
         if ($count1 == 0 && $count2==0) {
             $model = WorkOrder::findOrFail($id);
+            //workorder product
+            $model->workOrderProduct->delete();
+            if (isset($model->transaction)) {
+                $model->transaction->payment->delete();
+                AccountTransaction::where('transaction_id',$model->transaction->id)->delete();
+                $model->transaction->delete();
+            }
             $model->delete();
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
         }else{
