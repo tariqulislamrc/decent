@@ -26,6 +26,11 @@ class AccountTransaction extends Model
         return $this->belongsTo('App\User','created_by','id');
     }
 
+       public function transfer_transaction()
+    {
+        return $this->belongsTo(AccountTransaction::class, 'transfer_transaction_id');
+    }
+
     /**
      * Creates new account transaction
      * @return obj

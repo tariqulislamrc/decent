@@ -1,7 +1,7 @@
 @php
-    $payable = $model->total_payable;
-    $due = $model->due;
-    $paid = $model->paid;
+$payable = $model->total_payable;
+$due = $model->due;
+$paid = $model->paid;
 @endphp
 <div class="row">
     <div class="col-md-10 mx-auto">
@@ -19,18 +19,15 @@
                 <td>{{get_option('currency_symbol')}} <span id="show_due">{{number_format($due, 2)}}</span></td>
             </tr>
         </table>
-
         <form action="{{route('admin.production-work-order.pay_store')}}" method="post" id="content_form">
             <input type="hidden" name="work_order_id" value="{{$model->id}}">
             <input type="hidden" name="due" value="" id="due">
             @csrf
             <div class="row">
-
                 <div class="col-md-12 form-group">
                     <label for="paid">{{ __('Pay Amount') }} <span class="text-danger">*</span></label>
-                    <input type="number" name="paid" id="paid" class="form-control" required placeholder="Enter Paid Amount"> 
+                    <input type="number" name="paid" id="paid" class="form-control" required placeholder="Enter Paid Amount">
                 </div>
-
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="paid">{{ _lang('Method') }} </label>
@@ -47,16 +44,22 @@
                         <input type="text" class="form-control" name="check_no" id="check_no">
                     </div>
                 </div>
-
+                <div class="col-md-12">
+                    <label for="account_id">{{ _lang('Account') }} </label>
+                    <select name="account_id" class="form-control select" id="account_id">
+                        <option value="">Select Account</option>
+                        @foreach ($accounts as $element)
+                        <option>{{ $element->name }}({{ toWord($element->account_type) }})</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-
             <button type="submit" id="submit" class="btn btn-primary float-right px-5"><i class="fa fa-floppy-o mr-3" aria-hidden="true"></i>Pay Amount</button>
             <button type="button" id="submiting" class="btn btn-sm btn-info float-right px-5" id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>Loading...</button>
             <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
         </form>
     </div>
 </div>
-
 <script>
     var total_int_payable = '{{$payable}}';
     var total_payable = parseInt(total_int_payable);
