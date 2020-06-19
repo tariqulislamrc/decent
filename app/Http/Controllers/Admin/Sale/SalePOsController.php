@@ -12,6 +12,8 @@ use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\Variation;
+use App\models\account\Account;
+use App\models\account\AccountTransaction;
 use App\models\email\EmailTemolate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -93,13 +95,13 @@ class SalePOsController extends Controller
                  })
                  ->editColumn('payment_status', function ($model) {
                    if ($model->payment_status=='paid') {
-                      return '<span class="badge badge-success">Paid</span>';
+                      return '<a title="view Payment" data-url="'.route('admin.sale.pos.payment',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f"><span class="badge badge-success">Paid</span></a>';
                    }
                    elseif($model->payment_status=='partial'){
-                     return '<span class="badge badge-info">Partial</span>';
+                     return '<a title="view Payment" data-url="'.route('admin.sale.pos.payment',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f"><span class="badge badge-info">Partial</span></a>';
                    }
                    else{
-                    return '<span class="badge badge-danger">Due</span>';
+                    return '<a title="view Payment" data-url="'.route('admin.sale.pos.payment',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f"><span class="badge badge-danger">Due</span></a>';
                    }
                  })
                  ->editColumn('return', function ($model) {
@@ -130,7 +132,8 @@ class SalePOsController extends Controller
         }
         $brands =Brand::select('id','name')->get();
         $categories=Category::all();
-        return view('admin.salePos.create',compact('brands','categories'));
+        $accounts = Account::forDropdown(false, false);
+        return view('admin.salePos.create',compact('brands','categories','accounts'));
     }
 
     public function sale_add()
@@ -138,7 +141,8 @@ class SalePOsController extends Controller
      if (!auth()->user()->can('sale_pos.create')) {
             abort(403, 'Unauthorized action.');
         }
-       return view('admin.salePos.sale_add');
+      $accounts = Account::forDropdown(false, false);
+       return view('admin.salePos.sale_add',compact('accounts'));
     }
 
     /**
@@ -212,6 +216,21 @@ class SalePOsController extends Controller
             $payment->type ='Credit';
             $payment->created_by =$user_id;
             $payment->save();
+        }
+
+        if ($request->account_id) {
+               $acc_transaction =new AccountTransaction;
+               $acc_transaction->account_id =$request->account_id;
+               $acc_transaction->transaction_id =$transaction->id;
+               $acc_transaction->transaction_payment_id =$payment->id;
+               $acc_transaction->type ='Credit';
+               $acc_transaction->acc_type ='account';
+               $acc_transaction->amount =$request->paid;
+               $acc_transaction->reff_no =$transaction->reference_no;
+               $acc_transaction->operation_date =$input['date'];
+               $acc_transaction->note ='Sale Paid';
+               $acc_transaction->created_by =$user_id;
+               $acc_transaction->save();
         }
 
         //Update payment status
@@ -491,14 +510,11 @@ class SalePOsController extends Controller
                                     ->first();
         $payments_query = TransactionPayment::where('transaction_id', $id);
 
-        // $accounts_enabled = false;
-        // if ($this->moduleUtil->isModuleEnabled('account')) {
-        //     $accounts_enabled = true;
-        //     $payments_query->with(['payment_account']);
-        // }
+        $payments_query->with(['payment_account']);
 
         $payments = $payments_query->get();
-        return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments'));
+        $accounts = Account::forDropdown(false, false);
+        return view('admin.salePos.partials.makepayment_modal',compact('transaction','payments','accounts'));
     }
 
 }

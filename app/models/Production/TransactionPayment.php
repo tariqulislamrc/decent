@@ -36,4 +36,13 @@ class TransactionPayment extends Model
          return $this->transaction->where('hidden',false);
         
     }
+
+
+    /**
+     * Get the phone record associated with the user.
+     */
+    public function payment_account()
+    {
+        return $this->belongsTo('App\models\account\Account', 'account_id');
+    }
 }

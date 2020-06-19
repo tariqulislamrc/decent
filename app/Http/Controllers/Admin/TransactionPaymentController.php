@@ -7,6 +7,7 @@ use App\Utilities\TransactionUtil;
 use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
+use App\models\account\AccountTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,7 +56,24 @@ class TransactionPaymentController extends Controller
             $payment->note =$request->note;
             $payment->type ='Credit';
             $payment->created_by =auth()->user()->id;
+            $payment->account_id =$request->account_id;
             $payment->save();
+
+            if ($request->account_id) {
+               $acc_transaction =new AccountTransaction;
+               $acc_transaction->account_id =$request->account_id;
+               $acc_transaction->transaction_id =$transaction->id;
+               $acc_transaction->transaction_payment_id =$payment->id;
+               $acc_transaction->type ='Credit';
+               $acc_transaction->sub_type ='Sale';
+               $acc_transaction->amount =$request->amount;
+               $acc_transaction->reff_no =$transaction->reference_no;
+               $acc_transaction->account_id =$request->account_id;
+               $acc_transaction->operation_date =$request->payment_date;
+               $acc_transaction->note ='Sale Paid';
+               $acc_transaction->created_by =auth()->user()->id;
+               $acc_transaction->save();
+             }
 
             $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
             return response()->json(['success' => true, 'status' => 'success', 'message' => 'Payment Successfully.', 'window' => route('admin.sale.pos.printpayment',$payment->id)]);
