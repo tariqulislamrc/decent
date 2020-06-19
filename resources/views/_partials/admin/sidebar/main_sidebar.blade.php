@@ -783,6 +783,13 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
                 {{_lang('Other Payment Report')}}
             </a>
         </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('admin/report/employee-report') ? 'active':''}}"
+                href="{{ route('admin.report.employee-report') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Employee Report')}}
+            </a>
+        </li>
     </ul>
 </li>
 @endcan

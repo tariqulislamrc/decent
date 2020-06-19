@@ -715,6 +715,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::post('employee-advance-return-report-ajax', 'Report\EmployeeReportController@employee_advance_return_report_ajax')->name('employee-advance-return-report-ajax');
 		Route::get('employee-other-payment-report', 'Report\EmployeeReportController@employee_other_payment_report')->name('employee-other-payment-report');
 		Route::post('employee-other-payment-report-ajax', 'Report\EmployeeReportController@employee_other_payment_report_ajax')->name('employee-other-payment-report-ajax');
+		Route::get('employee-report', 'Report\EmployeeReportController@employy_report')->name('employee-report');
+		Route::post('employee-report-ajax', 'Report\EmployeeReportController@employyee_report_ajax')->name('employee-report-ajax');
 
 		// Employee Report Route End Here
 
