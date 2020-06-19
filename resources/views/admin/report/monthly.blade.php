@@ -2,7 +2,7 @@
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
-    <div>
+    <div> 
         <h1 data-placement="bottom" title="Depertment Store Request."><i class="fa fa-universal-access mr-4"></i>
             {{_lang('Monthly Report')}}</h1>
     </div>
