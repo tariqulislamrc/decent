@@ -270,8 +270,6 @@
 </li>
 @endcan
 
-
-
 @can('production.view')
 {{-- User Section--}}
 <li class="treeview {{ Request::is('admin/production*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
@@ -458,10 +456,6 @@
 </li>
 @endcan
 
-
-
-
-
 @can('Ecommerce.view')
 {{-- eCommerce Section--}}
 <li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
@@ -590,9 +584,6 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 </li>
 @endcan
 
-
-
-
 @can('accounting.view')
 {{-- Account Section--}}
 <li class="treeview {{ (Request::is('admin/accounting*') or Request::is('admin/expense*')) ? ' is-expanded' : '' }}">
@@ -691,15 +682,181 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 @endcan
 
 
+@role('Super Admin')
+<li class="treeview {{ Request::is('super-admin*') ? ' is-expanded' : '' }}">
+    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"
+            aria-hidden="true"></i>
+        <span class="app-menu__label">{{_lang('Super Admin')}}</span><i
+            class="treeview-indicator fa fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu">
+
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/product') ? 'active':''}}"
+                href="{{ route('super_admin.product') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Product')}}
+            </a>
+        </li>
+
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/client') ? 'active':''}}"
+                href="{{ route('super_admin.client') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Client')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/sells') ? 'active':''}}"
+                href="{{ route('super_admin.sells') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Sells')}}
+            </a>
+        </li>
+
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/sell-return') ? 'active':''}}"
+                href="{{ route('super_admin.sell_return') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Sell Return')}}
+            </a>
+        </li>
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/purchase') ? 'active':''}}"
+                href="{{ route('super_admin.purchase') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Purchase')}}
+            </a>
+        </li>
+
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/expense') ? 'active':''}}"
+                href="{{ route('super_admin.expense') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Expense')}}
+            </a>
+        </li>
+
+
+        <li class="mt-1">
+            <a class="treeview-item {{Request::is('super-admin/account') ? 'active':''}}"
+                href="{{ route('super_admin.account') }}">
+                <i class="icon fa fa-circle-o"></i>
+                {{_lang('Account')}}
+            </a>
+        </li>
+
+    </ul>
+</li>
+@endrole
+
+@can('user.view')
+{{-- User Section--}}
+<li class="treeview {{ Request::is('admin/user*') ? ' is-expanded' : '' }}">
+    <a class="app-menu__item" href="#" data-toggle="treeview">
+        <i class="app-menu__icon fa fa-address-book"></i><span
+            class="app-menu__label">{{_lang('Role & Permission')}}</span><i
+            class="treeview-indicator fa fa-angle-right"></i></a>
+    <ul class="treeview-menu">
+        @can('role.view')
+        {{-- Role & Permission --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/user/role*') ? 'active':''}}"
+                href="{{ route('admin.user.role') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('role_permission')}}</a></li>
+        @endcan
+
+        @can('user.view')
+        {{-- User --}}
+        <li class="mt-1"><a
+                class="treeview-item {{(Request::is('admin/user*') And !Request::is('admin/user/role*'))  ?'active':''}}"
+                href="{{ route('admin.user.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('user')}}
+            </a>
+        </li>
+        @endcan
+    </ul>
+</li>
+@endcan
+
+@can('setting.view')
+{{-- Settings --}}
+<li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
+        data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span
+            class="app-menu__label">{{_lang('Settings')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+    <ul class="treeview-menu">
+        @can('setting.view')
+        {{-- General Settings --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
+                href="{{ route('admin.setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('General Settings')}}</a></li>
+        @endcan
+
+        @can('system_configuration.view')
+        {{-- System Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
+                href="{{ route('admin.system.setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('System Configuration ')}}</a></li>
+        @endcan
+
+        @can('mail_configuration.view')
+        {{-- Mail Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
+                href="{{ route('admin.mail.setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('Mail Configuration ')}}</a></li>
+        @endcan
+
+        @can('sms_configuration.view')
+        {{-- SMS Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
+                href="{{ route('admin.sms.setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('SMS Configuration ')}}</a></li>
+        @endcan
+
+        @can('module_configuration.view')
+        {{-- Module Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
+                href="{{ route('admin.module.setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('Module Configuration ')}}</a></li>
+        @endcan
+
+        @can('id_card_template.view')
+        {{-- Module Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
+                href="{{ route('admin.id-card-template') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('Id Card Template ')}}</a></li>
+        @endcan
+
+        @can('member_setting.view')
+        {{-- Member Settings Configuration --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
+                href="{{ route('admin.member-setting') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('Member')}}</a></li>
+        @endcan
+    </ul>
+</li>
+@endcan
+
+@can('language.view')
+{{-- Language --}}
+<li><a class="app-menu__item {{ Request::is('admin/language*') ? ' active' : '' }}"
+        href="{{ route('admin.language') }}"><i class="app-menu__icon fa fa-language" aria-hidden="true"></i><span
+            class="app-menu__label">{{_lang('language')}}</span></a></li>
+@endcan
+@can('backup.view')
+{{-- Database Backup --}}
+<li><a class="app-menu__item {{ Request::is('admin/backup') ? ' active' : '' }}" href="{{ route('admin.backup') }}"><i
+            class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('backup')}}</span></a></li>
+@endcan
+
+
 @endif
 
-
+@if (Request::is('admin/report*'))
 
 <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
-        href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
-            class="app-menu__label">{{_lang('Report')}}</span></a>
+    href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
+        class="app-menu__label">{{_lang('Report')}}</span></a>
 </li>
-@if (Request::is('admin/report*'))
+
 @can('report.store_department')
 <li class="treeview {{ Request::is('admin/report/depertment*') ? ' is-expanded' : '' }}">
     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-desc"
@@ -953,168 +1110,3 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 
 
 @endif
-
-@role('Super Admin')
-<li class="treeview {{ Request::is('super-admin*') ? ' is-expanded' : '' }}">
-    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-circle"
-            aria-hidden="true"></i>
-        <span class="app-menu__label">{{_lang('Super Admin')}}</span><i
-            class="treeview-indicator fa fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu">
-
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/product') ? 'active':''}}"
-                href="{{ route('super_admin.product') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Product')}}
-            </a>
-        </li>
-
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/client') ? 'active':''}}"
-                href="{{ route('super_admin.client') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Client')}}
-            </a>
-        </li>
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/sells') ? 'active':''}}"
-                href="{{ route('super_admin.sells') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Sells')}}
-            </a>
-        </li>
-
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/sell-return') ? 'active':''}}"
-                href="{{ route('super_admin.sell_return') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Sell Return')}}
-            </a>
-        </li>
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/purchase') ? 'active':''}}"
-                href="{{ route('super_admin.purchase') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Purchase')}}
-            </a>
-        </li>
-
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/expense') ? 'active':''}}"
-                href="{{ route('super_admin.expense') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Expense')}}
-            </a>
-        </li>
-
-
-        <li class="mt-1">
-            <a class="treeview-item {{Request::is('super-admin/account') ? 'active':''}}"
-                href="{{ route('super_admin.account') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Account')}}
-            </a>
-        </li>
-
-    </ul>
-</li>
-@endrole
-
-@can('user.view')
-{{-- User Section--}}
-<li class="treeview {{ Request::is('admin/user*') ? ' is-expanded' : '' }}">
-    <a class="app-menu__item" href="#" data-toggle="treeview">
-        <i class="app-menu__icon fa fa-address-book"></i><span
-            class="app-menu__label">{{_lang('Role & Permission')}}</span><i
-            class="treeview-indicator fa fa-angle-right"></i></a>
-    <ul class="treeview-menu">
-        @can('role.view')
-        {{-- Role & Permission --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/user/role*') ? 'active':''}}"
-                href="{{ route('admin.user.role') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('role_permission')}}</a></li>
-        @endcan
-
-        @can('user.view')
-        {{-- User --}}
-        <li class="mt-1"><a
-                class="treeview-item {{(Request::is('admin/user*') And !Request::is('admin/user/role*'))  ?'active':''}}"
-                href="{{ route('admin.user.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('user')}}
-            </a>
-        </li>
-        @endcan
-    </ul>
-</li>
-@endcan
-
-@can('setting.view')
-{{-- Settings --}}
-<li class="treeview {{ Request::is('admin/setting*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
-        data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span
-            class="app-menu__label">{{_lang('Settings')}}</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-    <ul class="treeview-menu">
-        @can('setting.view')
-        {{-- General Settings --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
-                href="{{ route('admin.setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('General Settings')}}</a></li>
-        @endcan
-
-        @can('system_configuration.view')
-        {{-- System Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
-                href="{{ route('admin.system.setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('System Configuration ')}}</a></li>
-        @endcan
-
-        @can('mail_configuration.view')
-        {{-- Mail Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
-                href="{{ route('admin.mail.setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('Mail Configuration ')}}</a></li>
-        @endcan
-
-        @can('sms_configuration.view')
-        {{-- SMS Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
-                href="{{ route('admin.sms.setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('SMS Configuration ')}}</a></li>
-        @endcan
-
-        @can('module_configuration.view')
-        {{-- Module Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
-                href="{{ route('admin.module.setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('Module Configuration ')}}</a></li>
-        @endcan
-
-        @can('id_card_template.view')
-        {{-- Module Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
-                href="{{ route('admin.id-card-template') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('Id Card Template ')}}</a></li>
-        @endcan
-
-        @can('member_setting.view')
-        {{-- Member Settings Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
-                href="{{ route('admin.member-setting') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('Member')}}</a></li>
-        @endcan
-    </ul>
-</li>
-@endcan
-
-@can('language.view')
-{{-- Language --}}
-<li><a class="app-menu__item {{ Request::is('admin/language*') ? ' active' : '' }}"
-        href="{{ route('admin.language') }}"><i class="app-menu__icon fa fa-language" aria-hidden="true"></i><span
-            class="app-menu__label">{{_lang('language')}}</span></a></li>
-@endcan
-@can('backup.view')
-{{-- Database Backup --}}
-<li><a class="app-menu__item {{ Request::is('admin/backup') ? ' active' : '' }}" href="{{ route('admin.backup') }}"><i
-            class="app-menu__icon fa fa-database"></i><span class="app-menu__label">{{_lang('backup')}}</span></a></li>
-@endcan

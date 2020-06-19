@@ -22,6 +22,9 @@
 
     <ul class="app-nav">
 
+        {{-- Report --}}
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.report.index') }}"><i class="fa fa-registered fa-lg"></i></a>
+
         {{-- Ecommerce Navber --}}
         <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-shopping-cart fa-lg"></i></a>
 
