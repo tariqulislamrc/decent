@@ -49,16 +49,27 @@
                 <input type="text" name="net_total" class="form-control" id="net_total" readonly>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="paid">{{ _lang('Paid') }} </label>
                 <input type="text" class="form-control paid" name="paid" id="paid">
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="due">{{ _lang('Due') }} </label>
                 <input type="text" class="form-control due" name="due" id="due" readonly>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="due">{{ _lang('Pay Account') }} </label>
+                <select name="investment_account_id" id="investment_account_id" class="form-control select">
+                    <option value="">Select Account</option>
+                    @foreach ($inves_account as $element)
+                        <option value="{{ $element->id }}">{{ $element->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         
@@ -75,8 +86,8 @@
     </div>
     <div class="row mt-2">
         <div class="col-md-6 mx-auto text-center">
-            <button type="submit" id="submit" class="btn btn-primary btn-lg w-100">{{ _lang('Job Work') }}</button>
-            <button type="button" class="btn btn-info btn-lg w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+            <button type="submit" id="submit" class="btn btn-primary btn-sm w-100">{{ _lang('Job Work') }}</button>
+            <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
         </div>
     </div>
 <script>

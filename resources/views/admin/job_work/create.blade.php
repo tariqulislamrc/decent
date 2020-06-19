@@ -85,6 +85,7 @@ $('.pageloader').show();
           $("#data").find('.select_custom').select2();
           if (!loaded) {
           _classformValidation();
+          _componentSelect2Normal();
           loaded=true;
       }
         

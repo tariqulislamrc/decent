@@ -593,6 +593,7 @@ class AccountController extends Controller
             if (!empty($account_id)) {
                 $query->where('account_id', $account_id);
             }
+            $query->where('payment_type','account');
 
             return DataTables::of($query)
                     ->editColumn('payment_date', function ($row) {

@@ -34,7 +34,7 @@ class TransactionPaymentController extends Controller
 
          $transaction = Transaction::find($request->get('transaction_id'));
 
-        if ($transaction->paid+$request->amount>$transaction->net_total) {
+         if ($transaction->paid+$request->amount>$transaction->net_total) {
              throw ValidationException::withMessages(['message' => _lang('Payble Amount Not> Net Total')]);
           }
 
@@ -65,7 +65,7 @@ class TransactionPaymentController extends Controller
                $acc_transaction->transaction_id =$transaction->id;
                $acc_transaction->transaction_payment_id =$payment->id;
                $acc_transaction->type ='Credit';
-               $acc_transaction->sub_type ='Sale';
+               $acc_transaction->acc_type ='account';
                $acc_transaction->amount =$request->amount;
                $acc_transaction->reff_no =$transaction->reference_no;
                $acc_transaction->account_id =$request->account_id;
@@ -112,8 +112,25 @@ class TransactionPaymentController extends Controller
             $payment->amount =$request->amount;
             $payment->note =$request->note;
             $payment->type ='Debit';
+            $payment->investment_account_id =$request->investment_account_id;
+            $payment->payment_type='investment';
             $payment->created_by =auth()->user()->id;
             $payment->save();
+
+        if ($request->investment_account_id) {
+               $acc_transaction =new AccountTransaction;
+               $acc_transaction->investment_account_id =$request->investment_account_id;
+               $acc_transaction->transaction_id =$transaction->id;
+               $acc_transaction->transaction_payment_id =$payment->id;
+               $acc_transaction->type ='Debit';
+               $acc_transaction->acc_type ='investment';
+               $acc_transaction->amount =$request->amount;
+               $acc_transaction->reff_no =$transaction->reference_no;
+               $acc_transaction->operation_date =date('Y-m-d');
+               $acc_transaction->note ='Job Work';
+               $acc_transaction->created_by =auth()->user()->id;
+               $acc_transaction->save();
+        }
 
             $this->transactionUtil->updatePaymentStatus($transaction->id, $transaction->net_total);
             return response()->json(['success' => true, 'status' => 'success', 'message' => 'Payment Successfully.', 'window' => route('admin.job_work.printpayment',$payment->id)]);

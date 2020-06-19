@@ -45,4 +45,9 @@ class TransactionPayment extends Model
     {
         return $this->belongsTo('App\models\account\Account', 'account_id');
     }
+
+    public function pay_investment()
+    {
+        return $this->belongsTo('App\models\account\InvestmentAccount', 'investment_account_id');
+    }
 }
