@@ -1,5 +1,7 @@
 <div class="col-md-6 mx-auto text-center mb-3 border bg-light border-info">
-    <b>Create New Special Offer</b>
+    <b>Create New Special Offer</b> <br>
+    
+    <span class="text-danger">Please Note That, you can not add more then 2 special product at a same time. To add a new Special Offer just delete an older special offer. Than add a new Special Offer. <br> Thank You</span>
 </div>
 
 <form action="{{ route('admin.eCommerce.special-offer.store') }}" id="content_form" method="POST" enctype="multipart/form-data">
