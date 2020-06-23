@@ -179,6 +179,8 @@
                                             <input type="hidden" name="oldfavicon" value="{{get_option('favicon')}}">
                                         @endif
                                     </div>
+
+                                    <span class="text-danger">Logo Size must be (100 X 28) Size. Otherwise Logo will be broken</span>
                                 </div> 
                             </div>
 

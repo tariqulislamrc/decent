@@ -200,31 +200,34 @@ class Front_End_Controller extends Controller{
     }
 
     public function productRating(Request $request){
-         $request->validate([
-            'product_id' => 'required',
-            'user_id' => '',
-            'score' => 'required',
-            'name' => 'required',
-            'email' => 'required',
-            'comment' => 'required',
-        ]);
-        $model = new ProductRating;
-        $model->product_id=$request->product_id;
-        $model->rating=$request->score;
-        $model->name=$request->name;
-        $model->email=$request->email;
-        $model->comment=$request->comment;
-        $model->save();
-        if ($request->product_id) {
-            $retting_model = ProductRating::findOrFail($model->id);
-            $product_model = Product::findOrFail($request->product_id);
-            $avarage = $retting_model->avg('rating');
-            $product_model->avarage_retting = $avarage;
-            $product_model->save();
-        }
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => route('product-details', $request->product_id)]);
-    }
-
+        $request->validate([
+           'product_id' => 'required',
+           'user_id' => '',
+           'score' => 'required',
+           'name' => 'required',
+           'email' => 'required',
+           'comment' => 'required',
+       ]);
+       
+       // find the product
+       $product = Product::findOrFail($request->product_id);
+       $model = new ProductRating;
+       $model->product_id=$request->product_id;
+       $model->rating=$request->score;
+       $model->name=$request->name;
+       $model->email=$request->email;
+       $model->comment=$request->comment;
+       $model->save();
+       if ($request->product_id) {
+           $retting_model = ProductRating::findOrFail($model->id);
+           $product_model = Product::findOrFail($request->product_id);
+           $avarage = $retting_model->avg('rating');
+           $product_model->avarage_retting = $avarage;
+           $product_model->save();
+       }
+       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Thamks for product rating'), 'goto' => route('product-details', $product->product_slug)]);
+   }
+   
     // add_into_wishlist
     public function add_into_wishlist(Request $request) {
         $find = Wishlist::where('ip', $request->ip)->where('product_id', $request->id)->first();
