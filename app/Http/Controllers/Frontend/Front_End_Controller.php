@@ -27,6 +27,7 @@ use App\models\Production\Variation;
 use App\models\Production\Transaction;
 use App\models\inventory\TransactionSellLine;
 use App\models\Production\VariationBrandDetails;
+use App\WholeSale;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -317,5 +318,12 @@ class Front_End_Controller extends Controller{
         $category = Category::where('status', 1)->get();
 
         return view('eCommerce.search.search_result_ajax', compact('products', 'banner', 'category'));
+    }
+
+    // whole_sale
+    public function whole_sale() {
+        $model = WholeSale::first();
+        $banner = PageBanner::where('page_name','Whole Sale')->first();
+        return view('eCommerce.wholesale',compact('model', 'banner'));
     }
 }

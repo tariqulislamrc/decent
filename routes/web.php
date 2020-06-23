@@ -46,6 +46,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('post-details/{id}', 'Frontend\BlogController@post_details')->name('post-details');
 	Route::get('category-details/{id}', 'Frontend\BlogController@category_details')->name('category-details');
 
+	Route::get('whole-sale', 'Frontend\Front_End_Controller@whole_sale')->name('whole-sale');
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');
 	Route::get('offer/{uuid}','Frontend\Front_End_Controller@offer_details')->name('offer');
@@ -546,6 +547,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::get('shipping-charge/datatable','ShippingChargeController@datatable')->name('shipping-charge.datatable');
     	Route::resource('shipping-charge','ShippingChargeController');
 		//Privacy and Policy route
+
+		Route::get('whole-sale','PrivacyPolicyController@whole_sale_index')->name('whole-sale');
+		Route::post('whole_sale_store','PrivacyPolicyController@whole_sale_store')->name('whole_sale_store');
     	Route::get('privacy-policy/index','PrivacyPolicyController@index')->name('privacy-policy.index');
 		Route::post('privacy-policy/store','PrivacyPolicyController@store')->name('privacy-policy.store');
 

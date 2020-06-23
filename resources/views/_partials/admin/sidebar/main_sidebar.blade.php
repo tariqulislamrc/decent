@@ -536,6 +536,9 @@ href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circl
 <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
         href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i
             class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
+<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.whole-sale') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Whole Sale Page')}}</a></li>
 
 {{--about us --}}
 <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"

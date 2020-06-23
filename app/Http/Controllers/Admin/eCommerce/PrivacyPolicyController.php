@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\eCommerce;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PrivacyPolicy;
+use App\WholeSale;
 
 class PrivacyPolicyController extends Controller{
     public function index(){
@@ -13,7 +14,7 @@ class PrivacyPolicyController extends Controller{
     }
     public function store(Request $request){
        //dd($request->all());
-       $data = $request->validate([
+        $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
         ]);
@@ -26,6 +27,30 @@ class PrivacyPolicyController extends Controller{
             $model = new PrivacyPolicy;
             $model->create($data);
              return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.privacy-policy.index')]);
+         }
+    }
+
+    // whole_sale_index
+    public function whole_sale_index() {
+        $model = WholeSale::first();
+        return view('admin.eCommerce.whole_sale.index', compact('model'));
+    }
+
+    // whole_sale_store
+    public function whole_sale_store(Request $request) {
+        $data = $request->validate([
+            'header' => 'required',
+            'description' => 'required',
+        ]);
+        
+         if($request->row_id){
+            $nodels = WholeSale::findOrFail($request->row_id);
+            $nodels->update($data);
+             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.whole-sale')]);
+         }else{
+            $model = new WholeSale;
+            $model->create($data);
+             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.whole-sale')]);
          }
     }
 }
