@@ -179,48 +179,48 @@
 <script src="{{ asset('js/eCommerce/cart.js') }}"></script>
 <script>
     _formValidation();
-    @if(session()->get('coupon_text'))
-    var total_hidden = $('#total_hidden').val();
-    var sub_total_hidden = $('#sub_total_hidden').val();
+    // @if(session()->get('coupon_text'))
+    // var total_hidden = $('#total_hidden').val();
+    // var sub_total_hidden = $('#sub_total_hidden').val();
 
-    $.ajax({
-            url: "{{route('coupon-check')}}",
-            data: {
-                coupon: "{{session()->get('coupon_text')}}"
-            },
-            type: 'Get',
-            dataType: 'json'
-        })
-        .done(function (data) {
-           if (data.status == 'success') {
-               var amt = data.coupon.discount_amount;
+    // $.ajax({
+    //         url: "{{route('coupon-check')}}",
+    //         data: {
+    //             coupon: "{{session()->get('coupon_text')}}"
+    //         },
+    //         type: 'Get',
+    //         dataType: 'json'
+    //     })
+    //     .done(function (data) {
+    //       if (data.status == 'success') {
+    //           var amt = data.coupon.discount_amount;
 
-                if (data.coupon.discount_type == 'percentage') {
-                    var total_amt = (total_hidden * amt) / 100;
-                    var sub_total = total_hidden - total_amt;
+    //             if (data.coupon.discount_type == 'percentage') {
+    //                 var total_amt = (total_hidden * amt) / 100;
+    //                 var sub_total = total_hidden - total_amt;
 
-                    $('#total').text(sub_total);
-                    $('#total_hidden').val(sub_total);
-                    $('#coupon_amt').val(total_amt);
-                    $('#show_discount_amount').html(total_amt);
-                    $('.mt-holder').hide('500');
-                } else {
-                    var sub_total = total_hidden - amt;
-                    $('#total').text(sub_total);
-                    $('#sub_total_hidden').val(sub_total);
-                     $('#coupon_amt').val(amt);
-                    $('.mt-holder').hide('500');
-                    $('#show_discount_amount').html(amt);
+    //                 $('#total').text(sub_total);
+    //                 $('#total_hidden').val(sub_total);
+    //                 $('#coupon_amt').val(total_amt);
+    //                 $('#show_discount_amount').html(total_amt);
+    //                 $('.mt-holder').hide('500');
+    //             } else {
+    //                 var sub_total = total_hidden - amt;
+    //                 $('#total').text(sub_total);
+    //                 $('#sub_total_hidden').val(sub_total);
+    //                  $('#coupon_amt').val(amt);
+    //                 $('.mt-holder').hide('500');
+    //                 $('#show_discount_amount').html(amt);
 
-                }
-            }
+    //             }
+    //         }
 
-            if(amt != 0) {
-                    $('#show_coupon_area').fadeIn();
-                }
-        })
+    //         if(amt != 0) {
+    //                 $('#show_coupon_area').fadeIn();
+    //             }
+    //     })
         
-    @endif
+    // @endif
 </script>
 @endpush
 

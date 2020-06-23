@@ -13,7 +13,7 @@
         <div class="col-md-4 text-justify">
         <p class="h3 font-weight-bold text-uppercase text-color"> Invoice To</p>
         @if ($x != 1)
-            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ get_client_name($model->id) }} </span></p>
+            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ get_client_name($model->client_id) }} </span></p>
             <p> <span class="font-weight-bold text-color h5 text-justify"> Address : {{ get_client_address($model->client_id) }} </span></p>
             <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $model->client->email }} </span></p>
             <p><span class="font-weight-bold text-color h5"> Contact : {{ $model->client->mobile }} </span>  </p>
