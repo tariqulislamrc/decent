@@ -125,8 +125,8 @@
                 $('#print').attr('disabled', '1');
             }
         });
-       
-       
+        
+        
         $('#sort_order').change(function() {
             var val = $(this).val();
             var url = $(this).data('url');
@@ -147,29 +147,29 @@
         });
 
         $('#date').dateRangePicker(
-{
-}).on('datepicker-first-date-selected', function(event, obj)
-{
-/* This event will be triggered when first date is selected */
-// console.log('first-date-selected',obj.date1);
-// obj will be something like this:
-// {
-// date1: (Date object of the earlier date)
-// }
-})
-.on('datepicker-change',function(event,obj)
-{
-/* This event will be triggered when second date is selected */
-// console.log('change',obj.value);
-// obj will be something like this:
-// {
-// date1: (Date object of the earlier date),
-// date2: (Date object of the later date),
-// value: "2013-06-05 to 2013-06-07"
-// }
-})
-.on('datepicker-apply',function(event,obj)
-{
+	{
+	}).on('datepicker-first-date-selected', function(event, obj)
+	{
+		/* This event will be triggered when first date is selected */
+		// console.log('first-date-selected',obj.date1);
+		// obj will be something like this:
+		// {
+		// 		date1: (Date object of the earlier date)
+		// }
+	})
+	.on('datepicker-change',function(event,obj)
+	{
+		/* This event will be triggered when second date is selected */
+		// console.log('change',obj.value);
+		// obj will be something like this:
+		// {
+		// 		date1: (Date object of the earlier date),
+		// 		date2: (Date object of the later date),
+		//	 	value: "2013-06-05 to 2013-06-07"
+		// }
+	})
+	.on('datepicker-apply',function(event,obj)
+	{
         /* This event will be triggered when user clicks on the apply button */
         var val = $('#sort_order').val();
         var start = obj.value;
@@ -188,27 +188,27 @@
                 $('#show_loader').fadeOut();
             }
         });
-})
-// .on('datepicker-close',function()
-// {
-// /* This event will be triggered before date range picker close animation */
-// console.log('before close');
-// })
-// .on('datepicker-closed',function()
-// {
-// /* This event will be triggered after date range picker close animation */
-// console.log('after close');
-// })
-// .on('datepicker-open',function()
-// {
-// /* This event will be triggered before date range picker open animation */
-// console.log('before open');
-// })
-.on('datepicker-opened',function()
-{
-/* This event will be triggered after date range picker open animation */
-console.log('after open');
-});
+	})
+	// .on('datepicker-close',function()
+	// {
+	// 	/* This event will be triggered before date range picker close animation */
+	// 	console.log('before close');
+	// })
+	// .on('datepicker-closed',function()
+	// {
+	// 	/* This event will be triggered after date range picker close animation */
+	// 	console.log('after close');
+	// })
+	// .on('datepicker-open',function()
+	// {
+	// 	/* This event will be triggered before date range picker open animation */
+	// 	console.log('before open');
+	// })
+	.on('datepicker-opened',function()
+	{
+		/* This event will be triggered after date range picker open animation */
+		console.log('after open');
+	});
     </script>
 
     @if (isset($_GET['order']) && $_GET['order'] != '')
@@ -224,3 +224,4 @@ console.log('after open');
         @endif
     @endif
 @endpush
+
