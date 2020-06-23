@@ -1,4 +1,15 @@
 @extends('eCommerce.layouts.app')
+@push('css')
+<meta property="og:title" content="{{ $model->title != '' ? $model->title : 'Blog Title' }}">
+<meta property="og:description" content="{{ $model->title != '' ? $model->title : 'Blog Description' }} ">
+<meta property="og:image" content="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1920x205'}}">
+<meta property="og:url" content="{{ route('post-details', $model->post_slug) }}">
+
+<meta name="twitter:title" content="{{ $model->title != '' ? $model->title : 'Blog Title' }} ">
+<meta name="twitter:description" content=" {{ $model->title != '' ? $model->title : 'Blog Description' }} .">
+<meta name="twitter:image" content="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1920x205'}}">
+<meta name="twitter:card" content="summary_large_image">
+@endpush
 @push('main')
 <!-- Main of the Page -->
 <main id="mt-main">
@@ -45,10 +56,10 @@
                                     alt="image description"></a>
                             <time
                                 class="time"><strong>{{formatDate2($model->date)}}</strong>{{formatMonth($model->date)}}</time>
-                            {{-- <ul class="list-unstyled comment-nav">
-                      <li><a href="#"><i class="fa fa-comments"></i>12</a></li>
-                      <li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>
-                    </ul> --}}
+                    <ul class="list-unstyled comment-nav">
+                      <li><div class="addthis_inline_share_toolbox"></div></li>
+                      <!--<li><a href="#"><i class="fa fa-share-alt"></i>14</a></li>-->
+                    </ul>
                         </div>
                         <div class="blog-txt">
                             <h2><a style="text-transform: uppercase">{!!$model->title!!}</a></h2>
@@ -69,4 +80,8 @@
     <!-- Mt Blog Detail of the Page end -->
 </main>
 <!-- footer of the Page -->
+@endpush
+
+@push('scripts')
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e6f1c98ea2e3519"></script>
 @endpush
