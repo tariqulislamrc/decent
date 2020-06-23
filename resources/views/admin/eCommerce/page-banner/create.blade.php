@@ -25,6 +25,7 @@
                         <option value="login">{{_lang('Sing Up and Sing In')}}</option>
                         <option value="blog">{{_lang('Blog Page')}}</option>
                         <option value="Track Order">{{_lang('Track Order Page')}}</option>
+                        <option value="Whole Sale">{{_lang('Whole Sale Page')}}</option>
                     </select>
                     </div>
 
