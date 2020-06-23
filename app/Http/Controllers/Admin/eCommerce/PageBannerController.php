@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\eCommerce;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\PageBanner;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class PageBannerController extends Controller
@@ -94,7 +95,8 @@ class PageBannerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $model = PageBanner::findOrFail($id);
+        return view('admin.eCommerce.page-banner.edit', compact('model'));
     }
 
     /**
@@ -106,7 +108,33 @@ class PageBannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'page_name' => 'required',
+            'image' => 'max:2000',
+        ]);
+
+        $page = PageBanner::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $storagepath = $request->file('image')->store('public/page');
+            $fileName = basename($storagepath);
+            $page->image = $fileName;
+
+            // $oldFile = $page->image;
+            //     if( $oldFile != ''){
+            //         $file_path = "public/page/".$oldFile;
+            //         Storage::delete($file_path);
+            //     }
+
+        } else {
+            $page->image = '';
+        }
+
+        $page->page_name = $request->page_name;
+        $page->save();
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.page-banner.index')]);
+
     }
 
     /**
