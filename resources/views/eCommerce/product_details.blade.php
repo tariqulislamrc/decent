@@ -1,7 +1,16 @@
 @extends('eCommerce.layouts.app')
 @push('css')
+<title>{{ $model->name}}</title>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<meta property="og:title" content="{{ $model->name != '' ? $model->name : 'Blog Title' }}">
+<meta property="og:description" content="{{ $model->name != '' ? $model->name : 'Blog Description' }} ">
+<meta property="og:image" content="{{$model->photo_details->first()->photo && $model->photo_details->first()->photo != '' ?asset('storage/product/'.$model->photo_details->first()->photo): asset('img/product.jpg') }}">
+<meta property="og:url" content="{{ route('product-details',$model->product_slug) }}">
 
+<meta name="twitter:title" content="{{ $model->name != '' ? $model->name : 'Blog Title' }} ">
+<meta name="twitter:description" content=" {{ $model->name != '' ? $model->name : 'Blog Description' }} .">
+<meta name="twitter:image" content="{{$model->photo_details->first()->photo && $model->photo_details->first()->photo != '' ?asset('storage/product/'.$model->photo_details->first()->photo): asset('img/product.jpg') }}">
+<meta name="twitter:card" content="summary_large_image">
 <style>
     /* styles unrelated to zoom */
 

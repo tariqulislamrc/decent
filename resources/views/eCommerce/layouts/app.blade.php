@@ -7,14 +7,19 @@
 	<meta charset="utf-8">
 	<!-- set the viewport width and initial-scale on mobile devices -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	@if (isset($seo))
-	<meta name="description" content="{{$seo->meta_description}}">
-    <meta name="keywords" content="{{$seo->meta_keyword}}">
-	<meta name="title" content="{{$seo->meta_title}}">
-	<meta name="author" content="{{$seo->meta_author}}">
-	@endif
+	
 	@stack('seo_section')
-	<title>Desent Footware | Satt IT</title>
+	@if(Request::is('product-details*') || Request::is('post-details*'))
+	
+	@else
+	    <title>Desent Footware | Satt IT</title>
+	    @if (isset($seo))
+        	<meta name="description" content="{{$seo->meta_description}}">
+            <meta name="keywords" content="{{$seo->meta_keyword}}">
+        	<meta name="title" content="{{$seo->meta_title}}">
+        	<meta name="author" content="{{$seo->meta_author}}">
+        @endif
+	@endif
 	<!-- include the site stylesheet -->
 	<link rel="icon" type="image/png" sizes="16x16" href="{{asset(get_option('favicon')?'storage/logo/'.get_option('favicon'):'favicon.png')}}">
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900,900italic%7cMontserrat:400,700%7cOxygen:400,300,700' rel='stylesheet' type='text/css'>
@@ -96,7 +101,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
 		});
-
         toastr.options = { "preventDuplicates": true,};
 
         $(document).ready(function() {

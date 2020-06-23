@@ -1,12 +1,16 @@
 @extends('eCommerce.layouts.app')
 @push('css')
+<title>{{ $model->title}}</title>
+<meta name="description" content="{{\Illuminate\Support\Str::limit($model->details,100)}}">
+<meta name="keywords" content="">
+<meta name="title" content="{{$model->title }}">
 <meta property="og:title" content="{{ $model->title != '' ? $model->title : 'Blog Title' }}">
-<meta property="og:description" content="{{ $model->title != '' ? $model->title : 'Blog Description' }} ">
+<meta property="og:description" content="{{ \Illuminate\Support\Str::limit($model->details,100) }} ">
 <meta property="og:image" content="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1920x205'}}">
 <meta property="og:url" content="{{ route('post-details', $model->post_slug) }}">
 
 <meta name="twitter:title" content="{{ $model->title != '' ? $model->title : 'Blog Title' }} ">
-<meta name="twitter:description" content=" {{ $model->title != '' ? $model->title : 'Blog Description' }} .">
+<meta name="twitter:description" content=" {{ \Illuminate\Support\Str::limit($model->details,100) }} .">
 <meta name="twitter:image" content="{{isset($model->image)?asset('storage/blog/'.$model->image):'http://placehold.it/1920x205'}}">
 <meta name="twitter:card" content="summary_large_image">
 @endpush
