@@ -490,8 +490,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
 
 <script>
     @if(Session::get('error'))
-    toastr.warning('{{Session::get('
-        error ')}}');
+    toastr.warning('{{Session::get("error")}}');
     @endif
 
 </script>

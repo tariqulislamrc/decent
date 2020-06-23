@@ -113,10 +113,10 @@
         <div class="container">
             
             <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'personal_info')" id="defaultOpen">Personal Information</button>
+                <button id="defaultOpen" class="tablinks" onclick="openCity(event, 'my_orders')">My Orders</button>
+                <button class="tablinks" onclick="openCity(event, 'personal_info')">Personal Information</button>
                 <button class="tablinks" onclick="openCity(event, 'address_book')">Address Book</button>
                 <button class="tablinks" onclick="openCity(event, 'password_manager')">Password Manager</button>
-                <button class="tablinks" onclick="openCity(event, 'my_orders')">My Orders</button>
                 <button class="tablinks" onclick="openCity(event, 'my_cancel_orders')">My Cancel Order</button>
                 <button class="tablinks" ><a class='h4' href="{{route('shopping-cart-show')}}">Cart</a> </button>
                 
@@ -696,6 +696,10 @@
     };
 
     _formValidation();
+    
+    @if(\Session::has('error'))
+        toastr.warning('{{\Session::get("error")}}');
+    @endif
 
 </script>
 
