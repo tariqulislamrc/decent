@@ -46,9 +46,11 @@ class ProductRatingController extends Controller
     public function status_change(Request $request, $id)
     {
         $model = ProductRating::findOrFail($id);
+        $model->rating = $request->rating;
         $model->status = $request->status;
+        $model->comment = $request->comment;
         $model->save();
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Status Change Successfuly')]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Status Change Successfuly'), 'load' => true]);
     }
 
 

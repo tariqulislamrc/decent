@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-
+    
     protected $transactionUtil;
     public function __construct(TransactionUtil $transactionUtil)
     {
@@ -32,7 +32,7 @@ class OrderController extends Controller
         return view('admin.eCommerce.order.index', compact('models'));
     }
 
-    // show
+    // show 
     public function show ($id) {
         $model = Transaction::findOrFail($id);
 
@@ -75,7 +75,7 @@ class OrderController extends Controller
         $ex = explode('to', $date);
         $start = $ex[0];
         $end = trim($ex[1]);
-
+        
         $models = Transaction::where('ecommerce_status', $val)->whereBetween('created_at', [$start, $end])->orderBy('id', 'desc')->get();
         return view('admin.eCommerce.order.data', compact('models'));
     }
@@ -128,8 +128,6 @@ class OrderController extends Controller
     // edit_the_transaction
     public function edit_the_transaction(Request $request, $id) {
         // dd($request->all());
-
-
         if($request->product_id == null) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Please Select Product First')]);
         }
@@ -149,7 +147,7 @@ class OrderController extends Controller
 
         // dd($model->ecommerce_status);
 
-        // is the status is calcel
+        // is the status is calcel 
         if($request->status == 'cancel') {
             if($model->ecommerce_status == 'progressing' || $model->ecommerce_status == 'shipment' || $model->ecommerce_status == 'success' || $model->ecommerce_status == 'payment_done') {
                 return response()->json(['success' => true, 'html' => 'cancel', 'status' => 'danger', 'message' => _lang('First Make the Order Pending Or Confirm')]);
@@ -168,18 +166,21 @@ class OrderController extends Controller
         // find the client
         $client = Client::findOrFail($model->client_id);
 
-        // find the transaction sell line
+        // find the transaction sell line 
         $transaction_sell_lines = TransactionSellLine::where('transaction_id', $id)->get();
 
-        // delete all transaction sell line for this transaction row
-        if($transaction_sell_lines) {
-            foreach($transaction_sell_lines as $sell_line) {
-                $sell_line->delete();
-            }
-        }
+        
 
-        // add new transaction sell line for this transaction
-        if ($request->status == 'success') {
+        // add new transaction sell line for this transaction 
+        if ($request->status != 'pending') {
+            
+            // delete all transaction sell line for this transaction row
+            if($transaction_sell_lines) {
+                foreach($transaction_sell_lines as $sell_line) {
+                    $sell_line->delete();
+                }
+            }
+        
             for ($i = 0; $i < count($request->product_id); $i++) {
 
                 $transaction = new TransactionSellLine();
@@ -192,7 +193,7 @@ class OrderController extends Controller
                 $total = ($request->quantity[$i]) * ($request->price[$i]);
                 $transaction->total = $total;
                 $transaction->save();
-
+    
                 $ecommerce_product = EcommerceProduct::where('product_id', $request->product_id[$i])->where('variation_id', $request->variation_id[$i])->first();
                 if($ecommerce_product) {
                     $avaiable_stock = $ecommerce_product->quantity;
@@ -244,7 +245,7 @@ class OrderController extends Controller
     // get_curier_print
     public function get_curier_print(Request $request) {
         $data = [];
-
+        
         for($i = 0; $i < count($request->check); $i++) {
             $id = $request->check[$i];
             $trans = Transaction::where('id', $id)->first();

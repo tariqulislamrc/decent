@@ -72,9 +72,7 @@
                             <tbody>
                                 @foreach ($models as $model)
                                     <tr>
-
                                         <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control check"></td>
-
                                         <td>{{$loop->index + 1}}</td>
                                         <td>{{$model->payment_status}}</td>
                                         <td>{{$model->reference_no}}</td>
@@ -90,11 +88,9 @@
                                         </td>
                                         <td>
                                             <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
-
                                                 <button type="button" class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
                                             </a>
                                             <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -102,7 +98,6 @@
                         </table>
                     </div>
                     <div class="col-md-4 mx-auto">
-
                         <button title="Please Select Order First" id="print" disabled class="btn btn-primary btn-sm btn-block">Print for Curier</button>
                     </div>
                 </form>
@@ -123,7 +118,6 @@
     <script src="{{ asset('backend/js/daterangepicker.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/order.js') }}"></script>
     <script>
-
         $(document).on('click', '.check', function() {
             if(this.checked) {
                 $('#print').removeAttr('disabled');
@@ -131,8 +125,8 @@
                 $('#print').attr('disabled', '1');
             }
         });
-
-
+       
+       
         $('#sort_order').change(function() {
             var val = $(this).val();
             var url = $(this).data('url');
@@ -153,29 +147,29 @@
         });
 
         $('#date').dateRangePicker(
-	{
-	}).on('datepicker-first-date-selected', function(event, obj)
-	{
-		/* This event will be triggered when first date is selected */
-		// console.log('first-date-selected',obj.date1);
-		// obj will be something like this:
-		// {
-		// 		date1: (Date object of the earlier date)
-		// }
-	})
-	.on('datepicker-change',function(event,obj)
-	{
-		/* This event will be triggered when second date is selected */
-		// console.log('change',obj.value);
-		// obj will be something like this:
-		// {
-		// 		date1: (Date object of the earlier date),
-		// 		date2: (Date object of the later date),
-		//	 	value: "2013-06-05 to 2013-06-07"
-		// }
-	})
-	.on('datepicker-apply',function(event,obj)
-	{
+{
+}).on('datepicker-first-date-selected', function(event, obj)
+{
+/* This event will be triggered when first date is selected */
+// console.log('first-date-selected',obj.date1);
+// obj will be something like this:
+// {
+// date1: (Date object of the earlier date)
+// }
+})
+.on('datepicker-change',function(event,obj)
+{
+/* This event will be triggered when second date is selected */
+// console.log('change',obj.value);
+// obj will be something like this:
+// {
+// date1: (Date object of the earlier date),
+// date2: (Date object of the later date),
+// value: "2013-06-05 to 2013-06-07"
+// }
+})
+.on('datepicker-apply',function(event,obj)
+{
         /* This event will be triggered when user clicks on the apply button */
         var val = $('#sort_order').val();
         var start = obj.value;
@@ -194,27 +188,27 @@
                 $('#show_loader').fadeOut();
             }
         });
-	})
-	// .on('datepicker-close',function()
-	// {
-	// 	/* This event will be triggered before date range picker close animation */
-	// 	console.log('before close');
-	// })
-	// .on('datepicker-closed',function()
-	// {
-	// 	/* This event will be triggered after date range picker close animation */
-	// 	console.log('after close');
-	// })
-	// .on('datepicker-open',function()
-	// {
-	// 	/* This event will be triggered before date range picker open animation */
-	// 	console.log('before open');
-	// })
-	.on('datepicker-opened',function()
-	{
-		/* This event will be triggered after date range picker open animation */
-		console.log('after open');
-	});
+})
+// .on('datepicker-close',function()
+// {
+// /* This event will be triggered before date range picker close animation */
+// console.log('before close');
+// })
+// .on('datepicker-closed',function()
+// {
+// /* This event will be triggered after date range picker close animation */
+// console.log('after close');
+// })
+// .on('datepicker-open',function()
+// {
+// /* This event will be triggered before date range picker open animation */
+// console.log('before open');
+// })
+.on('datepicker-opened',function()
+{
+/* This event will be triggered after date range picker open animation */
+console.log('after open');
+});
     </script>
 
     @if (isset($_GET['order']) && $_GET['order'] != '')
@@ -230,4 +224,3 @@
         @endif
     @endif
 @endpush
-

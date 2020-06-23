@@ -8,10 +8,18 @@
             @method('PATCH')
             <div class="row">
 
-                {{-- Select Status --}}
-                <div class="form-group col-md-6">
-                    <label>{{_lang('Rating Comment:')}} </label> <br>
-                    {{$model->comment}}
+                
+
+                {{-- Rating --}}
+                <div class="col-md-6 form-group">
+                    <label for="rating">Rating</label>
+                    <select name="rating" id="rating" class="form-control select" required> 
+                        <option {{ $model->rating == 1 ? 'selected' : ''}} value="1">1</option>
+                        <option {{ $model->rating == 2 ? 'selected' : ''}} value="2">2</option>
+                        <option {{ $model->rating == 3 ? 'selected' : ''}} value="3">3</option>
+                        <option {{ $model->rating == 4 ? 'selected' : ''}} value="4">4</option>
+                        <option {{ $model->rating == 5 ? 'selected' : ''}} value="5">5</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -20,6 +28,12 @@
                         <option value="1" {{$model->status == '1'?'selected':''}}>Active</option>
                         <option value="0" {{$model->status == '0'?'selected':''}}>InActive</option>
                     </select>
+                </div>
+
+                {{-- Select Status --}}
+                <div class="form-group col-md-12">
+                    <label>{{_lang('Rating Comment:')}} </label> <br>
+                    <textarea name="comment" id="comment" cols="30" rows="2" class="form-control">{{$model->comment}}</textarea>
                 </div>
                      
                 @can('product_rating.update')
