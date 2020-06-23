@@ -24,6 +24,19 @@
 
         {{-- Report --}}
         <li><a class="mt-1 app-nav__item" href="{{ route('admin.report.index') }}"><i class="fa fa-registered fa-lg"></i></a>
+        
+        {{-- Production Product --}}
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.production-product.create') }}"><i class="fa fa-stumbleupon fa-lg"></i></a>
+            
+        {{-- Work ORder  --}}
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.production-work-order.create') }}"><i class="fa fa-bars fa-lg"></i></a>
+        
+            {{-- Department Product Report --}}
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.report.create') }}"><i class="fa fa-pie-chart fa-lg"></i></a>
+            
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.paircosting.create') }}"><i class="fa fa-ils fa-lg"></i></a>
+            
+        <li><a class="mt-1 app-nav__item" href="{{ route('admin.expense.ex.index') }}"><i class="fa fa-minus-circle fa-lg"></i></a>
 
         {{-- Ecommerce Navber --}}
         <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-shopping-cart fa-lg"></i></a>
@@ -46,6 +59,18 @@
 
         </li>
 
+        <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="HRM Menu"><i class="fa fa-user-circle fa-lg"></i></a>
+
+            <ul class="dropdown-menu settings-menu dropdown-menu-right">
+
+                <li><a class="dropdown-item" href="{{ route('admin.employee-list.index')}}"><i class="fa fa-circle-o fa-lg"></i> Employee</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.attendance-employee-attendance.index')}}"><i class="fa fa-circle-o fa-lg"></i> Attendance</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.employee-leave.view')}}"><i class="fa fa-circle-o fa-lg"></i> Leave</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.payroll.view')}}"><i class="fa fa-circle-o fa-lg"></i> Payroll</a></li>
+            </ul>
+
+        </li>
+
         <li class="app-search">
 
             {{-- <h5  data-toggle="tooltip" data-placement="bottom" title="Software Current Active Timezone: {{date_default_timezone_get()}}" class="text-light pt-2 mr-2">{{date_default_timezone_get()}}</h5> &nbsp; --}}
@@ -55,7 +80,7 @@
 
 
             {{-- Current Time --}}
-            <div id="jqclock" class="jqclock text-white" data-time="{{carbonDate(date('d-m-Y'))    }}"></div>
+            {{-- <div id="jqclock" class="jqclock text-white" data-time="{{carbonDate(date('d-m-Y'))    }}"></div> --}}
 
 
             {{-- <h5  data-toggle="tooltip" data-placement="bottom" title="System Current Time {{carbonTime(date('h:i:s A'))}}." class="text-light pt-2">{{carbonTime(date('h:i:s A'))}}</h5> --}}
