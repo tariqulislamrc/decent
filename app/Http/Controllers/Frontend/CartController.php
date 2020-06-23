@@ -263,6 +263,9 @@ class CartController extends Controller
         Session::put('discount_type', null);
         Session::put('coupon_text', null);
 
+        Cart::clear();
+        // Cart::session($userId)->clear();
+
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Order Complete Successfuly'), 'goto' => route('welcome')]);
 
     }
