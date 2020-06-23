@@ -16,8 +16,6 @@
 		<h6>{{_lang('Purchase PaymentReport')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.purchasing.purchase_payment_report')}}" method="post" enctype="multipart/form-data" target="_blank">
-			@csrf
 			<div class="row">
 				<div class="col-md-6 form-group">
 					<label for="employee_id">{{_lang('Purchase Person')}}</label>
@@ -57,12 +55,19 @@
 						<input type="text" class="form-control date" name="eDate" id="eDate" value="{{ date('Y-m-d') }}">
 					</div>
 				</div>
-				<div class="col-md-6 mx-auto">
-					<button type="submit" class="btn btn-block btn-info">{{ _lang('Get Purchase Payment Report') }}</button>
-				</div>
+				 <div class="col-md-6 mx-auto">
+		              <button data-url="{{route('admin.report.purchasing.purchase_payment_report')}}" type="button" id="submit" class="btn btn-block btn-sm btn-info">{{ _lang('Get  Report') }}</button>
+		               <button style="display: none;" type="button" id="submiting" class="btn btn-block btn-sm btn-info" disabled>{{ _lang('Processing...') }}</button>
+		        </div>
 			</div>
-		</form>
 	</div>
+</div>
+
+   <div class="card mt-3">
+    <div class="card-header">Requested Report</div>
+    <div id="report_data" class="card-body">
+
+    </div>
 </div>
 <!-- /basic initialization -->
 @stop
@@ -71,5 +76,49 @@
 <script>
 $('.select').select2();
 _componentDatefPicker();
+$(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var employee_id = $('#employee_id').val();
+    var transaction_id = $('#transaction_id').val();
+    var sDate = $('#sDate').val();
+    var eDate = $('#eDate').val();
+
+
+    get_data(employee_id,transaction_id, sDate, eDate);
+});
+$('#submit').click(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var employee_id = $('#employee_id').val();
+    var transaction_id = $('#transaction_id').val();
+    var sDate = $('#sDate').val();
+    var eDate = $('#eDate').val();
+
+    get_data(employee_id,transaction_id, sDate, eDate);
+   
+});
+
+function get_data(employee_id,transaction_id, sDate, eDate) {
+    var url = $('#submit').data('url');
+    
+    $.ajax({
+        url: url,
+        data: {
+            employee_id: employee_id,
+            transaction_id: transaction_id,
+            sDate: sDate,
+            eDate: eDate
+        },
+        type: 'POST',
+        dataType: 'html'
+    })
+    .done(function(data) {
+        $('#report_data').html(data);
+        toastr.success('Report Genarate');
+        $('#submit').show();
+        $('#submiting').hide();
+    });
+}
 </script>
 @endpush

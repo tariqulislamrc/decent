@@ -8,6 +8,7 @@ use App\models\Client;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\account\Account;
+use App\models\account\InvestmentAccount;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -183,12 +184,6 @@ class SalesReportController extends Controller
         else{               
            $q =$q->where('client_id',$client_id);
         }
-        if ($transaction_id=='All') {
-            $q=$q;
-        }
-        else{
-            $q= $q->where('return_parent_id',$transaction_id);     
-        }
         if ($user_id=='All') {
             $q=$q;
         }
@@ -202,7 +197,7 @@ class SalesReportController extends Controller
          if (!auth()->user()->hasRole('Super Admin')) {
                 $q=$q->where('hidden',false);
             }
-        $result=$q->groupBy('return_parent_id')->select('return_parent_id','client_id')->get();
+        $result=$q->where('transaction_type','sale_return')->get();
         return view('admin.report.selling.sales__return_report_print',compact('result','sDate','eDate')); 
     }
 
@@ -270,6 +265,7 @@ class SalesReportController extends Controller
             );
 
             $account_details = $this->getAccountBalance($end_date);
+            $investmet_details = $this->getInvestBalance($end_date);
 
             // $capital_account_details = $this->getAccountBalance($business_id, $end_date, 'capital');
 
@@ -277,7 +273,8 @@ class SalesReportController extends Controller
                 'supplier_due' => $purchase_details['purchase_due'],
                 'customer_due' => $sell_details['invoice_due'],
                 'account_balances' => $account_details,
-                'capital_account_details' => null
+                'capital_account_details' => null,
+                'investmet_details' => $investmet_details,
             ];
 
             return $output;
@@ -511,7 +508,7 @@ class SalesReportController extends Controller
         // }
 
         $account_details = $query->select(['name',
-                                        DB::raw("SUM( IF(AT.type='credit', amount, -1*amount) ) as balance")])
+                                        DB::raw("SUM( IF(AT.type='Credit', amount, -1*amount) ) as balance")])
                                 ->groupBy('accounts.id')
                                 ->get()
                                 
@@ -519,6 +516,44 @@ class SalesReportController extends Controller
 
 
         return $account_details;
+    }
+
+
+
+    /**
+     * Retrives account balances.
+     * @return Obj
+     */
+    private function getInvestBalance($end_date, $account_type = 'others')
+    {
+        $query = InvestmentAccount::leftjoin(
+            'account_transactions as AT',
+            'AT.investment_account_id',
+            '=',
+            'investment_accounts.id'
+        )
+                                // ->NotClosed()
+                                ->whereNull('AT.deleted_at')
+                                ->whereDate('AT.operation_date', '<=', $end_date);
+                                // ->where('AT.hidden',false);
+        if (!auth()->user()->hasRole('Super Admin')) {
+            $query->where('AT.hidden',false);
+        }
+        // if ($account_type == 'others') {
+        //    $query->NotCapital();
+        // } elseif ($account_type == 'capital') {
+        //     $query->where('account_type', 'capital');
+        // }
+
+        $investmet_details = $query->select(['name',
+                                        DB::raw("SUM( IF(AT.type='Credit', amount, -1*amount) ) as balance")])
+                                ->groupBy('investment_accounts.id')
+                                ->get()
+                                
+                                ->pluck('balance', 'name');
+
+
+        return $investmet_details;
     }
 
 }

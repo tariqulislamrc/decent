@@ -60,8 +60,16 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
+
                 </tbody>
                 <tbody id="account_balances_details">
+                </tbody>
+                 <tr>
+                        <th>{{ _lang('Investment Balance') }}:</th>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                <tbody id="invest_account_details">
                 </tbody>
                 <tfoot>
                     <tr class="bg-gray">
@@ -129,6 +137,15 @@
                     var accnt_bal_with_sym = result.account_balances[key];
                     var account_tr = '<tr><td class="pl-20-td">' + key + ':</td><td><input type="hidden" class="credit" value="' + accnt_bal + '">' + accnt_bal_with_sym + '</td><td>&nbsp;</td></tr>';
                     $('table#trial_balance_table tbody#account_balances_details').append(account_tr);
+                }
+
+                 var investmet_details = result.investmet_details;
+                $('table#trial_balance_table tbody#invest_account_details').html('');
+                for (var key in investmet_details) {
+                    var accnt_bal = result.investmet_details[key];
+                    var accnt_bal_with_sym = result.investmet_details[key];
+                    var account_tr = '<tr><td class="pl-20-td">' + key + ':</td><td>&nbsp;</td><td><input type="hidden" class="debit" value="' + accnt_bal + '">' + accnt_bal_with_sym + '</td></tr>';
+                    $('table#trial_balance_table tbody#invest_account_details').append(account_tr);
                 }
 
                 var capital_account_details = result.capital_account_details;

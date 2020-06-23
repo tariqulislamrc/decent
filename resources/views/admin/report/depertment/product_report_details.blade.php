@@ -16,8 +16,6 @@
 		<h6>{{_lang('Details Depertment Product Report')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.depertment.get_product_report_details')}}" method="post" enctype="multipart/form-data" target="_blank">
-			@csrf
 			<div class="row">
 				<div class="col-md-4 form-group">
 					<label for="depertment_id">{{_lang('Depertment')}}</label>
@@ -67,11 +65,17 @@
 					</div>
 				</div>
 				<div class="col-md-6 mx-auto">
-					<button type="submit" class="btn btn-block btn-info">{{ _lang('Report') }}</button>
+					 <button data-url="{{route('admin.report.depertment.get_product_report_details')}}" type="button" id="submit" class="btn btn-block btn-info">{{ _lang('Get Sales Report') }}</button>
+                         <button style="display: none;" type="button" id="submiting" class="btn btn-block btn-info" disabled>{{ _lang('Processing...') }}</button>
 				</div>
 			</div>
-		</form>
 	</div>
+</div>
+    <div class="card mt-3">
+    <div class="card-header">Requested Report</div>
+    <div id="report_data" class="card-body">
+
+    </div>
 </div>
 <!-- /basic initialization -->
 @stop
@@ -80,5 +84,54 @@
 <script>
 $('.select').select2();
 _componentDatefPicker();
+
+$(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var depertment_id = $('#depertment_id').val();
+    var work_order_id = $('#work_order_id').val();
+    var user_id = $('#user_id').val();
+    var sDate = $('#sDate').val();
+    var eDate = $('#eDate').val();
+
+
+    get_data(depertment_id,work_order_id, sDate, eDate);
+});
+
+$('#submit').click(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var depertment_id = $('#depertment_id').val();
+    var work_order_id = $('#work_order_id').val();
+    var user_id = $('#user_id').val();
+    var sDate = $('#sDate').val();
+    var eDate = $('#eDate').val();
+
+
+    get_data(depertment_id,work_order_id,user_id, sDate, eDate);
+});
+
+function get_data(depertment_id,work_order_id,user_id, sDate, eDate) {
+    var url = $('#submit').data('url');
+    
+    $.ajax({
+        url: url,
+        data: {
+            depertment_id: depertment_id,
+            work_order_id: work_order_id,
+            user_id: user_id,
+            sDate: sDate,
+            eDate: eDate
+        },
+        type: 'POST',
+        dataType: 'html'
+    })
+    .done(function(data) {
+        $('#report_data').html(data);
+        toastr.success('Report Genarate');
+        $('#submit').show();
+        $('#submiting').hide();
+    });
+}
 </script>
 @endpush
