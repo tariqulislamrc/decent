@@ -163,7 +163,7 @@ class Front_End_Controller extends Controller{
         // find the product
         $model = Product::with('photo_details', 'variation')->where('product_slug',$id)->firstOrFail();
         // find the product Rating
-        $product_rating = ProductRating::where('product_id',$model->id)->get();
+        $product_rating = ProductRating::where('product_id',$model->id)->where('status', 1)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
         if ($total_row>0) {
@@ -179,7 +179,7 @@ class Front_End_Controller extends Controller{
         $model = EcommerceOffer::where('slug',$uuid)->firstOrFail();
         // product
         $product = Product::with('photo_details', 'variation')->where('id',$model->product_id)->first();
-        $product_rating = ProductRating::where('product_id',$model->product_id)->get();
+        $product_rating = ProductRating::where('product_id',$model->id)->where('status', 1)->get();
         $avarage = $product_rating->sum('rating');
         $total_row = $product_rating->count();
         if ($total_row>0) {
