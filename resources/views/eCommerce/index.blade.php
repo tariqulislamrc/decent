@@ -40,7 +40,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                         @if (count($banner3) > 0)
                             @foreach ($banner3 as $item)
                                 <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                    <img src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
+                                    <img style="height: 275px;" src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
                                     <div class="holder">
                                         <h2><span>{{$item->name}}</span><strong>{{$item->sub_heading}}</strong>
                                         </h2>
@@ -279,7 +279,6 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                     @endif
                 </div>
                 {{-- Banner Part End Here --}}
-1
                 <div class="mt-smallproducts mt-nopaddingtopxs wow fadeInUp" data-wow-delay="0.4s">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-3 mt-paddingbottomsm">

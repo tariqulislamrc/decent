@@ -510,6 +510,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		Route::resource('eCommerce-offer', 'eCommerceOfferController');
 
 		// Production to ecommerce
+		Route::get('production-to-ecommerce/insert', 'ProductionToEcommerceController@scannerappend1');
+		Route::post('production-to-ecommerce/store_reverse', 'ProductionToEcommerceController@store_reverse')->name('production-to-ecommerce.store_reverse');
+		Route::get('production-to-ecommerce/search-product', 'ProductionToEcommerceController@product_list')->name('production-to-ecommerce.product_list');
+		Route::get('production-to-ecommerce/reverse', 'ProductionToEcommerceController@reverse_show')->name('production-to-ecommerce.reverse');
 		Route::get('producion-to-ecommerce/datatable', 'ProductionToEcommerceController@datatable')->name('producion-to-ecommerce.datatable');
 		Route::resource('production-to-ecommerce', 'ProductionToEcommerceController');
 

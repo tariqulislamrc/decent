@@ -10,10 +10,14 @@
 		<input type="hidden" name="product[]" class="form-control" value="{{ $data->product_name }}">
 	</td>
 	<td>
-		{{ $data->qty_available }}
-		<input type="hidden" name="avaiable_qty[]" value="{{ $data->qty_available }}">
+		{{ $data->quantity }}
+		<input type="hidden" name="avaiable_qty[]" value="{{ $data->quantity }}">
 	</td>
 	<td>
 		<input type="number" name="stock_qty[]" class="form-control stock_qty" value="0" placeholder="Enter Stock Transfer Quantity" required>
+		@if(isset($data->e_pid))
+            <input type="hidden" name="ecom_id[]" value="{{ $data->e_pid }}">
+        @endif 
 	</td>
 </tr>
+

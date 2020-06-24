@@ -19,6 +19,9 @@
                     {{-- @can('production_work_order.create') --}}
                         <a data-placement="bottom" title="Create New Ecommerce Product" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.production-to-ecommerce.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Transfer Stock')}}</a>
                     {{-- @endcan --}}
+                    
+                    <a data-placement="bottom" title="" type="button" class="btn float-right btn-info" href ="{{ route('admin.eCommerce.production-to-ecommerce.reverse') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Exchange')}}</a>
+
                 </h3>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.producion-to-ecommerce.datatable') }}">
