@@ -135,6 +135,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                 {{-- Banner Part End --}}
 
                 <div class="mt-producttabs style5 wow fadeInUp" data-wow-delay="0.4s">
+                    <!-- producttabs start here -->
                     <ul class="producttabs">
                         <li><a href="#tab1" class="active">FEATURED</a></li>
                         <li><a href="#tab2">LATEST</a></li>
@@ -142,64 +143,143 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                     </ul>
                     <!-- producttabs end here -->
                     <div class="tab-content row">
-
-                        {{-- Feature Product --}}
                         <div id="tab1">
                             <div class="tabs-sliderlg">
-                                <div class="related-products wow fadeInUp" data-wow-delay="0.4s">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                @if (count($featur_product) > 0)
-                                                @foreach ($featur_product as $item)
-                                                @include('eCommerce.product')
-                                                @endforeach
-                                                @endif
-
+                                @if (count($featur_product) > 0)
+                                    @foreach ($featur_product as $item)
+                                        @php
+                                            $find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
+                                            if(count($find_price) > 0) {
+                                                $total_product_variation = count($find_price);
+                                                $price = 0;
+                                                foreach($find_price as $row) {
+                                                    $default_price = $row['default_sell_price'];
+                                                    $price = $price + $default_price;
+                                                }
+                                        
+                                                $per_product_price = round($price / $total_product_variation) ;
+                                        
+                                            }
+                                        @endphp
+                                        <div class="slide">
+                                            <div class="mt-product2 large bg-grey">
+                                                <div class="box">
+                                                    <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
+                                                    <ul class="mt-stars">
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star-o"></i></li>
+                                                    </ul>
+                                                    <ul class="links">
+                                                        <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
+                                                        <li>
+                                                            <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                                                @php
+                                                                    $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                                                @endphp
+                                                                @if ($check)
+                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                                                @else
+                                                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                                @endif
+                                                            </a>
+                                                        </li>
+                                                        <li><a href="{{route('product-details',$item->product_slug)}}"><i class="fa fa-eye"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="txt">
+                                                    <strong class="title">{{$item->name}}</strong>
+                                                    <span class="price">{{ get_option('currency') }}<span>{{isset($per_product_price) ? number_format($per_product_price, 2) : ''}}</span></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
-
-                        {{-- Latest Product List --}}
                         <div id="tab2">
                             <div class="tabs-sliderlg">
-                                <div class="related-products wow fadeInUp" data-wow-delay="0.4s">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                @foreach ($latest_product as $item)
-                                                @include('eCommerce.product')
-                                                @endforeach
-                                            </div>
+                            @foreach ($latest_product as $item)
+                                <div class="slide">
+                                    <div class="mt-product2 large bg-grey">
+                                        <div class="box">
+                                            <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
+                                            <ul class="mt-stars">
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star-o"></i></li>
+                                            </ul>
+                                            <ul class="links">
+                                                <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
+                                                <li>
+                                                    <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                                        @php
+                                                            $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                                        @endphp
+                                                        @if ($check)
+                                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                                        @else
+                                                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                        @endif
+                                                    </a>
+                                                </li>
+                                                <li><a href="{{route('product-details',$item->product_slug)}}"><i class="fa fa-eye"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title">{{$item->name}}</strong>
+                                            <span class="price">{{ get_option('currency') }}<span>{{isset($per_product_price) ? number_format($per_product_price, 2) : ''}}</span></span>
                                         </div>
                                     </div>
                                 </div>
+                            @endforeach
                             </div>
                         </div>
-
-                        {{-- Best Selling Product --}}
                         <div id="tab3">
                             <div class="tabs-sliderlg">
-                                <div class="related-products wow fadeInUp" data-wow-delay="0.4s">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                @if (count($featur_product) > 0)
-                                                @foreach ($featur_product as $item)
-                                                @include('eCommerce.product')
-                                                @endforeach
-                                                @endif
-                                            </div>
+                            @foreach ($featur_product as $item)
+                                <div class="slide">
+                                    <div class="mt-product2 large bg-grey">
+                                        <div class="box">
+                                            <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
+                                            <ul class="mt-stars">
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star-o"></i></li>
+                                            </ul>
+                                            <ul class="links">
+                                                <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
+                                                <li>
+                                                    <a data-url="{{ route('add_into_wishlist') }}" data-id="{{$item->id}}" class="heart" style="cursor:pointer;">
+                                                        @php
+                                                            $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $item->id)->first();
+                                                        @endphp
+                                                        @if ($check)
+                                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                                        @else
+                                                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                        @endif
+                                                    </a>
+                                                </li>
+                                                <li><a href="{{route('product-details',$item->product_slug)}}"><i class="fa fa-eye"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="txt">
+                                            <strong class="title">{{$item->name}}</strong>
+                                            <span class="price">{{ get_option('currency') }}<span>{{isset($per_product_price) ? number_format($per_product_price, 2) : ''}}</span></span>
                                         </div>
                                     </div>
                                 </div>
+                            @endforeach
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- mt producttabs end here -->
+
+                
 
                 <div class="mt-producttabs style6 wow fadeInUp" data-wow-delay="0.4s">
                     <div class="mt-heading2">
