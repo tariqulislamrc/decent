@@ -278,54 +278,60 @@ $(function () {
         });
     });
 
-    if ($('#search_product').length > 0) {
-        $('#search_product')
-            .autocomplete({
-                source: '/admin/product/get_product',
-                minLength: 2,
-                response: function (event, ui) {
-                    if (ui.content.length == 1) {
-                        ui.item = ui.content[0];
-                        $(this)
-                            .data('ui-autocomplete')
-                            ._trigger('select', 'autocompleteselect', ui);
-                        $(this).autocomplete('close');
-                    } else if (ui.content.length == 0) {
-                        var term = $(this).data('ui-autocomplete').term;
-                        toastr.error('No Product Found', 'Opps!');
-                        /*swal({
-                            title: 'No Product found',
-                            text: term + 'Add as a new Product',
-                            buttons: ['Cancel', 'Ok'],
-                        }).then(value => {
-                            if (value) {
-                                var container = $('.quick_add_product_modal');
-                                $.ajax({
-                                    url: '/products/quick_add?product_name=' + term,
-                                    dataType: 'html',
-                                    success: function(result) {
-                                        $(container)
-                                            .html(result)
-                                            .modal('show');
-                                    },
-                                });
-                            }
-                        });*/
-                    }
-                },
-                select: function (event, ui) {
-                    $(this).val(null);
-                    get_purchase_entry_row(ui.item.product_id, ui.item.variation_id);
-                },
-            })
-            .autocomplete('instance')._renderItem = function (ul, item) {
-            return $('<li>')
-                .append('<div>' + item.text + '</div>')
-                .appendTo(ul);
-        };
-    }
+    // if ($('#search_product').length > 0) {
+    //     $('#search_product')
+    //         .autocomplete({
+    //             source: '/admin/product/get_product',
+    //             minLength: 2,
+    //             response: function (event, ui) {
+    //                 if (ui.content.length == 1) {
+    //                     ui.item = ui.content[0];
+    //                     $(this)
+    //                         .data('ui-autocomplete')
+    //                         ._trigger('select', 'autocompleteselect', ui);
+    //                     $(this).autocomplete('close');
+    //                 } else if (ui.content.length == 0) {
+    //                     var term = $(this).data('ui-autocomplete').term;
+    //                     toastr.error('No Product Found', 'Opps!');
+    //                     /*swal({
+    //                         title: 'No Product found',
+    //                         text: term + 'Add as a new Product',
+    //                         buttons: ['Cancel', 'Ok'],
+    //                     }).then(value => {
+    //                         if (value) {
+    //                             var container = $('.quick_add_product_modal');
+    //                             $.ajax({
+    //                                 url: '/products/quick_add?product_name=' + term,
+    //                                 dataType: 'html',
+    //                                 success: function(result) {
+    //                                     $(container)
+    //                                         .html(result)
+    //                                         .modal('show');
+    //                                 },
+    //                             });
+    //                         }
+    //                     });*/
+    //                 }
+    //             },
+    //             select: function (event, ui) {
+    //                 $(this).val(null);
+    //                 get_purchase_entry_row(ui.item.product_id, ui.item.variation_id);
+    //             },
+    //         })
+    //         .autocomplete('instance')._renderItem = function (ul, item) {
+    //         return $('<li>')
+    //             .append('<div>' + item.text + '</div>')
+    //             .appendTo(ul);
+    //     };
+    // }
 
-    function get_purchase_entry_row(product_id, variation_id) {
+    $('#select_product').change(function() {
+        var product_id = $(this).val();
+        get_purchase_entry_row(product_id);
+        // $('#select_product').val('');
+    });
+
+    function get_purchase_entry_row(product_id) {
         //Get item addition method
         var is_added = false;
         //Search for variation id in each row of pos table
@@ -333,19 +339,21 @@ $(function () {
             .find('tr')
             .each(function () {
                 var row_v_id = $(this)
-                    .find('.variation_id')
+                    .find('.product_id')
                     .val();
                 if (
-                    row_v_id == variation_id
+                    row_v_id == product_id
                 ) {
+                    // is_added = true;
+                    // //Increment product quantity
+                    // qty_element = $(this).find('.qty');
+                    // qty_element.val(parseInt(qty_element.val()) + 1);
+                    // update_sub_total($(this));
+                    // $('input#search_product')
+                    //     .focus()
+                    //     .select();
+                    toastr.warning('Product available');
                     is_added = true;
-                    //Increment product quantity
-                    qty_element = $(this).find('.qty');
-                    qty_element.val(parseInt(qty_element.val()) + 1);
-                    update_sub_total($(this));
-                    $('input#search_product')
-                        .focus()
-                        .select();
                 }
             });
 
@@ -356,7 +364,7 @@ $(function () {
                 method: 'POST',
                 url: '/admin/production-work-order/append',
                 dataType: 'json',
-                data: {product_id: product_id, row_count: row_count, variation_id: variation_id},
+                data: {product_id: product_id, row_count: row_count},
                 success: function (result) {
                     $('#item').append(result.html);
 
@@ -377,6 +385,61 @@ $(function () {
 
         // console.log(net_total);
     }
+
+    // ager function
+
+    // function get_purchase_entry_row(product_id, variation_id) {
+    //     //Get item addition method
+    //     var is_added = false;
+    //     //Search for variation id in each row of pos table
+    //     $('#item')
+    //         .find('tr')
+    //         .each(function () {
+    //             var row_v_id = $(this)
+    //                 .find('.variation_id')
+    //                 .val();
+    //             if (
+    //                 row_v_id == variation_id
+    //             ) {
+    //                 is_added = true;
+    //                 //Increment product quantity
+    //                 qty_element = $(this).find('.qty');
+    //                 qty_element.val(parseInt(qty_element.val()) + 1);
+    //                 update_sub_total($(this));
+    //                 $('input#search_product')
+    //                     .focus()
+    //                     .select();
+    //             }
+    //         });
+
+
+    //     if (!is_added && product_id) {
+    //         var row_count = $('#row').val();
+    //         $.ajax({
+    //             method: 'POST',
+    //             url: '/admin/production-work-order/append',
+    //             dataType: 'json',
+    //             data: {product_id: product_id, row_count: row_count, variation_id: variation_id},
+    //             success: function (result) {
+    //                 $('#item').append(result.html);
+
+    //                 if ($(result.html).find('.qty').length) {
+    //                     $('#row').val(
+    //                         $(result.html).find('.qty').length + parseInt(row_count)
+    //                     ).trigger('change');
+    //                 }
+    //                 var net_total = total_function();
+    //                 $('#refresh_net_total').html(net_total.toFixed(2));
+    //                 $('#net_total').val(net_total);
+    //                 $('#show_net_total').html(net_total.toFixed(2));
+    //                 $('.total_payable_amount').html(net_total.toFixed(2));
+    //                 $('#total_payable_amount').val(net_total.toFixed(2));
+    //             },
+    //         });
+    //     }
+
+    //     // console.log(net_total);
+    // }
 
     // discount_type
     $('#discount_amount').keyup(function() {

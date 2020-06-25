@@ -83,11 +83,12 @@
                     <div class="col-md-4 form-group">
                         <label for="name">{{_lang('Select Product')}} <span class="text-danger">*</span>
                         </label>
-                        <input type="text" id="search_product" class="form-control" placeholder="Type Product Name">
-                       {{-- <select required data-placeholder="Select One" name="product_id" id="product_id"
-                                class="form-control select">
-                            <option value="" selected>Select One</option>
-                        </select>--}}
+                        <select id="select_product" class="form-control select" data-placeholder="Select A Product">
+                            <option value="">Select A Product</option>
+                            @foreach ($models as $product)
+                                <option value="{{ $product->id }}">{{ $product->name }} ({{ $product->articel }}) </option>
+                            @endforeach
+                        </select>
                     </div>
 
                 </div>

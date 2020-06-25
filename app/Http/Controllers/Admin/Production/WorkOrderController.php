@@ -428,30 +428,24 @@ class WorkOrderController extends Controller
 
     public function append(Request $request){
         $product_id = $request->product_id;
-        $variation_id = $request->variation_id;
         $row = $request->row_count;
 
         if (!empty($product_id)) {
             $product = Product::where('id', $product_id)
                 ->first();
 
-            $query = Variation::where('product_id', $product_id)
-                ->with(['value1', 'value2']);
-            if ($variation_id !== '0') {
-                $query->where('id', $variation_id);
-            }
+            $variations = Variation::where('product_id', $product_id)
+                ->with(['value1', 'value2'])->get();
 
-            $variations = $query->get();
+            // $variations = $query->get();
             $html = view('admin.production.work_order.include.itemlist')
                 ->with(compact(
                     'product',
                     'variations',
-                    'row',
-                    'variation_id'
+                    'row'
                 ))->render();
-
         }
-        return response()->json(['product_id' => $product_id, 'variation_id' => $variation_id, 'html' => $html]);
+        return response()->json(['product_id' => $product_id, 'variations' => $variations, 'html' => $html]);
     }
 
     // getCatagory
