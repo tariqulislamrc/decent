@@ -59,21 +59,15 @@
             <div class="row">
               <div class="col-xs-12">
                 <h3>OUR TEAM</h3>
-                  @if (count($our_team))
+                <div class="holder">
+                  <!-- col of the Page -->
+                  @foreach ($our_team as $our_team_item)
 
-                      @foreach ($our_team as $our_team_item)
-                        <div class="holder"> 
-
-                        <!-- col of the Page -->
-                            <div class="col wow fadeInLeft" data-wow-delay="0.4s">
+                  <div class="col wow fadeInLeft" data-wow-delay="0.4s">
                     <div class="img-holder">
                       <a href="#">
-                        <img src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
-                        {{-- <ul class="list-unstyled social-icon">
-                          <li><i class="fa fa-twitter"></i></li>
-                          <li> <i class="fa fa-facebook"></i></li>
-                          <li><i class="fa fa-linkedin"></i></li>
-                        </ul> --}}
+                        <img style="max-height:295px;" src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
+                        
                       </a>
                     </div>
                     <div class="mt-txt">
@@ -81,14 +75,10 @@
                       <span class="sub-title">{{$our_team_item->team_designation}}</span>
                     </div>
                   </div>
-                        <!-- col of the Page end -->
 
-                        </div>
-                      @endforeach
-                  @else
+                  @endforeach
 
-                      <p class="text-danger text-center">No Team Information Available</p>
-                  @endif
+                </div>
               </div>
             </div>
           </div>
