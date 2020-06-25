@@ -126,8 +126,8 @@ padding: 0.2rem 0.5rem;
                             <th width="10%">Unit</th>
                             <th width="10%">Price</th>
                             <th width="15%">Line Total</th>
-                            <th width="10%">Waste</th>
-                            <th width="10%">Uses</th>
+                            {{-- <th width="10%">Waste</th>
+                            <th width="10%">Uses</th> --}}
                             <th width="5%"><i class="fa fa-trash" aria-hidden="true"></i></th>
                         </tr>
                     </thead>

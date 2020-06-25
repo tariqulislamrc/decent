@@ -22,14 +22,14 @@
         <input type="text" class="form-control input_number price" id="price" readonly name="price[]"
             value="{{ $item->price }}">
     </td>
-    <td>
-        <input type="text" class="form-control input_number waste" maxlength="2" id="waste" name="waste[]"
-            value="{{ $item->waste }}">
-    </td>
-    <td>
-        <input type="text" readonly class="form-control uses" id="uses" name="uses[]"
-            value="{{ $item->uses }}">
-    </td>
+    <!--<td>-->
+    <!--    <input type="text" class="form-control input_number waste" maxlength="2" id="waste" name="waste[]"-->
+    <!--        value="{{ $item->waste }}">-->
+    <!--</td>-->
+    <!--<td>-->
+    <!--    <input type="text" readonly class="form-control uses" id="uses" name="uses[]"-->
+    <!--        value="{{ $item->uses }}">-->
+    <!--</td>-->
 	<td>
 		<button type="button" name="remove" class="btn btn-danger btn-sm remmove">X</button>
 	</td>
