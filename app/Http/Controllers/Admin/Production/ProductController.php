@@ -15,6 +15,7 @@ use App\models\Production\VariationTemplate;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ProductFlow;
 use App\models\inventory\TransactionSellLine;
+use App\models\Production\Unit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -350,8 +351,15 @@ class ProductController extends Controller
         $status = $request->raw_status;
         $description = $request->raw_description;
 
+        $unit_query = Unit::where('id', $unit)->first();
+        if($unit_query) {
+            $unit_name = $unit_query->unit;
+        } else {
+            $unit_name = '';
+        }
+
         $model = RawMaterial::find($product);
-        return view('admin.production.product.include.itemlist', compact('unit', 'unit_price', 'model', 'quantity', 'Price', 'waste', 'uses', 'status', 'description'));
+        return view('admin.production.product.include.itemlist', compact('unit', 'unit_price', 'model', 'quantity', 'Price', 'waste', 'uses', 'status', 'description', 'unit_name'));
     }
 
     public function show_variation_form($id)
