@@ -28,17 +28,19 @@ class RawMaterialsController extends Controller
 
 
     public function datatable(Request $request){
-       if ($request->ajax()) {
-            $document = RawMaterial::where('name', '!=', config('system.default_role.admin'))->get();
-            return DataTables::of($document)
-                ->addIndexColumn()
-                ->addColumn('action', function ($model) {
-                    return view('admin.production.raw_materials.action', compact('model'));
-                })->editColumn('unit', function ($model) {
-                    return $model->unit->unit;
-                })->rawColumns(['action','unit'])->make(true);
-        }
-    }
+        if ($request->ajax()) {
+             $document = RawMaterial::where('name', '!=', config('system.default_role.admin'))->get();
+             return DataTables::of($document)
+                 ->addIndexColumn()
+                 ->addColumn('action', function ($model) {
+                     return view('admin.production.raw_materials.action', compact('model'));
+                 })->editColumn('unit', function ($model) {
+                     return $model->unit->unit;
+                 })->editColumn('stock', function ($model) {
+                     return $model->stock . ' '. $model->unit->unit;
+                 })->rawColumns(['action','unit', 'stock'])->make(true);
+         }
+     }
 
     /**
      * Show the form for creating a new resource.
