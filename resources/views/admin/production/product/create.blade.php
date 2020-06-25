@@ -135,12 +135,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 form-group" id="unit_price_row">
+                    <div class="form-group" id="unit_price_row">
                         {{-- <label for="unitPrice">{{_lang('Unit Price')}}</label> --}}
                         <input type="hidden" min="1" class="form-control" placeholder="Unit Price" maxlength="50"
                             id="unitPrice">
                     </div>
-                    <div class="col-md-4 form-group" id="child_unit_row">
+                    <div class="form-group" id="child_unit_row">
                         {{-- <label for="child_unit_price">{{_lang('Child unit price')}}</label> --}}
                         <div class="input-group mb-3">
                             <input type="hidden" class="form-control" id="child_unit_price">
@@ -149,7 +149,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <div class="col-md-4" id="unit_row">
+                    <div class="" id="unit_row">
                         {{-- <label for="grossPrice">{{_lang('Gross Price')}}</label> --}}
                         <div class="input-group mb-3">
                             <input type="hidden" class="form-control" id="grossPrice" readonly>
@@ -158,7 +158,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="">
                         {{-- <label for="waste">{{_lang('Waste')}}</label> --}}
                         <div class="input-group mb-3">
                             <input type="hidden" class="form-control" maxlength="2" id="waste">
@@ -167,7 +167,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="">
                         {{-- <label for="uses">{{_lang('Uses')}}</label> --}}
                         <div class="input-group mb-3">
                             <input type="hidden" class="form-control" id="uses" readonly>
@@ -176,7 +176,7 @@
                             </div> --}}
                         </div>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="form-group">
                        {{--  <label for="raw_status">{{_lang('Raw Material Status')}}
                         </label>
                         <select data-placeholder="Raw Material Status" name="raw_status" id="raw_status"
