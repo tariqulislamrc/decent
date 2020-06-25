@@ -23,43 +23,43 @@
     <ul class="app-nav">
 
         {{-- Report --}}
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.report.index') }}"><i class="fa fa-registered fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Report Section"><a class="mt-1 app-nav__item" href="{{ route('admin.report.index') }}"><i class="fa fa-registered fa-lg"></i></a>
         
         {{-- Production Product --}}
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.production-product.create') }}"><i class="fa fa-stumbleupon fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Create New Product"><a class="mt-1 app-nav__item" href="{{ route('admin.production-product.create') }}"><i class="fa fa-stumbleupon fa-lg"></i></a>
             
         {{-- Work ORder  --}}
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.production-work-order.create') }}"><i class="fa fa-bars fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Create New Work Order"><a class="mt-1 app-nav__item" href="{{ route('admin.production-work-order.create') }}"><i class="fa fa-bars fa-lg"></i></a>
         
             {{-- Department Product Report --}}
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.report.create') }}"><i class="fa fa-pie-chart fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Depertment Product Report"><a class="mt-1 app-nav__item" href="{{ route('admin.report.create') }}"><i class="fa fa-pie-chart fa-lg"></i></a>
             
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.paircosting.create') }}"><i class="fa fa-ils fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Product Pair Costing"><a class="mt-1 app-nav__item" href="{{ route('admin.paircosting.create') }}"><i class="fa fa-ils fa-lg"></i></a>
             
-        <li><a class="mt-1 app-nav__item" href="{{ route('admin.expense.ex.index') }}"><i class="fa fa-minus-circle fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Expense Create"><a class="mt-1 app-nav__item" href="{{ route('admin.expense.ex.index') }}"><i class="fa fa-minus-circle fa-lg"></i></a>
 
         {{-- Ecommerce Navber --}}
-        <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-shopping-cart fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="Ecommerce Section" class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-shopping-cart fa-lg"></i></a>
 
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
+                <li><a class="dropdown-item" href="{{ route('admin.client.index') }}"><i class="fa fa-circle-o fa-lg"></i> Client</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.feature-product.index')}}"><i class="fa fa-circle-o fa-lg"></i> Feature Product</a></li>
 
-                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.feature-product.index')}}"><i class="fa fa-free-code-camp fa-lg"></i> Feature Product</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i class="fa fa-circle-o fa-lg"></i> Hot Sale Product</a></li>
 
-                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i class="fa fa-fire fa-lg"></i> Hot Sale Product</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i class="fa fa-circle-o fa-lg"></i> Offer</a></li>
 
-                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i class="fa fa-bullseye fa-lg"></i> eCommerce Offer</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.order.index') }}"><i class="fa fa-circle-o fa-lg"></i> Order</a></li>
 
-                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.order.index') }}"><i class="fa fa-first-order fa-lg"></i> Order</a></li>
-
-                <li><a class="dropdown-item" href="{{ route('admin.client.index') }}"><i class="fa fa-user fa-lg"></i> Client</a></li>
-                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i class="fa fa-stop fa-lg"></i> Ecommerce Stock</a></li>
+                
+                <li><a class="dropdown-item" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i class="fa fa-circle-o fa-lg"></i>Stock</a></li>
 
 
             </ul>
 
         </li>
 
-        <li class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="HRM Menu"><i class="fa fa-user-circle fa-lg"></i></a>
+        <li data-toggle="tooltip" data-placement="bottom" title="HRM Section" class="dropdown"><a class="mt-1 app-nav__item" href="#" data-toggle="dropdown" aria-label="HRM Menu"><i class="fa fa-user-circle fa-lg"></i></a>
 
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
 

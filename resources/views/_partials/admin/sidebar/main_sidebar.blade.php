@@ -463,41 +463,26 @@
             class="app-menu__label">{{_lang('E-Commerce')}}</span><i
             class="treeview-indicator fa fa-angle-right"></i></a>
     <ul class="treeview-menu">
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
-
-        {{-- stock transfer --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Ecommerce Stock')}}</a></li>
-
-        {{--Ecommerce Orders --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.order.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
-
+        
+        {{--about us --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
+        href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i>
+        {{_lang('About Us')}}</a></li>
+        
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.page-banner.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Banner')}}</a></li>
+        
+        {{--Contact Message --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}"
+        href="{{ route('admin.eCommerce.contact-msg.index') }}"><i
+            class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
+        
         <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}"
                 href="{{ route('admin.eCommerce.coupons.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('All Coupons')}}</a></li>
-
-        {{-- Add Coupons --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
-
-        {{-- Special Offer  --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.special-offer.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Special Offer')}}</a></li>
-
-        {{-- Special Category  --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.special-category.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Special Category')}}</a></li>
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('eCommerce Offer')}}</a></li>
-
-
+                    class="icon fa fa-circle-o"></i>{{_lang('Coupons')}}</a></li>
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
+        
         {{-- Featured Product  --}}
 
         <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}"
@@ -512,76 +497,66 @@
                     class="icon fa fa-circle-o"></i>{{_lang('Hot Sale Product')}}</a></li>
 
 
-        {{-- All Ecommerce page main banner --}}
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.page-banner.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Page Banner')}}</a></li>
-
-        {{-- Add Slider  --}}
-        {{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/slider*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.slider.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('All Slider')}}</a>
-</li> --}}
-
-{{-- Home Page Image  --}}
-{{-- <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/home-page*') ? 'active':''}}"
-href="{{ route('admin.eCommerce.home-page.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Home Page')}}</a></li>
---}}
-
-{{-- Add Coupons --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Offer')}}</a></li>
 
 
-{{--Privacy Policy--}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.whole-sale') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Whole Sale Page')}}</a></li>
+        {{--Ecommerce Orders --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.order.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
 
-{{--about us --}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i>
-        {{_lang('About Us')}}</a></li>
-
-{{--Our Team--}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
+        {{--Our Team--}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
         href="{{ route('admin.eCommerce.our-team.index') }}"><i
             class="icon fa fa-circle-o"></i>{{_lang('Our Team')}}</a></li>
-
-{{--Our workspace--}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}"
+            
+        {{--Our workspace--}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}"
         href="{{ route('admin.eCommerce.our-workspace.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Our Workspac')}}</a></li>
+            class="icon fa fa-circle-o"></i>{{_lang('Our Workspace')}}</a></li>
 
-
-{{--Contact Message --}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.contact-msg.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
-
-
-{{--Product Rating --}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}"
+        {{--Product Rating --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}"
         href="{{ route('admin.eCommerce.product-rating.index') }}"><i
             class="icon fa fa-circle-o"></i>{{_lang('Product Rating')}}</a></li>
 
-{{--Term and Condition --}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}"
+        {{--Privacy Policy--}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
+        href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i
+            class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
+
+        {{--Seo --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/c/seo/index*') ? 'active':''}}"
+        href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
+        
+        {{-- Shipping Charge --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
+        {{-- Special Category  --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.special-category.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Special Category')}}</a></li>
+                    
+        {{-- Special Offer  --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.special-offer.index') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Special Offer')}}</a></li>
+
+            
+        {{-- stock transfer --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Stock')}}</a></li>
+        
+        {{--Term and Condition --}}
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}"
         href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i
             class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
 
-
-{{--Seo --}}
-<li class="mt-1"><a class="treeview-item {{Request::is('admin/c/seo/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
-
-
-
-
-<li class="mt-1"><a target="_blank" class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Font Awosome')}}</a></li>
+        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}"
+                href="{{ route('admin.eCommerce.whole-sale') }}"><i
+                    class="icon fa fa-circle-o"></i>{{_lang('Whole Sale Page')}}</a></li>
 
 </ul>
 </li>
