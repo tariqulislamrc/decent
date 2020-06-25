@@ -65,7 +65,7 @@
                 <tr>
                     <td>{{ $loop->index+1 }} </td>
                     <td>{{ $item->material->name }} </td>
-                    <td> {{ $item->qty }}</td>
+                    <td> {{ $item->qty }} <small>{{ $item->unit ? $item->unit->unit : ''}} </small> </td>
                     {{--      <td> {{ $item->unit_price }} </td>
                     <td>{{ $item->price }}</td>
                     <td>{{ $item->waste }}</td>
