@@ -128,6 +128,7 @@ var DatatableSelect = function () {
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _modalFormValidation();
+                    $('.c_select').select2();
                 })
                 .fail(function (data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');

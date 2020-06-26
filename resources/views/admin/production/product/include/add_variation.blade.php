@@ -7,12 +7,24 @@
     </td>
     @foreach ($variations as $item)
     <td>
-        <select data-placeholder="Variation Value" name="variation[variation_value_id][{{$row}}][{{$loop->index}}]" id="raw_status" class="form-control">
+        <select data-placeholder="Variation Value" name="variation[variation_value_id][0][{{$loop->index}}]" id="raw_status" required class="form-control">
             <option value="">Select Variation</option>
-            @foreach ($item->variation as $value)
-            <option value="{{$value->id}}">{{$value->name}}</option>
+            @php
+                $query = App\models\Production\VariationTemplateDetails::where('variation_template_id', $item->id)->where('category_id', NULL)->get();
+            @endphp
+        
+            @foreach ($query as $value)
+                <option value="{{$value->id}}">{{$value->name}}</option>
             @endforeach
-        </select>
+            
+            @php
+                $query = App\models\Production\VariationTemplateDetails::where('variation_template_id', $item->id)->where('category_id', $model->category_id)->get();
+            @endphp
+        
+            @foreach ($query as $value)
+                <option value="{{$value->id}}">{{$value->name}}</option>
+            @endforeach
+        </select> 
     </td>
     @endforeach
    {{--  <td>

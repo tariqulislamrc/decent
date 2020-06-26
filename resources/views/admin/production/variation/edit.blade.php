@@ -29,9 +29,24 @@
                     @endphp
 
                     @foreach ($items as $item)
-                        <div class="col-md-12 form-group">
+                        <input type="hidden" name="old_id[]" value="{{ $item->id }}">
+                        <div class="col-md-6 form-group">
                             <label for="value">{{_lang('Variation Value')}}</label>
-                            <input type="text" name="value[{{$item->id}}]" id="value" class="form-control" value="{{$item->name}}" required>
+                            <input type="text" name="value[]" id="value_{{$item->id}}" class="form-control" value="{{$item->name}}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="value">{{_lang('Category')}}</label>
+                            <select name="category_id[]" id="category_id_{{$item->id}}" class="form-control c_select" data-placeholder="Select Category For Size">
+                                <option value="">Select Category For Size</option>
+                                <option {{ $item->category_id == null ? 'selected' : ''}} value="all">All Category</option>
+                                @php
+                                    $query = App\models\Production\Category::where('parent_id', 0)->where('status', 1)->get();
+                                @endphp
+                                @foreach ($query as $q)
+                                    <option {{ $item->category_id == $q->id ? 'selected' : ''}} value="{{ $q->id }}">{{ $q->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     @endforeach
 
@@ -69,7 +84,6 @@
         });
     }
 
-    $('.select').select2();
     // add One More Subcatagory
     $('#add').click(function() {
         var variation = $('#value').val();
@@ -94,6 +108,7 @@
                     success: function(data) {
                         $('#data').append(data);
                         _componentSelect2Normal();
+                        $('.s_select').select2();
                     }
                 });
             }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Production;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\Production\Category;
 use App\models\Production\VariationTemplate;
 use App\models\Production\VariationTemplateDetails;
 use Auth;
@@ -111,6 +112,9 @@ class VariationController extends Controller
             $item = new VariationTemplateDetails;
             $item->variation_template_id = $variation_id;
             $item->name = $value[$i];
+            if($request->category_id[$i] != 'all') {
+                $item->category_id = $request->category_id[$i];
+            }
             $item->hidden = 0;
             $item->tek_marks = 0;
             $item->created_by = Auth::user()->id;
@@ -164,6 +168,9 @@ class VariationController extends Controller
         if (!auth()->user()->can('production_variation.update')) {
             abort(403, 'Unauthorized action.');
         }
+
+        // dd($request->all());
+
         $request->validate([
             'name' => 'required',
             'status' => 'required',
@@ -175,27 +182,60 @@ class VariationController extends Controller
         $model->updated_by = Auth::user()->id;
         $model->save();
 
-        $values = $request->value;
-        foreach($values as $key => $item) {
+        for($i = 0; $i < count($request->value); $i++) {
+            $variation_template_id = $id;
+            $category_id = $request->category_id[$i];
+            $name = $request->value[$i];
 
-            $variation_details_id = $key;
-            $variation_details_value = $item;
+            if(array_key_exists($i, $request->old_id)) {
+                $old_id = $request->old_id[$i];
+            } else {
+                $old_id = '';
+            }
 
-            $check = VariationTemplateDetails::where('id', $variation_details_id)->where('variation_template_id', $id)->first();
+
+            $check = VariationTemplateDetails::where('id', $old_id)->first();
             if($check) {
-                $check->name = $variation_details_value;
+                $check->category_id = $category_id == 'all' ? null : $category_id;
+                $check->name = $name;
                 $check->updated_by = Auth::user()->id;
                 $check->save();
             } else {
                 $model = new VariationTemplateDetails;
-                $model->variation_template_id = $id;
-                $model->name = $variation_details_value;
+                $model->variation_template_id = $variation_template_id;
+                $model->category_id = $category_id == 'all' ? null : $category_id;
+                $model->name = $name;
                 $model->hidden = 0;
                 $model->tek_marks = 0;
                 $model->created_by = Auth::user()->id;
                 $model->save();
             }
         }
+
+        // $values = $request->value;
+        // foreach($values as $key => $item) {
+        //     dd($key);
+
+        //     $variation_details_id = $key;
+        //     $variation_details_value = $item;
+
+        //     $check = VariationTemplateDetails::where('id', $variation_details_id)->where('variation_template_id', $id)->first();
+        //     if($check) {
+        //         $check->name = $variation_details_value;
+        //         $check->variation_template_id = $id;
+        //         $check->category_id = $id;
+        //         $check->updated_by = Auth::user()->id;
+        //         $check->save();
+        //     } else {
+        //         $model = new VariationTemplateDetails;
+        //         $model->variation_template_id = $id;
+        //         $model->name = $variation_details_value;
+        //         $model->hidden = 0;
+        //         $model->tek_marks = 0;
+        //         $model->created_by = Auth::user()->id;
+        //         $model->save();
+        //     }
+        // }
 
         // Activity Log
         activity()->log('Updated a Variation Template - ' . $request->name );

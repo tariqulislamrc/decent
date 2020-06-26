@@ -22,9 +22,23 @@
                         </select>
                     </div>
                     
-                    <div class="col-md-12 form-group">
+                    <div class="col-md-6 form-group">
                         <label for="value">{{_lang('Variation Value')}} <span class="text-danger">*</span></label>
                         <input type="text" name="value[]" id="value" class="form-control" placeholder="Enter Variation Value" required>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="value">{{_lang('Category')}}</label>
+                        <select required name="category_id[]" id="category_id" class="form-control c_select" data-placeholder="Select Category For Size">
+                            <option value="">Select Category For Size</option>
+                            <option value="all">All Category</option>
+                            @php
+                                $query = App\models\Production\Category::where('parent_id', 0)->where('status', 1)->get();
+                            @endphp
+                            @foreach ($query as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div id="data" class="col-md-12 form-group"></div>
@@ -55,22 +69,20 @@
             type = parseInt(type);
             row = type + 1;
             $('#number').val(row);
-            if (row > 4) {
-                toastr.info('You already make 15 Variation Value. It is not possible to make more...');
-            } else {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'html',
-                    data: {
-                        row: row
-                    },
-                    success: function(data) {
-                        $('#data').append(data);
-                        _componentSelect2Normal();
-                    }
-                });
-            }
+            
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'html',
+                data: {
+                    row: row
+                },
+                success: function(data) {
+                    $('#data').append(data);
+                    _componentSelect2Normal();
+                    $('.s_select').select2();
+                }
+            });
         }
     });
 
