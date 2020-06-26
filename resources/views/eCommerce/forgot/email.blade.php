@@ -7,11 +7,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h1>SIGN IN OR REGISTER</h1>
+                    <h1>FORGOT PASSWORD</h1>
                     <nav class="breadcrumbs">
                         <ul class="list-unstyled">
                             <li><a href="{{url('/')}}">HOME <i class="fa fa-angle-right"></i></a></li>
-                            <li>REGISTER</li>
+                            <li>FORGOT PASSWORD</li>
                         </ul>
                     </nav>
                 </div>
@@ -26,31 +26,21 @@
                     <div class="holder" style="margin: 0;">
                         <div class="mt-side-widget">
                             <header>
-                                <h2 style="margin: 0 0 5px;">SIGN IN</h2>
-                                <p>Welcome back! Sign in to Your Account</p>
+                                <h2 style="margin: 0 0 5px;">Password recovery</h2>
+                                <p>We'll send you instructions in email</p>
                             </header>
-                            <form action="{{ route('login') }}" method="post" id="login">
+                            <form action="{{ route('password.email') }}" method="post" id="content_form">
                               @csrf
                                 <fieldset>
-                                    <input required type="text" placeholder="Enter Your Phone Number Or Email Address" class="input" autofocus name="email" id="email">
-                                    <input required type="password" placeholder="Password" class="input" name="password" id="password">
+                                    <input  type="text" placeholder="Enter Email Address" class="input" autofocus name="email" id="email">
                                     <input type="hidden" name="user_type" value="Client">
-                                    <div class="box">
-                                        <span class="left"><input class="checkbox" type="checkbox" id="check1"><label
-                                                for="check1">Remember Me</label></span>
-                                      @if (Route::has('password.request'))
-                                        <span style="margin-left:15px;color: red ">
-                                            <a href="{{ route('password.request') }}">Forgot Password?</a>
-                                        </span>
-                                      @endif
-                                    </div>
-                                    <button type="submit" id="submit" class="btn-type1">Login</button>
+                                    <button type="submit" id="submit" class="btn-type1">Send Email</button>
                                     <button style="display: none;" type="button" disabled id="submiting" class="btn-type1">Please Wait ...</button>
                                 </fieldset>
                             </form>
                         </div>
 
-                        <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
+                        <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">Back To Login <a href="{{route('login')}}" style="color: #327DBA;"> Sign In </a></span></div>
 
                     </div>
                 </div>
@@ -68,7 +58,7 @@
 @endpush
 @push('scripts')
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
-<script src="{{ asset('js/auth/login.js') }}"></script>
+<script src="{{ asset('js/auth/forgot_password.js') }}"></script>
 <script>
     $(function() {
         $('#email').focus();

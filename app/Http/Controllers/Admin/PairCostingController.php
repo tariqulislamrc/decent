@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\JobCostMaterial;
+use App\JobCosting;
+use App\models\Production\IngredientsCategory;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
+use App\models\Production\RawMaterial;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class PairCostingController extends Controller
 {
@@ -14,9 +19,25 @@ class PairCostingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $q=JobCosting::query();
+            $document =$q->get();
+
+            return DataTables::of($document)
+                ->addIndexColumn()
+                 ->editColumn('date', function ($model) {
+                  return formatDate($model->date);
+                 })
+                 ->editColumn('product', function ($model) {
+                    return $model->product->name;
+                 })
+                ->addColumn('action', function ($model) {
+                    return view('admin.pair_costing.action', compact('model'));
+                })->rawColumns(['action','date','product'])->make(true);
+        }
+      return view('admin.pair_costing.index');
     }
 
     /**
@@ -33,10 +54,22 @@ class PairCostingController extends Controller
            
            $product_id =$request->product_id;
            $model=Product::with(['material'])->find($product_id);
-           return view('admin.pair_costing.ajax_include',compact('model'));
+           // $data = array('Upper','Upper','Linning','Quater Linning','Vamp Linning','Heel Grip','Inter Linning','Insole','Sank Board','Steel Snak','Toe Puff','Counter','ShoeLace','Insole/Wiled','Socks EVA','Socks','Folding' );
+           $ingredies =IngredientsCategory::all();
+           $materials=RawMaterial::all();
+           return view('admin.pair_costing.ajax_include',compact('model','ingredies','materials'));
         }
         $products =Product::select('id','name')->get();
         return view('admin.pair_costing.create',compact('products'));
+    }
+
+    public function material_unit(Request $request)
+    {
+        $raw =$request->raw;
+        $material =RawMaterial::with('unit')->find($raw);
+        return response()->json($material);
+
+
     }
 
     /**
@@ -50,42 +83,34 @@ class PairCostingController extends Controller
         if (!auth()->user()->can('paircosting.create')) {
             abort(403, 'Unauthorized action.');
         }
-        $product_id =$request->product_id;
-        $model=Product::with(['variation'])->find($product_id);
-        for ($i=0; $i <count($request->consumstion) ; $i++) { 
+        $model =new JobCosting;
+        $model->product_id =$request->product_id;
+        $model->cost_id =mt_rand(0,999999);
+        $model->total_material_cost =$request->total_material_cost;
+        $model->rejection =$request->rejection;
+        $model->rejection_amt =$request->rejection_amt;
+        $model->profit_percent =$request->profit_percent;
+        $model->profit_amt =$request->profit_amt;
+        $model->commercial =$request->commercial;
+        $model->grand_total =$request->grand_total;
+        $model->date=date('Y-m-d');
+        $model->created_by=auth()->user()->id;
+        $model->save();
+        for ($i=0; $i <count($request->ingredients_category_id) ; $i++) { 
            
-           $pro_material =ProductMaterial::where('product_id',$product_id)->where('material_id',$request->material_id[$i])->first();
-           $pro_material->qty =$request->consumstion[$i];
-           $pro_material->unit_price =$request->unit_cost[$i];
-           $pro_material->price =$request->cost_pr[$i];
-           $pro_material->description =$request->description[$i];
-           $pro_material->save();
+           $material = new JobCostMaterial;
+           $material->job_costing_id =$model->id;
+           $material->ingredients_category_id =$request->ingredients_category_id[$i];
+           $material->raw_material_id =$request->raw_material_id[$i];
+           $material->unit_id =$request->unit_id[$i];
+           $material->consumstion =$request->consumstion[$i];
+           $material->unit_cost =$request->unit_cost[$i];
+           $material->cost_pr =$request->cost_pr[$i];
+           $material->created_by=auth()->user()->id;
+           $material->save();
         }
-
-        foreach ($model->variation as $key => $value) {
-            
-            $value->default_purchase_price =$request->total_material_cost;
-            $value->rejection =$request->rejection;
-            $value->rejection_amt =$request->rejection_amt;
-            $value->profit_percent =$request->profit_percent;
-            $value->profit_amt =$request->profit_amt;
-            $value->commercial =$request->commercial;
-            $value->default_sell_price =$request->grand_total;
-            $value->save();
-
-
-        }
-            $model->default_purchase_price =$request->total_material_cost;
-            $model->rejection =$request->rejection;
-            $model->rejection_amt =$request->rejection_amt;
-            $model->profit_percent =$request->profit_percent;
-            $model->profit_amt =$request->profit_amt;
-            $model->commercial =$request->commercial;
-            $model->default_sell_price =$request->grand_total;
-            $model->save();
 
             activity()->log('Paircosting Updated - ' . $model->id);
-
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully.','window'=>route('admin.paircosting.show',$model->id)]);
     }
@@ -98,7 +123,7 @@ class PairCostingController extends Controller
      */
     public function show($id)
     {
-          $model=Product::with(['material'])->find($id);
+          $model=JobCosting::with(['cost_material'])->find($id);
 
           return view('admin.pair_costing.show',compact('model'));
     }
@@ -134,6 +159,13 @@ class PairCostingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model=JobCosting::find($id);
+        $model->cost_material()->delete();
+        $model->delete();
+
+        activity()->log('Paircosting Delete - ' . $model->id);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully Delete.']);
+
     }
 }

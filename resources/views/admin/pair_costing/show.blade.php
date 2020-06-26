@@ -3,8 +3,8 @@
 <div class="container-fluid px-4 pt-4">
      <div class="row px-5">
         <div class="col-md-4 text-justify">
-            <p class="h3 font-weight-bold text-uppercase text-color">{{ _lang('Product') }} : {{ $model->name }}</p>
-            <p class="h3 font-weight-bold text-uppercase text-color">{{ _lang('Article') }} : {{ $model->articel }}</p>
+            <p class="h3 font-weight-bold text-uppercase text-color">{{ _lang('Product') }} : {{ $model->product->name }}</p>
+            <p class="h3 font-weight-bold text-uppercase text-color">{{ _lang('Article') }} : {{ $model->product->articel }}</p>
         </div>
     </div>
 
@@ -13,28 +13,28 @@
     <table class="table table-bordered border-dark">
         <thead>
             <tr class="table-danger">
+                <th width="20%">{{ _lang('Component') }}</th>
                 <th width="20%">{{ _lang('Material Des') }}</th>
                 <th width="20%">{{ _lang('Consumstion') }}</th>
                 <th width="10%">{{ _lang('Unit') }}</th>
                 <th width="15%">{{ _lang('Unit Cost') }}</th>
                 <th width="15%">{{ _lang('Cost/PR') }}</th>
-                <th width="20%">{{ _lang('Note') }}</th>
             </tr>
         </thead>
         <tbody>
-           @foreach ($model->material as $element)
+           @foreach ($model->cost_material as $element)
             <tr>
-                <td>{{ $element->material?$element->material->name:'' }}</td>
-                <td>{{ $element->qty }}</td>
-                <td>{{ $element->material?$element->material->unit->unit:'' }}</td>
-                <td>{{ $element->unit_price }}</td>
-                <td>{{ $element->price }}</td>
-                <td>{{ $element->description }}</td>
+                <td>{{ $element->category?$element->category->name:'' }}</td>
+                <td>{{ $element->raw?$element->raw->name:'' }}</td>
+                <td>{{ $element->consumstion }}</td>
+                <td>{{ $element->unit_name?$element->unit_name->unit:'' }}</td>
+                <td>{{ $element->unit_cost }}</td>
+                <td>{{ $element->cost_pr }}</td>
             </tr>
             @endforeach
             <tr>
                 <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Total Material Cost') }}</td>
-                <td> {{ $model->default_purchase_price }} </td>
+                <td> {{ $model->total_material_cost }} </td>
             </tr>
             @if ($model->rejection)
             <tr>
@@ -64,7 +64,7 @@
            @endif
             <tr>
                 <td class="text-right h5 font-weight-bold" colspan="5"> {{ _lang('Sale Price') }}</td>
-                <td> {{ $model->default_sell_price }} </td>
+                <td> {{ $model->grand_total }} </td>
             </tr>
             
         </tbody>

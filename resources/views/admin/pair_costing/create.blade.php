@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Pair Costing'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Job Costing'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Pair Costing."><i class="fa fa-universal-access mr-4"></i>
-        {{_lang('Product Pair Costing')}}</h1>
+        <h1 data-placement="bottom" title="Job Costing."><i class="fa fa-universal-access mr-4"></i>
+        {{_lang('Product Job Costing')}}</h1>
     </div>
 </div>
 @stop

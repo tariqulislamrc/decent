@@ -414,8 +414,8 @@
 {{-- Job Work --}}
 @can('paircosting.view')
 <li data-placement="bottom" title="Pair Costing"><a
-        class="app-menu__item {{ Request::is('admin/paircosting/create*') ? ' active' : '' }}"
-        href="{{ route('admin.paircosting.create') }}"><i class="app-menu__icon fa fa-ils" aria-hidden="true"></i><span
+        class="app-menu__item {{ Request::is('admin/paircosting*') ? ' active' : '' }}"
+        href="{{ route('admin.paircosting.index') }}"><i class="app-menu__icon fa fa-ils" aria-hidden="true"></i><span
             class="app-menu__label">{{_lang('Pair Costing')}}</span></a></li>
 @endcan
 

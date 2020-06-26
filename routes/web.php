@@ -821,7 +821,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	  Route::delete('job_work/destroy/{id}','JobworkController@destroy')->name('job_work.destroy');
 
 	  //Paircosting:::::::::::
-	  route::resource('paircosting','PairCostingController');
+      Route::get('paircosting/unit','PairCostingController@material_unit');
+	  Route::resource('paircosting','PairCostingController');
 
 	});
 
