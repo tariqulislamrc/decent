@@ -136,7 +136,44 @@
                     }
                 });
             });
-        });
+		});
+		
+		// Email Subscription
+		$('#submit_news_letter_email').click(function() {
+			$('#submit_news_letter_email').attr('disabled', '1');
+			$('#submit_news_letter_email').html('Processing...');
+			var news_letter_email = $('#news_letter_email').val();
+			if(news_letter_email == '') {
+				toastr.error('Please Enter Your Email');
+
+				$('#submit_news_letter_email').removeAttr('disabled');
+				$('#submit_news_letter_email').html('SUBSCRIBE');
+			} else {
+				$.ajax({
+					url : '/submit-news-letter-email',
+					method : 'POST',
+					dataType : 'json',
+					data : {news_letter_email : news_letter_email},
+					success: function(data){
+						if(data.status == 'error') {
+							toastr.error(data.message);
+						}
+
+						if(data.status == 'warning') {
+							toastr.warning(data.message);
+						}
+
+						if(data.status == 'success') {
+							toastr.success(data.message);
+							$('#news_letter_email').val('');
+						}
+
+						$('#submit_news_letter_email').removeAttr('disabled');
+						$('#submit_news_letter_email').html('SUBSCRIBE');
+					}
+				});
+			}
+		});
     </script>
 </body>
 </html>

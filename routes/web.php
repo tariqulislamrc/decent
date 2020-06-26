@@ -72,6 +72,7 @@ Route::group(['middleware' => ['install']], function () {
 		return view('eCommerce.product_list_view');
 	})->name('product-list');
 
+	Route::post('submit-news-letter-email', 'Frontend\Front_End_Controller@submit_news_letter_email')->name('submit-news-letter-email');
 	Route::get('offer-product/{slug}', 'Frontend\Front_End_Controller@offer_product')->name('offer-product');
 	Route::get('special-offer/{slug}', 'Frontend\Front_End_Controller@special_offer')->name('special-offer');
 	Route::get('product-details/{id}', 'Frontend\Front_End_Controller@product_details')->name('product-details');
@@ -504,6 +505,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
 
+		// subscribers
+		Route::get('subscribers', 'SubscriberController@index')->name('subscribers.index');
+		Route::get('subscribers/datatable', 'SubscriberController@datatable')->name('subscribers.datatable');
+		Route::get('subscribers/edit/{id}', 'SubscriberController@edit')->name('subscribers.edit');
+		Route::patch('subscribers/update/{id}', 'SubscriberController@update')->name('subscribers.update');
+		Route::delete('subscribers/destroy/{id}', 'SubscriberController@destroy')->name('subscribers.destroy');
 		// eCommerce-offer
 		Route::get('eCommerce-offer/datatable','eCommerceOfferController@datatable')->name('eCommerce-offer.datatable');
 		Route::get('eCommerce-offer/check_price','eCommerceOfferController@check_price')->name('eCommerce-offer.check_price');

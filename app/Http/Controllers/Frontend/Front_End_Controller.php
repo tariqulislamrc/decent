@@ -22,6 +22,7 @@ use App\models\eCommerce\PageBanner;
 use App\models\eCommerce\ProductRating;
 use App\models\eCommerce\SpecialOffer;
 use App\models\eCommerce\SpecialOfferItem;
+use App\models\eCommerce\Subscriber;
 use App\models\eCommerce\Wishlist;
 use App\models\Production\Variation;
 use App\models\Production\Transaction;
@@ -325,5 +326,31 @@ class Front_End_Controller extends Controller{
         $model = WholeSale::first();
         $banner = PageBanner::where('page_name','Whole Sale')->first();
         return view('eCommerce.wholesale',compact('model', 'banner'));
+    }
+
+    // submit_news_letter_email
+    public function submit_news_letter_email(Request $request) {
+        $email = $request->news_letter_email;
+        if(trim($email) == '') {
+            return response()->json(['success' => true, 'status' => 'error', 'message' => _lang('Please Enter Your Email Address')]);
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['success' => true, 'status' => 'error', 'message' => _lang('Please Enter Your Valid Email Address')]);
+            
+        }
+
+        $check = Subscriber::where('news_letter_email', $email)->first();
+        if($check) {
+            return response()->json(['success' => true, 'status' => 'warning', 'message' => _lang('You Are Already Subscribed. Thank You !')]);
+        }
+
+        $model = new Subscriber;
+        $model->news_letter_email = $request->news_letter_email;
+        $model->status = 1;
+        $model->save();
+
+        return response()->json(['status' => 'success', 'message' => _lang('Thank You For Subcribe')]);
+
     }
 }
