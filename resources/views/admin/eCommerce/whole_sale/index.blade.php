@@ -19,7 +19,7 @@
         <h6>{{ isset($model) ? _lang('Update'):_lang('Create') }} {{_lang('Whole Sale Page')}}</h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.eCommerce.whole_sale_store')}}" id='content_form' class='form-validate-jquery'
+        <form action="{{route('admin.eCommerce.whole_sale_store')}}" id='content_form' enctype="multipart/form-data" class='form-validate-jquery'
             method="post">
             <input type="hidden" name="row_id" value="{{isset($model)?$model->id:''}}">
             <div class="row">
@@ -29,6 +29,10 @@
                         <input type="text" name="header" id="header" class="form-control"
                             value="{{isset($model)?$model->header:''}}">
                     </div>
+                </div>
+                <div class="col-md-12 form-group">
+                    <label for="catelog">Image Catelog</label>
+                    <input type="file"  name="catelog" id="catelog" class="form-control dropify" >
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
@@ -62,6 +66,8 @@
             height: 300
         });
     });
+
+    $('.dropify').dropify();
 
 
 

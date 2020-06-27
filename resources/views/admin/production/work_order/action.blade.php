@@ -20,4 +20,6 @@
 @endcan
 @endif
 
-
+@if ($model->type == 'production')
+    <a target="_blank" data-toggle="tooltip" data-placement="bottom" title="Delivery" class="btn btn-warning btn-sm has-tooltip" data-original-title="null"  href="{{route('admin.production-work-order.delivery',$model->id)}}" ><i class="fa fa-star"></i></a>
+@endif

@@ -324,6 +324,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::post('production-work-order/append', 'Production\WorkOrderController@append');
 			Route::get('production-work-order/pay/{id}', 'Production\WorkOrderController@pay_form')->name('production-work-order.pay');
 			Route::post('production-work-order/pay-work-order-bill', 'Production\WorkOrderController@pay_bill')->name('production-work-order.pay_store');
+			Route::get('production-work-order/delivery/{id}', 'Production\WorkOrderController@delivery')->name('production-work-order.delivery');
+			Route::patch('production-work-order/send-delivery/{id}', 'Production\WorkOrderController@send_delivery')->name('production-work-order.send-delivery');
 			Route::resource('production-work-order', 'Production\WorkOrderController');
 			Route::get('print-work-order-transaction-list/{id}', 'Production\WorkOrderController@print')->name('print.work-order-transaction');
 			// Production Variation Route
