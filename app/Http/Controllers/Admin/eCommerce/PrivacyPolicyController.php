@@ -45,11 +45,26 @@ class PrivacyPolicyController extends Controller{
         
          if($request->row_id){
             $nodels = WholeSale::findOrFail($request->row_id);
+            if($request->hasFile('catelog')) {
+                $storagepath = $request->file('catelog')->store('public/catelog');
+                $fileName = basename($storagepath);
+                
+                $nodels->catelog = $fileName;
+    
+            }
             $nodels->update($data);
              return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.eCommerce.whole-sale')]);
          }else{
             $model = new WholeSale;
-            $model->create($data);
+            $model->header = $request->header;
+            $model->description = $request->description;
+            if($request->hasFile('catelog')) {
+                $storagepath = $request->file('catelog')->store('public/catelog');
+                $fileName = basename($storagepath);
+                
+                $model->catelog = $fileName;
+            }
+            $model->save();
              return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'goto' => route('admin.eCommerce.whole-sale')]);
          }
     }

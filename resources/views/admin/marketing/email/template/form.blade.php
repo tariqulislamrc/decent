@@ -61,11 +61,10 @@ $route = 'admin.emailmarketing.template.';
        });
    });
 
-   function useMedia(media_path) {
-       $('#modal_remote').modal('toggle');
-       $('#summernote').summernote('insertImage', media_path);
-
-   }
+  function useMedia(media_path) {
+        $('#modal_remote').modal('toggle');
+        $('#summernote').summernote('insertImage', media_path);
+  }
    $(document).on('click', '#content_managment', function(e) {
        e.preventDefault();
        //open modal

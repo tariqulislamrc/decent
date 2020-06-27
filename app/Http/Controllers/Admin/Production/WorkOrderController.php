@@ -18,6 +18,10 @@ use App\models\account\AccountTransaction;
 use App\models\depertment\ProductFlow;
 use App\models\depertment\StoreRequest;
 use App\models\inventory\TransactionSellLine;
+use App\models\Production\VariationBrandDetails;
+use App\models\Production\VariationTemplateDetails;
+use App\models\Production\WorkOrderDelivery;
+use App\models\Production\WorkOrderDeliveryItem;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
@@ -213,6 +217,11 @@ class WorkOrderController extends Controller
         }
 
         if ($success) {
+            $work_order_delivery = new WorkOrderDelivery;
+            $work_order_delivery->work_order_id = $model->id;
+            $work_order_delivery->status = 'due';
+            $work_order_delivery->save();
+            
             $count = count($request->product_id);
             for ($i = 0; $i < $count; $i++) {
                 $line_purchase = new WorkOrderProduct;
@@ -583,4 +592,130 @@ class WorkOrderController extends Controller
 
             AccountTransaction::updateAccountTransaction($payment, $payment_type,$acc_type);
         }
+
+    // delivery
+    public function delivery($id) {
+        // find the work order
+        $work_order = WorkOrder::findOrFail($id);
+
+        // find the workd order product
+        $work_order_products = WorkOrderProduct::where('workorder_id', $work_order->id)->get();
+
+        // find the ready product
+        $ready_products = [];
+        if(count($work_order_products)) {
+            foreach($work_order_products as $work_order_product) {
+                $product_id = $work_order_product->product_id;
+                $variation_id = $work_order_product->variation_id;
+                $details = VariationBrandDetails::where('product_id', $product_id)->where('variation_id', $variation_id)->first();
+                if($details) {
+                    $product = Product::where('id', $product_id)->first();
+                    $variation = Variation::where('id', $variation_id)->first();
+                    $ready_products[] = [
+                        'Product ID' => $product->id,
+                        'Product Name' => $product->name,
+                        'Variation ID' => $variation->id,
+                        'Variation Name' => $variation->name,
+                        'Quantity' => $details->qty_available
+                    ];
+                }
+            }
+        }
+
+        // find the ready product
+        // $ready_products = ProductFlow::where('work_order_id', $work_order->id)->where('send_depertment_id', null)->get();
+
+        // find the delivery
+        $delivery = WorkOrderDelivery::where('work_order_id',$work_order->id)->firstOrFail();
+        $delivery_array = [];
+        // find the delivery Products
+        $delivery_products = WorkOrderDeliveryItem::where('work_order_deliveries_id', $delivery->id)->get();
+        $delivery_variation = WorkOrderDeliveryItem::where('work_order_deliveries_id', $delivery->id)->groupBy('variation_id')->get();
+        foreach($delivery_variation as $delivery_product) {
+            $work_order_deliveries_id = $delivery_product->work_order_deliveries_id;
+            $product_id = $delivery_product->product_id;
+            $variation_id = $delivery_product->variation_id;
+            $delivery_array[] =[
+                'Product' => $delivery_product->product->name . ' ('. $delivery_product->variation->name .')',
+                'Quantity'=> WorkOrderDeliveryItem::where('work_order_deliveries_id', $work_order_deliveries_id)->where('product_id', $product_id)->where('variation_id', $variation_id)->sum('quantity')
+            ];
+        }
+    
+        // return 
+        return view('admin.production.work_order.delivery.index', compact('work_order', 'ready_products', 'delivery_products', 'work_order_products', 'delivery', 'delivery_array'));
+    }
+
+    // send_delivery
+    public function send_delivery(Request $request, $id) {
+        // validate
+        $request->validate([
+            'date' => 'required',
+        ]);
+
+        // find the work order
+        $work_order = WorkOrder::findOrFail($id);
+
+        $work_order_date = $work_order->date;
+        if($work_order_date > $request->date) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Delivery Date must be after the work order start date')]);
+        }
+
+        // find the total requested product quantity
+        $total_requested_qty = WorkOrderProduct::where('workorder_id', $id)->sum('qty');
+
+        // find the work order delivery id
+        $work_order_delivery = WorkOrderDelivery::where('work_order_id', $id)->firstOrFail();
+        $work_order_deliveries_id = $work_order_delivery->id;
+
+        for($i = 0; $i < count($request->product_id); $i++) {
+            $product_id = $request->product_id[$i];
+            $variation_id = $request->variation_id[$i];
+            $qty = $request->quantity[$i];
+
+            if($qty == 0) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('You Can Not Deliver 0 Pair Product')]);
+            }
+
+            $stock = VariationBrandDetails::where('product_id', $product_id)->where('variation_id', $variation_id)->first();
+            if($stock) {
+                $qty_available = $stock->qty_available;
+                $new_qty = $qty_available - $qty;
+                $stock->qty_available = $new_qty;
+                $success = $stock->save();
+
+                if($success) {
+                    $work_order_delivery_item = new WorkOrderDeliveryItem;
+                    $work_order_delivery_item->work_order_deliveries_id = $work_order_deliveries_id;
+                    $work_order_delivery_item->product_id = $product_id;
+                    $work_order_delivery_item->variation_id = $variation_id;
+                    $work_order_delivery_item->quantity = $qty;
+                    $work_order_delivery_item->date = $request->date;
+                    $work_order_delivery_item->save();
+                }
+            }
+        }
+
+        // find the total delivered product quantity
+        $total_delivered_qty = WorkOrderDeliveryItem::where('work_order_deliveries_id', $work_order_deliveries_id)->sum('quantity');
+
+
+        $work_order_delivery->requested_product_qty =$total_requested_qty;
+        $work_order_delivery->delivered_product_qty =$total_delivered_qty;
+        if($total_delivered_qty == 0) {
+            $status = 'due';
+        } elseif($total_delivered_qty == $total_requested_qty) {
+            $status = 'paid';
+        } elseif($total_requested_qty > $total_delivered_qty) {
+            $status = 'partial';
+        }
+        $work_order_delivery->status =$status;
+        $work_order_delivery->save();
+
+        $date = $request->date;
+
+        $html = view('admin.production.work_order.delivery.print_today', compact('work_order_delivery', 'work_order', 'date'))->render();
+
+        return response()->json(['success' => true, 'html' => $html, 'message' => _lang('Delivery Completed Successfully!.')]);
+    }
+    
 }

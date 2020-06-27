@@ -16,6 +16,7 @@ class CreateWholeSalesTable extends Migration
         Schema::create('whole_sales', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('header')->nullable;
+            $table->string('catelog')->nullable();
             $table->string('seo_title')->nullable;
             $table->string('meta_keyword')->nullable;
             $table->text('meta_description')->nullable;
