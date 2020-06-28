@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Production;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\Production\Product;
+use App\models\Production\ProductMaterial;
 use App\models\Production\WopMaterial;
 use App\models\Production\WorkOrder;
 use App\models\Production\WorkOrderProduct;
@@ -194,6 +195,32 @@ class WopMaterialController extends Controller
     public function product(Request $request)
     {
         $models = WorkOrder::with('workOrderProduct')->where('id',$request->id)->first();
+        $data = [];
+        $product_id_array = [];
+        // find the work Order product
+        $workOrderproduct = WorkOrderProduct::where('workorder_id', $models->id)->groupBy('product_id')->get();
+        if($workOrderproduct) {
+            foreach($workOrderproduct as $item) {
+                $product_id_array[] = $item->product_id;
+            }
+        }
+        
+        $product_materials = ProductMaterial::whereIn('product_id', $product_id_array)->groupBy('material_id')->get();
+        if($product_materials) {
+            foreach ($product_materials as $product_material) {
+                $product_id = $product_material->product_id;
+                
+                $data[] = [
+                    'matrial_name' => $product_material->material->name,
+                    'price' => $product_material->material->price,
+                    'needed_material_qty' => $product_material->qty,
+                    'product_total_qty' => WorkOrderProduct::where('workorder_id', $models->id)->where('product_id', $product_id)->sum('qty'),
+                    'total_raw_material_needed' => $product_material->qty *  WorkOrderProduct::where('workorder_id', $models->id)->where('product_id', $product_id)->sum('qty')
+                ];
+            }
+        }
+        dd($data);
+
         return view('admin.production.wop-materials.product', compact('models'));
     }
 }
