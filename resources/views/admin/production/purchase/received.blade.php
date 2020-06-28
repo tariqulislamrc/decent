@@ -103,15 +103,26 @@
 {{-- Script Section --}}
 @push('scripts')
 <script>
+    $('document').ready(function(){
+        var t =totall();
+        if (t==0) {
+            $('#submit').prop('disabled', true);
+        }
+    })
     $("#data").delegate('.qty', 'keyup blur', function () {
       var tr = $(this).parent().parent();
       var qty =tr.find('.qty');
+      var t =totall();
+      if (t==0) {
+        $('#submit').prop('disabled', true);
+      }else{
+        $('#submit').prop('disabled', false); 
+      }
       var order =parseFloat(tr.find('.order').val());
       var r_qty =parseFloat(tr.find('.r_qty').val());
       var remain =order-r_qty;
-      var total =order+r_qty;
-      
-        if ((qty.val() -0) > (total-0))
+      var total =parseFloat(qty.val())?parseFloat(qty.val()):0+r_qty;
+        if ((total-0) > (order-0))
         {
          toastr.error('Sorry! this much  quantity is not available');
           qty.val(remain);
@@ -119,6 +130,15 @@
 
     })
    _componentSelect2Normal();
-   _classformValidation();     
+   _classformValidation();  
+
+   function totall()
+   { 
+    var total=0;
+        $(".qty").each(function() {
+            total = total + ($(this).val() * 1);
+        })
+     return total;   
+   }   
 </script>
 @endpush

@@ -60,6 +60,18 @@
                         </tr>
 
                         <tr>
+                            <td style="text-align:right;" colspan="5"><b>Pay Account:</b></td>
+                            <td class="text-right">
+                           <select name="investment_account_id" id="investment_account_id" class="form-control select">
+                            <option value="">Select Account</option>
+                            @foreach ($inves_account as $element)
+                                <option value="{{ $element->id }}">{{ $element->name }}</option>
+                            @endforeach
+                        </select>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td style="text-align:right;" colspan="5"><span class="text-danger">*</span><b>Payment Method:</b></td>
                             <td class="text-right">
                                 <div class="input-group">
