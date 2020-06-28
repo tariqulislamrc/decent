@@ -231,8 +231,8 @@
         </a>
     </li>
 @endif
-@if (!Request::is('admin/eCommerce*'))
 
+@if (!Request::is('admin/eCommerce*'))
 @if (!Request::is('admin/report*'))
 
 @can('client.view')
