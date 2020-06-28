@@ -25,6 +25,11 @@
         {{-- Report --}}
         <li data-toggle="tooltip" data-placement="bottom" title="Report Section"><a class="mt-1 app-nav__item" href="{{ route('admin.report.index') }}"><i class="fa fa-registered fa-lg"></i></a>
         
+        {{-- Ecommerce --}}
+        @can('Ecommerce.view')
+            <li data-toggle="tooltip" data-placement="bottom" title="Ecommerce Section"><a class="mt-1 app-nav__item" href="{{ route('admin.eCommerce.index') }}"><i class="fa fa-etsy fa-lg"></i></a>
+        @endcan 
+
         {{-- Production Product --}}
         <li data-toggle="tooltip" data-placement="bottom" title="Create New Product"><a class="mt-1 app-nav__item" href="{{ route('admin.production-product.create') }}"><i class="fa fa-stumbleupon fa-lg"></i></a>
             
