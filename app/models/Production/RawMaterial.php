@@ -11,4 +11,9 @@ class RawMaterial extends Model{
     public function unit(){
         return $this->belongsTo(Unit::class);
     }
+
+    public function clients()
+    {
+    	return $this->belongsToMany('App\models\Client')->withTimestamps();
+    }
 }

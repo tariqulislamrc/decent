@@ -107,6 +107,7 @@
                     <tr>
                         <th>{{ _lang('Material') }}</th>
                         <th>{{ _lang('Quantity') }}</th>
+                        <th>{{ _lang('Order') }}</th>
                         <th>{{ _lang('Unit Price') }}</th>
                         <th>{{ _lang('Line Total') }}</th>
                     </tr>
@@ -116,6 +117,7 @@
                        <tr>
                            <td>{{  $item->material?$item->material->name:'' }}</td>
                            <td>{{ $item->qty }}</td>
+                           <td>{{ $item->order_qty }}</td>
                            <td>{{ $item->price }}</td>
                            <td>{{ $item->line_total }}</td>
                        </tr>

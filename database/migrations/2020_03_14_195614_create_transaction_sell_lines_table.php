@@ -26,10 +26,10 @@ class CreateTransactionSellLinesTable extends Migration
             $table->unsignedBigInteger('variation_brand_detail_id')->nullable();
             $table->foreign('variation_brand_detail_id')->references('id')->on('variation_brand_details')->onDelete('cascade');
             $table->integer('brand_id')->nullable();
-            $table->decimal('quantity',8,2);
-            $table->decimal('quantity_returned',8,2);
-            $table->decimal('unit_price', 8, 2)->comment("Sell price excluding tax")->nullable();
-            $table->decimal('total',8,2)->nullable();
+            $table->decimal('quantity',20,2);
+            $table->decimal('quantity_returned',20,2);
+            $table->decimal('unit_price', 20, 2)->comment("Sell price excluding tax")->nullable();
+            $table->decimal('total',20,2)->nullable();
             $table->integer('parent_sell_line_id')->nullable();
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();

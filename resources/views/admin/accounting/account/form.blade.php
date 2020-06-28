@@ -14,6 +14,12 @@ $route = 'admin.accounting.account.';
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
+          {{ Form::label('account_type', _lang('Account Type') , ['class' => 'col-form-label']) }}
+          {!! Form::select('account_type', $account_types, null, ['class' => 'form-control select']); !!}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
           {{ Form::label('name', _lang('Account Name') , ['class' => 'col-form-label']) }}
           {{ Form::text('name', null, ['class' => 'form-control', 'id'=>'name', 'placeholder' => _lang('Account Name'),'required'=>'','autofocus'=>true]) }}
         </div>

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
+use App\PurchaseReceived;
+use App\SupplierMaterial;
 use App\Utilities\TransactionUtil;
+use App\models\Client;
 use App\models\Production\Product;
 use App\models\Production\ProductMaterial;
 use App\models\Production\Purchase;
@@ -38,7 +41,8 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $employeis =Employee::pluck('name','id');
-        return view('admin.production.purchase.index',compact('employeis'));
+        $clients =Client::where('type','supplier')->pluck('name','id');
+        return view('admin.production.purchase.index',compact('employeis','clients'));
     }
 
     public function datatable(Request $request)
@@ -49,6 +53,13 @@ class PurchaseController extends Controller
                 $employee_id = request()->get('employee_id');
                 if (!empty($employee_id)) {
                     $document=$document->where('purchase_by', $employee_id);
+                }
+            }
+
+               if (request()->has('client_id')) {
+                $client_id = request()->get('client_id');
+                if (!empty($client_id)) {
+                    $document=$document->where('client_id', $client_id);
                 }
             }
 
@@ -73,16 +84,16 @@ class PurchaseController extends Controller
                 ->editColumn('purchase_by', function ($document) {
                     return $document->employee?$document->employee->name:'';
                 })
-                ->editColumn('brand_id', function ($document) {
-                    return $document->brand? $document->brand->name:'';
+                 ->editColumn('client', function ($document) {
+                    return $document->client?$document->client->name:'';
                 })
                 ->editColumn('status', function ($document) {
                     if ($document->status == 'Received') {
-                        return '<span class="badge badge-success">' . 'Received' . '</span>';
+                        return '<a href="'.route('admin.purchase.received',$document->id).'"><span class="badge badge-success">' . 'Received' . '</span></a>';
                     } else if($document->status == 'Pending') {
-                        return '<span class="badge badge-warning">' . 'Pending' . '</span>';
+                        return '<a href="'.route('admin.purchase.received',$document->id).'"><span class="badge badge-warning">' . 'Pending' . '</span></a>';
                     } else if($document->status == 'Ordered') {
-                        return '<span class="badge badge-info">' . 'Ordered' . '</span>';
+                        return '<a href="'.route('admin.purchase.received',$document->id).'"><span class="badge badge-info">' . 'Ordered' . '</span></a>';
                     }
                 })
                 ->editColumn('total', function ($document) {
@@ -96,17 +107,17 @@ class PurchaseController extends Controller
                   return '<a title="view Details" data-url="'.route('admin.purchase_view',$model->id).'" class="btn_modal" style="cursor:pointer;color:#12f">'.$model->reference_no.'</a>';
                  })
                 ->editColumn('payment_status', function ($document) {
-                    if ($document->payment_status == 'Paid') {
+                    if ($document->payment_status == 'paid') {
                         return '<span class="badge badge-success">' . 'Paid' . '</span>';
-                    } else if($document->payment_status == 'Partial') {
+                    } else if($document->payment_status == 'partial') {
                         return '<span class="badge badge-info">' . 'Partial' . '</span>';
-                    } else if($document->payment_status == 'Due') {
+                    } else if($document->payment_status == 'due') {
                         return '<span class="badge badge-info">' . 'Due' . '</span>';
                     }
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.production.purchase.action', compact('model'));
-                })->rawColumns(['action','status', 'payment_status','total','reference_no'])->make(true);
+                })->rawColumns(['action','status', 'payment_status','total','reference_no','client'])->make(true);
         }
     }
 
@@ -140,6 +151,32 @@ class PurchaseController extends Controller
         return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no','inves_account'));
     }
 
+
+    public function new_purchase()
+    {
+        if (!auth()->user()->can('purchase.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $models = Employee::all();
+        $workorders = WorkOrder::where('status', '=', 'requisition')->get();
+        $uniqu_id = generate_id('purchase', false);
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
+
+        $ref_no = $ym.'/P-'.ref($row);
+        $inves_account =InvestmentAccount::all(); 
+        $suppliers =Client::where('type','supplier')->get();
+        return view('admin.production.purchase.new_purchase', compact('models', 'workorders','ref_no','inves_account','suppliers'));  
+    }
+
+
+    public function supplier_material(Request $request)
+    {
+        $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->get();
+        return view('admin.production.purchase.client_material',compact('model'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -155,6 +192,7 @@ class PurchaseController extends Controller
             'purchase_by' => 'required',
             'purchase_date' => 'required',
             'status' => 'required',
+            'client_id' => 'required',
             'invoice_no' => 'nullable|unique:transactions',
             'reference_no' => 'nullable|unique:transactions',
         ]);
@@ -190,6 +228,7 @@ class PurchaseController extends Controller
         $model = new Transaction;
 
         $model->purchase_by = $request->purchase_by;
+        $model->client_id = $request->client_id;
         $model->reference_no = $request->reference_no;
         $model->invoice_no = $invoice_no;
         $model->date = $request->purchase_date;
@@ -221,13 +260,21 @@ class PurchaseController extends Controller
         }
 
         for ($i = 0; $i < count($request->raw_material); $i++) {
-
+          if ($request->qty[$i]>0) {
+            if ($request->status=='Received') {
+                $qty =$request->qty[$i];
+                $order_qty=$request->qty[$i];
+            }else{
+               $qty =0;
+               $order_qty=$request->qty[$i]; 
+            }
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
             $purchase->raw_material_id = $request->raw_material[$i];
             $purchase->product_id = $request->product_id[$i];
-            $purchase->qty = $request->qty[$i];
-            $purchase->return_qty = '';
+            $purchase->qty = $qty;
+            $purchase->order_qty = $order_qty;
+            $purchase->return_qty = 0;
             $purchase->price = $request->unit_price[$i];
             $purchase->unit_id = $request->unit_id[$i];
             $purchase->line_total = $request->price[$i];
@@ -235,12 +282,14 @@ class PurchaseController extends Controller
             $purchase->uses = $request->uses[$i];
             $purchase->created_by = auth()->user()->id;
             $purchase->save();
-
+            if ($request->status=='Received') {
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
 
             $stock = $raw->stock + $request->qty[$i];
             $raw->stock = $stock;
             $raw->save();
+           }
+          }
         }
 
 
@@ -297,6 +346,43 @@ class PurchaseController extends Controller
     public function show($id)
     {
         //
+    }
+
+
+    public function received(Request $request,$id)
+    {
+        if ($request->isMethod('Get')) {
+            $model=Transaction::findOrFail($id);
+            return view('admin.production.purchase.received',compact('model'));
+        }elseif ($request->isMethod('Put')) {
+            $model=Transaction::findOrFail($id);
+             for ($i=0; $i <count($request->qty) ; $i++) { 
+                if ($request->qty[$i]>0) {
+                    $pur =Purchase::findOrFail($request->purchase_id[$i]);
+                    $pur->qty=$request->qty[$i];
+                    $pur->save();
+
+                    $raw = RawMaterial::findOrFail($request->raw_material_id[$i]);
+
+                    $stock = $raw->stock + $request->qty[$i];
+                    $raw->stock = $stock;
+                    $raw->save();
+
+                    $received =new PurchaseReceived;
+                    $received->transaction_id=$id;
+                    $received->purchase_id=$pur->id;
+                    $received->raw_material_id=$request->raw_material_id[$i];
+                    $received->qty=$request->qty[$i];
+                    $received->date=date('Y-m-d');
+                    $received->save();
+                }
+            }
+            $model->status=$request->status;
+            $model->save();
+            activity()->log(' Received Purchase - ' . Auth::user()->id);
+           return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Received Successfuly')]);
+
+        }
     }
 
     public function details($id)
@@ -376,8 +462,13 @@ class PurchaseController extends Controller
         if (!auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
         }
-        $model = Transaction::findOrFail($id);
-        return view('admin.production.purchase.edit', compact('model'));
+        $received =PurchaseReceived::where('transaction_id',$id)->count();
+        if ($received==0) {
+          $model = Transaction::findOrFail($id);
+          return view('admin.production.purchase.edit', compact('model'));
+        }else{
+             return redirect('/admin/production-purchase')->with('msg','Can Not Edited This Purchase has Already Received in Received Section');
+        }
     }
 
     /**
@@ -392,6 +483,7 @@ class PurchaseController extends Controller
       if (!auth()->user()->can('purchase.update')) {
             abort(403, 'Unauthorized action.');
         }
+     if (isset($request->raw_material)) {
         $model = Transaction::findOrFail($id);
         $due =$request->final_total-$model->paid;
         $model->reference_no = $request->reference_no;
@@ -413,12 +505,21 @@ class PurchaseController extends Controller
         $type = Purchase::where('transaction_id', $id)->delete();
 
         for ($i = 0; $i < count($request->raw_material); $i++) {
+          if ($request->qty[$i]) {
+           if ($request->status=='Received') {
+                $qty =$request->qty[$i];
+                $order_qty=$request->qty[$i];
+            }else{
+               $qty =0;
+               $order_qty=$request->qty[$i]; 
+            }
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
             $purchase->raw_material_id = $request->raw_material[$i];
             $purchase->product_id = $request->product_id[$i];
-            $purchase->qty = $request->qty[$i];
-            $purchase->return_qty = '';
+            $purchase->qty = $qty;
+            $purchase->order_qty = $order_qty;
+            $purchase->return_qty = 0;
             $purchase->price = $request->unit_price[$i];
             $purchase->unit_id = $request->unit_id[$i];
             $purchase->line_total = $request->price[$i];
@@ -426,19 +527,25 @@ class PurchaseController extends Controller
             $purchase->uses = $request->uses[$i];
             $purchase->created_by = auth()->user()->id;
             $purchase->save();
-
+           if ($request->status=='Received') {
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
             $stock = $raw->stock;  
             $old_qty = ($raw->stock-$request->old_qty[$i]?$request->old_qty[$i]:0);
             $new_stock = $old_qty + $request->qty[$i];
             $raw->stock = $new_stock;
             $raw->save();
+           }
+          }
         }
 
 
         // Activity Log
         activity()->log('Updated a Purchase - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfuly'),'goto' => route('admin.production-purchase.details',$id)]);
+      } else
+        {
+          throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to Purchase')]);
+        }
     }
 
     /**
@@ -453,12 +560,18 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $model = Transaction::where('id', $id);
+        $model = Transaction::with('purchase')->find($id);
         $payment = TransactionPayment::where('transaction_id', $id)->delete();
-        $purchase = Purchase::where('transaction_id', $id)->delete();
+        foreach ($model->purchase as $key => $pur) {
+            $material=RawMaterial::find($pur->raw_material_id);
+            $material->stock=$material->stock-$pur->qty;
+            $material->save();
+        }
+        $model->purchase()->delete();
+        $received =PurchaseReceived::where('transaction_id',$id)->delete();
         $model->delete();
 
-        return response()->json(['message' => 'Data Deleted Success full', 'goto' => route('admin.production-purchase.index')]);
+        return response()->json(['message' => 'Data Deleted Success full']);
     }
 
 

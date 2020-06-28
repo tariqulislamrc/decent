@@ -85,6 +85,7 @@ var DatatableSelect = function () {
             url: $('.content_managment_table').data('url'),
             data: function(d) {
                 d.employee_id = $('select#employee_id').val();
+                d.client_id = $('select#client_id').val();
                 d.status = $('select#status').val();
                 d.payment_status = $('select#payment_status').val();
             },
@@ -98,15 +99,12 @@ var DatatableSelect = function () {
                     data: 'purchase_by',
                     name: 'purchase_by'
                 }, {
-                    data: 'brand_id',
-                    name: 'brand_id'
+                    data: 'client',
+                    name: 'client'
                 }, {
                     data: 'reference_no',
                     name: 'reference_no'
-                }, {
-                    data: 'invoice_no',
-                    name: 'invoice_no'
-                }, {
+                },  {
                     data: 'date',
                     name: 'date'
                 }, {
@@ -129,7 +127,7 @@ var DatatableSelect = function () {
 
     };
 
-    $('select#status, select#employee_id, select#payment_status').on(
+    $('select#status, select#employee_id,select#client_id, select#payment_status').on(
         'change',
         function() {
             if (typeof(emran.ajax) != "undefined" && emran.ajax !== null) {

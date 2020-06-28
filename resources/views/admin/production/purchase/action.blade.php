@@ -11,6 +11,10 @@
         <a class=" dropdown-item cursour" data-original-title="null"
             href="{{route('admin.production-purchase.details',$model->id)}}"><i class="fa fa-asterisk"></i> {{_lang('Details')}}</a>
         @endcan
+        @can('purchase.view')
+        <a class=" dropdown-item cursour" data-original-title="null"
+            href="{{route('admin.purchase.received',$model->id)}}"><i class="fa fa-id-card-o" aria-hidden="true"></i> {{_lang('Received')}}</a>
+        @endcan
         @can('purchase.delete')
         <button id="delete_item" data-id="{{$model->id}}"
             data-url="{{route('admin.production-purchase.destroy',$model->id)  }}"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Production;
 
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use App\models\Production\ProductMaterial;
 use App\models\Production\RawMaterial;
 use App\models\Production\Unit;
@@ -37,7 +38,11 @@ class RawMaterialsController extends Controller
                  })->editColumn('unit', function ($model) {
                      return $model->unit->unit;
                  })->editColumn('stock', function ($model) {
+                    if ($model->stock==null) {
+                       return '0 '.$model->unit->unit;
+                    }else{
                      return $model->stock . ' '. $model->unit->unit;
+                    }
                  })->rawColumns(['action','unit', 'stock'])->make(true);
          }
      }
@@ -52,7 +57,8 @@ class RawMaterialsController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $models = Unit::all();
-        return view('admin.production.raw_materials.create',compact('models'));
+        $supplier =Client::where('type','supplier')->get();
+        return view('admin.production.raw_materials.create',compact('models','supplier'));
     }
 
     public function remort_material()
@@ -131,6 +137,7 @@ class RawMaterialsController extends Controller
         $model->tek_marks = 0;
         $model->created_by = Auth::user()->id;
         $model->save();
+        $model->clients()->attach($request->client_id);
 
         // Activity Log
         activity()->log('Created a Production Raw Materials - ' . Auth::user()->id);
@@ -160,8 +167,9 @@ class RawMaterialsController extends Controller
         }
          $model = RawMaterial::findOrFail($id);
          $models = Unit::all();
+         $supplier =Client::where('type','supplier')->get();
 
-        return view('admin.production.raw_materials.edit',compact('model','models'));
+        return view('admin.production.raw_materials.edit',compact('model','models','supplier'));
     }
 
     /**
@@ -199,6 +207,7 @@ class RawMaterialsController extends Controller
         $model->tek_marks = 0;
         $model->updated_by = Auth::user()->id;
         $model->save();
+        $model->clients()->sync($request->client_id);
 
         // Activity Log
         activity()->log('Update a Production Raw Materials - ' . Auth::user()->id);

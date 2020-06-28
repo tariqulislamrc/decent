@@ -1,8 +1,8 @@
-@extends('layouts.app', ['title' => _lang('Edit Purchase'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('New Purchase'), 'modal' => 'lg'])
 @push('admin.css')
 <style>
 .table th, .table td {
-  padding: 0.2rem 0.5rem;
+padding: 0.2rem 0.5rem;
 }
 </style>
 @endpush
@@ -10,8 +10,8 @@
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Purchase for Production."><i class="fa fa-universal-access mr-4"></i>
-            {{_lang('Edit Purchase')}}</h1>
+        <h1 data-placement="bottom" title="Product for Production."><i class="fa fa-universal-access mr-4"></i>
+        {{_lang('New Purchase')}}</h1>
     </div>
     <ul class="app-breadcrumb breadcrumb">
         {{ Breadcrumbs::render('purchase-create') }}
@@ -21,12 +21,11 @@
 {{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
-<form action="{{route('admin.production-purchase.update', $model->id)}}" method="post" id="content_form">
+<form action="{{route('admin.production-purchase.store')}}" method="post" id="content_form" enctype="multipart/form-data">
     @csrf
-    @method('PATCH')
     <div class="card">
         <div class="card-header">
-            <h6>{{_lang('Edit Purchase ')}}</h6>
+            <h6>{{_lang('New Purchase ')}}</h6>
         </div>
         <div class="card-body">
             <div class="row">
@@ -35,28 +34,25 @@
                     <label for="employee_id">{{_lang('Purchase By')}}
                     </label>
                     <div class="input-group">
-                        <select required data-placeholder="Select Purchase By" name="purchase_by" class="form-control" id="employee_id">
-                            <option value="{{$model->purchase_by}}" selected>{{$model->employee?$model->employee->name:''}}</option>
+                        <select required data-placeholder="Select Purchase By" name="purchase_by" id="employee_id"
+                            class="form-control select">
+                            <option value="0" selected>Select Purchase By</option>
                         </select>
                     </div>
                 </div>
-
                 {{-- Reference No: --}}
                 <div class="col-md-4 form-group">
                     <label for="reference_no">{{_lang('Reference No:')}}
                     </label>
-                    <input type="text" value="{{$model->reference_no}}" class="form-control" placeholder="Reference No"
-                        name="reference_no" id="reference_no" readonly>
+                    <input type="text" class="form-control" placeholder="Reference No" name="reference_no"
+                    id="reference_no" value="{{ $ref_no }}" readonly>
                 </div>
-
                 {{-- Invoice No: --}}
                 <div class="col-md-4 form-group">
                     <label for="invoice_no">{{_lang('Invoice No:')}}
                     </label>
-                    <input type="text" readonly value="{{$model->invoice_no}}" class="form-control"
-                        placeholder="Invoice No" name="invoice_no" id="invoice_no">
+                    <input type="text" class="form-control" placeholder="Invoice No" name="invoice_no" id="invoice_no">
                 </div>
-
                 {{-- Purchase Date: --}}
                 <div class="col-md-6 form-group" id="child_unit_row">
                     <label for="purchase_date">{{_lang('Purchase Date')}}</label>
@@ -64,37 +60,50 @@
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                         </div>
-                        <input type="text" value="{{$model->date}}" class="form-control date" name="purchase_date"
-                            id="purchase_date">
+                        <input type="text" class="form-control date" name="purchase_date" id="purchase_date" value="{{ date('Y-m-d') }}">
                     </div>
                 </div>
-
-                <div class="col-md-6">
+                {{-- Purchase Status: --}}
+                <div class="col-md-6 form-group">
                     <label for="purchase_status">{{_lang('Purchase Status:')}}
                     </label>
                     <select class="form-control select" data-placeholder="Select Status" name="status" id="status" class="form-control select">
-                        <option {{ $model->status=='Received'?'selected':'' }} value="Received">{{_lang('Received')}}</option>
-                        <option {{ $model->status=='Ordered'?'selected':'' }} value="Ordered" {{ $model->status=='Received'?'disabled':'' }}>{{_lang('Ordered')}}</option>
-                        <option {{ $model->status=='Pending'?'selected':'' }} value="Pending" {{ $model->status=='Received'?'disabled':'' }}>{{_lang('Pending')}}</option>
+                        <option value="">Select Status</option>
+                        <option value="Received">{{_lang('Received')}}</option>
+                        <option value="Pending">{{_lang('Pending')}}</option>
+                        <option value="Ordered">{{_lang('Ordered')}}</option>
                     </select>
                 </div>
-
 
             </div>
         </div>
     </div>
-       <div class="card card-box border border-primary">
-            <div class="card-body">
-                 <label for="purchase_status">{{_lang('Supplier:')}}
+    <div class="card card-box border border-primary">
+    <div class="card-body">
+     <div class="row">
+         <div class="col-md-10 mx-auto">
+            <label for="purchase_status">{{_lang('Supplier:')}}
                     </label>
-                    <input type="text" class="form-control"  value="{{ $model->client->name }}" readonly>
-                    <small class="text-danger">This is Not Editable</small>
+                    <select class="form-control select" name="client_id" id="client_id" class="form-control select">
+                        <option value="">Select Supplier</option>
+                        @foreach ($suppliers as $element)
+                            <option value="{{ $element->id }}">{{ $element->name }}</option>
+                        @endforeach
+                    </select> 
+         </div>
+     </div>
+        <div class="row mt-2">
+            <div class="col-md-6 mx-auto text-center">
+                
+                <button type="button" class="btn btn-primary btn-sm w-100" id="check_it">Get Material</button>
+                <button type="button" class="btn btn-sm btn-info w-100" id="checking" style="display: none;">
+                <i class="fa fa-spinner fa-spin fa-fw"></i>Checking...</button>
             </div>
-      </div>
-
+        </div>
+    </div>
+    </div>    
     <div class="card mt-3">
         <div class="card-body">
-
             <div class="table-responsive">
                 <table class="table table-condensed table-bordered table-th-green text-center table-striped"
                     id="purchase_entry_table">
@@ -111,53 +120,18 @@
                         </tr>
                     </thead>
                     <tbody id="data">
-                        @foreach ($model->purchase as $item)
-                        <tr>
-                            <td>
-                                <input type="hidden" name="raw_material[]" value="{{ $item->raw_material_id }}" class="pid">
-                                <input type="hidden" name="product_id[]" value="{{ $item->product?$item->product->id:'' }}">
-                                 {{ $item->product?$item->product->name:'' }}({{  $item->material?$item->material->name:'' }})
-                            </td>
-                            <td>
-                                <input type="text" class="form-control input_number qty" id="qty" name="qty[]"
-                                    value="{{ $item->order_qty }}">
-                                    <input type="hidden" class="form-control qty" name="old_qty[]"
-                                    value="{{ $item->qty }}">
-                            </td>
-                            <td>
-                                <input type="hidden" class="form-control" name="unit_id[]"
-                                    value="{{ $item->material->unit->id }}">{{ $item->material->unit->unit }}
-                                @if ($item->material->unit->child_unit)
-                                / {{$item->material->unit->child_unit}}
-                                @endif
-                            </td>
-                            <td>
-                                <input type="text" class="form-control input_number unit_price" id="unit_price" name="unit_price[]"
-                                    value="{{ $item->price }}">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control price" id="price" readonly name="price[]"
-                                    value="{{ $item->line_total }}">
-                            </td>
-                            <td>
-                                <button type="button" name="remove" class="btn btn-danger btn-sm remmove" {{ $model->status=='Received'?'disabled':'' }}><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
-
             <hr>
-
             <div class="pull-right col-md-5">
                 <table class="pull-right col-md-12">
                     <tbody>
                         <tr>
                             <th class="col-md-7 text-right">Net Total Amount:</th>
                             <td class="col-md-5 text-left">
-                                <span id="total_subtotal" class="display_currency">{{$model->sub_total}}</span>
-                                <input type="hidden" id="total_subtotal_input" value="{{$model->sub_total}}" name="total_before_tax">
+                                <span  class="display_currency sub_total">00.00</span>
+                                <input type="hidden" class="sub_total" value="" name="total_before_tax">
                             </td>
                         </tr>
                     </tbody>
@@ -165,20 +139,18 @@
             </div>
         </div>
     </div>
-
     <div class="card mt-3">
         <div class="card-body">
             <table class="table">
                 <tbody>
-
-                      <tr>
+                    <tr>
                         <td>
                             <div class="form-group">
                                 <label for="discount_type">Discount Type:</label>
                                 <select class="form-control select2 " id="discount_type" name="discount_type">
-                                   <option value="" selected="selected">None</option>
-                                    <option {{$model->discount_type == 'fixed'?'selected':''}} value="fixed">Fixed</option>
-                                    <option {{$model->discount_type == 'percentage'?'selected':''}} value="percentage">Percentage</option>
+                                    <option value="" selected="selected">None</option>
+                                    <option value="fixed">Fixed</option>
+                                    <option value="percentage">Percentage</option>
                                 </select>
                             </div>
                         </td>
@@ -186,14 +158,14 @@
                             <div class="form-group">
                                 <label for="discount_amount">Discount Amount:</label>
                                 <input class="form-control input_number" required="" name="discount_amount" type="text"
-                                value="{{$model->discount}}" id="discount_amount">
+                                value="0" id="discount_amount">
                             </div>
                         </td>
                         <td>&nbsp;</td>
                         <td class="text-right pt-5">
                             <b>Discount:</b>(-)
-                            <span id="discount_calculated_amount" class="display_currency">৳ {{$model->discount_amount}}</span>
-                            <input name="total_discount_amount" type="hidden" id="total_discount_amount" value="{{$model->discount_amount}}">
+                            <span id="discount_calculated_amount" class="display_currency">৳ 0.00</span>
+                            <input name="total_discount_amount" type="hidden" id="total_discount_amount">
                         </td>
                     </tr>
                     <tr>
@@ -201,48 +173,112 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td class="text-right">
-                            <input class="net_total" name="final_total" type="hidden" value="{{$model->net_total}}">
-                            <b>Purchase Total: </b><span class="display_currency net_total" data-currency_symbol="true">৳ {{$model->net_total}}</span>
+                            <input class="net_total" name="final_total" type="hidden" value="0">
+                            <b>Purchase Total: </b><span class="display_currency net_total" data-currency_symbol="true">৳ 0.00</span>
                         </td>
                     </tr>
-
-
+                    
                     <tr>
                         <td colspan="">
                             <div class="form-group">
                                 <label for="stuff_notes">Stuff Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="stuff_notes" cols="50"
-                                    id="stuff_notes">{{$model->stuff_note}}</textarea>
+                                id="stuff_notes"></textarea>
                             </div>
                         </td>
                         <td colspan="">
                             <div class="form-group">
                                 <label for="sell_notes">Sell Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="sell_notes" cols="50"
-                                    id="sell_notes">{{$model->sell_note}}</textarea>
+                                id="sell_notes"></textarea>
                             </div>
                         </td>
                         <td colspan="2">
                             <div class="form-group">
                                 <label for="transaction_notes">Transaction Notes</label>
                                 <textarea style="resize: none;" class="form-control" rows="3" name="transaction_notes" cols="50"
-                                    id="transaction_notes">{{$model->transaction_note}}</textarea>
+                                id="transaction_notes"></textarea>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        
-
-          <div class="row mt-2">
-                        <div class="col-md-6 mx-auto text-center">
-                            <button type="submit" id="submit" class="btn btn-primary btn-sm w-100">{{ _lang('Edit Purchase') }}</button>
-                            <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
         </div>
     </div>
-
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="amount">Amount:</label>
+                    <div class="input-group  mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fa fa-money"></i></span>
+                        </div>
+                        <input class="form-control payment-amount input_number" id="amount" placeholder="Amount"
+                        name="payment" type="text" value="0.00">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="investment_account_id">{{ _lang('Pay Account') }} </label>
+                        <select name="investment_account_id" id="investment_account_id" class="form-control select">
+                            <option value="">Select Account</option>
+                            @foreach ($inves_account as $element)
+                                <option value="{{ $element->id }}">{{ $element->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="method">Payment Method:</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-money"></i></span>
+                            </div>
+                            <select class="form-control payment_types_dropdown" id="method"
+                                name="method">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="cheque">Cheque</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="other">Other</option>
+                                <option value="custom_pay_1">Custom Payment 1</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="transaction">Transaction No.</label>
+                        <input class="form-control" placeholder="Transaction No." id="transaction"
+                        name="transaction_no" type="text" value="">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="note_0">Payment note:</label>
+                        <textarea class="form-control" rows="3" id="note_0" name="payment_note"
+                        cols="50"></textarea>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input id="due" name="payment_due_hidden" type="hidden" value="0">
+                    <div class="pull-right"><strong>Payment due:</strong> <span class="change_return_span">৳ 0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 mx-auto text-center">
+            <button type="submit" id="submit" class="btn btn-primary btn-sm w-100">{{ _lang('New Purchase') }}</button>
+            <button type="button" class="btn btn-info btn-sm w-100" id="submiting" style="display: none;" disabled="">{{ _lang('Submiting') }} <i class="fa fa-spinner fa-spin" style="font-size: 20px" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</div>
 </form>
 <!-- /basic initialization -->
 @stop
@@ -290,10 +326,37 @@
     }
 
 });
-    $('.select').select2();
-    _formValidation();
+$('.select').select2();
+_formValidation();
 _componentDatefPicker();
-        // invoice calculation 
+$(document).on('click', '#check_it', function () {
+    $("#check_it").hide();
+    $('#checking').show();
+    var url = "/admin/supplier/material";
+    var client_id = $("#client_id").val();
+    if (client_id =="") {
+      toastr.error("Select Supplier first");
+       $("#check_it").show();
+       $('#checking').hide();
+    }else{
+        $.ajax({
+            url: url,
+            data: {
+            client_id:client_id
+            },
+            type: 'Get',
+            dataType: 'html'
+        })
+    .done(function (data) {
+          $("#check_it").show();
+          $('#checking').hide();
+          $('#data').html(data);
+          $("#client_id").val();
+    })
+  }
+});
+
+    // invoice calculation 
     $("#data").delegate('#unit_price, #qty,#waste', 'keyup blur', function () {
         var tr = $(this).parent().parent();
         var quantity = tr.find("#qty").val();
@@ -419,6 +482,10 @@ function calculate_balance_due(total) {
     var total_change =total-paid;
     return total_change;
 }
+
+
+
+
 
 </script>
 @endpush

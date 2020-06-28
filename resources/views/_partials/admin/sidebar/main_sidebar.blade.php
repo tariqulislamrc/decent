@@ -15,6 +15,13 @@
             class="app-menu__label">{{_lang('Client')}}</span></a></li>
 @endcan
 
+@can('client.view')
+{{-- Database Backup --}}
+<li><a class="app-menu__item {{ Request::is('admin/supplier*') ? ' active' : '' }}"
+        href="{{ route('admin.get_supplier_index') }}"><i class="app-menu__icon fa fa-user-o"></i><span
+            class="app-menu__label">{{_lang('Supplier')}}</span></a></li>
+@endcan
+
 @can('sale_pos.view')
 <li class="treeview {{ Request::is('admin/sale*') ? ' is-expanded' : '' }}">
     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-minus-circle"
@@ -413,10 +420,10 @@
 
 {{-- Job Work --}}
 @can('paircosting.view')
-<li data-placement="bottom" title="Pair Costing"><a
+<li data-placement="bottom" title="Job Costing"><a
         class="app-menu__item {{ Request::is('admin/paircosting*') ? ' active' : '' }}"
         href="{{ route('admin.paircosting.index') }}"><i class="app-menu__icon fa fa-ils" aria-hidden="true"></i><span
-            class="app-menu__label">{{_lang('Pair Costing')}}</span></a></li>
+            class="app-menu__label">{{_lang('Job Costing')}}</span></a></li>
 @endcan
 
 {{-- Job Work --}}

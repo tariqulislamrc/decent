@@ -40,8 +40,20 @@
                     <input required type="text" value="{{$model->price}}" name="price" id="price" class="form-control"
                         placeholder="Enter Raw Metrials price">
                 </div>
+                   <div class="col-md-6 form-group">
+                        <label for="client_id">{{_lang('Supplier')}} <span class="text-danger">*</span></label>
+                        <select name="client_id[]" class="form-control select" multiple>
+                            @foreach ($supplier as $element)
+                                <option 
+                                 @foreach($model->clients as $client)
+                                                {{$client->id == $element->id ? 'selected' : ''}}
+                                             @endforeach
+                                 value="{{ $element->id }}">{{ $element->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 {{-- Production Raw Metrials description --}}
-                <div class="col-md-6 form-group">
+                <div class="col-md-12 form-group">
                     <label for="description">{{_lang('Description')}}</label>
                     <textarea name="description" class="form-control" id=""
                         placeholder="Enter Description">{{$model->description}}</textarea>

@@ -18,6 +18,7 @@ class CreatePurchasesTable extends Migration
             $table->string('transaction_id')->nullable();
             $table->string('raw_material_id')->nullable();
             $table->string('qty')->nullable();
+            $table->string('order_qty')->nullable();
             $table->string('return_qty')->nullable();
             $table->string('price')->nullable();
             $table->string('unit_id')->nullable();

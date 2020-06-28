@@ -225,7 +225,7 @@ class JobworkController extends Controller
 
               $product_flow =new ProductFlow;
               $product_flow->depertment_id=$request->depertment_id[$i];
-              $product_flow->send_depertment_id=$request->send_depertment_id[$i];
+              $product_flow->send_depertment_id=$request->send_depertment_id;
               $product_flow->variation_id=$request->variation_id[$i];
               $product_flow->work_order_id=$request->work_order_id[$i];
               $product_flow->product_id=$request->product_id[$i];

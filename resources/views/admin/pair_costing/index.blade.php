@@ -21,8 +21,8 @@ padding: 0.2rem 0.5rem;
     <div class="col-md-12">
         <div class="tile">
             <h3 class="tile-title">
-            @can('job_work.create')
-            <a data-placement="bottom" title="Create New JobWork" type="button" class="btn btn-info" href ="{{ route('admin.paircosting.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Cost')}}</a>
+            @can('paircosting.create')
+            <a data-placement="bottom" title="Create New JobCost" type="button" class="btn btn-info" href ="{{ route('admin.paircosting.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i>{{_lang('New Job Cost')}}</a>
             @endcan
             </h3>
             <div class="tile-body">

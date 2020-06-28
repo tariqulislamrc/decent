@@ -3,7 +3,7 @@ $route = 'admin.client.';
 @endphp
 <div class="card">
   <div class="card-header">
-    <h6>{{ isset($model) ? _lang('Update'):_lang('Create') }} {{_lang('Client')}}</h6>
+    <h6>{{ isset($model) ? _lang('Update'):_lang('Create') }} {{_lang('Supplier')}}</h6>
   </div>
   <div class="card-body">
     @if(isset($model))
@@ -11,16 +11,10 @@ $route = 'admin.client.';
     @else
     {!! Form::open(['route' => $route.'store', 'class' => 'form-validate-jquery', 'id' => 'content_form', 'files' => true, 'method' => 'POST']) !!}
     @endif
-    <input type="hidden" name="type" value="customer">
-    <input type="hidden" name="trans_type" value="Credit">
+    <input type="hidden" name="type" value="supplier">
+    <input type="hidden" name="trans_type" value="Debit">
     <div class="row">
-        <div class="col-md-6">
-        <div class="form-group">
-            {!! Form::label('sub_type', _lang('Client Type').':') !!}
-            {!! Form::select('sub_type', ['retail'=>'Retail','wholesale'=>'WholeSale','ecommerce'=>'eCommerce'], null, ['class' => 'form-control select','id'=>'sub_type']); !!}
-        </div>
-      </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="form-group">
           {{ Form::label('name', _lang('Name') , ['class' => 'col-form-label']) }}
           {{ Form::text('name', null, ['class' => 'form-control', 'id'=>'name', 'placeholder' => _lang('Name'),'required'=>'','autofocus'=>true]) }}

@@ -382,7 +382,12 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 			Route::get('production-purchase/payment/{id}', 'Production\PurchaseController@payment')->name('production-purchase.payment');
 			Route::patch('production-purchase/add_payment/{id}', 'Production\PurchaseController@add_payment')->name('production-purchase.add_payment');
 			Route::get('production-purchase/view/{id}','Production\PurchaseController@view')->name('purchase_view');
+			//new PurChase Route
+			Route::get('production-purchase/new-purchase','Production\PurchaseController@new_purchase')->name('new_purchase');
+			Route::get('supplier/material','Production\PurchaseController@supplier_material');
+			Route::any('production-purchase/received/{id}','Production\PurchaseController@received')->name('purchase.received');
 			Route::resource('production-purchase', 'Production\PurchaseController');
+
 			// Client:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 			Route::get('client-datatable', 'ClientController@datatable')->name('client.datatable');
 			Route::get('client/mail/{id}','ClientController@email')->name('client.mail');
@@ -394,6 +399,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 		    Route::get('client-payment-due/{id}','TransactionPaymentController@getPayClientDue')->name('client_pay_due');
 		    Route::post('/payments/pay-client-due', 'TransactionPaymentController@postPayClientDue')->name('client_pay_due_post');
 			Route::get('client/payment-list/{id}','ClientController@getCustomerPayment')->name('getCustomerPayment');
+
+			//Supplier
+			Route::get('supplier','ClientController@get_supplier_index')->name('get_supplier_index');
+			Route::get('supplier/view/{id}','ClientController@supplier_show')->name('supplier_show');
 
 		// Production Route End
 

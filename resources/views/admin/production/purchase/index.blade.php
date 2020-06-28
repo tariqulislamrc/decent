@@ -24,26 +24,36 @@ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sor
     <div class="col-md-12">
         <div class="tile">
             <h3 class="tile-title">
-            @can('purchase.create')
+                {{-- Old Link --}}
+{{--             @can('purchase.create')
             <a data-placement="bottom" title="Create New Production Product" type="button" class="btn btn-info" href ="{{ route('admin.production-purchase.request') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Purchase')}}</a>
+            @endcan --}}
+             @can('purchase.create')
+            <a data-placement="bottom" title="Create New Production Product" type="button" class="btn btn-info" href ="{{ route('admin.new_purchase') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('New Purchase')}}</a>
             @endcan
             </h3>
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('employee_id',  _lang('Purchase For') . ':') !!}
                                 {!! Form::select('employee_id', $employeis, null, ['class' => 'form-control select', 'style' => 'width:100%', 'placeholder' => _lang('All')]); !!}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                           <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('client_id',  _lang('Supplier') . ':') !!}
+                                {!! Form::select('client_id', $clients, null, ['class' => 'form-control select', 'style' => 'width:100%', 'placeholder' => _lang('All')]); !!}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('status',  _lang('Purchase Status') . ':') !!}
                                 {!! Form::select('status', ['Received'=>'Received','Pending'=>'Pending','Ordered'=>'Ordered'], null, ['class' => 'form-control select', 'style' => 'width:100%', 'placeholder' => _lang('All')]); !!}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('payment_status',  _lang('Payment Status') . ':') !!}
                                 {!! Form::select('payment_status', ['Paid' => _lang('Paid'), 'Due' => _lang('Due'), 'Partial' => _lang('Partial')], null, ['class' => 'form-control select', 'style' => 'width:100%', 'placeholder' => _lang('All')]); !!}
@@ -59,9 +69,8 @@ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sor
                         <tr>
                             <th>{{_lang('SL')}}</th>
                             <th>{{_lang('Purchase By')}}</th>
-                            <th>{{_lang('Company')}}</th>
+                            <th>{{_lang('Supplier')}}</th>
                             <th>{{_lang('Reference No')}}</th>
-                            <th>{{_lang('Invoice No')}}</th>
                             <th>{{_lang('Purchase Date')}}</th>
                             <th>{{_lang('Grand Total')}}</th>
                             <th>{{_lang('Purchase Status')}}</th>
@@ -87,4 +96,9 @@ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sor
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
 <script src="{{ asset('js/production/purchase.js') }}"></script>
+<script>
+     @if(session('msg'))
+      toastr.error('{{ session('msg') }}')
+     @endif
+</script>
 @endpush

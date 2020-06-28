@@ -110,7 +110,7 @@ class PairCostingController extends Controller
            $material->save();
         }
 
-            activity()->log('Paircosting Updated - ' . $model->id);
+            activity()->log('Paircosting created - ' . $model->id);
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully.','window'=>route('admin.paircosting.show',$model->id)]);
     }
@@ -136,7 +136,10 @@ class PairCostingController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ingredies =IngredientsCategory::all();
+        $materials=RawMaterial::all();
+        $model=JobCosting::findOrFail($id);
+        return view('admin.pair_costing.edit',compact('model','materials','ingredies'));
     }
 
     /**
@@ -148,7 +151,31 @@ class PairCostingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (!auth()->user()->can('paircosting.create')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $model =JobCosting::findOrFail($id);
+        $model->total_material_cost =$request->total_material_cost;
+        $model->rejection =$request->rejection;
+        $model->rejection_amt =$request->rejection_amt;
+        $model->profit_percent =$request->profit_percent;
+        $model->profit_amt =$request->profit_amt;
+        $model->commercial =$request->commercial;
+        $model->grand_total =$request->grand_total;
+        $model->save();
+        foreach ($model->cost_material as $key=> $material) { 
+           $material->ingredients_category_id =$request->ingredients_category_id[$key];
+           $material->raw_material_id =$request->raw_material_id[$key];
+           $material->unit_id =$request->unit_id[$key];
+           $material->consumstion =$request->consumstion[$key];
+           $material->unit_cost =$request->unit_cost[$key];
+           $material->cost_pr =$request->cost_pr[$key];
+           $material->save();
+        }
+
+            activity()->log('Paircosting Updated - ' . $model->id);
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => ' Successfully Updated.','window'=>route('admin.paircosting.show',$model->id)]);
     }
 
     /**

@@ -113,6 +113,42 @@ class TransactionUtil
 
 
 
+     /**
+     * Creates a new opening balance transaction for a contact
+     *
+     * @param  int $business_id
+     * @param  int $contact_id
+     * @param  int $amount
+     *
+     * @return void
+     */
+    public function createOpeningBalanceTransaction($client_id, $amount,$type=null,$trans_type=null)
+    {
+
+
+        $ym = Carbon::now()->format('Y/m');
+
+        $row = Transaction::where('transaction_type', $trans_type)->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', $trans_type)->withTrashed()->get()->count() + 1 : 1;
+        
+        $ref_no = $ym.'/Opening_'.ref($row);
+
+        $transaction = Transaction::create([
+            'client_id'=>$client_id,
+            'date'=>date('Y-m-d'),
+            'type'=>$type,
+            'payment_status' => 'due',
+            'reference_no'=>$ref_no,
+            'transaction_type'=>$trans_type,
+            'net_total'=>$amount,
+            'due'=>$amount,
+            'created_by'=>auth()->user()->id,
+        ]);
+
+         return true;
+    }
+
+
+
         /**
      * Checks if products has manage stock enabled then Updates quantity for product and its
      * variations

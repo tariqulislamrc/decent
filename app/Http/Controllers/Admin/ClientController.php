@@ -50,7 +50,7 @@ class ClientController extends Controller
                         )
               
                     ->groupBy('clients.id');
-                    // $document->where('clients.client_type','client');
+                    $document->where('clients.type','customer');
                     if (!empty($request->sub_type)) {
                       $document->where('clients.sub_type',$request->sub_type);
                     }
@@ -82,6 +82,56 @@ class ClientController extends Controller
                     return view('admin.client.action', compact('model'));
                 })->rawColumns(['action','landmark','due','return_due','sub_type'])->make(true);
         }
+    }
+
+    public function get_supplier_index(Request $request)
+    {
+           if ($request->ajax()) {
+            $document = Client::leftjoin('transactions AS t', 'clients.id', '=', 't.client_id')
+                    ->select('clients.name','clients.email','clients.sub_type', 'state', 'country', 'landmark', 'mobile', 'clients.id','t.hidden as hidden',
+                        DB::raw("SUM(IF(t.transaction_type = 'Purchase', net_total, 0)) as total_invoice"),
+                        DB::raw("SUM(IF(t.transaction_type = 'Purchase', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received"),
+                        DB::raw("SUM(IF(t.transaction_type = 'purchase_return', net_total, 0)) as total_purchase_return"),
+                        DB::raw("SUM(IF(t.transaction_type = 'purchase_return', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as purchase_return_paid"),
+                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
+                        DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
+                        )
+              
+                    ->groupBy('clients.id');
+                    $document->where('clients.type','supplier');
+                    if (!empty($request->sub_type)) {
+                      $document->where('clients.sub_type',$request->sub_type);
+                    }
+                    if (!auth()->user()->hasRole('Super Admin')) {
+                        $document->where('clients.hidden',false);
+                    }
+            return DataTables::of($document)
+                ->addIndexColumn()
+                 ->editColumn(
+                'landmark',
+                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
+                
+                  )
+                ->addColumn(
+                'due',
+                '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
+                  
+                )
+               ->addColumn(
+                'return_due',
+                '<span class="display_currency return_due" data-orig-value="{{$total_purchase_return - $purchase_return_paid}}" data-currency_symbol=true data-highlight=false>{{$total_purchase_return - $purchase_return_paid }}</span>'
+                )
+                ->addColumn(
+                'sub_type',
+                '<span class="badge btn-danger">{{$sub_type}}</span>'
+                  
+                )
+                ->addColumn('action', function ($model) {
+                    return view('admin.supplier.action', compact('model'));
+                })->rawColumns(['action','landmark','due','return_due','sub_type'])->make(true);
+        }
+
+        return view('admin.supplier.index');
     }
 
 
@@ -169,12 +219,16 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         if (!auth()->user()->can('client.create')) {
             abort(403, 'Unauthorized action.');
         }
+        if ($request->type=='supplier') {
+          return view('admin.supplier.form');
+        }else{
         return view('admin.client.form');
+       }
     }
 
     /**
@@ -200,23 +254,13 @@ class ClientController extends Controller
          $input['created_by'] = auth()->user()->id;
          $input['client_type']='client';
          $contact = Client::create($input);
-
-        $ym = Carbon::now()->format('Y/m');
-
-        $row = Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() + 1 : 1;
-        
-        $ref_no = $ym.'/Open-'.ref($row);
-        $transaction = Transaction::create([
-        'client_id'=>$contact->id,
-        'date'=>date('Y-m-d'),
-        'type'=>'Debit',
-        'reference_no'=>$ref_no,
-        'payment_status' => 'due',
-        'transaction_type'=>'opening_balance',
-        'net_total'=>$request->net_total,
-        'due'=>$request->net_total,
-        'created_by'=>auth()->user()->id,
-        ]);
+         $client_id =$contact->id;
+         $type =$request->trans_type;
+         $trans_type ='opening_balance';
+           //Add opening balance
+          if (!empty($request->input('net_total'))) {
+                      $this->transactionUtil->createOpeningBalanceTransaction($client_id, $request->input('net_total'),$type,$trans_type);
+              }
 
      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Created')]);
     }
@@ -269,13 +313,40 @@ class ClientController extends Controller
              ->with(compact('contact'));
     }
 
+
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function supplier_show($id)
+    {
+        if (!auth()->user()->can('client.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+          $contact = Client::where('clients.id', $id)
+                        ->join('transactions AS t', 'clients.id', '=', 't.client_id')
+                        ->select(
+                            DB::raw("SUM(IF(t.transaction_type = 'Purchase', net_total, 0)) as total_purchase"),
+                            DB::raw("SUM(IF(t.transaction_type = 'Purchase', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as purchase_paid"),
+                            DB::raw("SUM(IF(t.transaction_type = 'purchase_return', net_total, 0)) as purchase_return"),
+                            DB::raw("SUM(IF(t.transaction_type = 'purchase_return', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as return_paid"),
+                            DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
+                            DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(amount) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid"),
+                            'clients.*'
+                        )->first();
+        return view('admin.supplier.show')
+             ->with(compact('contact'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         if (!auth()->user()->can('client.update')) {
             abort(403, 'Unauthorized action.');
@@ -294,7 +365,11 @@ class ClientController extends Controller
                 }
 
             }
-       return view('admin.client.form',compact('model','opening_balance'));
+            if ($request->type=='supplier') {
+              return view('admin.supplier.form',compact('model','opening_balance'));
+            }else{
+              return view('admin.client.form',compact('model','opening_balance'));
+            }
     }
 
     /**
@@ -334,29 +409,19 @@ class ClientController extends Controller
                 }
                 
                 $ob_transaction->net_total = $amount;
+                $ob_transaction->due = $amount;
                 $ob_transaction->save();
+                 $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
                 //Update opening balance payment status
-                $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
+                // $this->transactionUtil->updatePaymentStatus($ob_transaction->id, $ob_transaction->net_total);
             } else {
                 //Add opening balance
                 if (!empty($request->input('net_total'))) {
-                     $ym = Carbon::now()->format('Y/m');
+                   $client_id =$id;
+                   $type =$request->trans_type;
+                   $trans_type ='opening_balance';
+                    $this->transactionUtil->createOpeningBalanceTransaction($client_id, $request->input('net_total'),$type,$trans_type);
 
-                        $row = Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'opening_balance')->withTrashed()->get()->count() + 1 : 1;
-                        
-                        $ref_no = $ym.'/Open-'.ref($row);
-
-                        $transaction = Transaction::create([
-                          'client_id'=>$contact->id,
-                          'date'=>date('Y-m-d'),
-                          'type'=>'Debit',
-                          'reference_no'=>$ref_no,
-                          'payment_status' => 'due',
-                          'transaction_type'=>'opening_balance',
-                          'net_total'=>$request->net_total,
-                          'due'=>$request->net_total,
-                          'created_by'=>auth()->user()->id,
-                        ]);
                 }
             }
 

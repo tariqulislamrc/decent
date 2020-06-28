@@ -34,8 +34,16 @@
                         <label for="price">{{_lang('Raw Metrials price')}} <span class="text-danger">*</span></label>
                         <input required type="text" name="price" id="price" class="form-control" placeholder="Enter Raw Metrials price">
                     </div>
-                    {{-- Production Raw Metrials description --}}
                     <div class="col-md-6 form-group">
+                        <label for="client_id">{{_lang('Supplier')}} <span class="text-danger">*</span></label>
+                        <select name="client_id[]" class="form-control select" multiple>
+                            @foreach ($supplier as $element)
+                                <option value="{{ $element->id }}">{{ $element->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    {{-- Production Raw Metrials description --}}
+                    <div class="col-md-12 form-group">
                         <label for="description">{{_lang('Description')}}</label>
                         <textarea name="description" class="form-control" id="" placeholder="Enter Description"></textarea>
                     </div>

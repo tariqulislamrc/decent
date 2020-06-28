@@ -271,7 +271,6 @@ class AccountController extends Controller
                 $account = Account::findOrFail($id);
                 $account->name = $input['name'];
                 $account->account_number = $input['account_number'];
-                $account->account_number = $input['account_number'];
                 $account->account_type = $input['account_type'];
                 $account->note = $input['note'];
                 $account->save();
