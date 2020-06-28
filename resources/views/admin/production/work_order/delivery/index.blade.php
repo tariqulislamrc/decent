@@ -99,76 +99,41 @@
                 </table>
             </div>
 
-            {{-- Due Delivery Product Quantity --}}
-            <div class="col-md-6 table-responsive">
-                <table class="table table-warning table-bordered table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th colspan="2" class="text-center">Due Delivery Product Quantity</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center" width="80%">Product Name (Variation)</th>
-                            <th width="20%">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- @if (count($product_ids))
-                            @foreach ($product_ids as $product_id)
-                                @php
-                                    $product_id[] = $delivery_product->product_id;
-                                    $quantity[] = $delivery_product->qty;
-                                @endphp
-                                <tr>
-                                    <td class="text-center">{{ $work_order_product->product->name }} ({{ $work_order_product->variation->name }}) </td>
-                                    <td>{{ $work_order_product->qty}} </td>
-                                </tr>
-                            @endforeach
-                        @else 
-                            @php
-                                $product_id[] = 0;
-                                $quantity[] = 0;
-                            @endphp
+            @if ($delivery->status != 'paid')
+                {{-- Ready Product Quantity --}}
+                <div class="col-md-6 mx-auto table-responsive">
+                    <table class="table table-info table-bordered table-striped table-hover">
+                        <thead>
                             <tr>
-                                <th class="text-center text-danger" colspan="2">No Product is Deliveried Yet !</th>
+                                <th colspan="2" class="text-center">Ready Product Quantity</th>
                             </tr>
-                        @endif --}}
-                    </tbody>
-                </table>
-            </div>
-
-            {{-- Ready Product Quantity --}}
-            <div class="col-md-6 table-responsive">
-                <table class="table table-info table-bordered table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th colspan="2" class="text-center">Ready Product Quantity</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center" width="80%">Product Name (Variation)</th>
-                            <th width="20%">Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (count($ready_products))
-                            @foreach ($ready_products as $ready_product)
-                                <tr>
-                                    <td class="text-center">
-                                        {{ $ready_product['Product Name'] }} ({{ $ready_product['Variation Name'] }}) 
-                                    </td>
-                                    <td>{{ $ready_product['Quantity']}} </td>
-                                </tr>
-                            @endforeach
-                        @else 
                             <tr>
-                                <th class="text-center text-danger" colspan="2">No Product is Deliveried Yet !</th>
+                                <th class="text-center" width="80%">Product Name (Variation)</th>
+                                <th width="20%">Quantity</th>
                             </tr>
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <th class="text-center" colspan="2"><button data-toggle="modal" data-target="#sendDelivery" class="btn btn-primary btn-sm" type="button">Delivery The Product</button></th>
-                    </tfoot>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @if (count($ready_products))
+                                @foreach ($ready_products as $ready_product)
+                                    <tr>
+                                        <td class="text-center">
+                                            {{ $ready_product['Product Name'] }} ({{ $ready_product['Variation Name'] }}) 
+                                        </td>
+                                        <td>{{ $ready_product['Quantity']}} </td>
+                                    </tr>
+                                @endforeach
+                            @else 
+                                <tr>
+                                    <th class="text-center text-danger" colspan="2">No Product is Deliveried Yet !</th>
+                                </tr>
+                            @endif
+                        </tbody>
+                        <tfoot>
+                            <th class="text-center" colspan="2"><button data-toggle="modal" data-target="#sendDelivery" class="btn btn-primary btn-sm" type="button">Delivery The Product</button></th>
+                        </tfoot>
+                    </table>
+                </div>
+            @endif
         </div>
 
         <div id="print_table" class="card-body">

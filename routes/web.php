@@ -516,6 +516,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
 
+		Route::get('/', 'eCommerceController@index')->name('index');
+
 		// subscribers
 		Route::get('subscribers', 'SubscriberController@index')->name('subscribers.index');
 		Route::get('subscribers/datatable', 'SubscriberController@datatable')->name('subscribers.datatable');

@@ -1,12 +1,239 @@
 {{-- Dashboard --}}
 <li data-placement="bottom" title="Go to home">
-    <a class="app-menu__item {{ Request::is('home') ? ' active' : '' }}" href="{{ route('home') }}"><i
-            class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">{{_lang('dashboard')}}</span></a>
+    <a class="app-menu__item {{ Request::is('home') ? ' active' : '' }}" href="{{ route('home') }}">
+        <i class="app-menu__icon fa fa-dashboard"></i>
+        <span class="app-menu__label">
+            {{_lang('dashboard')}}
+        </span>
+    </a>
 </li>
 
+@if(Request::is('admin/eCommerce*'))
+
+    {{-- Ecommerce Dashboard --}}
+    <li data-placement="bottom" title="Go to eCommerce Dashboard">
+        <a class="app-menu__item {{ Request::is('admin/eCommerce') ? ' active' : '' }}" href="{{ route('admin.eCommerce.index') }}">
+            <i class="app-menu__icon fa fa-etsy"></i>
+            <span class="app-menu__label">
+                {{_lang('Ecommerce Dashboard')}}
+            </span>
+        </a>
+    </li>
+
+    {{--About us --}}
+    <li data-placement="bottom" title="Go to eCommerce About Us Page Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}">
+            <i class="app-menu__icon fa fa-telegram"></i>
+            <span class="app-menu__label">
+                {{_lang('About Us')}}
+            </span>
+        </a>
+    </li>
+
+    {{-- Page Banner --}}
+    <li data-placement="bottom" title="Ecommerce Page Banner Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}">
+            <i class="app-menu__icon fa fa-picture-o"></i> 
+            <span class="app-menu__label">
+                {{_lang('Banner')}}
+            </span>
+        </a>
+    </li>
+    
+    {{--Contact Message --}}
+    <li data-placement="bottom" title="Ecommerce Contact Message Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}">
+            <i class="app-menu__icon fa fa-envelope-open-o"></i>
+            <span class="app-menu__label">
+                {{_lang('Contact Message')}}
+            </span>
+        </a>
+    </li>
+    
+    {{-- Coupon --}}
+    <li data-placement="bottom" title="Ecommerce Coupon Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}">
+            <i class="app-menu__icon fa fa-ravelry"></i>
+            <span class="app-menu__label">
+                {{_lang('Coupons')}}
+            </span>
+        </a>
+    </li>
+    
+    {{-- Customer --}}
+    <li data-placement="bottom" title="Ecommerce Customer Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}">
+            <i class="app-menu__icon fa fa-users"></i>
+            <span class="app-menu__label">
+                {{_lang('Customer')}}
+            </span>
+        </a>
+    </li>
+    
+    {{-- Featured Product  --}}
+    <li data-placement="bottom" title="Ecommerce Featured Product Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.feature-product.index') }}">
+            <i class="app-menu__icon fa fa-meetup"></i>
+            <span class="app-menu__label">
+                {{_lang('Feature Product')}}
+            </span>
+        </a>
+    </li>
+
+    {{-- Hot sale Product  --}}
+    <li data-placement="bottom" title="Ecommerce Hot Sale Product Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.hotsale-product.index') }}">
+            <i class="app-menu__icon fa fa-free-code-camp"></i>
+            <span class="app-menu__label">
+                {{_lang('Hot Sale Product')}}
+            </span>
+        </a>
+    </li>
+
+    {{-- Offer --}}
+    <li data-placement="bottom" title="Ecommerce Offer Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}">
+            <i class="app-menu__icon fa fa-superpowers"></i>
+            <span class="app-menu__label">
+                {{_lang('Offer')}}
+            </span>
+        </a>
+    </li>
+
+    {{--Ecommerce Orders --}}
+    <li data-placement="bottom" title="Ecommerce Orders Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}">
+            <i class="app-menu__icon fa fa-handshake-o"></i>
+            <span class="app-menu__label">
+                {{_lang('Orders')}}
+            </span>
+        </a>
+    </li>
+
+    {{--Our Team--}}
+    <li data-placement="bottom" title="Ecommerce Our Team Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-team.index') }}">
+            <i class="app-menu__icon fa fa-users"></i>
+            <span class="app-menu__label">
+                {{_lang('Our Team')}}
+            </span>
+        </a>
+    </li>
+        
+    {{--Our workspace--}}
+    <li data-placement="bottom" title="Ecommerce Our workspace Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-workspace.index') }}">
+            <i class="app-menu__icon fa fa-space-shuttle"></i>
+            <span class="app-menu__label">
+                {{_lang('Our Workspace')}}
+            </span>
+        </a>
+    </li>
+
+    {{--Product Rating --}}
+    <li data-placement="bottom" title="Ecommerce Product Rating Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}" href="{{ route('admin.eCommerce.product-rating.index') }}">
+            <i class="app-menu__icon fa fa-star"></i>
+            <span class="app-menu__label">
+                {{_lang('Product Rating')}}
+            </span>
+        </a>
+    </li>
+
+    {{--Privacy Policy--}}
+    <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}">
+            <i class="app-menu__icon fa fa-shield"></i>
+            <span class="app-menu__label">
+                {{_lang('Privacy Policy')}}
+            </span>
+        </a>
+    </li>
+
+    {{--Seo --}}
+    <li data-placement="bottom" title="Ecommerce Seo Section">
+        <a class="app-menu__item {{Request::is('admin/c/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}">
+            <i class="app-menu__icon fa fa-globe"></i>
+            <span class="app-menu__label">
+                {{_lang('SEO')}}
+            </span>
+        </a>
+    </li>
+    
+    {{-- Shipping Charge --}}
+    <li data-placement="bottom" title="Ecommerce Shipping Charge Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}" href="{{ route('admin.eCommerce.shipping-charge.index') }}">
+            <i class="app-menu__icon fa fa-truck"></i>
+            <span class="app-menu__label">
+                {{_lang('Shipping Charge')}}
+            </span>
+        </a>
+    </li>
+    
+    {{-- Special Category  --}}
+    <li data-placement="bottom" title="Ecommerce Special Category Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-category.index') }}">
+            <i class="app-menu__icon fa fa-envira"></i>
+            <span class="app-menu__label">
+                {{_lang('Special Category')}}
+            </span>
+        </a>
+    </li>
+                
+    {{-- Special Offer  --}}
+    <li data-placement="bottom" title="Ecommerce Special Offer Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-offer.index') }}">
+            <i class="app-menu__icon fa fa-deviantart"></i>
+            <span class="app-menu__label">
+                {{_lang('Special Offer')}}
+            </span>
+        </a>
+    </li>
+
+        
+    {{-- Stock transfer --}}
+    <li data-placement="bottom" title="Ecommerce Stock transfer Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}">
+            <i  class="app-menu__icon fa fa-gg-circle"></i>
+            <span class="app-menu__label">
+                {{_lang('Stock')}}
+            </span>
+        </a>
+    </li>
+
+    {{-- Subscribers --}}
+    <li data-placement="bottom" title="Ecommerce Subscribers Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/subscribers*') ? 'active':''}}" href="{{ route('admin.eCommerce.subscribers.index') }}">
+            <i  class="app-menu__icon fa fa-envelope"></i>
+            <span class="app-menu__label">
+                {{_lang('Subscribers')}}
+            </span>
+        </a>
+    </li>
+    
+    {{--Term and Condition --}}
+    <li data-placement="bottom" title="Ecommerce Term and Condition Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}">
+            <i class="app-menu__icon fa fa-terminal"></i>
+            <span class="app-menu__label">
+                {{_lang('Terms & Conditions')}}
+            </span>
+        </a>
+    </li>
+
+    {{-- Whole Sale  --}}
+    <li data-placement="bottom" title="Ecommerce Whole Sale Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}" href="{{ route('admin.eCommerce.whole-sale') }}">
+            <i class="app-menu__icon fa fa-address-book"></i>
+            <span class="app-menu__label">
+                {{_lang('Whole Sale Page')}}
+            </span>
+        </a>
+    </li>
+@endif
+@if (!Request::is('admin/eCommerce*'))
+
 @if (!Request::is('admin/report*'))
-
-
 
 @can('client.view')
 {{-- Database Backup --}}
@@ -30,7 +257,7 @@
     </a>
     {{--<ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}"
     href="{{ route('admin.sale.pos.create') }}">
     <i class="icon fa fa-circle-o"></i>
@@ -38,13 +265,13 @@
     </a>
 </li>
 
-<li class="mt-1">
+<li data-placement="bottom" title="Ecommerce Offer Section">
     <a class="treeview-item {{Request::is('admin/sale/add') ? 'active':''}}" href="{{ route('admin.sale.add') }}">
         <i class="icon fa fa-circle-o"></i>
         {{_lang('Add Sale')}}
     </a>
 </li>
-<li class="mt-1">
+<li data-placement="bottom" title="Ecommerce Offer Section">
     <a class="treeview-item {{Request::is('admin/admin/sale/pos') ? 'active':''}}"
         href="{{ route('admin.sale.pos.index') }}">
         <i class="icon fa fa-circle-o"></i>
@@ -55,7 +282,7 @@
 
 <ul class="treeview-menu">
 
-    <li class="mt-1">
+    <li data-placement="bottom" title="Ecommerce Offer Section">
         <a class="treeview-item {{Request::is('admin/sale/pos/create') ? 'active':''}}"
             href="{{ route('admin.sale.pos.create') }}">
             <i class="icon fa fa-circle-o"></i>
@@ -63,13 +290,13 @@
         </a>
     </li>
 
-    <li class="mt-1">
+    <li data-placement="bottom" title="Ecommerce Offer Section">
         <a class="treeview-item {{Request::is('admin/sale/add') ? 'active':''}}" href="{{ route('admin.sale.add') }}">
             <i class="icon fa fa-circle-o"></i>
             {{_lang('Add Sale')}}
         </a>
     </li>
-    <li class="mt-1">
+    <li data-placement="bottom" title="Ecommerce Offer Section">
         <a class="treeview-item {{Request::is('admin/sale/pos') ? 'active':''}}"
             href="{{ route('admin.sale.pos.index') }}">
             <i class="icon fa fa-circle-o"></i>
@@ -77,7 +304,7 @@
         </a>
     </li>
 
-    <li class="mt-1">
+    <li data-placement="bottom" title="Ecommerce Offer Section">
         <a class="treeview-item {{Request::is('admin/sale/return/create') ? 'active':''}}"
             href="{{ route('admin.sale.return.create') }}">
             <i class="icon fa fa-circle-o"></i>
@@ -85,7 +312,7 @@
         </a>
     </li>
 
-    <li class="mt-1">
+    <li data-placement="bottom" title="Ecommerce Offer Section">
         <a class="treeview-item {{Request::is('admin/sale/return') ? 'active':''}}"
             href="{{ route('admin.sale.return.index') }}">
             <i class="icon fa fa-circle-o"></i>
@@ -107,21 +334,21 @@
             class="treeview-indicator fa fa-angle-right"></i></a>
     <ul class="treeview-menu">
 
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/emailmarketing/template*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/emailmarketing/template*') ? 'active':''}}"
                 href="{{ route('admin.emailmarketing.template.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Email Template')}}</a></li>
 
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/emailmarketing/media*') ?'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/emailmarketing/media*') ?'active':''}}"
                 href="{{ route('admin.emailmarketing.media.index') }}"><i
                     class="icon fa fa-circle-o"></i>{{_lang('Media')}}</a>
         </li>
 
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/emailmarketing/sendmail/create') ?'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/emailmarketing/sendmail/create') ?'active':''}}"
                 href="{{ route('admin.emailmarketing.sendmail.create') }}"><i
                     class="icon fa fa-circle-o"></i>{{_lang('Send Mail')}}</a>
         </li>
 
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/emailmarketing/email-history') ?'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/emailmarketing/email-history') ?'active':''}}"
                 href="{{ route('admin.emailmarketing.email_history') }}"><i
                     class="icon fa fa-circle-o"></i>{{_lang('Email History')}}</a>
         </li>
@@ -138,7 +365,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/smsmerketing/sendsms*') ? 'active':''}}"
                 href="{{ route('admin.smsmerketing.sendsms.create') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -146,7 +373,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/smsmerketing/sms-history') ? 'active':''}}"
                 href="{{ route('admin.smsmerketing.sms_history') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -168,7 +395,7 @@
 
         @can('employee_list.view')
         {{-- Employee list --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
                 href="{{ route('admin.employee-list.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee')}}</a></li>
         @endcan
@@ -177,20 +404,20 @@
 
 
         @can('employee_attendance.view')
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}"
                 href="{{ route('admin.attendance-employee-attendance.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Attendance')}}</a></li>
         @endcan
 
         @can('employee_leave.view')
         {{-- Employee Leave Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-leave') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-leave') ? 'active':''}}"
                 href="{{ route('admin.employee-leave.view') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Leave')}}</a></li>
         @endcan
         {{-- Employee Payroll --}}
         @can('employee_payroll.view')
-        <li class="mt-1"><a class="treeview-item {{ Request::is('admin/payroll*') ? ' active' : '' }}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{ Request::is('admin/payroll*') ? ' active' : '' }}"
                 href="{{ route('admin.payroll.view') }}"><i class="icon fa fa-circle-o"></i>{{_lang('Payroll')}}</a>
         </li>
         @endcan
@@ -199,7 +426,7 @@
 
         @can('employee_id_card.view')
         {{-- Employee Id Card --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-id-card*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-id-card*') ? 'active':''}}"
                 href="{{ route('admin.employee-id-card.id_card') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Id Card')}}</a></li>
         @endcan
@@ -207,14 +434,14 @@
 
         {{-- Employee Shift --}}
         @can('employee_shift.view')
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-shift*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-shift*') ? 'active':''}}"
                 href="{{ route('admin.employee-shift.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Shift')}}</a></li>
         @endcan
 
         {{-- holiday --}}
         @can('holiday.view')
-        <li class="mt-1"><a class="treeview-item {{ Request::is('admin/holiday*') ? ' active' : '' }}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{ Request::is('admin/holiday*') ? ' active' : '' }}"
                 href="{{ route('admin.holiday.index') }}"><i class="icon fa fa-circle-o"></i> {{_lang('Holiday')}}</a>
         </li>
         @endcan
@@ -222,28 +449,28 @@
 
         @can('employee_category.view')
         {{-- Employee Document Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
                 href="{{ route('admin.employee-category.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Category')}}</a></li>
         @endcan
 
         @can('employee-designation.view')
         {{-- Designation Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee/designation*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee/designation*') ? 'active':''}}"
                 href="{{ route('admin.designation.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Designation')}}</a></li>
         @endcan
 
         @can('employee_departmeent.view')
         {{-- Employee Department --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee/department*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee/department*') ? 'active':''}}"
                 href="{{ route('admin.employee.department.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Department')}}</a></li>
         @endcan
 
         @can('employee_document_type.view')
         {{-- Employee Document Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-document-type*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-document-type*') ? 'active':''}}"
                 href="{{ route('admin.employee-document-type.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Document Type')}}</a></li>
         @endcan
@@ -253,21 +480,21 @@
         @can('employee_leave_type.view')
 
         {{-- Employee Leave Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/emp-leave*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/emp-leave*') ? 'active':''}}"
                 href="{{ route('admin.employee-leave-type.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Leave Type')}}</a></li>
         @endcan
 
 
         @can('employee_attendance_type.view')
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/attendance-attendance-type*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/attendance-attendance-type*') ? 'active':''}}"
                 href="{{ route('admin.attendance-attendance-type.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Attendance Type')}}</a></li>
         @endcan
 
         @can('employee_payhead.view')
         {{-- Employee Payhead Type --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/employee-pay-head*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-pay-head*') ? 'active':''}}"
                 href="{{ route('admin.employee-pay-head.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee Payhead')}}</a></li>
         @endcan
@@ -286,52 +513,52 @@
     <ul class="treeview-menu">
         @can('production_category.view')
         {{-- Category --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-category*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-category*') ? 'active':''}}"
                 href="{{ route('admin.production-category.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Category')}}</a></li>
         @endcan
         @can('production_brands.view')
         {{-- Brands --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-brands*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-brands*') ? 'active':''}}"
                 href="{{ route('admin.production-brands.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Brand')}}</a></li>
         @endcan
         @can('production_variation.view')
         {{-- Variation Template --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-variation*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-variation*') ? 'active':''}}"
                 href="{{ route('admin.production-variation.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Variation')}}</a></li>
         @endcan
         @can('production_ingredients.view')
         {{-- Ingredients Categor --}}
-        <li class="mt-1"><a
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a
                 class="treeview-item {{Request::is('admin/production-ingredients-category*') ? 'active':''}}"
                 href="{{ route('admin.production-ingredients-category.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Ingredients Category')}}</a></li>
         @endcan
         @can('unit.view')
         {{-- Production Unit --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-unit*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-unit*') ? 'active':''}}"
                 href="{{ route('admin.production-unit.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Unit')}}</a></li>
         @endcan
 
         @can('raw_material.view')
         {{-- Production Raw Materials --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-raw-materials*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-raw-materials*') ? 'active':''}}"
                 href="{{ route('admin.production-raw-materials.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Raw Materials')}}</a></li>
         @endcan
 
         @can('production_product.view')
         {{-- Production Product --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-product*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-product*') ? 'active':''}}"
                 href="{{ route('admin.production-product.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Production Product')}}</a></li>
         @endcan
         @can('workorder.view')
         {{-- Production Work Order --}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/production-work-order*') ? 'active':''}}"
                 href="{{ route('admin.production-work-order.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Work Order')}}
@@ -340,7 +567,7 @@
 
         @endcan
         @can('production_wop_materials.view')
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/production-work-order-list') ? 'active':''}}"
                 href="{{ route('admin.production-work-order.list') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Work Order Tran.')}}
@@ -350,14 +577,14 @@
         @can('production_wop_materials.view')
 
         {{-- Production wop Materials --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-wop-materials*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-wop-materials*') ? 'active':''}}"
                 href="{{ route('admin.production-wop-materials.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('WOP Materials')}}</a></li>
         @endcan
 
         @can('purchase.view')
         {{-- Production Purchase --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/production-purchase*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/production-purchase*') ? 'active':''}}"
                 href="{{ route('admin.production-purchase.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Purchase List')}}</a></li>
         @endcan
@@ -385,7 +612,7 @@
     <ul class="treeview-menu">
         @can('production_department.view')
         {{-- Expense Category--}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/department') ? 'active':''}}"
                 href="{{ route('admin.department.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -396,7 +623,7 @@
 
         @can('submit_product_to_department.view')
         {{-- Expense --}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/department/report/create') ? 'active':''}}"
                 href="{{ route('admin.report.create') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -406,7 +633,7 @@
         @endcan
         @can('submit_material_to_department.view')
         {{-- Expense --}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/department/report/material*') ? 'active':''}}"
                 href="{{ route('admin.department.material.report') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -443,7 +670,7 @@
     <ul class="treeview-menu">
         @can('store_request.view')
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/request') ? 'active':''}}"
                 href="{{ route('admin.request.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -451,7 +678,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/request/create') ? 'active':''}}"
                 href="{{ route('admin.request.create') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -464,112 +691,7 @@
 @endcan
 
 @can('Ecommerce.view')
-{{-- eCommerce Section--}}
-<li class="treeview {{ Request::is('admin/eCommerce*') ? ' is-expanded' : '' }}"><a class="app-menu__item" href="#"
-        data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span
-            class="app-menu__label">{{_lang('E-Commerce')}}</span><i
-            class="treeview-indicator fa fa-angle-right"></i></a>
-    <ul class="treeview-menu">
-        
-        {{--about us --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.about-us.index') }}"><i class="icon fa fa-circle-o"></i>
-        {{_lang('About Us')}}</a></li>
-        
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.page-banner.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Banner')}}</a></li>
-        
-        {{--Contact Message --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.contact-msg.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Contact Message')}}</a></li>
-        
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.coupons.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Coupons')}}</a></li>
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Customer')}}</a></li>
-        
-        {{-- Featured Product  --}}
 
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.feature-product.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Feature Product')}}</a></li>
-
-
-        {{-- Hot sale Product  --}}
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.hotsale-product.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Hot Sale Product')}}</a></li>
-
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.eCommerce-offer.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Offer')}}</a></li>
-
-
-        {{--Ecommerce Orders --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.order.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Orders')}}</a></li>
-
-        {{--Our Team--}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.our-team.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Our Team')}}</a></li>
-            
-        {{--Our workspace--}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.our-workspace.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Our Workspace')}}</a></li>
-
-        {{--Product Rating --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.product-rating.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Product Rating')}}</a></li>
-
-        {{--Privacy Policy--}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.privacy-policy.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Privacy Policy')}}</a></li>
-
-        {{--Seo --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/c/seo/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.seo.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('SEO')}}</a></li>
-        
-        {{-- Shipping Charge --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.shipping-charge.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Shipping Charge')}}</a></li>
-        {{-- Special Category  --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.special-category.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Special Category')}}</a></li>
-                    
-        {{-- Special Offer  --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.special-offer.index') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Special Offer')}}</a></li>
-
-            
-        {{-- stock transfer --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Stock')}}</a></li>
-
-        {{-- Subscribers --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/subscribers*') ? 'active':''}}" href="{{ route('admin.eCommerce.subscribers.index') }}"><i  class="icon fa fa-circle-o"></i>{{_lang('Subscribers')}}</a></li>
-        
-        {{--Term and Condition --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}"
-        href="{{ route('admin.eCommerce.terams-conditions.index') }}"><i
-            class="icon fa fa-circle-o"></i>{{_lang('Terms & Conditions')}}</a></li>
-
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}"
-                href="{{ route('admin.eCommerce.whole-sale') }}"><i
-                    class="icon fa fa-circle-o"></i>{{_lang('Whole Sale Page')}}</a></li>
-
-</ul>
-</li>
 @endcan
 
 @can('accounting.view')
@@ -581,7 +703,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/accounting/investment') ? 'active':''}}"
                 href="{{ route('admin.accounting.investment.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -590,7 +712,7 @@
         </li>
 
         {{-- Expense --}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/expense/ex') ? 'active':''}}"
                 href="{{ route('admin.expense.ex.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -598,7 +720,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/accounting/account*') ? 'active':''}}"
                 href="{{ route('admin.accounting.account.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -608,7 +730,7 @@
 
 
         {{-- payment accunt --}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/accounting/payment/account') ? 'active':''}}"
                 href="{{ route('admin.accounting.payment_account') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -617,7 +739,7 @@
         </li>
 
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/accounting/cashflow') ? 'active':''}}"
                 href="{{ route('admin.accounting.cashflow') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -628,7 +750,7 @@
 
 
         {{-- Expense Category--}}
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/expense/category') ? 'active':''}}"
                 href="{{ route('admin.expense.category.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -650,7 +772,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/blog-category') ? 'active':''}}"
                 href="{{ route('admin.blog-category.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -658,7 +780,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/blog-post') ? 'active':''}}"
                 href="{{ route('admin.blog-post.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -679,7 +801,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/product') ? 'active':''}}"
                 href="{{ route('super_admin.product') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -687,14 +809,14 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/client') ? 'active':''}}"
                 href="{{ route('super_admin.client') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Client')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/sells') ? 'active':''}}"
                 href="{{ route('super_admin.sells') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -702,14 +824,14 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/sell-return') ? 'active':''}}"
                 href="{{ route('super_admin.sell_return') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Sell Return')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/purchase') ? 'active':''}}"
                 href="{{ route('super_admin.purchase') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -717,7 +839,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/expense') ? 'active':''}}"
                 href="{{ route('super_admin.expense') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -726,7 +848,7 @@
         </li>
 
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('super-admin/account') ? 'active':''}}"
                 href="{{ route('super_admin.account') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -748,14 +870,14 @@
     <ul class="treeview-menu">
         @can('role.view')
         {{-- Role & Permission --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/user/role*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/user/role*') ? 'active':''}}"
                 href="{{ route('admin.user.role') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('role_permission')}}</a></li>
         @endcan
 
         @can('user.view')
         {{-- User --}}
-        <li class="mt-1"><a
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a
                 class="treeview-item {{(Request::is('admin/user*') And !Request::is('admin/user/role*'))  ?'active':''}}"
                 href="{{ route('admin.user.index') }}"><i class="icon fa fa-circle-o"></i>{{_lang('user')}}
             </a>
@@ -773,49 +895,49 @@
     <ul class="treeview-menu">
         @can('setting.view')
         {{-- General Settings --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/general-setting*') ? 'active':''}}"
                 href="{{ route('admin.setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('General Settings')}}</a></li>
         @endcan
 
         @can('system_configuration.view')
         {{-- System Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/system-setting*') ? 'active':''}}"
                 href="{{ route('admin.system.setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('System Configuration ')}}</a></li>
         @endcan
 
         @can('mail_configuration.view')
         {{-- Mail Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/mail-setting*') ? 'active':''}}"
                 href="{{ route('admin.mail.setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Mail Configuration ')}}</a></li>
         @endcan
 
         @can('sms_configuration.view')
         {{-- SMS Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/sms-setting*') ? 'active':''}}"
                 href="{{ route('admin.sms.setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('SMS Configuration ')}}</a></li>
         @endcan
 
         @can('module_configuration.view')
         {{-- Module Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/module-setting*') ? 'active':''}}"
                 href="{{ route('admin.module.setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Module Configuration ')}}</a></li>
         @endcan
 
         @can('id_card_template.view')
         {{-- Module Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/id-card-template*') ? 'active':''}}"
                 href="{{ route('admin.id-card-template') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Id Card Template ')}}</a></li>
         @endcan
 
         @can('member_setting.view')
         {{-- Member Settings Configuration --}}
-        <li class="mt-1"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/setting/member*') ? 'active':''}}"
                 href="{{ route('admin.member-setting') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Member')}}</a></li>
         @endcan
@@ -838,6 +960,8 @@
 
 @endif
 
+@endif
+
 @if (Request::is('admin/report*'))
 
 <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
@@ -854,35 +978,35 @@
     </a>
 
     <ul class="treeview-menu">
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/depertment/product/report') ? 'active':''}}"
                 href="{{ route('admin.report.depertment.product_report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Product Report')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/depertment/raw-material/report') ? 'active':''}}"
                 href="{{ route('admin.report.depertment.raw_material_report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Material Report')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/depertment/product/report-details') ? 'active':''}}"
                 href="{{ route('admin.report.depertment.product_report_details') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Product Report Details')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/depertment/raw-material/report-details') ? 'active':''}}"
                 href="{{ route('admin.report.depertment.raw_material_report_details') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Material Report Details')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/depertment/store-material/report') ? 'active':''}}"
                 href="{{ route('admin.report.depertment.store_material_report') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -900,35 +1024,35 @@
     <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users" aria-hidden="true"></i> <span class="app-menu__label">{{_lang('Employee Report')}}</span> <i class="treeview-indicator fa fa-angle-right"></i> </a>
 
     <ul class="treeview-menu">
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/employee-salary-report') ? 'active':''}}"
                 href="{{ route('admin.report.employee-salary-report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Salary Report')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/employee-advance-payment-report') ? 'active':''}}"
                 href="{{ route('admin.report.employee-advance-payment-report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Advance Payment Report')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/employee-advance-return-report') ? 'active':''}}"
                 href="{{ route('admin.report.employee-advance-return-report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Advance Return Details')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/employee-other-payment-report') ? 'active':''}}"
                 href="{{ route('admin.report.employee-other-payment-report') }}">
                 <i class="icon fa fa-circle-o"></i>
                 {{_lang('Other Payment Report')}}
             </a>
         </li>
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/employee-report') ? 'active':''}}"
                 href="{{ route('admin.report.employee-report') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -957,7 +1081,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/expense') ? 'active':''}}"
                 href="{{ route('admin.report.expense.index') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -965,7 +1089,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/expense/accunt') ? 'active':''}}"
                 href="{{ route('admin.report.expense.account') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -985,7 +1109,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/selling/sales') ? 'active':''}}"
                 href="{{ route('admin.report.selling.sales') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -993,7 +1117,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/selling/sales-payment') ? 'active':''}}"
                 href="{{ route('admin.report.selling.sales_payment') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -1001,7 +1125,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/selling/sales-due') ? 'active':''}}"
                 href="{{ route('admin.report.selling.sales_due') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -1009,7 +1133,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/selling/sale-return') ? 'active':''}}"
                 href="{{ route('admin.report.selling.sale_return') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -1029,7 +1153,7 @@
     </a>
     <ul class="treeview-menu">
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/purchasing/sales') ? 'active':''}}"
                 href="{{ route('admin.report.purchasing.purchase') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -1037,7 +1161,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-payment') ? 'active':''}}"
                 href="{{ route('admin.report.purchasing.purchase_payment') }}">
                 <i class="icon fa fa-circle-o"></i>
@@ -1045,7 +1169,7 @@
             </a>
         </li>
 
-        <li class="mt-1">
+        <li data-placement="bottom" title="Ecommerce Offer Section">
             <a class="treeview-item {{Request::is('admin/report/purchasing/purchase-due') ? 'active':''}}"
                 href="{{ route('admin.report.purchasing.purchase_due') }}">
                 <i class="icon fa fa-circle-o"></i>
