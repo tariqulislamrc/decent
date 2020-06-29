@@ -220,7 +220,10 @@
                         <div class="info p-3">
                             <h4>Newsletter SUBSCRIBER</h4>
                             <p><b>
-0
+                                @php
+                                    $count = App\models\eCommerce\Subscriber::get();
+                                    echo count($count)
+                                @endphp
                                 </b></p>
                         </div>
                     </div>
@@ -271,7 +274,7 @@
                                     @endphp
                                 </b></p>
                         </div>
-                        <div class="card-3-bottom text-center py-1">
+                        <div class="card-4-bottom text-center py-1">
                             <a class="text-white" href="{{ route('admin.eCommerce.order.index', 'order=progressing') }}"><span>More Info</span></a>
                         </div>
                     </div>
@@ -406,7 +409,7 @@
                             </tr>
                             </thead>
                             @php
-                                $query = App\models\Client::where('id', '!=', 1)->orderby('id', 'desc')->limit(5)->get()
+                                $query = App\models\Client::where('id', '!=', 1)->where('sub_type', 'ecommerce')->orderby('id', 'desc')->limit(5)->get()
                             @endphp
                             <tbody>
                             @if (count($query))

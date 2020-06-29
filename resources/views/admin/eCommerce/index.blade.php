@@ -160,7 +160,10 @@
                         <div class="info p-3">
                             <h4>Newsletter SUBSCRIBER</h4>
                             <p><b>
-0
+                                @php
+                                    $count = App\models\eCommerce\Subscriber::get();
+                                    echo count($count)
+                                @endphp
                                 </b></p>
                         </div>
                     </div>
@@ -346,7 +349,7 @@
                             </tr>
                             </thead>
                             @php
-                                $query = App\models\Client::where('id', '!=', 1)->orderby('id', 'desc')->limit(5)->get()
+                                $query = App\models\Client::where('sub_type', 'ecommerce')->where('id', '!=', 1)->orderby('id', 'desc')->limit(5)->get()
                             @endphp
                             <tbody>
                             @if (count($query))
@@ -382,3 +385,46 @@
     </div>
 @stop
 
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    var options = {
+          series: [{
+            name: "Order",
+            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Order List for this month {{ date("F")}} ',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+      
+      
+    
+</script>
+@endpush
