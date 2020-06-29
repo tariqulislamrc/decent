@@ -23,22 +23,22 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pr-3">
-                    <p class="h5"> {{_lang('Code')}} : {{$models->prefix}}-{{$models->code}}</p>
-                    <p class="">{{_lang('Work Order Type')}} : {{$models->type}}</p>
-                    <p> {{_lang('Date')}} : {{$models->date}}</p>
-                    <p> {{_lang('Delivery Date')}} : {{$models->delivery_date}} </p>
+                    <p class="h5"> {{_lang('Code')}} : {{$model->prefix}}-{{$model->code}}</p>
+                    <p class="">{{_lang('Work Order Type')}} : {{$model->type}}</p>
+                    <p> {{_lang('Date')}} : {{formatDate($model->date)}}</p>
+                    <p> {{_lang('Delivery Date')}} : {{formatDate($model->delivery_date)}} </p>
                     <p>{{_lang('Status')}} : <span class="font-weight-bold badge badge-success">
-                            {{$models->status}} </span> </p>
+                            {{$model->status}} </span> </p>
                 </div>
             </div>
 
              <div class="col-md-6">
                 <div class="pr-3">
-                    <p class="h5"> {{_lang('Brand Name')}} : {{$models->brand->name}}</p>
-                    <p class="">{{_lang('Owner Name')}} : {{$models->brand->owner_name}}</p>
-                    <p> {{_lang('Email')}} : {{$models->brand->email}}</p>
-                    <p> {{_lang('Phone')}} : {{$models->brand->phone}} </p>
-                    <p>{{_lang('Address')}} : {!!$models->brand->address!!} </p>
+                    <p class="h5"> {{_lang('Brand Name')}} : {{$model->brand->name}}</p>
+                    <p class="">{{_lang('Owner Name')}} : {{$model->brand->owner_name}}</p>
+                    <p> {{_lang('Email')}} : {{$model->brand->email}}</p>
+                    <p> {{_lang('Phone')}} : {{$model->brand->phone}} </p>
+                    <p>{{_lang('Address')}} : {!!$model->brand->address!!} </p>
                 </div>
             </div>
         </div>
@@ -57,26 +57,28 @@
             <thead>
                 <tr>
                     <th>{{ _lang('SL') }}</th>
-                    <th>{{ _lang('Product') }}</th>
+                    {{-- <th>{{ _lang('Product') }}</th> --}}
                     <th>{{ _lang('Raw Material') }}</th>
                     <th>{{ _lang('Quantity') }}</th>
+                    <th>{{ _lang('Unit Price') }}</th>
                     <th>{{ _lang('Total Price') }}</th>
-                    <th>{{ _lang('Waste') }}</th>
-                    <th>{{ _lang('Uses') }}</th>
+                    {{-- <th>{{ _lang('Waste') }}</th> --}}
+                    {{-- <th>{{ _lang('Uses') }}</th> --}}
                 </tr>
             </thead>
             <tbody>
-                            @foreach ($models->wop_material as $item)
-                            <tr>
-                                <td>{{ $loop->index+1 }} </td>
-                                <td>{{ $item->work_order_product->product->name }} </td>
-                                <td>{{ $item->raw_material->name }} </td>
-                                <td> {{ $item->qty }}</td>
-                                <td>{{ $item->price }}</td>
-                                <td>{{ $item->waste }}</td>
-                                <td>{{ $item->uses }}</td>
-                            </tr>
-                            @endforeach
+                @foreach ($models as $item)
+                    <tr>
+                        <td>{{ $loop->index+1 }} </td>
+                        {{-- <td>{{ $item->work_order_product->product->name }} </td> --}}
+                        <td>{{ $item->raw_material->name }} </td>
+                        <td> {{ $item->qty }} {{ $item->raw_material->unit->unit }} </td>
+                        <td>{{ get_option('currency') }} {{ number_format($item->price, 2) }}</td>
+                        <td>{{ get_option('currency') }} {{ number_format($item->unit_price, 2) }}</td>
+                        {{-- <td>{{ $item->waste }}</td> --}}
+                        {{-- <td>{{ $item->uses }}</td> --}}
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

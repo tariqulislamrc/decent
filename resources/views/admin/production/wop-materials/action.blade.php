@@ -1,8 +1,8 @@
-@if ($model->transaction_status != 'transaction')
+{{-- @if ($model->transaction_status != 'transaction')
   @can('production_wop_materials.update')
     <a class="btn btn-warning btn-sm has-tooltip" data-original-title="null"  href="{{route('admin.production-wop-materials.edit',$model->id)}}" ><i class="fa fa-edit"></i></a>
 @endcan  
-@endif
+@endif --}}
 
 @can('production_wop_materials.view')
     <a class="btn btn-info btn-sm has-tooltip" data-original-title="null"  href="{{route('admin.production-wop-materials.show',$model->id)}}" ><i class="fa fa-eye"></i></a>

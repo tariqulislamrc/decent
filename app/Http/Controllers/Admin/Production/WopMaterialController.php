@@ -50,7 +50,7 @@ class WopMaterialController extends Controller
         if (!auth()->user()->can('production_wop_materials.create')) {
             abort(403, 'Unauthorized action.');
         }
-        $models = WorkOrder::where('status', '!=', 'requisition')->get();
+        $models = WorkOrder::where('status', '!=', 'requisition')->orderBy('id', 'desc')->get();
         return view('admin.production.wop-materials.create', compact('models'));
     }
 
@@ -65,30 +65,46 @@ class WopMaterialController extends Controller
         if (!auth()->user()->can('production_wop_materials.create')) {
             abort(403, 'Unauthorized action.');
         }
-        $request->validate([
-            'wo_id' => 'required',
-            'raw_material' => 'required',
-        ]);
+        // $request->validate([
+        //     'wo_id' => 'required',
+        //     'raw_material' => 'required',
+        // ]);
 
         $wo_id = $request->wo_id;
-        $raw_material = $request->raw_material;
+        $raw_material_id = $request->raw_material_id;
 
-        foreach ($raw_material as $key => $value) {
-            $wop_id = $key;
-            foreach ($value as $v) {
-                $purchase = new WopMaterial;
-                $purchase->wo_id = $wo_id;
-                $purchase->wop_id = $wop_id;
-                $purchase->raw_material_id = $v['raw_material_id'];
-                $purchase->qty = $v['qty'];
-                $purchase->price = $v['price'];
-                $purchase->unit_price = $v['unit_price'];
-                $purchase->waste = $v['waste'];
-                $purchase->uses = $v['uses'];
-                $purchase->created_by = auth()->user()->id;
-                $purchase->save();
-            }
+        for($i = 0; $i < count($raw_material_id); $i++) {
+            $raw_id = $request->raw_material_id[$i];
+            $qty = $request->quantity[$i];
+            $unit_price = $request->price[$i];
+            $sub_total = $request->total[$i];
+
+            $purchase = new WopMaterial;
+            $purchase->wo_id = $wo_id;
+            $purchase->raw_material_id = $raw_id;
+            $purchase->qty = $qty;
+            $purchase->price = $unit_price;
+            $purchase->unit_price = $sub_total;
+            $purchase->created_by = auth()->user()->id;
+            $purchase->save();
         }
+
+        // foreach ($raw_material as $key => $value) {
+        //     $wop_id = $key;
+        //     foreach ($value as $v) {
+        //         $purchase = new WopMaterial;
+        //         $purchase->wo_id = $wo_id;
+        //         $purchase->wop_id = $wop_id;
+        //         $purchase->raw_material_id = $v['raw_material_id'];
+        //         $purchase->qty = $v['qty'];
+        //         $purchase->price = $v['price'];
+        //         $purchase->unit_price = $v['unit_price'];
+        //         $purchase->waste = $v['waste'];
+        //         $purchase->uses = $v['uses'];
+        //         $purchase->created_by = auth()->user()->id;
+        //         $purchase->save();
+        //     }
+        // }
 
         $work_order = WorkOrder::findOrFail($wo_id);
         $work_order->status = 'requisition';
@@ -108,8 +124,9 @@ class WopMaterialController extends Controller
         if (!auth()->user()->can('production_wop_materials.view')) {
             abort(403, 'Unauthorized action.');
         }
-        $models = WorkOrder::with('work_order')->findOrFail($id);
-        return view('admin.production.wop-materials.show', compact('models'));
+        $model = WorkOrder::with('work_order')->findOrFail($id);
+        $models = WopMaterial::where('wo_id', $id)->get();
+        return view('admin.production.wop-materials.show', compact('models', 'model'));
     }
 
     /**
@@ -209,18 +226,24 @@ class WopMaterialController extends Controller
         if($product_materials) {
             foreach ($product_materials as $product_material) {
                 $product_id = $product_material->product_id;
+                $material_id = $product_material->material_id;
+
+                $price = $product_material->material->price;
+                $qty = ProductMaterial::where('material_id', $material_id)->sum('qty');
+                $total = $price * $qty;
                 
                 $data[] = [
-                    'matrial_name' => $product_material->material->name,
+                    'material_id' => $product_material->material_id,
+                    'material_name' => $product_material->material->name,
                     'price' => $product_material->material->price,
-                    'needed_material_qty' => $product_material->qty,
-                    'product_total_qty' => WorkOrderProduct::where('workorder_id', $models->id)->where('product_id', $product_id)->sum('qty'),
-                    'total_raw_material_needed' => $product_material->qty *  WorkOrderProduct::where('workorder_id', $models->id)->where('product_id', $product_id)->sum('qty')
+                    'qty' => $qty,
+                    'unit' => $product_material->material->unit->unit,
+                    'total' => $total
                 ];
             }
         }
-        dd($data);
 
-        return view('admin.production.wop-materials.product', compact('models'));
+        return view('admin.production.wop-materials.new_product', compact('models','data'));
+        // return view('admin.production.wop-materials.product', compact('models'));
     }
 }
