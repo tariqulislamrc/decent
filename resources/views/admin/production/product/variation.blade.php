@@ -40,10 +40,10 @@
                                     {{_lang('Sub Sku')}}
                                 </th>
                                 @foreach ($variations as $item)
-                                <th>
-                                <input type="hidden" name="variation[varitaion_template_id][{{$loop->index}}]" value="{{$item->id}}">
-                                    {{ $item->name }}
-                                </th>
+                                    <th>
+                                        <input type="hidden" name="variation[varitaion_template_id][{{$loop->index}}]" value="{{$item->id}}">
+                                        {{ $item->name }}
+                                    </th>
                                 @endforeach
                                {{--  <th>
                                     {{_lang('Purchase Price')}}

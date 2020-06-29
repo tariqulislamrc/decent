@@ -308,7 +308,7 @@ class WorkOrderController extends Controller
 
          // Activity Log
          activity()->log('Pay a Work order By - ' . Auth::user()->id);
-         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Payment successful'), 'load' => true]);
+         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Payment successful'), 'goto' => url('/admin/production-work-order')]);
         
     }
 
@@ -383,6 +383,7 @@ class WorkOrderController extends Controller
                 $line_purchase = new WorkOrderProduct;
                 $line_purchase->workorder_id = $id;
                 $line_purchase->product_id = $request->product_id[$i];
+                $line_purchase->variation_id = $request->variation_id[$i];
                 $line_purchase->qty = $request->quantity[$i];
                 $line_purchase->price = $request->price[$i];
                 $line_purchase->sub_total = $request->sub_total[$i];
@@ -396,7 +397,7 @@ class WorkOrderController extends Controller
         }
         // Activity Log
         activity()->log('updated a Work order By - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
     }
 
     /**
@@ -651,6 +652,10 @@ class WorkOrderController extends Controller
         $request->validate([
             'date' => 'required',
         ]);
+        
+        if(!isset($request->product_id)) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Select At Least 1 Item for Delivery')]);
+        }
 
         // find the work order
         $work_order = WorkOrder::findOrFail($id);
@@ -716,6 +721,5 @@ class WorkOrderController extends Controller
         $html = view('admin.production.work_order.delivery.print_today', compact('work_order_delivery', 'work_order', 'date'))->render();
 
         return response()->json(['success' => true, 'html' => $html, 'message' => _lang('Delivery Completed Successfully!.')]);
-    }
-    
+    }   
 }

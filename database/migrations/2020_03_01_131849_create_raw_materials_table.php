@@ -20,7 +20,7 @@ class CreateRawMaterialsTable extends Migration
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->double('price',10,2)->nullable();
-            $table->double('stock',10,2)->nullable();
+            // $table->double('stock',10,2)->nullable();
             $table->string('status')->nullable();
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
