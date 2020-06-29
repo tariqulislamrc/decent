@@ -31,6 +31,7 @@ class CreateTransactionSellLinesTable extends Migration
             $table->decimal('unit_price', 20, 2)->comment("Sell price excluding tax")->nullable();
             $table->decimal('total',20,2)->nullable();
             $table->integer('parent_sell_line_id')->nullable();
+            $table->stirng('sale_type')->default('ecommerce')->nullable();
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
             $table->integer('created_by')->nullable();
