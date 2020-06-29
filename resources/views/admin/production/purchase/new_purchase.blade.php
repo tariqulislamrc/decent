@@ -81,14 +81,25 @@ padding: 0.2rem 0.5rem;
     <div class="card card-box border border-primary">
     <div class="card-body">
      <div class="row">
-         <div class="col-md-10 mx-auto">
-            <label for="purchase_status">{{_lang('Supplier:')}}
+         <div class="col-md-6 mx-auto">
+            <label for="client_id">{{_lang('Supplier:')}}
                     </label>
                     <select class="form-control select" name="client_id" id="client_id" class="form-control select">
                         <option value="">Select Supplier</option>
                         @foreach ($suppliers as $element)
                             <option value="{{ $element->id }}">{{ $element->name }}</option>
                         @endforeach
+                    </select> 
+         </div>
+
+        <div class="col-md-6 mx-auto">
+            <label for="work_order_id">{{_lang('WorkOrder:')}}
+                    </label>
+                    <select class="form-control select" name="work_order_id" id="work_order_id" class="form-control select">
+                        <option value="">Select Workorder</option>
+                        @foreach ($workorders as $order)
+                                <option value="{{ $order->id }}">{{ $order->prefix}}-{{  $order->code }}</option>
+                            @endforeach
                     </select> 
          </div>
      </div>
@@ -334,6 +345,7 @@ $(document).on('click', '#check_it', function () {
     $('#checking').show();
     var url = "/admin/supplier/material";
     var client_id = $("#client_id").val();
+    var work_order_id = $("#work_order_id").val();
     if (client_id =="") {
       toastr.error("Select Supplier first");
        $("#check_it").show();
@@ -342,7 +354,8 @@ $(document).on('click', '#check_it', function () {
         $.ajax({
             url: url,
             data: {
-            client_id:client_id
+            client_id:client_id,
+            work_order_id:work_order_id
             },
             type: 'Get',
             dataType: 'html'
