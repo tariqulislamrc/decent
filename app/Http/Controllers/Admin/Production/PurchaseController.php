@@ -306,6 +306,8 @@ class PurchaseController extends Controller
         if ($request->payment>0) {
             $payment = new TransactionPayment;
             $payment->transaction_id = $id;
+            $payment->client_id = $request->client_id;
+            $payment->employee_id = $request->purchase_by;
             $payment->method = $request->method;
             $payment->payment_date = $request->purchase_date;
             $payment->transaction_no = $request->transaction_no;
@@ -427,13 +429,14 @@ class PurchaseController extends Controller
 
         $payment = new TransactionPayment;
         $payment->transaction_id = $id;
+        $payment->client_id = $transaction->client_id;
         $payment->method = $request->method;
         $payment->payment_date = $request->payment_date;
         $payment->transaction_no = $request->transaction_no;
         $payment->amount = $request->paid_amount;
         $payment->note = $request->payment_note;
         $payment->type = 'Debit';
-        $payment->acc_type ='investment';
+        $payment->payment_type ='investment';
         $payment->investment_account_id =$request->investment_account_id;
         $payment->created_by = auth()->user()->id;
         $payment->save();

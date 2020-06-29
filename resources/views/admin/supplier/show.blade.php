@@ -2,9 +2,12 @@
 {{-- Header Section --}}
 @push('admin.css')
     <style>
-        .table th, .table td {
-         padding: 0.2rem 0.5rem;
-        }
+.table th, .table td {
+   padding: 0.2rem 0.5rem;
+}
+ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting {
+    padding: 0.2rem 0.5rem;
+}
     </style>
 @endpush
 @section('page.header')
