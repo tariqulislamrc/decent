@@ -65,7 +65,6 @@
 		               <button style="display: none;" type="button" id="submiting" class="btn btn-block btn-sm btn-info" disabled>{{ _lang('Processing...') }}</button>
 				</div>
 			</div>
-		</form>
 	</div>
 </div>
 

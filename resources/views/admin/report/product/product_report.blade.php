@@ -16,8 +16,6 @@
 		<h6>{{_lang('Product Report')}}</h6>
 	</div>
 	<div class="card-body">
-		<form action="{{route('admin.report.product_report_print')}}" method="post" enctype="multipart/form-data" target="_blank">
-			@csrf
 			<div class="row">
 				<div class="col-md-8 mx-auto form-group">
 					<label for="product">{{_lang('Product')}}</label>
@@ -32,11 +30,17 @@
                   </select>
 				</div>
 				<div class="col-md-6 mx-auto">
-					<button type="submit" class="btn btn-block btn-info">{{ _lang('Get Product Report') }}</button>
+					<button data-url="{{route('admin.report.product_report_print')}}" type="button" id="submit" class="btn btn-block btn-sm btn-info">{{ _lang('Get  Report') }}</button>
+		             <button style="display: none;" type="button" id="submiting" class="btn btn-block btn-sm btn-info" disabled>{{ _lang('Processing...') }}</button>
 				</div>
 			</div>
-		</form>
 	</div>
+</div>
+  <div class="card mt-3">
+    <div class="card-header">Requested Report</div>
+    <div id="report_data" class="card-body">
+
+    </div>
 </div>
 <!-- /basic initialization -->
 @stop
@@ -45,5 +49,39 @@
 <script>
 $('.select').select2();
 _componentDatefPicker();
+$(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var product = $('#product').val();
+
+    get_data(product);
+});
+$('#submit').click(function() {
+    $('#submit').hide();
+    $('#submiting').show();
+    var product = $('#product').val();
+
+    get_data(product);
+   
+});
+
+function get_data(product) {
+    var url = $('#submit').data('url');
+    
+    $.ajax({
+        url: url,
+        data: {
+            product: product,
+        },
+        type: 'POST',
+        dataType: 'html'
+    })
+    .done(function(data) {
+        $('#report_data').html(data);
+        toastr.success('Report Genarate');
+        $('#submit').show();
+        $('#submiting').hide();
+    });
+}
 </script>
 @endpush

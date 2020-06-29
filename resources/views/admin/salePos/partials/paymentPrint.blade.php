@@ -4,13 +4,13 @@
     <div class="row px-5">
         <div class="col-md-4 text-justify">
             <p class="h3 font-weight-bold text-uppercase text-color"> Bill To</p>
-            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ $model->client->name }} </span>
+            <p class="text-justify"><span class="font-weight-bold d-inline-block text-color h5 "> Name : {{ $model->client?$model->client->name:'None' }} </span>
         </p>
-        <p> <span class="font-weight-bold text-color h5 text-justify"> Address : {{ $model->client->city }} </span>
+        <p> <span class="font-weight-bold text-color h5 text-justify"> Address : {{ $model->client?$model->client->city:'None' }} </span>
     </p>
-    <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $model->client->email }} </span>
+    <p class="text-justify"> <span class="font-weight-bold text-color h5"> E-mail  : {{ $model->client?$model->client->email:'None' }} </span>
 </p>
-<p><span class="font-weight-bold text-color h5"> Contact : {{ $model->client->mobile }} </span>  </p>
+<p><span class="font-weight-bold text-color h5"> Contact : {{ $model->client?$model->client->mobile:'None' }} </span>  </p>
 </div>
 <div class="col-md-4 ml-auto">
 <p class="">
