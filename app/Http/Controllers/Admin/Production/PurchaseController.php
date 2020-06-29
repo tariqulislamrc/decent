@@ -17,6 +17,7 @@ use App\models\Production\WorkOrder;
 use App\models\account\AccountTransaction;
 use App\models\account\InvestmentAccount;
 use App\models\employee\Employee;
+use App\models\Production\WopMaterial;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -158,7 +159,7 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $models = Employee::all();
-        $workorders = WorkOrder::where('status', '=', 'requisition')->get();
+        $workorders = WorkOrder::whereIn('status',['requisition','transaction'])->get();
         $uniqu_id = generate_id('purchase', false);
         $ym = Carbon::now()->format('Y/m');
 
@@ -173,8 +174,17 @@ class PurchaseController extends Controller
 
     public function supplier_material(Request $request)
     {
-        $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->get();
-        return view('admin.production.purchase.client_material',compact('model'));
+
+        if ($request->work_order_id) {
+              $wop =WopMaterial::where('wo_id',$request->work_order_id)->pluck('raw_material_id');
+
+              $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->whereIn('raw_material_id',$wop)->get();
+              return view('admin.production.purchase.client_material',compact('model'));
+          }else{
+              $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->get();
+              return view('admin.production.purchase.client_material',compact('model')); 
+        }
+
     }
 
     /**
