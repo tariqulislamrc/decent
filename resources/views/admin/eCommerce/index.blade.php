@@ -380,18 +380,49 @@
                         </table>
                     </div>
                 </div>
+                
+                <div class="col-md-12">
+                    <div id="chart"></div>
+                </div>
             </div>
         </div>
     </div>
 @stop
 
+@php
+    // find the first day of the month
+    $start = Carbon\Carbon::parse('first day of this month');
+    $first_day = $start->format('d');
+    // $start = $start->format('Y-m-d');
+
+    // find the last day of the month
+    $end = Carbon\Carbon::parse('last day of this month');
+    $last_day = $end->format('d');
+
+    $date = [];
+    $total_sale = [];
+    $total_purchase = [];
+    for ($first_day = $start->format('d'); $first_day <= $last_day; $first_day++) {
+        $date[] = $first_day;
+        $full_day = date('Y-m-').$first_day;
+
+        $total_sale[] = App\models\Production\Transaction::where('transaction_type', 'eCommerce')->whereDate('date', $full_day)->sum('net_total');
+    }
+
+    // dd($date);
+    $sale_amount_string = implode(', ',$total_sale);
+    // dd($sale_amount_string);
+    // $purchase_amount_string = implode(', ',$total_purchase);
+    $date_string = implode(', ',$date);
+@endphp
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    var options = {
+        var options = {
           series: [{
             name: "Order",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            data: [{{$sale_amount_string}}]
         }],
           chart: {
           height: 350,
@@ -408,7 +439,7 @@
         },
         title: {
           text: 'Order List for this month {{ date("F")}} ',
-          align: 'left'
+          align: 'center'
         },
         grid: {
           row: {
@@ -417,7 +448,7 @@
           },
         },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+          categories: [{{$date_string}}],
         }
         };
 
@@ -425,6 +456,5 @@
         chart.render();
       
       
-    
 </script>
 @endpush
