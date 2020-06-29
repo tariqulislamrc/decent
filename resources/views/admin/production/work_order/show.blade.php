@@ -1,11 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Production Product Show'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => $model->prefix. '-' .$model->code, 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
 <div class="app-title">
     <div>
-        <h1 data-placement="bottom" title="Product for Production."><i class="fa fa-universal-access mr-4"></i>
-            {{_lang('Production Product Show')}}</h1>
-        <p>{{_lang('Show Product for Production.')}}</p>
+        <h1 data-placement="bottom" title="Work Order View."><i class="fa fa-universal-access mr-4"></i>
+            {{_lang('Work Order View:')}} {{$model->prefix}}-{{$model->code}}</h1>
     </div>
     <ul class="app-breadcrumb breadcrumb">
         {{ Breadcrumbs::render('work-order-view') }}
@@ -27,8 +26,8 @@
                     <p class="h5"> {{_lang('Code')}} : {{$model->prefix}}-{{$model->code}}</p>
                     <p> {{_lang('Brand Name')}} : {{$model->brand?$model->brand->name:'Brand Name Empty'}}</p>
                     <p> {{_lang('Order Type')}} : {{$model->type}} </p>
-                    <p> {{_lang('Order Date')}} : {{$model->date}} </p>
-                    <p> {{_lang('Delivery Date')}} : {{$model->delivery_date}} </p>
+                    <p> {{_lang('Order Date')}} : {{formatDate($model->date)}} </p>
+                    <p> {{_lang('Delivery Date')}} : {{formatDate($model->delivery_date)}} </p>
                 </div>
             </div>
         </div>
@@ -46,7 +45,7 @@
             <thead>
                 <tr>
                     <th>{{ _lang('#') }}</th>
-                    <th>{{ _lang('Prodjuct Name') }}</th>
+                    <th>{{ _lang('Prodjuct Name') }} (Variation)</th>
                     <th>{{ _lang('Quantity') }}</th>
                     <th>{{ _lang('Price') }}</th>
                     <th>{{ _lang('Sub Price') }}</th>
@@ -57,11 +56,11 @@
                @foreach ($model->workOrderProduct as $key => $item)
                    <tr>
                        <td>{{$key+1}}</td>
-                       <td>{{$item->product->name}}</td>
-                       <td>{{$item->qty}}</td>
-                       <td>{{$item->price}}</td>
-                       <td>{{$item->sub_total}}</td>
-                       <td>{{$item->net_total}}</td>
+                       <td>{{$item->product->name}} ({{$item->variation->name}}) </td>
+                       <td>{{$item->qty}} <small>pair</small></td>
+                       <td>{{ get_option('currency')}} {{ number_format($item->price, 2)}}</td>
+                       <td>{{ get_option('currency')}} {{ number_format($item->sub_total, 2)}}</td>
+                       <td>{{ get_option('currency')}} {{ number_format($item->net_total, 2)}}</td>
                    </tr>
                @endforeach
             </tbody>

@@ -61,7 +61,7 @@
                                     $quantitys[] = $work_order_product->qty;
                                 @endphp
                                 <tr>
-                                    <td class="text-center">{{ $work_order_product->product->name }} ({{ $work_order_product->variation->name }}) </td>
+                                    <td class="text-center">{{ $work_order_product->product ? $work_order_product->product->name : ''  }} ({{ $work_order_product->variation ? $work_order_product->variation->name : '' }}) </td>
                                     <td>{{ $work_order_product->qty}} </td>
                                 </tr>
                             @endforeach
