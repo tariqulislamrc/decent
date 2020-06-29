@@ -14,6 +14,7 @@
 @stop
 {{-- Main Section --}}
 @section('content')
+{{-- {{ dd($model)}} --}}
 <div class="card">
     <div class="card-header">
         <h6>{{ isset($model) ? _lang('Update'):_lang('Create') }} {{_lang('Whole Sale Page')}}</h6>
@@ -32,7 +33,7 @@
                 </div>
                 <div class="col-md-12 form-group">
                     <label for="catelog">Image Catelog</label>
-                    <input type="file"  name="catelog" id="catelog" class="form-control dropify" >
+                    <input type="file"  name="catelog" id="catelog" class="form-control dropify" data-default-file="{{ isset($model) ? asset('storage/catelog/'.$model->catelog) : ''}}" >
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
