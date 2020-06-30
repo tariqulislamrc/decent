@@ -510,16 +510,29 @@ class WorkOrderController extends Controller
         if ($count1 == 0 && $count2==0) {
             $model = WorkOrder::findOrFail($id);
             //workorder product
-            $model->workOrderProduct->delete();
+            if($model->workOrderProduct) {
+                foreach($model->workOrderProduct as $value) {
+                    $value->delete();
+                }
+                // $model->workOrderProduct->delete();
+            }
             if (isset($model->transaction)) {
-                $model->transaction->payment->delete();
-                AccountTransaction::where('transaction_id',$model->transaction->id)->delete();
+                if($model->transaction->payment) {
+                    $model->transaction->payment->delete();
+                }
+                $account_transaction = AccountTransaction::where('transaction_id',$model->transaction->id)->get();
+                if($account_transaction) {
+                    foreach($account_transaction as $item) {
+                        $item->delete();
+                    }
+                }
                 $model->transaction->delete();
             }
             $model->delete();
-            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted')]);
         }else{
-           throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This workorder is already use in store/final Product')]);
+            // throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
         }
     }
 
