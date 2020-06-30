@@ -49,7 +49,7 @@ class TransactionUtil
   			'transaction_id'=>$transaction->id,
   			'client_id'=>$transaction->client_id,
   			'product_id'=>$variation['product_id'],
-            'sale_type'=>$transaction->sale_type
+            'sale_type'=>$transaction->sale_type,
   			'variation_id'=>$variation['variation_id'],
             'brand_id'=>$variation['brand_id'],
   			'quantity'=>$variation['quantity'],
