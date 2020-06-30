@@ -340,7 +340,17 @@ class WorkOrderController extends Controller
         }
         $brand = Brand::all();
         $model = WorkOrder::findOrFail($id);
-        return view('admin.production.work_order.edit', compact('model', 'brand'));
+        $accounts=Account::where('is_closed', 0)->get();
+        $models = Product::all();
+
+        $product_array = [];
+        $products = WorkOrderProduct::where('workorder_id', $model->id)->get();
+        if($products) {
+            foreach($products as $product) {
+                $product_array[] = $product->product_id;
+            }
+        }
+        return view('admin.production.work_order.edit', compact('model', 'brand', 'accounts', 'models', 'product_array'));
     }
 
     /**

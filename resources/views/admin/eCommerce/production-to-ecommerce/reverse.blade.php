@@ -34,7 +34,7 @@
                             <th>Pass Quantity</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="item">
                        
                     </tbody>
                 </table>
@@ -188,7 +188,6 @@ function item1(item, variation_id, ecommerce_id, quantity) {
 
 $("#item").on('click', '.btn_remove', function() {
     $(this).closest('tr').remove();
-    calculate();
 })
 </script>
 @endpush

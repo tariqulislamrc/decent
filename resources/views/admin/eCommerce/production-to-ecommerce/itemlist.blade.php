@@ -10,7 +10,7 @@
 		<input type="hidden" name="product[]" class="form-control" value="{{ $data->product_name }}">
 	</td>
 	<td>
-		{{ $data->quantity }}
+		{{ $data->qty_available }}
 		<input type="hidden" name="avaiable_qty[]" value="{{ $data->quantity }}">
 	</td>
 	<td>

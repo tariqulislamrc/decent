@@ -42,7 +42,7 @@
                     <div class="col-md-4">
                         <label for="brand_id">{{_lang('Select Brand')}}</label>
                         <div class="input-group">
-                            <select data-placeholder="Select One" name="brand_id" id="brand_id"
+                            <select required data-parsley-errors-container="#brand_id_error" data-placeholder="Select One" name="brand_id" id="brand_id"
                                     class="form-control select_custom brand_append">
                                 <option value="">Select One</option>
                                 @foreach ($brand as $item)
@@ -55,17 +55,19 @@
                                       data-container=".brand_modal">+</span>
                             </div>
                         </div>
+                        <span id="brand_id_error"></span>
                     </div>
 
                     {{-- Select  work Order Type --}}
                     <div class="col-md-4 form-group">
                         <label for="type">{{_lang('Work Order Type')}} <span class="text-danger">*</span>
                         </label>
-                        <select data-placeholder="Select One" name="type" id="type" class="form-control select">
+                        <select required data-parsley-errors-container="#work_order_type_error" data-placeholder="Select One" name="type" id="type" class="form-control select">
                             <option value="">Select One</option>
-                            <option selected value="sample">Sample</option>
+                            <option value="sample">Sample</option>
                             <option value="production">Production</option>
                         </select>
+                        <span id="work_order_type_error"></span>
                     </div>
 
                     {{-- Select Work Order Date --}}
@@ -107,7 +109,7 @@
                                 <td class="text-center"> <i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </td>
                                 <td>{{_lang('Product Name')}}</td>
                                 <td>{{_lang('Quantity')}}</td>
-                                <td>{{_lang('price')}}</td>
+                                <td>{{_lang('Price')}}</td>
                                 <td>{{_lang('Sub Total')}}</td>
                             </tr>
                             </thead>

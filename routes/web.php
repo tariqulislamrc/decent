@@ -23,6 +23,9 @@ Route::group(['middleware' => ['install']], function () {
 
 	Route::get('/', 'Frontend\Front_End_Controller@index');
 
+	Route::get('login/{service}', 'Auth\LoginController@redirectToProvider');
+    Route::get('login/{service}/callback', 'Auth\LoginController@handleProviderCallback');
+
 	Route::group(['as' => 'member.', 'prefix' => 'member', 'namespace' => 'Frontend'], function () {
 		Route::get('dashboard', 'ProfileController@dashboard')->name('dashboard');
 		Route::post('change-personal-information', 'ProfileController@change_personal_info')->name('change_personal_info');

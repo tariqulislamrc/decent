@@ -36,13 +36,14 @@
                     </div>
                 </div>
 
+
                 {{-- Select  Brand --}}
                 <div class="col-md-4 form-group">
                     <label for="brand_id">{{_lang('Select Brand')}}</label>
                     <select data-placeholder="Select One" name="brand_id" id="brand_id" class="form-control select">
                         <option value="">Select One</option>
                         @foreach ($brand as $item)
-                            <option {{$model->brand_id==$item->id?'selected':''}} == value="{{$item->id}}">{{$item->name}}</option>
+                            <option {{$model->brand_id == $item->id ? 'selected' : '' }} value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -53,13 +54,8 @@
                     </label>
                     <select data-placeholder="Select One" name="type" id="type" class="form-control select">
                         <option value="">Select One</option>
-                        @if ($model->type == 'sample')
-                            <option selected='selected' value="sample">Sample</option>
-                            <option value="production">Production</option>
-                        @else
-                            <option value="sample">Sample</option>
-                            <option selected='selected' value="production">Production</option>
-                        @endif
+                        <option {{ $model->type == 'sample' ? 'selected' : 'disabled' }} value="sample">Sample</option>
+                        <option {{ $model->type == 'production' ? 'selected' : 'disabled' }} value="production">Production</option>
                     </select>
                 </div>
 
@@ -75,11 +71,16 @@
                     <input type="text" readonly name="delivery_date" value="{{$model->delivery_date}}" id="delivery_date" class="form-control date" />
                 </div>
 
-                    <div class="col-md-4 form-group">
-                        <label for="name">{{_lang('Select Product')}} <span class="text-danger">*</span>
-                        </label>
-                         <input type="text" id="search_product" class="form-control" placeholder="Type Product Name">
-                    </div>
+                <div class="col-md-4 form-group">
+                    <label for="name">{{_lang('Select Product')}} <span class="text-danger">*</span>
+                    </label>
+                    <select id="select_product" class="form-control select" data-placeholder="Select A Product">
+                        <option value="">Select A Product</option>
+                        @foreach ($models as $product)
+                            <option {{ in_array($product->id, $product_array) ? 'disabled' : '' }} value="{{ $product->id }}">{{ $product->name }} ({{ $product->articel }}) </option>
+                        @endforeach
+                    </select>
+                </div>
 
             </div>
         </div>
@@ -91,21 +92,52 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-bordered">
+                    <table class="table update_invoice_table table-bordered">
                         <thead>
                             <tr>
-                            <td>{{_lang('Product Name')}}</td>
-                            <td>{{_lang('Quantity')}}</td>
-                            <td>{{_lang('price')}}</td>
-                            <td>{{_lang('Sub Total')}}</td>
-                            <td>{{_lang('Net Total')}}</td>
-                            <td>{{_lang('Action')}}</td>
+                                {{-- <td>{{_lang('Product Name')}}</td>
+                                <td>{{_lang('Quantity')}}</td>
+                                <td>{{_lang('price')}}</td>
+                                <td>{{_lang('Sub Total')}}</td>
+                                <td>{{_lang('Net Total')}}</td>
+                                <td>{{_lang('Action')}}</td> --}}
+                                <td class="text-center"> <i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </td>
+                                <td>{{_lang('Product Name')}}</td>
+                                <td>{{_lang('Quantity')}}</td>
+                                <td>{{_lang('Price')}}</td>
+                                <td>{{_lang('Sub Total')}}</td>
                             </tr>
                         </thead>
                         <tbody id="item">
                             @foreach ($model->workOrderProduct as $key => $produc_titem)
-                            <tr>
-                                <td>
+                            {{-- <tr> --}}
+                                <tr>
+                                    <td class="text-center">
+                                        <i style="cursor: pointer;" class="fa fa-trash text-danger remove" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        {{$produc_titem->product->name}} {{ \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first() ? \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first()->name : '' }}
+                                
+                                        <input type="hidden" name="product_id[]" class="product_id" value="{{$produc_titem->product_id}}" data-variation="{{$produc_titem->variation_id}}">
+                                        <input type="hidden" name="variation_id[]" class="variation_id" value="{{$produc_titem->variation_id}}">
+                                        <input type="hidden" class="form-controll code" value="{{$produc_titem->product_id}}">
+                                        {{-- <input type="hidden" class="form-control code" id="code_{{$row}}" data-id="{{$row}}" value="{{$product->id}}"> --}}
+                                    </td>
+                                
+                                    <td>
+                                        <input type="text" autocomplete="off"  name="quantity[]" class="form-control qty" value="{{ $produc_titem->qty }}">
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
+                                        <input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$produc_titem->sub_total}}">
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
+                                        <span  class="sub_total_text">{{number_format(1*$produc_titem->net_total, 2)}}</span>
+                                    </td>
+                                    
+                                </tr>
+                                {{-- <td>
                                     {{$produc_titem->product->name}} {{ \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first() ? \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first()->name : '' }}
                                     <input type="hidden" name="product_id[]" class="product_id" value="{{$produc_titem->product_id}}">
                                     <input type="hidden" name="variation_id[]" class="variation_id" value="{{$produc_titem->variation_id}}">
@@ -128,12 +160,62 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-info remove">X</button>
-                                </td>
-                            </tr>
+                                </td> --}}
+                            {{-- </tr> --}}
                         @endforeach
                         </tbody>
                     </table>
                 </div>
+
+                @if ($model->type == 'production')
+                    <div class="col-md-12 production_show">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span>{{ _lang('Total') }}</span> <br>
+                                                <input type="hidden" name="net_total" value="{{ $model->sub_total }}" id="net_total">
+                                                <span id="show_net_total">{{ number_format($model->sub_total, 2)}}</span>
+                                            </td>
+                                            <td style="width: 40%">
+                                                <span>{{ _lang('Discount Type') }}</span> <br>
+                                                <select name="discount_type" class="form-control" id="discount_type">  {{ $model->discount_type == 'fixed' ? 'selected' : ''}}
+                                                    <option {{ $model->discount_type == 'percentage' ? 'selected' : ''}} value="percentage">Percentage</option>
+                                                    <option {{ $model->discount_type == 'fixed' ? 'selected' : ''}} value="fixed">Fixed</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Discount') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="discount" value="{{ $model->discount_amount }}" class="form-control" id="discount_amount">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>{{ _lang('Discount Value') }}</span> <br>
+                                                <input type="text" name="discount_amount" class="form-control" id="total_discount" value="0" readonly>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Tax') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="tax" value="{{ $model->tax }}" class="form-control" id="tax_calculation_amount">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Shipping') }}</span> <br>
+                                                <input type="text" autocomplete="off" value="{{ $model->shiping_charge }}" name="shipping_charges" class="form-control" id="shipping_charges">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Total Payable') }}</span> <br>
+                                                <input type="hidden" class="form-control" value="{{ $model->total_payable }}" id="total_payable_amount" name="total_payable_amount">
+                                                <span class="total_payable_amount"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -152,103 +234,241 @@
 
 {{-- Script Section --}}
 @push('scripts')
-<script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
-<script src="{{ asset('js/production/work_order.js') }}"></script>
+{{-- <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('js/production/work_order.js') }}"></script> --}}
 <script>
-$(document).ready(function(){
-	$(document).on('change','#product_id',function(){
+    $('.select').select2();
+
+    $('#select_product').change(function() {
         var product_id = $(this).val();
-        var quantity =1;
-        var price = 1;
-		$.ajax({
-			url:"{{route('admin.production-work-order.item')}}",
-			method:'get',
-			dataType:'json',
-			data:{product_id:product_id},
-			success:function(data){
-                item(data,product_id,quantity,price);
-			}
-		});
-	});
+        get_purchase_entry_row(product_id);
+        // $('#select_product').val('');
+    });
 
-function item(item, product,quantity,price) {
-    var tr = $("#item").parent().parent();
-    var a = tr.find('.code');
-    if (a.length == 0) {
-        var row = parseInt($("#row").val());
-        $.ajax({
-            type: 'GET',
-            url: "/admin/production-work-order/append",
-            data: {
-                product: product,
-                row: row,
-                quantity: quantity,
-                price: price,
-            },
-            dateType: 'html',
-            success: function(data) {
-                $("#item").append(data);
-                $('#row').val(row + 1);
-            }
-
-        });
-    } else {
-        var found = true;
-        $(".code").each(function() {
-            if ($(this).val() == item.id) {
-                var id = $(this).data('id');
-                var qty = parseFloat($('#qty_' + id).val());
-                parseFloat($('#qty_' + id).val(qty + quantity));
-                var nwqty = parseFloat($('#qty_' + id).val());
-                var amt = nwqty * parseFloat(price);
-                $("#sub_total_" + id).html(amt);
-                $("#net_total_" + id).html(amt);
-                found = false;
-                return false;
-
-            }
-        })
-        if (found) {
-            var row = parseInt($("#row").val());
-            $.ajax({
-                type: 'GET',
-                url: "/admin/production-work-order/append",
-                data: {
-                    product: product,
-                    row: row,
-                    quantity: quantity,
-                    price: price,
-                },
-                dateType: 'html',
-                success: function(data) {
-                    $("#item").append(data);
-                    $('#row').val(row + 1);
-                }
-
-            });
-        }
-    }
-}
-
-    $("#item").on('click', '.remove', function() {
+    $("#item").on('click', '.remove', function () {
         $(this).closest('tr').remove();
         $("#discount_amount").val("");
         $("#discount").val("");
         $("#paid").val("");
     });
 
+    $("#item").on('keyup change', '.qty, .price', function () {
+        var tr = $(this).parent().parent();
+        update_sub_total(tr);
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
 
-    $("#item").on('keyup change', '.qty, .price', function() {
-    var tr = $(this).parent().parent();
-    var qty =tr.find('.qty').val();
-    var price= tr.find('.price').val();
-    var total =qty*price;
-    tr.find('.sub_total').val(total);
-    tr.find('.net_total').val(total);
-    tr.find('.sub_total_text').text(total);
-    tr.find('.net_total_text').text(total);
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
     });
 
-});
+    function update_sub_total(tr) {
+        var qty = tr.find('.qty').val();
+        var price = tr.find('.price').val();
+        var total = qty * price;
+        tr.find('.sub_total').val(total);
+        tr.find('.sub_total_text').text(total.toFixed(2));
+        var total_function_amount = total_function();
+        $('#net_total').val(total_function_amount);
+        $('#show_net_total').text(total_function_amount.toFixed(2));
+    }
+
+    function total_function()
+    {
+        var total = 0;
+        $('.update_invoice_table tbody tr').each(function(i, element) {
+            
+            var html = $(this).html();
+            if(html!='')
+            {
+                var net_total = $(this).find('.sub_total');
+                if(net_total.length > 0){
+                    total += parseInt(net_total.val());
+                }
+            
+            }
+        });
+        
+        return total;
+    }
+
+    function get_purchase_entry_row(product_id) {
+        //Get item addition method
+        var is_added = false;
+        //Search for variation id in each row of pos table
+        $('#item')
+            .find('tr')
+            .each(function () {
+                var row_v_id = $(this)
+                    .find('.product_id')
+                    .val();
+                if (
+                    row_v_id == product_id
+                ) {
+                    // is_added = true;
+                    // //Increment product quantity
+                    // qty_element = $(this).find('.qty');
+                    // qty_element.val(parseInt(qty_element.val()) + 1);
+                    // update_sub_total($(this));
+                    // $('input#search_product')
+                    //     .focus()
+                    //     .select();
+                    toastr.warning('Product available');
+                    is_added = true;
+                }
+            });
+
+
+        if (!is_added && product_id) {
+            var row_count = $('#row').val();
+            $.ajax({
+                method: 'POST',
+                url: '/admin/production-work-order/append',
+                dataType: 'json',
+                data: {product_id: product_id, row_count: row_count},
+                success: function (result) {
+                    $('#item').append(result.html);
+
+                    if ($(result.html).find('.qty').length) {
+                        $('#row').val(
+                            $(result.html).find('.qty').length + parseInt(row_count)
+                        ).trigger('change');
+                    }
+                    var net_total = total_function();
+                    $('#refresh_net_total').html(net_total.toFixed(2));
+                    $('#net_total').val(net_total);
+                    $('#show_net_total').html(net_total.toFixed(2));
+                    $('.total_payable_amount').html(net_total.toFixed(2));
+                    $('#total_payable_amount').val(net_total.toFixed(2));
+                },
+            });
+        }
+
+        // console.log(net_total);
+    }
+// $(document).ready(function(){
+// 	$(document).on('change','#product_id',function(){
+//         var product_id = $(this).val();
+//         var quantity =1;
+//         var price = 1;
+// 		$.ajax({
+// 			url:"{{route('admin.production-work-order.item')}}",
+// 			method:'get',
+// 			dataType:'json',
+// 			data:{product_id:product_id},
+// 			success:function(data){
+//                 item(data,product_id,quantity,price);
+// 			}
+// 		});
+// 	});
+
+// function item(item, product,quantity,price) {
+//     var tr = $("#item").parent().parent();
+//     var a = tr.find('.code');
+//     if (a.length == 0) {
+//         var row = parseInt($("#row").val());
+//         $.ajax({
+//             type: 'GET',
+//             url: "/admin/production-work-order/append",
+//             data: {
+//                 product: product,
+//                 row: row,
+//                 quantity: quantity,
+//                 price: price,
+//             },
+//             dateType: 'html',
+//             success: function(data) {
+//                 $("#item").append(data);
+//                 $('#row').val(row + 1);
+//             }
+
+//         });
+//     } else {
+//         var found = true;
+//         $(".code").each(function() {
+//             if ($(this).val() == item.id) {
+//                 var id = $(this).data('id');
+//                 var qty = parseFloat($('#qty_' + id).val());
+//                 parseFloat($('#qty_' + id).val(qty + quantity));
+//                 var nwqty = parseFloat($('#qty_' + id).val());
+//                 var amt = nwqty * parseFloat(price);
+//                 $("#sub_total_" + id).html(amt);
+//                 $("#net_total_" + id).html(amt);
+//                 found = false;
+//                 return false;
+
+//             }
+//         })
+//         if (found) {
+//             var row = parseInt($("#row").val());
+//             $.ajax({
+//                 type: 'GET',
+//                 url: "/admin/production-work-order/append",
+//                 data: {
+//                     product: product,
+//                     row: row,
+//                     quantity: quantity,
+//                     price: price,
+//                 },
+//                 dateType: 'html',
+//                 success: function(data) {
+//                     $("#item").append(data);
+//                     $('#row').val(row + 1);
+//                 }
+
+//             });
+//         }
+//     }
+// }
+
+//     $("#item").on('click', '.remove', function() {
+//         $(this).closest('tr').remove();
+//         $("#discount_amount").val("");
+//         $("#discount").val("");
+//         $("#paid").val("");
+//     });
+
+
+//     $("#item").on('keyup change', '.qty, .price', function() {
+//     var tr = $(this).parent().parent();
+//     var qty =tr.find('.qty').val();
+//     var price= tr.find('.price').val();
+//     var total =qty*price;
+//     tr.find('.sub_total').val(total);
+//     tr.find('.net_total').val(total);
+//     tr.find('.sub_total_text').text(total);
+//     tr.find('.net_total_text').text(total);
+//     });
+
+// });
 </script>
 @endpush

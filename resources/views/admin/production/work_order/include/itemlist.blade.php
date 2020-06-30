@@ -25,7 +25,7 @@
 </tr>
 @endforeach
 
-<script>
+{{-- <script>
     function total_function()
     {
         var total = 0;
@@ -54,7 +54,6 @@
 
     $(".update_invoice_table tbody tr").on('keyup change', '.qty, .price', function () {
         var tr = $(this).parent().parent();
-        update_sub_total(tr);
         // console.log(sub);
         var discount_amount = $('#total_discount').val();
         var sub_total = total_function();
@@ -78,9 +77,6 @@
 
         var total_payable = parseFloat(sub_total) - parseFloat(discount); 
 
-        console.log(total_payable);
-
-
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
     });
@@ -94,4 +90,4 @@
         tr.find('.sub_total_text').text(total);
         // tr.find('.net_total_text').text(total);
     }
-</script>
+</script> --}}

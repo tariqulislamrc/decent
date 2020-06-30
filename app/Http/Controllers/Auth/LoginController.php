@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\models\Client;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -10,8 +11,11 @@ use Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
 use App\models\eCommerce\PageBanner;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller {
 	/*
@@ -195,6 +199,81 @@ class LoginController extends Controller {
 	protected function guard()
     {
         return Auth::guard('client');
+    }
+
+        /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider($service)
+    {
+        return Socialite::driver($service)->redirect();
+    }
+    
+
+    /**
+     * Obtain the user information from google.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback($service)
+    {
+        // $user = Socialite::driver('google')->user();
+        if($service == 'google') {
+            $user = Socialite::driver($service)->stateless()->user();
+        } else {
+            $user = Socialite::driver($service)->stateless()->user();
+        }
+
+        // check 
+        $findUser = User::where('email', $user->email)->first();
+        
+        if($findUser) {
+
+            // Auth::login($findUser);
+            $this->guard('client')->login($findUser);
+        } else {
+            $model = new Client();
+            $model->type        =       'customer';
+            $model->client_type =       'ecommerce';
+            $model->sub_type =       'ecommerce';
+            $model->name        =       $user->name;
+            // $model->last_name   =       $data['last_name'];
+            // $model->user_name   =       $data['username'];
+            // $model->address     =       $data['address'];
+            $model->email       =       $user->email;
+            // $model->mobile      =       $data['phone'];
+            $model->tek_marks   =       'Created Client from Frontend';
+            $model->save();
+            $id = $model->id;
+    
+            // $data['id'] = $id;
+            $uuid =  Str::uuid()->toString();
+    
+    
+            $item = new User;
+            $item->clients_id = $id;
+            $item->user_type = 'Client';
+            $item->name = $user->name;
+            // $item->surname = $data['last_name'];
+            $item->first_name = $user->name;
+            // $item->last_name = $data['last_name'];
+            // $item->username = $data['username'];
+            $item->email = $user->email;
+            // $item->phone = $data['phone'];
+            $item->status = 'activated';
+            $item->uuid = $uuid;
+            $item->password = Hash::make(123456);
+            $item->save();
+
+            // Auth::login($user);
+            $this->guard('client')->login($user);
+
+        }
+
+        return Redirect::to('/member/dashboard');
+
     }
 
 }

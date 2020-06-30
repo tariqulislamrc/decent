@@ -50,7 +50,12 @@
                             </form>
                         </div>
 
-                        <div style="text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
+                        <ul class="mt-socialicons">
+                            <li class="mt-facebook"><a href="{{ url('login/facebook') }}"><i class="fa fa-facebook-f"></i></a></li>
+                            <li class="mt-youtube"><a id="loginwithgoogle" data-url="{{ url('login/google') }}" href="{{ url('login/google') }}"><i class="fa fa-google"></i></a></li>
+                          </ul>
+
+                        <div style="margin-top:10px; text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
 
                     </div>
                 </div>

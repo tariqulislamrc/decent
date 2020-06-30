@@ -175,7 +175,7 @@ class ProductionToEcommerceController extends Controller
             ->where('ecommerce_products.id', $request->ecommerce_id)
             ->select( 'p.id as product_id',
             'ecommerce_products.id as e_pid',
-            'ecommerce_products.quantity as quantity',
+            'ecommerce_products.quantity as qty_available',
                     'p.name as product_name',
                     // 'p.quantity',
                     // 'variations.default_sell_price as selling_price',

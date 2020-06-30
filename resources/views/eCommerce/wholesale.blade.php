@@ -36,7 +36,9 @@
                 <div class="txt">
                   <h2>{{ isset($model) && $model != null ? $model->header : 'Contact Us for Whole Sale'}}</h2>
                   <div>
+                    @if (isset($model))
                     <img style="max-height: 400px;" src="{{ asset('storage/catelog/'.$model->catelog) }}" alt="Wholesale Catelog">
+                    @endif
                   </div>
                   <p>{!! isset($model) && $model != null ? $model->description : '' !!}</p>
                 </div>
