@@ -10,15 +10,16 @@ use App\models\Production\ProductMaterial;
 use App\models\Production\ProductPhoto;
 use App\models\Production\ProductVariation;
 use App\models\Production\RawMaterial;
+use App\models\Production\Unit;
 use App\models\Production\Variation;
 use App\models\Production\VariationTemplate;
 use App\models\Production\VariationTemplateDetails;
 use App\models\depertment\ProductFlow;
 use App\models\inventory\TransactionSellLine;
-use App\models\Production\Unit;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\Facades\DataTables;
@@ -496,7 +497,8 @@ class ProductController extends Controller
 
     public function details_add($id)
     {
-        return view('admin.production.product.details-add',compact('id'));
+        $model =Product::findOrFail($id);
+        return view('admin.production.product.details-add',compact('id','model'));
     }
 
     public function details_store(Request $request, $id)
@@ -517,21 +519,32 @@ class ProductController extends Controller
         $model->keyword = $request->keyword;
         $model->meta_description = $request->meta_description;
         $model->updated_by = auth()->user()->id;
-        $model->save();
 
-        for ($i = 0; $i < count($request->photo); $i++) {
+        $delete =ProductPhoto::where('product_id',$id)->delete();
+        for ($i = 0; $i < count($request->hidden_value); $i++) {
+
             $photo = new ProductPhoto();
 
-            if ($request->hasFile('photo')) {
-            $storagepath = $request->file('photo')[$i]->store('public/product');
-            $fileName = basename($storagepath);
-            $photo->photo = $fileName;
+           if ($request->hasFile('photo')) {
+            if(isset($request->file('photo')[$i])){
+                if (isset($request->old_photo[$i])) {
+                   $image_path = public_path() . '/storage/product/' . $request->old_photo[$i];
+                    unlink($image_path);
+                }
+                $storagepath = $request->file('photo')[$i]->store('public/product');
+                $fileName = basename($storagepath);
+                $photo->photo = $fileName;
+                } else{
+                    $photo->photo = $request->old_photo[$i];
+                }
+            
             } else {
-                $photo->photo = '';
+                $photo->photo = $request->old_photo[$i];
             }
             $photo->product_id = $id;
             $photo->save();
         }
+         $model->save();
 
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.production-product.index')]);
 

@@ -252,23 +252,23 @@ class LoginController extends Controller {
             $uuid =  Str::uuid()->toString();
     
     
-            $item = new User;
-            $item->clients_id = $id;
-            $item->user_type = 'Client';
-            $item->name = $user->name;
-            // $item->surname = $data['last_name'];
-            $item->first_name = $user->name;
-            // $item->last_name = $data['last_name'];
-            // $item->username = $data['username'];
-            $item->email = $user->email;
-            // $item->phone = $data['phone'];
-            $item->status = 'activated';
-            $item->uuid = $uuid;
-            $item->password = Hash::make(123456);
-            $item->save();
+            $user_login = new User;
+            $user_login->clients_id = $id;
+            $user_login->user_type = 'Client';
+            $user_login->name = $user->name;
+            // $user_login->surname = $data['last_name'];
+            $user_login->first_name = $user->name;
+            // $user_login->last_name = $data['last_name'];
+            // $user_login->username = $data['username'];
+            $user_login->email = $user->email;
+            // $user_login->phone = $data['phone'];
+            $user_login->status = 'activated';
+            $user_login->uuid = $uuid;
+            $user_login->password = Hash::make(123456);
+            $user_login->save();
 
             // Auth::login($user);
-            $this->guard('client')->login($user);
+            $this->guard('client')->login($user_login);
 
         }
 

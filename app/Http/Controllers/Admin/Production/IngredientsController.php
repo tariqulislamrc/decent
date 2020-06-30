@@ -156,10 +156,15 @@ class IngredientsController extends Controller
         if (!auth()->user()->can('production_ingredients.delete')) {
             abort(403, 'Unauthorized action.');
         }
-        $type = IngredientsCategory::findOrFail($id);
-        $name = $type->name;
-        $type->delete();
-        activity()->log('Delete a Ingredients Category - ' . $name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
+        $count =JobCostMaterial::where('ingredients_category_id',$id)->count();
+        if ($count==0) {
+            $type = IngredientsCategory::findOrFail($id);
+            $name = $type->name;
+            $type->delete();
+            activity()->log('Delete a Ingredients Category - ' . $name);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
+        } else{
+              throw ValidationException::withMessages(['message' => _lang('You Cannot Delete this Contact')]);
+      }
     }
 }
