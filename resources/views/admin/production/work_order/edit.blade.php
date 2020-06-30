@@ -54,8 +54,8 @@
                     </label>
                     <select data-placeholder="Select One" name="type" id="type" class="form-control select">
                         <option value="">Select One</option>
-                        <option {{ $model->type == 'sample' ? 'selected' : 'disabled' }} value="sample">Sample</option>
-                        <option {{ $model->type == 'production' ? 'selected' : 'disabled' }} value="production">Production</option>
+                        <option {{ $model->type == 'sample' ? 'selected' : '' }} {{ $model->type == 'production' ? 'disabled' : '' }}  value="sample">Sample</option>
+                        <option {{ $model->type == 'production' ? 'selected' : '' }} value="production">Production</option>
                     </select>
                 </div>
 
@@ -109,7 +109,13 @@
                             </tr>
                         </thead>
                         <tbody id="item">
+                            @php
+                                $total = 0;
+                            @endphp
                             @foreach ($model->workOrderProduct as $key => $produc_titem)
+                            @php
+                                $total += $produc_titem->qty*$produc_titem->price;
+                            @endphp
                             {{-- <tr> --}}
                                 <tr>
                                     <td class="text-center">
@@ -133,7 +139,7 @@
                                     </td>
                                     <td>
                                         <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
-                                        <span  class="sub_total_text">{{number_format(1*$produc_titem->net_total, 2)}}</span>
+                                        <span  class="sub_total_text">{{number_format(1*$produc_titem->qty*$produc_titem->price, 2)}}</span>
                                     </td>
                                     
                                 </tr>
@@ -216,6 +222,111 @@
                         </div>
                     </div>
                 @endif
+
+                <div class="col-md-12 production_show" style="display: none;">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span>{{ _lang('Total') }}</span> <br>
+                                            <input type="hidden" name="net_total" id="net_total" value="{{ $total }}">
+                                            <span id="show_net_total">{{ number_format($total, 2)}}</span>
+                                        </td>
+                                        <td style="width: 40%">
+                                            <span>{{ _lang('Discount Type') }}</span> <br>
+                                            <select name="discount_type" class="form-control" id="discount_type">
+                                                <option value="percentage">Percentage</option>
+                                                <option value="fixed">Fixed</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <span>{{ _lang('Discount') }}</span> <br>
+                                            <input type="text" autocomplete="off" name="discount" class="form-control" id="discount_amount">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>{{ _lang('Discount Value') }}</span> <br>
+                                            <input type="text" name="discount_amount" class="form-control" id="total_discount" value="0" readonly>
+                                        </td>
+                                        <td>
+                                            <span>{{ _lang('Tax') }}</span> <br>
+                                            <input type="text" autocomplete="off" name="tax" class="form-control" id="tax_calculation_amount">
+                                        </td>
+                                        <td>
+                                            <span>{{ _lang('Shipping') }}</span> <br>
+                                            <input type="text" autocomplete="off" name="shipping_charges" class="form-control" id="shipping_charges">
+                                        </td>
+                                        <td>
+                                            <span>{{ _lang('Total Payable') }}</span> <br>
+                                            <input type="hidden" class="form-control" id="total_payable_amount" value="{{ $total }}" name="total_payable_amount">
+                                            <span class="total_payable_amount">{{ number_format($total, 2) }} </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="paid">{{ _lang('Paid') }} </label>
+                                        <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
+                                    </div>
+                                </div>
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="due">{{ _lang('Due') }} </label>
+                                        <input type="text" class="form-control due" name="due" id="due" readonly>
+                                    </div>
+                                </div>
+                                 <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="account_id">{{ _lang('Account') }} </label>
+                                        <select name="account_id" class="form-control select" id="account_id">
+                                            <option value="">Select Account</option>
+                                            @foreach ($accounts as $element)
+                                               <option>{{ $element->name }}({{ toWord($element->account_type) }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="paid">{{ _lang('Method') }} </label>
+                                        <select name="method" class="form-control method">
+                                            <option value="cash">Cash</option>
+                                            <option value="check">Check</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 reference_no" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="check_no">{{ _lang('Reference') }} </label>
+                                        <input type="text" class="form-control" name="check_no" id="check_no">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="sale_note">{{ _lang('Sale Note') }} </label>
+                                    <textarea name="sale_note" class="form-control" id="" placeholder="Sale Note"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="stuff_note">{{ _lang('Stuff Note') }} </label>
+                                    <textarea name="stuff_note" class="form-control" id="" placeholder="Stuff Note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -237,7 +348,20 @@
 {{-- <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script> --}}
 {{-- <script src="{{ asset('js/production/work_order.js') }}"></script> --}}
 <script>
-    $('.select').select2();
+    $('.select').select2({width:'100%'});
+
+    _formValidation();
+
+    $('#type').change(function() {
+        var val = $(this).val();
+        if(val == 'sample') {
+            $('.production_show').fadeOut();
+            $('#paid').removeAttr('required');
+        } else {
+            $('.production_show').fadeIn();
+            $('#paid').attr('required', '1');
+        }
+    });
 
     $('#select_product').change(function() {
         var product_id = $(this).val();
@@ -375,6 +499,204 @@
 
         // console.log(net_total);
     }
+
+        // discount_type
+        $('#discount_amount').keyup(function() {
+        var net_total = $('#net_total').val();
+        var discount_type = $('#discount_type').val();
+        var discount_amount = $(this).val();
+        if(discount_amount == '') {
+            discount_amount = 0;
+        }
+        if(discount_type == 'percentage') {
+            var discount_amount_for_show = (net_total * discount_amount) / 100;
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+        } else {
+            var discount_amount_for_show = parseFloat(discount_amount);
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+
+        }
+
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+        
+    });
+
+    // discount_type
+    $('#discount_type').change(function() {
+        var net_total = $('#net_total').val();
+        var discount_type = $('#discount_type').val();
+        var discount_amount = $('#discount_amount').val();
+        if(discount_amount == '') {
+            discount_amount = 0;
+        }
+
+        if(discount_type == 'percentage') {
+            var discount_amount_for_show = (net_total * discount_amount) / 100;
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+        } else {
+
+            var discount_amount_for_show = parseFloat(discount_amount);
+            $('#total_discount').val(discount_amount_for_show.toFixed(2));
+
+        }
+
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    // tax_calculation_amount
+    $('#tax_calculation_amount').keyup(function() {
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    // shipping_charges
+    $('#shipping_charges').keyup(function() {
+        var tax = $('#tax_calculation_amount').val();
+        var discount = $('#total_discount').val();
+        var sub_total = $('#net_total').val();
+        var shipping_charges = $('#shipping_charges').val();
+
+        if(tax == '') {
+            tax = 0;
+        } else {
+            tax = parseInt(tax);
+        }
+
+        if(discount == '') {
+            discount = 0;
+        } else {
+            discount = parseInt(discount);
+        }
+
+        if(sub_total == '') {
+            sub_total = 0;
+        } else {
+            sub_total = parseInt(sub_total);
+        }
+
+        if(shipping_charges == '') {
+            shipping_charges = 0;
+        } else {
+            shipping_charges = parseInt(shipping_charges);
+        }
+
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+
+        $('.total_payable_amount').html(total_payable.toFixed(2));
+        $('#total_payable_amount').val(total_payable.toFixed(2));
+    });
+
+    $('#paid').keyup(function() {
+        var payable = $('#total_payable_amount').val();
+        console.log(payable);
+        var paid = $(this).val();
+        if(paid == '') {
+            paid = 0;
+        }
+        var due = parseInt(payable) - parseInt(paid);
+        $('#due').val(due);
+    });
 // $(document).ready(function(){
 // 	$(document).on('change','#product_id',function(){
 //         var product_id = $(this).val();
