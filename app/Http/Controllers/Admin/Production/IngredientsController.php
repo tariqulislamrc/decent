@@ -59,7 +59,8 @@ class IngredientsController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
-            'name' => 'required|unique:ingredients_categories|max:255',
+            // 'name' => 'required|unique:ingredients_categories|max:255',
+            'name'=>'required',
             'description' => '',
             'status' => '',
         ]);
@@ -81,7 +82,7 @@ class IngredientsController extends Controller
 
         // Activity Log
         activity()->log('Created a Production Ingredients Category - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
     }
 
     /**
@@ -122,7 +123,8 @@ class IngredientsController extends Controller
         }
         $model =  IngredientsCategory::findOrFail($id);
          $request->validate([
-            'name' => ['required',Rule::unique('ingredients_categories')->ignore($model->id)],
+            // 'name' => ['required',Rule::unique('ingredients_categories')->ignore($model->id)],
+            'name'=>'required',
             'description' => '',
             'status' => '',
         ]);
@@ -141,7 +143,7 @@ class IngredientsController extends Controller
 
         // Activity Log
         activity()->log('Update a Production Ingredients Category - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update Successfuly'), 'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update Successfuly')]);
     }
 
     /**
@@ -158,6 +160,6 @@ class IngredientsController extends Controller
         $name = $type->name;
         $type->delete();
         activity()->log('Delete a Ingredients Category - ' . $name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'load'=>true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully')]);
     }
 }
