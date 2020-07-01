@@ -156,6 +156,7 @@ class DesignationController extends Controller
 
         $model =  Designation::findOrFail($id);
 
+
         $request->validate([
             'name' => ['required', 'string', 'max:70',
             Rule::unique('designations', 'name')->ignore($model->id)],           

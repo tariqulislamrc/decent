@@ -117,8 +117,8 @@ class EmployeeCategoryController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $validator = $request->validate([
-            'name' => 'required|max:255|unique:employee_categories,name,NULL,id,deleted_at,NULL'.$id,
+        $request->validate([
+            'name' => 'required|min:3|max:255|unique:employee_categories,name,NULL,id,deleted_at,NULL'.$id,
         ]);
 
         $model = EmployeeCategory::findOrFail($id);

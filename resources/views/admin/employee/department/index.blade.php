@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('employee_department.create')
+                    @can('employee_departmeent.create')
                         <button data-placement="bottom" title="Create New Employee Department" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee.department.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>
@@ -54,4 +54,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/employee/department.js') }}"></script>
 @endpush
-
