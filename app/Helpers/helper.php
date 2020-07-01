@@ -359,46 +359,46 @@ function numer_padding($id = 1, $code_digits=3){
 	return str_pad($id, $code_digits,0, STR_PAD_LEFT);
 }
 
-	function current_designation($id){
-		$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
+function current_designation($id){
+	$emp_d = App\models\employee\EmployeeDesignation::where('employee_id',$id)->with('designation')->latest()->first();
 
-		$designation = ($emp_d and $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d and $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
+	$designation = ($emp_d and $emp_d->designation->name)?$emp_d->designation->name:"";
+	$dept_id = ($emp_d and $emp_d->designation->department_id)?$emp_d->designation->department_id:"";
 
-    	return $designation;
-    }
+	return $designation;
+}
 
-    function current_dept($id){
-    	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
-    	// $designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
-    	$dept_id = ($emp_d and $emp_d->department_id)?$emp_d->department_id:"";
-    	$dept = App\models\employee\Department::where('id',$dept_id)->first();
-    	return  $dept ? $dept->name: "";
-	}
+function current_dept($id){
+	$emp_d =App\models\employee\EmployeeDesignation::where('employee_id',$id)->latest()->first();
+	// $designation = ($emp_d AND $emp_d->designation->name)?$emp_d->designation->name:"";
+	$dept_id = ($emp_d and $emp_d->department_id)?$emp_d->department_id:"";
+	$dept = App\models\employee\Department::where('id',$dept_id)->first();
+	return  $dept ? $dept->name: "";
+}
 
 
-    function to_date($start_date , $end_date){
-		$datetime1 = new DateTime($start_date);
-		$datetime2 = new DateTime($end_date);
-		$interval = $datetime1->diff($datetime2);
-		$day = $interval->format('%a');
-		$days = $day + 1;
-			return  $days;
-    }
+function to_date($start_date , $end_date){
+	$datetime1 = new DateTime($start_date);
+	$datetime2 = new DateTime($end_date);
+	$interval = $datetime1->diff($datetime2);
+	$day = $interval->format('%a');
+	$days = $day + 1;
+		return  $days;
+}
 
-	function formatMonth($date){
-		$dtobj = Carbon\Carbon::parse($date);
-		return $dtformat = $dtobj->format('F');
-	}
-	function formatDate2($date){
-		$dtobj = Carbon\Carbon::parse($date);
-		return $dtformat = $dtobj->format('j');
-	}
+function formatMonth($date){
+	$dtobj = Carbon\Carbon::parse($date);
+	return $dtformat = $dtobj->format('F');
+}
+function formatDate2($date){
+	$dtobj = Carbon\Carbon::parse($date);
+	return $dtformat = $dtobj->format('j');
+}
 
-	 function limit($limit)
-    {
-        return Str::words($limit, '100');
-    }
+function limit($limit)
+{
+	return Str::words($limit, '100');
+}
 
 function formatDate($date)
 {

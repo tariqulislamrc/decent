@@ -395,13 +395,10 @@
 
         @can('employee_list.view')
         {{-- Employee list --}}
-        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
+        <li data-placement="bottom" title="Employee List Section"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
                 href="{{ route('admin.employee-list.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee')}}</a></li>
         @endcan
-
-
-
 
         @can('employee_attendance.view')
         <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}"

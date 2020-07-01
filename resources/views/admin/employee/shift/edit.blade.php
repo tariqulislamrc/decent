@@ -6,7 +6,6 @@
         <form action="{{ route('admin.employee-shift.update',$model->id) }}" method="POST" id="content_form">
             @method('PATCH')
             <div class="row">
-
                 {{-- Name --}}
                 <div class="col-md-6 form-group">
                     <label for="name">{{_lang('Employee Shift Name')}}</label>
@@ -41,12 +40,13 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-12" align="right">
-                {{-- <input type="hidden" name="type[]" value=" "> --}}
-                <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Save')}}<i class="icon-arrow-right14 position-right"></i></button>
-                <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+            @can('employee_shift.update')
+                <div class="form-group col-md-12" align="right">
+                    <button type="submit" class="btn btn-primary btn-sm" id="submit">{{_lang('Save')}}<i class="fa ml-2 fa-crosshairs" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-success btn-sm " id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                </div>
+            @endcan
         </form>
     </div>
 </div>

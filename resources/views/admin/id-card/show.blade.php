@@ -77,7 +77,7 @@
                     <p>
                         <small>
                             @if (get_option('description'))
-                            {{get_option('description')}}
+                                {{get_option('description')}}
                             @else
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio officiis, eos nam dolorum veritatis et odio adipisci veniam quam optio. Delectus dignissimos dicta impedit repudiandae, saepe molestias necessitatibus recusandae distinctio!
                             @endif
@@ -87,5 +87,4 @@
             </div>
         </div>
 @endforeach
-<!-- /basic initialization -->
 @stop

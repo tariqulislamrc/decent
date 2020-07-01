@@ -33,7 +33,7 @@
                 </tbody>
             </table>
             <div align="right" class="col-md-12">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

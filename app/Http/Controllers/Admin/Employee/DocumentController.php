@@ -59,9 +59,9 @@ class DocumentController extends Controller
 
         request()->validate([
             'employee_document_type_id'         =>      'required',
-            'title'                             =>      'required',
+            'title'                             =>      'required|max:70',
             'employee_id'                       =>      'required',
-            'upload_token'                      =>      'required',
+            'file'                              =>      'required',
         ]);
 
         $employee_id = $request->employee_id;
@@ -74,8 +74,8 @@ class DocumentController extends Controller
 
         // Upload the file
         $fileName="";
-        if($request->hasFile('upload_token')) {
-            $storagepath = $request->file('upload_token')->store('public/document');
+        if($request->hasFile('file')) {
+            $storagepath = $request->file('file')->store('public/document');
             $fileName = basename($storagepath);
         }
 
@@ -128,7 +128,7 @@ class DocumentController extends Controller
     {
         request()->validate([
             'employee_document_type_id'         =>      'required',
-            'title'                             =>      'required',
+            'title'                             =>      'required|max:70',
             'employee_id'                       =>      'required',
         ]);
 

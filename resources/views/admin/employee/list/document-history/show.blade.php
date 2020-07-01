@@ -30,7 +30,6 @@
                         <td>{{$model->created_at}} </td>
                     </tr>
                     @if (carbonDate($model->updated_at))
-                        
                     <tr>
                         <td>{{_lang('Updated At')}}</td>
                         <td>{{$model->updated_at}} </td>

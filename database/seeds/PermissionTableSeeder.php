@@ -118,6 +118,12 @@ public function run() {
 			['name' => 'employee_category.update'],
 			['name' => 'employee_category.delete'],
 
+			// Employee Shift 
+			['name' => 'employee_shift.view'],
+			['name' => 'employee_shift.create'],
+			['name' => 'employee_shift.update'],
+			['name' => 'employee_shift.delete'],
+
 			// Employee Designation
 			['name' => 'employee-designation.view'],
 			['name' => 'employee-designation.create'],
@@ -178,7 +184,7 @@ public function run() {
 			['name' => 'employee_list.create'],
 			['name' => 'employee_list.update'],
 			['name' => 'employee_list.delete'],
-			['name' => 'employee_list.action'],
+			['name' => 'employee_list.access'],
 
 			// Document
 			['name' => 'document.view'],

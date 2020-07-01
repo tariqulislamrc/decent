@@ -56,4 +56,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/employee/leave_type.js') }}"></script>
 @endpush
-

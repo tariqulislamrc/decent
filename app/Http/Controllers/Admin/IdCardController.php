@@ -19,6 +19,10 @@ class IdCardController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.id-card.index');
     }
 
@@ -28,9 +32,15 @@ class IdCardController extends Controller
             $document = IdCardTemplate::where('name', '!=', config('system.default_role.admin'))->get();
             return Datatables::of($document)
                 ->addIndexColumn()
+                ->editColumn('width', function($model) {
+                    return $model->width . 'mm';
+                })
+                ->editColumn('height', function($model) {
+                    return $model->height . 'mm';
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.id-card.action', compact('model'));
-            })->rawColumns(['action'])->make(true);
+            })->rawColumns(['action', 'width', 'height'])->make(true);
         }
     }
 
@@ -41,6 +51,10 @@ class IdCardController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.id-card.create');
     }
 
@@ -52,11 +66,15 @@ class IdCardController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name' => 'required',
-            'width' => 'required',
-            'height' => 'required',
-            'show_per_page' => 'required',
+            'name' => 'required|string|min:3|max:50',
+            'width' => 'required|numeric|digits_between:1,2',
+            'height' => 'required|numeric|digits_between:1,2',
+            'show_per_page' => 'required|numeric|digits_between:1,2',
         ]);
 
         $model = new IdCardTemplate;
@@ -80,6 +98,10 @@ class IdCardController extends Controller
      */
     public function show(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $department = EmployeeDesignation::where('department_id', $request->department)->get();
         $employee_id = [];
         foreach ($department as  $value) {
@@ -101,6 +123,10 @@ class IdCardController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = IdCardTemplate::findOrFail($id);
         return view('admin.id-card.edit', compact('model'));
     }
@@ -114,6 +140,17 @@ class IdCardController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'name' => 'required|string|min:3|max:50',
+            'width' => 'required|numeric|digits_between:1,2',
+            'height' => 'required|numeric|digits_between:1,2',
+            'show_per_page' => 'required|numeric|digits_between:1,2',
+        ]);
+
         $model = IdCardTemplate::findOrFail($id);
         $model->name = $request->name;
         $model->width = $request->width;
@@ -134,6 +171,10 @@ class IdCardController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $type = IdCardTemplate::findOrFail($id);
         $name = $type->name;
         $type->delete();
@@ -145,6 +186,10 @@ class IdCardController extends Controller
 
     public function id_card()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $department = Department::all();
         $card = IdCardTemplate::all();
         return view('admin.id-card.id-card', compact('department','card'));

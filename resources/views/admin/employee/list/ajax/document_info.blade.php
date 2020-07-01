@@ -1,11 +1,9 @@
 <div class="row p-4">
     <div class="col-md-12">
         <div align="right">
-            @can('document.create')
-                <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Document File"
+            <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Document File"
                 type="button" id="content_managment" data-url="{{ route('admin.employee-document.create',$id)}}">
                 <i class="fa fa-plus mr-2" aria-hidden="true"></i>{{_lang('Add New Document')}}</button>
-            @endcan 
         </div>
         <br>
         <div class="row">
@@ -14,11 +12,9 @@
                     <i class="fa fa-th-list fa-4x" aria-hidden="true"></i><br>
                     <h2>Listing all Document here!</h2>
                     <h4>Upload and manage various documents of your employees to specific document type</h4>
-                    @can('document.create')
-                        <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Document File"
+                    <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Document File"
                         type="button" id="content_managment" data-url="{{ route('admin.employee-document.create',$id)}}">
                         <i class="fa fa-plus mr-2" aria-hidden="true"></i>{{_lang('Add New Document')}}</button>
-                    @endcan
                 </div>
             @else 
             <div class="table-responsive">
@@ -41,18 +37,12 @@
                             </td>
                             <td align="center">
                                 <div class="btn-group">
-                                    @can('document.delete')
-                                        <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.employee-document.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"
+                                        <button id="delete_item" data-toggle="tooltip" data-placement="bottom" title="Delete {{ $model->title }}" data-id ="{{$model->id}}" data-url="{{route('admin.employee-document.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"
                                         data-placement="bottom"><i class="fa fa-trash"></i></button>
-                                    @endcan
 
-                                    @can('document.update')
-                                        <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-document.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
-                                    @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Edit {{ $model->title }}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-document.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
                                     
-                                    @can('document.view')
-                                        <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-document.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
-                                    @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="View {{ $model->title }}" class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-document.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
                                </div>
                             </td>
                         </tr>

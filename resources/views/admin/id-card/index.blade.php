@@ -56,4 +56,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/pages/id-card.js') }}"></script>
 @endpush
-

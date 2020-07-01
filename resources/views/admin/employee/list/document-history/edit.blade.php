@@ -20,20 +20,18 @@
 
     $(document).ready(function () {
         $(document).on('change','#upload_token',function () {
-           // get the file name, possibly with path (depends on browser)
-        var filename = $(this).val();
-        // Use a regular expression to trim everything before final dot
-        var extension = filename.replace(/^.*\./, '');
-        if (extension == filename) {
-            extension = '';
-        } else {
-            extension = extension.toLowerCase();
-        }
-        if (extension == 'ppt' || extension == 'doc' || extension == 'docx' || extension == 'pdf') {
-        }else{
-            $(this).val("");
-            toastr.error('Allowed File File Formates: "doc","docx","pdf" and "ppt". But you Have Selecte Formate:"'+extension+'".');
-        }
+            var filename = $(this).val();
+            var extension = filename.replace(/^.*\./, '');
+            if (extension == filename) {
+                extension = '';
+            } else {
+                extension = extension.toLowerCase();
+            }
+            if (extension == 'ppt' || extension == 'doc' || extension == 'docx' || extension == 'pdf') {
+            }else{
+                $(this).val("");
+                toastr.error('Allowed File File Formates: "doc","docx","pdf" and "ppt". But you Have Selecte Formate:"'+extension+'".');
+            }
         });
     });
 </script>

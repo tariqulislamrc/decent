@@ -16,6 +16,10 @@ class EmployeeShiftController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         return view('admin.employee.shift.index');
     }
 
@@ -29,9 +33,12 @@ class EmployeeShiftController extends Controller
                 ->editColumn('status', function ($document) {
                     return $document->status == 1 ? '<span class="badge badge-primary">Active</span>' : '<span class="badge badge-warning">Inactive</span>';
                 })
+                ->editColumn('note', function($model) {
+                    return str_limit($model->note, 40);
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.shift.action', compact('model'));
-            })->rawColumns(['action', 'status'])->make(true);
+            })->rawColumns(['action', 'status', 'note'])->make(true);
         }
     }
 
@@ -42,6 +49,10 @@ class EmployeeShiftController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.shift.create');
     }
 
@@ -53,11 +64,15 @@ class EmployeeShiftController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name'          =>      'required|max:255',
+            'name'          =>      'required|min:3|max:50|unique:employee_shifts,name,NULL,id,deleted_at,NULL',
             'status'        =>      'required|max:255',
-            'start_time'    =>      'required|max:255',
-            'end_time'      =>      'required|max:255',
+            'start_time'    =>      'required',
+            'end_time'      =>      'required',
         ]);
 
         $model = new EmployeeShift;
@@ -75,17 +90,6 @@ class EmployeeShiftController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -93,6 +97,10 @@ class EmployeeShiftController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = EmployeeShift::findOrFail($id);
         return view('admin.employee.shift.edit', compact('model'));
     }
@@ -106,11 +114,15 @@ class EmployeeShiftController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name'          =>      'required|max:255',
-            'status'        =>      'required|max:255',
-            'start_time'    =>      'required|max:255',
-            'end_time'      =>      'required|max:255',
+            'name'          =>      'required|min:3|max:50|unique:employee_shifts,name,{$id},id,deleted_at,NULL',
+            'status'        =>      'required',
+            'start_time'    =>      'required',
+            'end_time'      =>      'required',
         ]);
 
         $model = EmployeeShift::findOrFail($id);
@@ -135,6 +147,10 @@ class EmployeeShiftController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = EmployeeShift::findOrFail($id);
         $model->delete();
 

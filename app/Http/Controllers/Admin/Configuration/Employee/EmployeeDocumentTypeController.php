@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Configuration\Employee;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\models\employee\EmployeeDocument;
 use Yajra\Datatables\Datatables;
 use App\models\employee\EmployeeDocumentType;
 
@@ -16,18 +17,29 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.document-type.index');
     }
 
     public function datatable(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         if ($request->ajax()) {
             $document = EmployeeDocumentType::where('name', '!=', config('system.default_role.admin'))->get();
             return Datatables::of($document)
                 ->addIndexColumn()
+                ->editColumn('description', function($model) {
+                    return str_limit($model->description, 60);
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.document-type.action', compact('model'));
-                })->rawColumns(['action'])->make(true);
+                })->rawColumns(['action', 'description'])->make(true);
         }
     }
 
@@ -38,6 +50,10 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.document-type.create');
     }
 
@@ -49,8 +65,12 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|min:3|unique:employee_document_types,name,NULL,id,deleted_at,NULL',
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'name' => 'required|min:3|max:50|unique:employee_document_types,name,NULL,id,deleted_at,NULL',
             'description' => '',
         ]);
 
@@ -66,17 +86,6 @@ class EmployeeDocumentTypeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -84,6 +93,10 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // find the data
         $model = EmployeeDocumentType::where('id', $id)->firstOrFail();
         // return
@@ -99,6 +112,15 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'name' => 'required|min:3|max:50|unique:employee_document_types,name,NULL,id,deleted_at,NULL'.$id,
+            'description' => '',
+        ]);
+
         $model = EmployeeDocumentType::findOrFail($id);
         $model->name = $request->name;
         $model->description = $request->description;
@@ -117,6 +139,16 @@ class EmployeeDocumentTypeController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check This Gesignation Contains Any Employee
+        $check = EmployeeDocument::where('employee_document_type_id', $id)->first();
+        if($check) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('You can not delete This Document. Employee Contains This Document')]);
+        }
+
         $type = EmployeeDocumentType::findOrFail($id);
         $name = $type->name;
         $type->delete();

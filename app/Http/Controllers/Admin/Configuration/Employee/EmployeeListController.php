@@ -39,14 +39,10 @@ class EmployeeListController extends Controller
             ->addColumn('status', function ($document) {
                 $id = $document->id;
                 $term = EmployeeTerm::where('employee_id',$id)->latest()->first();
-
                 return ($term AND $term->date_of_leaving)?'<span class="badge badge-danger">Inactive</span>':'<span class="badge badge-primary">Active</span>';
-                
-                    // dd($x);
             })
-
             ->editColumn('designation', function ($document) {
-                return current_designation($document->id) ?current_designation($document->id):"";
+                return current_designation($document->id) ? current_designation($document->id) : "";
             })
             ->editColumn('shift', function ($document) {
                 return current_shift($document->shift_id);
@@ -58,10 +54,7 @@ class EmployeeListController extends Controller
             ->addColumn('joining_date', function ($document) {
                 $id = $document->id;
                 $term = EmployeeTerm::where('employee_id',$id)->latest()->first();
-
                 return ($term AND $term->date_of_joining)?$term->date_of_joining:"";
-                
-                    // dd($x);
             })
             ->addColumn('action', function ($model) {
                 return view('admin.employee.list.action', compact('model'));
@@ -97,59 +90,54 @@ class EmployeeListController extends Controller
      */
     public function store(Request $request)
     {
-       $request->validate([
-            'prefix' => 'required',
-            'code' => 'required',
-            'name' => 'required',
+        $request->validate([
+            'prefix' => 'required|min:1|max:5',
+            'code' => 'required|min:1|max:10',
+            'name' => 'required|min:1|max:70',
             'designation' => 'required',
             'department' => 'required',
-            // 'father_name' => 'required',
-            // 'mother_name' => 'required',
-            'contact_number' => 'required|numeric',
-            // 'gender' => 'required',
-            // 'date_of_birth' => 'required',
-            // 'joining_date' => 'required',
+            'father_name' => 'max:70',
+            'mother_name' => 'max:70',
+            'contact_number' => 'required|numeric|digits_between:1,13',
         ]);
-       $uuid =  Str::uuid()->toString();
 
-       $emp_model = new Employee;
-       $emp_model->uuid = $uuid;
-       $emp_model->code = $request->code;
-       $emp_model->prefix = $request->prefix;
-       $emp_model->name = $request->name;
-       $emp_model->date_of_birth = $request->date_of_birth;
-       $emp_model->gender = $request->gender;
-       $emp_model->contact_number = $request->contact_number;
-       $emp_model->father_name = $request->father_name;
-       $emp_model->mother_name = $request->mother_name;
-       $emp_model->shift_id = $request->shift;
+        $uuid =  Str::uuid()->toString();
 
-       $emp_model->save();
+        $emp_model = new Employee;
+        $emp_model->uuid = $uuid;
+        $emp_model->code = $request->code;
+        $emp_model->prefix = $request->prefix;
+        $emp_model->name = $request->name;
+        $emp_model->date_of_birth = $request->date_of_birth;
+        $emp_model->gender = $request->gender;
+        $emp_model->contact_number = $request->contact_number;
+        $emp_model->father_name = $request->father_name;
+        $emp_model->mother_name = $request->mother_name;
+        $emp_model->shift_id = $request->shift;
 
-       $emp_tbl_id = $emp_model->id ;
+        $emp_model->save();
 
-       generate_id("employee", true);
+        $emp_tbl_id = $emp_model->id ;
 
+        generate_id("employee", true);
 
-       
-       $term_model = new EmployeeTerm;
-       $term_model->employee_id = $emp_tbl_id;
-       $term_model->date_of_joining = $request->joining_date;
-       $term_model->save();
-       $term_id = $term_model->id;
+        $term_model = new EmployeeTerm;
+        $term_model->employee_id = $emp_tbl_id;
+        $term_model->date_of_joining = $request->joining_date;
+        $term_model->save();
+        $term_id = $term_model->id;
 
-       $emp_designation_model = new EmployeeDesignation;
-       $emp_designation_model->employee_id = $emp_tbl_id;
-       $emp_designation_model->designation_id = $request->designation;
-       $emp_designation_model->department_id = $request->department;
-       $emp_designation_model->employee_term_id  = $term_id;
-       $emp_designation_model->date_effective  = $request->joining_date;
-       $emp_designation_model -> save();
+        $emp_designation_model = new EmployeeDesignation;
+        $emp_designation_model->employee_id = $emp_tbl_id;
+        $emp_designation_model->designation_id = $request->designation;
+        $emp_designation_model->department_id = $request->department;
+        $emp_designation_model->employee_term_id  = $term_id;
+        $emp_designation_model->date_effective  = $request->joining_date;
+        $emp_designation_model -> save();
 
-       activity()->log('Created an Employee - ' . $request->name);
-       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
-
-   }
+        activity()->log('Created an Employee - ' . $request->name);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created')]);
+    }
 
     /**
      * Display the specified resource.
@@ -230,16 +218,14 @@ class EmployeeListController extends Controller
 
         // validate the data 
         $request->validate([
-            'prefix'            =>      'required',
-            'code'              =>      'required',
-            'name'              =>      'required',
-            'gender'            =>      'required',
-            'father_name'       =>      'required',
-            'mother_name'       =>      'required',
-            'shift'             =>      'required',
+            'prefix' => 'required|min:1|max:5',
+            'code' => 'required|min:1|max:10',
+            'name' => 'required|min:1|max:70',
+            'shift' => 'required',
+            'father_name' => 'max:70',
+            'mother_name' => 'max:70',
         ]);
 
-        
         $prefix = $request->prefix;
         $code = $request->code;
         $name = $request->name;
@@ -269,7 +255,7 @@ class EmployeeListController extends Controller
         $model->save();
 
         activity()->log('Updated an Employee Basic Information - ' . $request->name);
-       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully'), 'load' => true]);
+       return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully')]);
     }
 
     // update_contact_info
@@ -279,10 +265,10 @@ class EmployeeListController extends Controller
 
         // validate the data 
         $request->validate([
-            'contact_number'            =>      'required|numeric',
-            'email'                     =>      'required|email',
-            'emergency_contact_name'    =>      'required',
-            'present_address_line_1'    =>      'required',
+            'email'                     =>      'required|email|max:50',
+            'emergency_contact_name'    =>      'required|max:50',
+            'present_address_line_1'    =>      'required|max:50',
+            'contact_number' => 'required|numeric|digits_between:1,11',
         ]);
 
         // find the model & update the data
@@ -317,7 +303,7 @@ class EmployeeListController extends Controller
         $model->save();
 
         activity()->log('Updated an Employee Contact Information - ' . $model->name);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully'), 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully')]);
 
     }
 

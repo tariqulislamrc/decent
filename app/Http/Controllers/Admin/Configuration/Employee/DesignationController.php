@@ -190,6 +190,12 @@ class DesignationController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        // Check This Gesignation Contains Any Employee
+        $check = EmployeeDesignation::where('designation_id', $id)->first();
+        if($check) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('You can not delete This Designation. Employee Contains This Designation')]);
+        }
+
         $type = Designation::findOrFail($id);
 
         $name = $type->name;

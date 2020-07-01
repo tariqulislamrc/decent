@@ -21,7 +21,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('employee_leave_request.create')
-                    <button data-placement="bottom" title="Create New Employee Leave Request" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee-leave-request.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Employee Leave Request" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee-leave-request.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">

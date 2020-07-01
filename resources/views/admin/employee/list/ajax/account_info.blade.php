@@ -34,22 +34,11 @@
                                     <td>{{$model->account_number}} </td>
                                     <td>{{$model->bank_name}} </td>
                                     <td>
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Delete {{ $model->name }}" id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.account.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>
 
-                                        @can('employee_account.delete')
-                                            <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.account.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"
-                                                data-placement="bottom"><i class="fa fa-trash"></i></button>
-                                        @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Edit {{ $model->name }}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.account.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
 
-                                        @can('employee_account.update')
-                                            <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.account.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
-
-                                        @endcan
-
-                                        @can('employee_account.show')
-                                            <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.account.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
-
-                                        @endcan
-
+                                        <button data-toggle="tooltip" data-placement="bottom" title="View {{ $model->name }}" class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.account.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
                                     </td>
                                 </tr>
                             @endforeach

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use App\models\employee\EmployeeLeaveType;
+use Illuminate\Validation\Rule;
 
 class EmployeeLeaveTypeController extends Controller
 {
@@ -14,13 +15,13 @@ class EmployeeLeaveTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function view()
-    {
-        return view('admin.employee.leave.view');
-    }
     public function index()
     {
-       return view('admin.employee.leave-type.index');
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('admin.employee.leave-type.index');
     }
 
     public function datatable(Request $request)
@@ -32,9 +33,12 @@ class EmployeeLeaveTypeController extends Controller
                 ->editColumn('is_active',function($model){
                     return $model->is_active == 1? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
                 })
+                ->editColumn('description', function($model) {
+                    return str_limit($model->description, 50);
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.leave-type.action', compact('model'));
-                })->rawColumns(['action', 'is_active'])->make(true);
+                })->rawColumns(['action', 'is_active', 'description'])->make(true);
         }
     }
 
@@ -45,6 +49,10 @@ class EmployeeLeaveTypeController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.leave-type.create');
     }
 
@@ -56,9 +64,13 @@ class EmployeeLeaveTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|unique:employee_document_types|max:255',
-            'alias' => 'required|max:255',
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'name' => 'required|min:3|unique:employee_document_types|max:50',
+            'alias' => 'required|min:1|max:50',
             'description' => '',
             'is_active' => '',
         ]);
@@ -67,7 +79,7 @@ class EmployeeLeaveTypeController extends Controller
 
         $model->name = $request->name;
 
-        $model->alias = $request->alias;
+        $model->alias = strtoupper($request->alias);
 
         $model->is_active = $request->is_active;
 
@@ -87,9 +99,13 @@ class EmployeeLeaveTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function view()
     {
-        //
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('admin.employee.leave.view');
     }
 
     /**
@@ -100,6 +116,10 @@ class EmployeeLeaveTypeController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // find the data
         $model = EmployeeLeaveType::where('id', $id)->firstOrFail();
 
@@ -116,9 +136,19 @@ class EmployeeLeaveTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = EmployeeLeaveType::findOrFail($id);
+
+        $request->validate([
+            'name' => "required|unique:employee_leave_types,name,{$id},id,deleted_at,NULL",
+            'alias' => 'required|min:1|max:50',
+        ]);
+
         $model->name = $request->name;
-        $model->alias = $request->alias;
+        $model->alias = strtoupper($request->alias);
         $model->is_active = $request->is_active;
         $model->description = $request->description;
         $model->save();
@@ -137,6 +167,10 @@ class EmployeeLeaveTypeController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $type = EmployeeLeaveType::findOrFail($id);
         $name = $type->name;
         $type->delete();

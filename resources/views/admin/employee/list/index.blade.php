@@ -39,7 +39,7 @@
                             </div>
                         </div>            
                     @endif
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.list.datatable') }}">
+                    <table class="table table-sm table-hover table-bordered content_managment_table" data-url="{{ route('admin.list.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
@@ -74,4 +74,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/employee/list.js') }}"></script>
 @endpush
-

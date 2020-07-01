@@ -102,20 +102,15 @@ class EmployeeLeaveRequestController extends Controller
             'file' => 'max:2000',
         ]);
 
-        if ($request->hasFile('file')) {
-            $storagepath = $request->file('file')->store('public/file');
-            $fileName = basename($storagepath);
-        }else{
-            $fileName = '';
-        }
-
         $id = auth()->user()->id;
         $employee_id = $request->employee;
 
+        // Admin can't request leave for himself
         if ($id == 1 AND $employee_id == '') {
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Admin cannot request leave for himself')]);
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Admin can\'t request leave for himself')]);
         }
 
+        // Find the Employee
         if($id != 1){
             $models =  Employee::where('user_id', $id)->firstOrFail();
             $user_id = $models->id;
@@ -144,6 +139,15 @@ class EmployeeLeaveRequestController extends Controller
         }else{
             $model->employee_id = $user_id;
         }
+
+        // Upload the Leave Request File
+        if ($request->hasFile('file')) {
+            $storagepath = $request->file('file')->store('public/file');
+            $fileName = basename($storagepath);
+        }else{
+            $fileName = '';
+        }
+
         $model->employee_leave_type_id = $leave_type;
         $model->start_date = $request->start_date;
         $model->end_date = $request->end_date;

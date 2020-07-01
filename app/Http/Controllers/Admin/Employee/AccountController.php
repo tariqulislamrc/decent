@@ -16,23 +16,21 @@ class AccountController extends Controller
         return view('admin.employee.list.ajax.account_info', compact('models' , 'id' ));
     }
 
-
     // account_info Create
     public function create($id) {
         $model = Employee::findOrFail($id);
         return view('admin.employee.list.account.create', compact('id','model'));
     }
 
-
-
     // account_info Create
     public function store(Request $request ,$id) {
+
         $request->validate([
-            'name' => 'required',
-            'account_number' => 'required',
-            'bank_name' => 'required',
-            'branch_name' => 'required',
-            'bank_identification_code' => 'required',
+            'name' => 'required|min:1|max:50',
+            'account_number' => 'required|min:1|max:50',
+            'bank_name' => 'required|min:1|max:50',
+            'branch_name' => 'required|min:1|max:50',
+            'bank_identification_code' => 'required|min:1|max:50',
         ]);
 
         $model = new EmployeeAccount;
@@ -49,8 +47,6 @@ class AccountController extends Controller
         activity()->log('Created a Employee Account Info - ' . $id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated'), 'goto' => route('admin.employee-list.edit',$request->uuid)]);
     }
-
-
     
     // account_info Edit
     public function edit($id) {
@@ -64,9 +60,17 @@ class AccountController extends Controller
         return view('admin.employee.list.account.show', compact('model'));
     }
 
-
     // account_info Update
     public function update(Request $request, $id) {
+
+        $request->validate([
+            'name' => 'required|min:1|max:50',
+            'account_number' => 'required|min:1|max:50',
+            'bank_name' => 'required|min:1|max:50',
+            'branch_name' => 'required|min:1|max:50',
+            'bank_identification_code' => 'required|min:1|max:50',
+        ]);
+        
         $model = EmployeeAccount::findOrFail($id);
         $model->name = $request->name;
         $model->account_number = $request->account_number;
@@ -80,7 +84,6 @@ class AccountController extends Controller
         activity()->log('Created a Employee Account Info - ' . $id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Update'), 'goto' => route('admin.employee-list.edit',$request->uuid)]);
     }
-
 
     // account_info destroy
     public function destroy($id) {

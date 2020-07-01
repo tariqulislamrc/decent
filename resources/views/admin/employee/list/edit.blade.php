@@ -24,20 +24,18 @@
             <div class="col-md-8 p-3">
                 <div class="accordion" id="accordionExample275">
 
-                    @can('employee_list.update')
+                    @can('employee_list.access')
                         {{-- Basic Information Tab --}}
                         <div class="card z-depth-0 bordered">
                             <div style="cursor:pointer;" class="card-header according section" data-url="{{route('admin.ajax.basic_info', $model->id)}} " id="headingOne2" data-toggle="collapse"
                                 data-target="#basic_info" aria-expanded="true" aria-controls="basic_info">
                                 <h5 class="mb-0">
-                                    <button 
-                                        class="btn btn-link" type="button" >
+                                    <button class="btn btn-link" type="button" >
                                         <i class="fa fa-graduation-cap mr-2"></i>Basic Information
                                     </button>
                                 </h5>
                             </div>
-                            <div id="basic_info" class="collapse" aria-labelledby="headingOne2"
-                                data-parent="#accordionExample275">
+                            <div id="basic_info" class="collapse" aria-labelledby="headingOne2" data-parent="#accordionExample275">
                                 <div class="card-body">
                                     <div id="data1"></div>
                                 </div>
@@ -45,7 +43,7 @@
                         </div>
                     @endcan
 
-                    @can('employee_list.update')
+                    @can('employee_list.access')
                         {{-- Contact Information --}}
                         <div class="card z-depth-0 bordered">
                             <div style="cursor:pointer;" class="card-header collapsed section" id="headingTwo2" data-url="{{route('admin.ajax.contact_info', $model->id)}} "  data-toggle="collapse"
@@ -295,7 +293,6 @@
     });
 
     $(function () {
-
         $('.section').click(function () {
             var url = $(this).data("url");
             var did = $(this).data('target');

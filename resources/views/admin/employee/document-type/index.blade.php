@@ -21,7 +21,7 @@
             <div class="tile">
                 <h3 class="tile-title">
                     @can('employee_document_type.create')
-                        <button data-placement="bottom" title="Create New Employee Document" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee-document-type.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                        <button data-placement="bottom" title="Create New Employee Document Type" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.employee-document-type.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>
                 <div class="tile-body">
@@ -54,4 +54,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/employee/document.js') }}"></script>
 @endpush
-

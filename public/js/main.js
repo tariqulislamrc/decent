@@ -361,11 +361,6 @@ if ($('.ajax_form').length > 0) {
     });
 };
 
-
-
-
-
-
 $(document).ready(function() {
     /*
      * For Logout
@@ -1119,7 +1114,6 @@ $(document).on('keypress', 'input.input_number', function(event) {
          return false;
      }
  });
-
 
 function myFunction(url) {
     window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
