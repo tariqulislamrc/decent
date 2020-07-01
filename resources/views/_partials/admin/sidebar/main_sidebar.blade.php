@@ -446,12 +446,14 @@
         </li>
         @endcan
 
-
-        @can('employee_category.view')
         {{-- Employee Document Type --}}
-        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
-                href="{{ route('admin.employee-category.index') }}"><i class="icon fa fa-circle-o"></i>
-                {{_lang('Employee Category')}}</a></li>
+        @can('employee_category.view')
+            <li data-placement="bottom" title="Ecommerce Offer Section">
+                <a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}" href="{{ route('admin.employee-category.index') }}">
+                    <i class="icon fa fa-circle-o"></i>
+                    {{_lang('Employee Category')}}
+                </a>
+            </li>
         @endcan
 
         @can('employee-designation.view')

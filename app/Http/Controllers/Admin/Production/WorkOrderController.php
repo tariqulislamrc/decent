@@ -243,7 +243,7 @@ class WorkOrderController extends Controller
         generate_id("workorder", true);
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
     }
 
     // pay_form
@@ -388,8 +388,10 @@ class WorkOrderController extends Controller
         $model->tek_marks = 0;
         $model->updated_by = Auth::user()->id;
 
+
         if($request->type != 'sample') {
-            // if paid amount is greater then the payable amount
+        
+        // if paid amount is greater then the payable amount
             if($request->paid > $request->total_payable_amount) {
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Paid Amount is Greater then the Payable Amount')]);
             }
@@ -416,6 +418,7 @@ class WorkOrderController extends Controller
         }
 
         $success = $model->save();
+
         $line_purchase = WorkOrderProduct::where('workorder_id', $id)->delete();
 
 

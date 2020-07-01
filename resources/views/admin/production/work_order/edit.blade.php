@@ -114,6 +114,7 @@
                             @endphp
                             @foreach ($model->workOrderProduct as $key => $produc_titem)
                             @php
+                            // dd($produc_titem);
                                 $total += $produc_titem->qty*$produc_titem->price;
                             @endphp
                             {{-- <tr> --}}
@@ -134,12 +135,12 @@
                                         <input type="text" autocomplete="off"  name="quantity[]" class="form-control qty" value="{{ $produc_titem->qty }}">
                                     </td>
                                     <td>
-                                        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
-                                        <input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$produc_titem->sub_total}}">
+                                        <input type="hidden" name="price[]" class="hidden_price" value="{{$produc_titem->price}}">
+                                        <input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$produc_titem->price}}">
                                     </td>
                                     <td>
-                                        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
-                                        <span  class="sub_total_text">{{number_format(1*$produc_titem->qty*$produc_titem->price, 2)}}</span>
+                                        <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->sub_total}}">
+                                        <span  class="sub_total_text">{{number_format(1*$produc_titem->sub_total, 2)}}</span>
                                     </td>
                                     
                                 </tr>
@@ -218,114 +219,136 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="row mt-2">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Paid') }} </label>
+                                            <input type="text" readonly autocomplete="off" class="form-control paid" value="{{ $model->paid == null ? 0 : $model->paid }}" name="paid" id="paid">
+                                        </div>
+                                    </div>
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="due">{{ _lang('Due') }} </label>
+                                            <input type="text" class="form-control due" name="due" id="due" value="{{ $model->due }}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Method') }} </label>
+                                            <input type="text" readonly class="form-control" value="{{ ucfirst($model->method) }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else 
+                    <div class="col-md-12 production_show" style="display: none;">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span>{{ _lang('Total') }}</span> <br>
+                                                <input type="hidden" name="net_total" id="net_total" value="{{ $total }}">
+                                                <span id="show_net_total">{{ number_format($total, 2)}}</span>
+                                            </td>
+                                            <td style="width: 40%">
+                                                <span>{{ _lang('Discount Type') }}</span> <br>
+                                                <select name="discount_type" class="form-control" id="discount_type">
+                                                    <option value="percentage">Percentage</option>
+                                                    <option value="fixed">Fixed</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Discount') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="discount" class="form-control" id="discount_amount">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>{{ _lang('Discount Value') }}</span> <br>
+                                                <input type="text" name="discount_amount" class="form-control" id="total_discount" value="0" readonly>
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Tax') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="tax" class="form-control" id="tax_calculation_amount">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Shipping') }}</span> <br>
+                                                <input type="text" autocomplete="off" name="shipping_charges" class="form-control" id="shipping_charges">
+                                            </td>
+                                            <td>
+                                                <span>{{ _lang('Total Payable') }}</span> <br>
+                                                <input type="hidden" class="form-control" id="total_payable_amount" value="{{ $total }}" name="total_payable_amount">
+                                                <span class="total_payable_amount">{{ number_format($total, 2) }} </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Paid') }} </label>
+                                            <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="due">{{ _lang('Due') }} </label>
+                                            <input type="text" class="form-control due" name="due" id="due" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="account_id">{{ _lang('Account') }} </label>
+                                            <select name="account_id" class="form-control select" id="account_id">
+                                                <option value="">Select Account</option>
+                                                @foreach ($accounts as $element)
+                                                <option>{{ $element->name }}({{ toWord($element->account_type) }})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="paid">{{ _lang('Method') }} </label>
+                                            <select name="method" class="form-control method">
+                                                <option value="cash">Cash</option>
+                                                <option value="check">Check</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 reference_no" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="check_no">{{ _lang('Reference') }} </label>
+                                            <input type="text" class="form-control" name="check_no" id="check_no">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="sale_note">{{ _lang('Sale Note') }} </label>
+                                        <textarea name="sale_note" class="form-control" id="" placeholder="Sale Note"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="stuff_note">{{ _lang('Stuff Note') }} </label>
+                                        <textarea name="stuff_note" class="form-control" id="" placeholder="Stuff Note"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endif
 
-                <div class="col-md-12 production_show" style="display: none;">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table table-bordered border-dark" style="margin-bottom: 0px !important">
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2">
-                                            <span>{{ _lang('Total') }}</span> <br>
-                                            <input type="hidden" name="net_total" id="net_total" value="{{ $total }}">
-                                            <span id="show_net_total">{{ number_format($total, 2)}}</span>
-                                        </td>
-                                        <td style="width: 40%">
-                                            <span>{{ _lang('Discount Type') }}</span> <br>
-                                            <select name="discount_type" class="form-control" id="discount_type">
-                                                <option value="percentage">Percentage</option>
-                                                <option value="fixed">Fixed</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <span>{{ _lang('Discount') }}</span> <br>
-                                            <input type="text" autocomplete="off" name="discount" class="form-control" id="discount_amount">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span>{{ _lang('Discount Value') }}</span> <br>
-                                            <input type="text" name="discount_amount" class="form-control" id="total_discount" value="0" readonly>
-                                        </td>
-                                        <td>
-                                            <span>{{ _lang('Tax') }}</span> <br>
-                                            <input type="text" autocomplete="off" name="tax" class="form-control" id="tax_calculation_amount">
-                                        </td>
-                                        <td>
-                                            <span>{{ _lang('Shipping') }}</span> <br>
-                                            <input type="text" autocomplete="off" name="shipping_charges" class="form-control" id="shipping_charges">
-                                        </td>
-                                        <td>
-                                            <span>{{ _lang('Total Payable') }}</span> <br>
-                                            <input type="hidden" class="form-control" id="total_payable_amount" value="{{ $total }}" name="total_payable_amount">
-                                            <span class="total_payable_amount">{{ number_format($total, 2) }} </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="paid">{{ _lang('Paid') }} </label>
-                                        <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
-                                    </div>
-                                </div>
-                                  <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="due">{{ _lang('Due') }} </label>
-                                        <input type="text" class="form-control due" name="due" id="due" readonly>
-                                    </div>
-                                </div>
-                                 <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="account_id">{{ _lang('Account') }} </label>
-                                        <select name="account_id" class="form-control select" id="account_id">
-                                            <option value="">Select Account</option>
-                                            @foreach ($accounts as $element)
-                                               <option>{{ $element->name }}({{ toWord($element->account_type) }})</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="paid">{{ _lang('Method') }} </label>
-                                        <select name="method" class="form-control method">
-                                            <option value="cash">Cash</option>
-                                            <option value="check">Check</option>
-                                            <option value="other">Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 reference_no" style="display: none;">
-                                    <div class="form-group">
-                                        <label for="check_no">{{ _lang('Reference') }} </label>
-                                        <input type="text" class="form-control" name="check_no" id="check_no">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="sale_note">{{ _lang('Sale Note') }} </label>
-                                    <textarea name="sale_note" class="form-control" id="" placeholder="Sale Note"></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="stuff_note">{{ _lang('Stuff Note') }} </label>
-                                    <textarea name="stuff_note" class="form-control" id="" placeholder="Stuff Note"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
         </div>
@@ -411,6 +434,14 @@
 
         var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
 
+        var paid = $('#paid').val();
+        if(paid == '') {
+            paid = 0;
+        }
+
+        var due = total_payable - parseInt(paid);
+        $('#paid').val(paid);
+        $('#due').val(due);
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
     });

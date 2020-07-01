@@ -16,6 +16,10 @@ class EmployeeCategoryController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.category.index');
     }
 
@@ -26,9 +30,12 @@ class EmployeeCategoryController extends Controller
 
             return Datatables::of($document)
                 ->addIndexColumn()
+                ->editColumn('description', function($model) {
+                    return str_limit($model->description, 60);
+                })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.category.action', compact('model'));
-            })->rawColumns(['action'])->make(true);
+            })->rawColumns(['action', 'description'])->make(true);
         }
     }
 
@@ -39,6 +46,10 @@ class EmployeeCategoryController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.category.create');
     }
 
@@ -50,10 +61,13 @@ class EmployeeCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validator = $request->validate([
-            'name' => 'required|min:1|unique:employee_categories,name,NULL,id,deleted_at,NULL',
+            'name' => 'required|min:1|max:50|unique:employee_categories,name,NULL,id,deleted_at,NULL',
             'description' => '',
-            
         ]);
 
         $model = new EmployeeCategory;
@@ -71,17 +85,6 @@ class EmployeeCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -89,6 +92,11 @@ class EmployeeCategoryController extends Controller
      */
     public function edit($id)
     {
+
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // find the data
         $model = EmployeeCategory::where('id', $id)->firstOrFail();
 
@@ -105,8 +113,12 @@ class EmployeeCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validator = $request->validate([
-            'name' => 'required|max:255|unique:employee_categories,name,'.$id,
+            'name' => 'required|max:255|unique:employee_categories,name,NULL,id,deleted_at,NULL'.$id,
         ]);
 
         $model = EmployeeCategory::findOrFail($id);
@@ -130,6 +142,11 @@ class EmployeeCategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $type = EmployeeCategory::findOrFail($id);
 
         $name = $type->name;

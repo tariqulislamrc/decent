@@ -18,7 +18,7 @@ class CreateEmployeeCategoriesTable extends Migration
         Schema::create('employee_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
-            $table->string('description')->nullable();
+            $table->longtext('description')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
