@@ -9,16 +9,13 @@
             <div class="row">
                 {{-- Employee Designation Name --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Designation Name')}} <span class="text-danger">*</span>
-                    </label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Designation Name"
-                        required value="{{$model->name}}">
+                    <label for="name">{{_lang('Designation Name')}} <span class="text-danger">*</span> </label>
+                    <input autocomplete="off" type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Designation Name" required value="{{$model->name}}">
                 </div>
         
                 {{-- Category --}}
                 <div class="col-md-12 form-group">
-                    <label for="employee_category_id">{{_lang('Category')}} <span class="text-danger">*</span>
-                    </label>
+                    <label for="employee_category_id">{{_lang('Category')}} <span class="text-danger">*</span> </label>
                     <select data-placeholder="Please Select One" name="employee_category_id" id="employee_category_id" class="form-control select" required>
                         <option value="">Please Select One</option>
                         @foreach ($categories as $category)
@@ -42,20 +39,18 @@
         
                 {{-- Designation Description --}}
                 <div class="col-md-12 form-group">
-                    <label for="description">{{_lang('Description')}} <span class="text-danger">*</span>
-                    </label>
+                    <label for="description">{{_lang('Description')}} <span class="text-danger">*</span> </label>
                     <textarea name="description" class="form-control" id="description" placeholder="Enter Designation Description">{{$model->description}}</textarea>
         
                 </div>
         
-                <div class="form-group col-md-12" align="right">
-                    @can('employee-designation.update')
-                        {{-- <input type="hidden" name="type[]" value=" "> --}}
-                        <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i class="icon-arrow-right14 position-right"></i></button>
-                        <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    @endcan
-                </div>
+                @can('employee-designation.update')
+                    <div class="form-group col-md-12" align="right">
+                        <button type="submit" class="btn btn-primary btn-sm"  id="submit">{{_lang('Create')}}<i class="fa ml-2 fa-plus-circle" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-success btn-sm " id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                @endcan
             </div>
         </form>
     </div>

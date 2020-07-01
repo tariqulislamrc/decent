@@ -21,6 +21,11 @@ class DesignationController extends Controller
      */
     public function index()
     {
+
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $categories = EmployeeCategory::all();
         
         $designations = Designation::all();
@@ -28,6 +33,7 @@ class DesignationController extends Controller
         return view('admin.employee.designation.index',compact('categories','designations'));
     }
 
+    
     public function datatable(Request $request)
     {
         if ($request->ajax()) {
@@ -40,11 +46,15 @@ class DesignationController extends Controller
             ->editColumn('top_designation_id', function ($model) {
                 return $model->designation?$model->designation->name:'';
             })
+            ->editColumn('description', function($model) {
+                return str_limit($model->description, 60);
+            })
             ->addColumn('action', function ($model) {
                 return view('admin.employee.designation.action', compact('model'));
-            })->rawColumns(['action'])->make(true);
+            })->rawColumns(['action', 'description'])->make(true);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,6 +63,11 @@ class DesignationController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+
         $categories = EmployeeCategory::all();
 
         $designations = Designation::all();
@@ -68,10 +83,13 @@ class DesignationController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name' => 'required|min:1|unique:designations,name,NULL,id,deleted_at,NULL',
+            'name' => 'required|min:3|max:70|unique:designations,name,NULL,id,deleted_at,NULL',
             'employee_category_id' => 'required',
-            
         ]);
 
         $model = new Designation;
@@ -111,6 +129,10 @@ class DesignationController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // find the data
         $model = Designation::where('id', $id)->firstOrFail();
         $categories = EmployeeCategory::all();
@@ -128,11 +150,14 @@ class DesignationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //   dd("amar sonar bangla");
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model =  Designation::findOrFail($id);
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255',
+            'name' => ['required', 'string', 'max:70',
             Rule::unique('designations', 'name')->ignore($model->id)],           
             'employee_category_id' => 'required',
         ]);
@@ -160,6 +185,10 @@ class DesignationController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $type = Designation::findOrFail($id);
 
         $name = $type->name;
@@ -174,6 +203,11 @@ class DesignationController extends Controller
 
     // term_info
     public function term_info(Request $request) {
+
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $id = $request->model_id;
         $models = EmployeeTerm::where('employee_id', $id)->get();
 		return view('admin.employee.list.ajax.term_info', compact('models'));
