@@ -18,36 +18,36 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller {
-	/*
-		        |--------------------------------------------------------------------------
-		        | Login Controller
-		        |--------------------------------------------------------------------------
-		        |
-		        | This controller handles authenticating users for the application and
-		        | redirecting them to your home screen. The controller uses a trait
-		        | to conveniently provide its functionality to your applications.
-		        |
-	*/
+    /*
+                |--------------------------------------------------------------------------
+                | Login Controller
+                |--------------------------------------------------------------------------
+                |
+                | This controller handles authenticating users for the application and
+                | redirecting them to your home screen. The controller uses a trait
+                | to conveniently provide its functionality to your applications.
+                |
+    */
 
-	use AuthenticatesUsers;
+    use AuthenticatesUsers;
 
-	/**
-	 * Where to redirect users after login.
-	 *
-	 * @var string
-	 */
-	protected $redirectTo = '/member/dashboard';
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/member/dashboard';
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->middleware('guest:client')->except('logout');
-	}
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('guest:client')->except('logout');
+    }
 
-	    /**
+        /**
      * Show the application's login form.
      *
      * @return \Illuminate\Http\Response
@@ -78,13 +78,15 @@ class LoginController extends Controller {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function validateLogin(Request $request) {
-        $request->validate([
-            $this->username() => 'required|string',
+     protected function validateLogin(Request $request) {
+         $request->validate([
+            $this->username() => 'required|exists:users,' . $this->username() . ',status,activated',
             'password' => 'required|string',
-        ]);
+        ],
+        [
+        $this->username() . '.exists' => 'The selected email is invalid or the account has been disabled.'
+    ]);
     }
-
     // public function login(Request $request)
     // {
     //    $this->validate($request, [
@@ -196,7 +198,7 @@ class LoginController extends Controller {
         return response()->json(['message' => 'Successfully Logout', 'goto' => url('/')]);
     }
 
-	protected function guard()
+    protected function guard()
     {
         return Auth::guard('client');
     }
@@ -225,8 +227,14 @@ class LoginController extends Controller {
         } else {
             $user = Socialite::driver($service)->stateless()->user();
         }
-
-        // check 
+        if($user->name==null)
+        {
+            $arr =explode("@",$user->email);
+            $name =$arr[0];
+        }else{
+           $name =$user->name; 
+        }
+ 
         $findUser = User::where('email', $user->email)->first();
         
         if($findUser) {
@@ -238,7 +246,7 @@ class LoginController extends Controller {
             $model->type        =       'customer';
             $model->client_type =       'ecommerce';
             $model->sub_type =       'ecommerce';
-            $model->name        =       $user->name;
+            $model->name        =       $name;
             // $model->last_name   =       $data['last_name'];
             // $model->user_name   =       $data['username'];
             // $model->address     =       $data['address'];
@@ -255,7 +263,7 @@ class LoginController extends Controller {
             $user_login = new User;
             $user_login->clients_id = $id;
             $user_login->user_type = 'Client';
-            $user_login->name = $user->name;
+            $user_login->name = $name;
             // $user_login->surname = $data['last_name'];
             $user_login->first_name = $user->name;
             // $user_login->last_name = $data['last_name'];

@@ -88,7 +88,8 @@ class LoginController extends Controller {
      * @return array
      */
     protected function credentials(Request $request) {
-        return $request->only($this->username(), 'password');
+        // return $request->only($this->username(), 'password');
+        return ['email' => $request->email, 'password' => $request->password, 'user_type' => 'Employee'];
     }
 
     /**

@@ -71,6 +71,7 @@
                             <th>Quantity.</th>
                             <th>Size</th>
                             <th>Invoice</th>
+                            <th>Barcode</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +83,7 @@
                                     <td>{{ $item['Quantity'] }}</td>
                                     <td>{{ toWord($item['Size']) }}</td>
                                     <td>{{ $item['Invoice'] }}</td>
+                                    <td>  <img src='https://barcode.tec-it.com/barcode.ashx?data={{ $item["Invoice"]}}' alt='Barcode Generator TEC-IT'/ width="70px"></td>
                                 </tr>
                             @endforeach
                         @else 

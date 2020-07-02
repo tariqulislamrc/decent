@@ -28,10 +28,10 @@
                         <thead>
                             <tr>
                                 <th>{{_lang('SL')}}</th>
-                                <th>{{_lang('Code')}}</th>
-                                <th>{{_lang('Name')}}</th>
+                                <th>{{_lang('Type')}}</th>
                                 <th>{{_lang('Work Orde Date')}}</th>
-                                <th>{{_lang('Delivery Date')}}</th>
+                                <th>{{_lang('Delivary Date')}}</th>
+                                <th>{{_lang('Value')}}</th>
                                 <th>{{ _lang('Status') }}</th>
                                 <th>{{_lang('action')}}</th>
                             </tr>

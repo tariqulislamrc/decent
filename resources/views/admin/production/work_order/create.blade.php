@@ -144,7 +144,7 @@
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Discount') }}</span> <br>
-                                                <input type="text" autocomplete="off" name="discount" class="form-control" id="discount_amount">
+                                                <input type="text" autocomplete="off" name="discount" class="form-control input_number" id="discount_amount">
                                             </td>
                                         </tr>
                                         <tr>
@@ -154,11 +154,11 @@
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Tax') }}</span> <br>
-                                                <input type="text" autocomplete="off" name="tax" class="form-control" id="tax_calculation_amount">
+                                                <input type="text" autocomplete="off" name="tax" class="form-control input_number" id="tax_calculation_amount">
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Shipping') }}</span> <br>
-                                                <input type="text" autocomplete="off" name="shipping_charges" class="form-control" id="shipping_charges">
+                                                <input type="text" autocomplete="off" name="shipping_charges" class="form-control input_number" id="shipping_charges">
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Total Payable') }}</span> <br>
@@ -177,7 +177,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="paid">{{ _lang('Paid') }} </label>
-                                            <input type="text" autocomplete="off" class="form-control paid" name="paid" id="paid">
+                                            <input type="text" autocomplete="off" class="form-control input_number paid" name="paid" id="paid">
                                         </div>
                                     </div>
                                       <div class="col-md-3">

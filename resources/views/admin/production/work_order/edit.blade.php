@@ -125,11 +125,11 @@
                                     </td>
                                 
                                     <td>
-                                        <input type="text" autocomplete="off"  name="quantity[]" class="form-control qty" value="{{ $produc_titem->qty }}">
+                                        <input type="text" autocomplete="off"  name="quantity[]" class="form-control input_number qty" value="{{ $produc_titem->qty }}">
                                     </td>
                                     <td>
                                         <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
-                                        <input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$produc_titem->sub_total}}">
+                                        <input type="text" autocomplete="off" name="price[]" class="form-control input_number price" value="{{$produc_titem->sub_total}}">
                                     </td>
                                     <td>
                                         <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->qty*$produc_titem->price}}">
@@ -188,7 +188,7 @@
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Discount') }}</span> <br>
-                                                <input type="text" autocomplete="off" name="discount" value="{{ $model->discount_amount }}" class="form-control" id="discount_amount">
+                                                <input type="text" autocomplete="off" name="discount" value="{{ $model->discount_amount }}" class="form-control input_number" id="discount_amount">
                                             </td>
                                         </tr>
                                         <tr>
@@ -198,11 +198,11 @@
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Tax') }}</span> <br>
-                                                <input type="text" autocomplete="off" name="tax" value="{{ $model->tax }}" class="form-control" id="tax_calculation_amount">
+                                                <input type="text" autocomplete="off" name="tax" value="{{ $model->tax }}" class="form-control input_number" id="tax_calculation_amount">
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Shipping') }}</span> <br>
-                                                <input type="text" autocomplete="off" value="{{ $model->shiping_charge }}" name="shipping_charges" class="form-control" id="shipping_charges">
+                                                <input type="text" autocomplete="off" value="{{ $model->shiping_charge }}" name="shipping_charges " class="form-control input_number" id="shipping_charges">
                                             </td>
                                             <td>
                                                 <span>{{ _lang('Total Payable') }}</span> <br>

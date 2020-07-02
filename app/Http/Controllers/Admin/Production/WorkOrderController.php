@@ -239,10 +239,11 @@ class WorkOrderController extends Controller
                 $line_purchase->save();
             }
         }
+
         generate_id("workorder", true);
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'load' => true]);
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
     }
 
     // pay_form
@@ -365,10 +366,11 @@ class WorkOrderController extends Controller
         if (!auth()->user()->can('workorder.update')) {
             abort(403, 'Unauthorized action.');
         }
+
         $request->validate([
             'prefix' => '',
             'code' => '',
-            'brand_id' => '',
+            'brand_id' => 'required',
             'type' => 'required|max:255',
             'date' => 'required|max:255',
             'delivery_date' => 'max:255',
@@ -381,13 +383,98 @@ class WorkOrderController extends Controller
         $model->type = $request->type;
         $model->date = $request->date;
         $model->delivery_date = $request->delivery_date;
-        $model->status = 0;
+        // $model->status = 0;
         $model->hidden = 0;
         $model->tek_marks = 0;
-        $model->created_by = Auth::user()->id;
+        $model->updated_by = Auth::user()->id;
+
+
+        if($request->type != 'sample') {
+        
+        // if paid amount is greater then the payable amount
+            if($request->paid > $request->total_payable_amount) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Paid Amount is Greater then the Payable Amount')]);
+            }
+
+            $model->total_item = count($request->price);
+            $model->sub_total = $request->net_total;
+            $model->discount_type = $request->discount_type;
+            $model->discount_amount = (($request->discount == null) ? 0 : $request->discount);
+            $model->tax = (($request->tax == null) ? 0 : $request->tax);
+            $model->shiping_charge = (($request->shiping_charge == null) ? 0 : $request->shiping_charge);
+            $model->total_payable = $request->total_payable_amount;
+            $model->paid = $request->paid;
+            $model->due = $request->due;
+            $model->method = $request->method;
+            $model->check_no = $request->check_no;
+            $model->sell_note = $request->sale_note;
+            $model->stuff_note = $request->stuff_note;
+            if($request->paid == $request->total_payable_amount) {
+                $model->payment_status = 1;
+            } else {
+                $model->payment_status = 0;
+            }
+
+        }
+
         $success = $model->save();
+
         $line_purchase = WorkOrderProduct::where('workorder_id', $id)->delete();
+
+
+        if( $request->type != 'sample' && $model->type != 'production' ) {
+            $tx = new Transaction;
+            $tx->sell_note = $request->sell_note;
+            $tx->stuff_note = $request->stuff_note;
+    
+            $ym = Carbon::now()->format('Y/m');
+    
+            $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() + 1 : 1;
+            
+            $ref_no = $ym.'/Wo-'.ref($row);
+    
+            $tx->due = $request->due;
+            $tx->paid = $request->paid;
+            $tx->net_total = $request->total_payable_amount;
+            $tx->shipping_charges = $request->shipping_charges;
+            $tx->tax = $request->tax;
+            $tx->discount_amount = $request->discount_amount;
+            $tx->discount_type = $request->discount_type;
+            $tx->discount = $request->discount;
+            $tx->sub_total = $request->net_total;
+            $tx->work_order_id = $model->id;
+            $tx->transaction_type = 'work_order';
+            $tx->type = 'Credit';
+            $tx->date = date('y-m-d');
+            $tx->invoice_no = '';
+            $tx->reference_no = $ref_no;
+            $tx->save();
+    
+            $tp = new TransactionPayment;
+            $tp->transaction_id = $tx->id;
+            $tp->method = $request->method;
+            $tp->payment_date = date('y-m-d');
+            $tp->amount = $request->paid;
+            $tp->account_id =$request->account_id;
+            $tp->type = 'Credit';
+            $tp->created_by =auth()->user()->id;
+            $tp->save();
+
+            if ($request->account_id) {
+                $this->account_transaction($tp->id,$request->account_id);
+            }
+
+            $this->transactionUtil->updatePaymentStatus($tx->id, $tx->net_total);
+        }
+
         if ($success) {
+
+            $work_order_delivery = new WorkOrderDelivery;
+            $work_order_delivery->work_order_id = $model->id;
+            $work_order_delivery->status = 'due';
+            $work_order_delivery->save();
+
+
             $count = count($request->product_id);
             for ($i = 0; $i < $count; $i++) {
                 $line_purchase = new WorkOrderProduct;
@@ -426,16 +513,29 @@ class WorkOrderController extends Controller
         if ($count1 == 0 && $count2==0) {
             $model = WorkOrder::findOrFail($id);
             //workorder product
-            $model->workOrderProduct->delete();
+            if($model->workOrderProduct) {
+                foreach($model->workOrderProduct as $value) {
+                    $value->delete();
+                }
+                // $model->workOrderProduct->delete();
+            }
             if (isset($model->transaction)) {
-                $model->transaction->payment->delete();
-                AccountTransaction::where('transaction_id',$model->transaction->id)->delete();
+                if($model->transaction->payment) {
+                    $model->transaction->payment->delete();
+                }
+                $account_transaction = AccountTransaction::where('transaction_id',$model->transaction->id)->get();
+                if($account_transaction) {
+                    foreach($account_transaction as $item) {
+                        $item->delete();
+                    }
+                }
                 $model->transaction->delete();
             }
             $model->delete();
-            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted'), 'load' => true]);
+            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted')]);
         }else{
-           throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This workorder is already use in store/final Product')]);
+            // throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
         }
     }
 
@@ -550,11 +650,16 @@ class WorkOrderController extends Controller
             $documents = Transaction::where('transaction_type', 'work_order')->orderBy('id', 'desc')->get();
             return DataTables::of($documents)
             ->addIndexColumn()
+              ->editColumn('work_order', function ($document) {
+                return $document->work_order->prefix.'-'.$document->work_order->code;
+            })
             ->editColumn('payment_status', function ($document) {
-                if ($document->type == 'sample') {
-                    return '<span class="badge badge-warning">Sample Work Order</span>';
-                } else {
-                    return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
+                if ($document->payment_status == 'due') {
+                    return '<span class="badge badge-warning">Due</span>';
+                } elseif($document->payment_status == 'paid') {
+                    return'<span class="badge badge-success">Paid</span>';
+                }else{
+                    return  '<span class="badge badge-danger">Due</span>';
                 }
             })
             ->editColumn('action', function ($document) {
@@ -562,7 +667,7 @@ class WorkOrderController extends Controller
             })
             // ->addColumn('action', function ($model) {
             //     return view('admin.production.work_order.action', compact('model'));
-            ->rawColumns(['action', 'payment_status'])->make(true);
+            ->rawColumns(['action', 'payment_status','work_order'])->make(true);
         }
     }
 

@@ -128,7 +128,7 @@
                     <div class="col-md-6 form-group">
                         <label for="quantity">{{_lang('Quantity')}}</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="quantity" id="quantity">
+                            <input type="text" class="form-control input_number" name="quantity" id="quantity">
                             <input type="hidden" class="form-control" id="unit_id">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="unit">.00</span>

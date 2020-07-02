@@ -134,7 +134,7 @@
                     <div class="col-md-6 form-group">
                         <label for="quantity">{{_lang('Quantity')}}</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="quantity" id="quantity">
+                            <input type="text" class="form-control input_number" name="quantity" id="quantity">
                             <input type="hidden" class="form-control" id="unit_id">
                             <div class="input-group-append">
                                 <span class="input-group-text" id="unit">.00</span>
@@ -241,7 +241,7 @@
                                     {{ $item->material->name }}
                                 </td>
                                 <td>
-                                <input type="text" class="qty form-control qty_{{$item->id}}" id="{{$item->id}}" name="qty[]" value="{{ $item->qty }}" >
+                                <input type="text" class="qty form-control input_number qty_{{$item->id}}" id="{{$item->id}}" name="qty[]" value="{{ $item->qty }}" >
                                  <input type="hidden" class="form-control unit_price" id="unit_price_{{$item->id}}" data-id="{{$item->id}}" name="unit_price[]" value="{{ $item->unit_price }}">
                                <input type="hidden" name="raw_status[]" value="{{ $item->status }}">
                                 <input type="hidden" name="raw_description[]" value="{{ $item->description }}">
