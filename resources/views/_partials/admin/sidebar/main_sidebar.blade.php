@@ -234,7 +234,20 @@
 
 @if (!Request::is('admin/eCommerce*'))
 @if (!Request::is('admin/report*'))
-
+{{-- Ecommerce Dashboard --}}
+    <li data-placement="bottom" title="Go to eCommerce Dashboard">
+        <a class="app-menu__item {{ Request::is('admin/eCommerce') ? ' active' : '' }}" href="{{ route('admin.eCommerce.index') }}">
+            <i class="app-menu__icon fa fa-etsy"></i>
+            <span class="app-menu__label">
+                {{_lang('Ecommerce Dashboard')}}
+            </span>
+        </a>
+    </li>
+    
+    <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
+    href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
+        class="app-menu__label">{{_lang('Report')}}</span></a>
+</li>
 @can('client.view')
 {{-- Database Backup --}}
 <li><a class="app-menu__item {{ Request::is('admin/client*') ? ' active' : '' }}"
@@ -395,10 +408,13 @@
 
         @can('employee_list.view')
         {{-- Employee list --}}
-        <li data-placement="bottom" title="Employee List Section"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-list*') ? 'active':''}}"
                 href="{{ route('admin.employee-list.index') }}"><i class="icon fa fa-circle-o"></i>
                 {{_lang('Employee')}}</a></li>
         @endcan
+
+
+
 
         @can('employee_attendance.view')
         <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/attendance-employee-attendance*') ? 'active':''}}"
@@ -443,14 +459,12 @@
         </li>
         @endcan
 
-        {{-- Employee Document Type --}}
+
         @can('employee_category.view')
-            <li data-placement="bottom" title="Ecommerce Offer Section">
-                <a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}" href="{{ route('admin.employee-category.index') }}">
-                    <i class="icon fa fa-circle-o"></i>
-                    {{_lang('Employee Category')}}
-                </a>
-            </li>
+        {{-- Employee Document Type --}}
+        <li data-placement="bottom" title="Ecommerce Offer Section"><a class="treeview-item {{Request::is('admin/employee-category*') ? 'active':''}}"
+                href="{{ route('admin.employee-category.index') }}"><i class="icon fa fa-circle-o"></i>
+                {{_lang('Employee Category')}}</a></li>
         @endcan
 
         @can('employee-designation.view')
@@ -1179,8 +1193,6 @@
     </ul>
 </li>
 @endcan
-
-
 
 @can('report.product')
 <li><a class="app-menu__item {{ Request::is('admin/report/product-report') ? ' active' : '' }}"

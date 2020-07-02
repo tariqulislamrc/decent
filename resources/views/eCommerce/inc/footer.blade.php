@@ -2,45 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="txt-holder">
-                    <!-- Newsletter Form of the Page -->
-                    <form action="#" class="newsletter-form">
-                        <fieldset>
-                            <input id="news_letter_email" type="email" class="form-control" placeholder="Enter your Email for Subscribe for our Newsletter" style="    width: 80%;
-height: 47px;
-border: none;
-outline: none;
--webkit-box-shadow: none;
-box-shadow: none;
-border-radius: 25px;
-font-size: 14px;
-line-height: 16px;
-padding: 11px 10px 10px 22px;
-margin: 0 0 8px;
-background: #e0e0e0;
-color: #757575;
-    display: inline-block;">
-<small class="text-danger" id="news_letter_errors"></small>
-                            <button id="submit_news_letter_email" type="button" style=" 
-                                width: 122px;
-padding: 16px 10px 14px 10px;
-text-align: center;
-text-transform: uppercase;
-font-size: 14px;
-line-height: 20px;
-font-weight: 700;
-border: none;
-outline: none;
-border-radius: 25px;
--webkit-transition: all 0.25s linear;
--o-transition: all 0.25s linear;
-transition: all 0.25s linear;
-background: #ff8283;
-color: #fff;
-                            ">SUBSCRIBE</button>
-                        </fieldset>
-                    </form><!-- Newsletter Form of the Page -->
-                </div>
+                
             </div>
 
             {{-- Footer First Side --}}
@@ -119,7 +81,45 @@ color: #fff;
                     </ul>
                 </div>
 
-                
+                <div class="txt-holder">
+                    <!-- Newsletter Form of the Page -->
+                    <form action="#" class="newsletter-form">
+                        <fieldset>
+                            <input id="news_letter_email" type="email" class="form-control" placeholder="Enter your Email for Subscribe for our Newsletter" style="    width: 80%;
+height: 47px;
+border: none;
+outline: none;
+-webkit-box-shadow: none;
+box-shadow: none;
+border-radius: 25px;
+font-size: 14px;
+line-height: 16px;
+padding: 11px 10px 10px 22px;
+margin: 0 0 8px;
+background: #e0e0e0;
+color: #757575;
+    display: inline-block;">
+<small class="text-danger" id="news_letter_errors"></small>
+                            <button id="submit_news_letter_email" type="button" style=" 
+                                width: 122px;
+padding: 16px 10px 14px 10px;
+text-align: center;
+text-transform: uppercase;
+font-size: 14px;
+line-height: 20px;
+font-weight: 700;
+border: none;
+outline: none;
+border-radius: 25px;
+-webkit-transition: all 0.25s linear;
+-o-transition: all 0.25s linear;
+transition: all 0.25s linear;
+background: #ff8283;
+color: #fff;
+                            ">SUBSCRIBE</button>
+                        </fieldset>
+                    </form><!-- Newsletter Form of the Page -->
+                </div>
             </div>
         </div>
     </div>
