@@ -14,12 +14,11 @@
 <style>
     /* styles unrelated to zoom */
 
-    /* these styles are for the demo, but are not required for the plugin */
+        /* these styles are for the demo, but are not required for the plugin */
     .zoom {
         display:inline-block;
         position: relative;
     }
-
     /* magnifying glass icon */
     .zoom:after {
         content:'';
@@ -31,16 +30,17 @@
         right:0;
         background:url(icon.png);
     }
-
     .zoom img {
         display: block;
     }
-
     .zoom img::selection { background-color: transparent; }
 
 </style>
 
-
+<link rel="stylesheet" href="{{asset('frontend')}}/css/example.css" />
+ <link rel="stylesheet" href="https://i-like-robots.github.io/EasyZoom/css/pygments.css" />
+ <link rel="stylesheet" href="https://i-like-robots.github.io/EasyZoom/css/easyzoom.css" />
+   
 @endpush
 @push('seo_section')
     <meta name="title" content="{{$model->seo_title}}">
@@ -73,6 +73,8 @@
                                     alt="image descrption">
                                 </span>
                             </div>
+                            
+			
                             @endforeach
                         </div>
                         <!-- Product Slider of the Page end -->
@@ -266,10 +268,48 @@
             </div>
         </div><!-- related products end here -->
     </div>
+  
 </main>
+
+
 <!-- footer of the Page -->
 @endpush
 @push('scripts')
+
+	<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+	<script src="https://i-like-robots.github.io/EasyZoom/dist/easyzoom.js"></script>
+	<script>
+		// Instantiate EasyZoom instances
+		var $easyzoom = $('.easyzoom').easyZoom();
+
+		// Setup thumbnails example
+		var api1 = $easyzoom.filter('.easyzoom--with-thumbnails').data('easyZoom');
+
+		$('.thumbnails').on('click', 'a', function(e) {
+			var $this = $(this);
+
+			e.preventDefault();
+
+			// Use EasyZoom's `swap` method
+			api1.swap($this.data('standard'), $this.attr('href'));
+		});
+
+		// Setup toggles example
+		var api2 = $easyzoom.filter('.easyzoom--with-toggle').data('easyZoom');
+
+		$('.toggle').on('click', function() {
+			var $this = $(this);
+
+			if ($this.data("active") === true) {
+				$this.text("Switch on").data("active", false);
+				api2.teardown();
+			} else {
+				$this.text("Switch off").data("active", true);
+				api2._init();
+			}
+		});
+	</script>
+
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
@@ -283,7 +323,6 @@
 <script>
     $(document).ready(function(){
         $('.zoom_image').zoom();
-
     });
 </script>
 
@@ -344,4 +383,5 @@
         });
 	})
 </script>
+
 @endpush
