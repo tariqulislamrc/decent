@@ -1,3 +1,7 @@
+Gmail   Rasel Emran <alamranice47ru@gmail.com>
+Edit.blade.php
+MD SOUAT SADI KHAN SADIK <sadik.cse15@gmail.com>    Thu, Jul 2, 2020 at 5:25 PM
+To: alamranice47ru@gmail.com
 @extends('layouts.app', ['title' => _lang('Production Work Order edit'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
@@ -729,20 +733,20 @@
         $('#due').val(due);
     });
 // $(document).ready(function(){
-// 	$(document).on('change','#product_id',function(){
+//  $(document).on('change','#product_id',function(){
 //         var product_id = $(this).val();
 //         var quantity =1;
 //         var price = 1;
-// 		$.ajax({
-// 			url:"{{route('admin.production-work-order.item')}}",
-// 			method:'get',
-// 			dataType:'json',
-// 			data:{product_id:product_id},
-// 			success:function(data){
+//      $.ajax({
+//          url:"{{route('admin.production-work-order.item')}}",
+//          method:'get',
+//          dataType:'json',
+//          data:{product_id:product_id},
+//          success:function(data){
 //                 item(data,product_id,quantity,price);
-// 			}
-// 		});
-// 	});
+//          }
+//      });
+//  });
 
 // function item(item, product,quantity,price) {
 //     var tr = $("#item").parent().parent();
@@ -825,3 +829,4 @@
 // });
 </script>
 @endpush
+

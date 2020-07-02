@@ -46,6 +46,8 @@
                                     </div>
                                     <button type="submit" id="submit" class="btn-type1">Login</button>
                                     <button style="display: none;" type="button" disabled id="submiting" class="btn-type1">Please Wait ...</button>
+                                    <span style="background:#e6f2ff;color:#000000;padding: 8px 12px;;border-radius: 20px; margin-left: 50px;     line-height: 40px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span>
+                                     
                                 </fieldset>
                             </form>
                         </div>
@@ -55,7 +57,7 @@
                             <li class="mt-youtube"><a id="loginwithgoogle" data-url="{{ url('login/google') }}" href="{{ url('login/google') }}"><i class="fa fa-google"></i></a></li>
                           </ul>
 
-                        <div style="margin-top:10px; text-align: center;font-size: 16px;width:100%;"><span style="background:#e6f2ff;color:#000000;padding: 5px;border-radius: 20px;">If You Are New User <a href="{{route('register')}}" style="color: #327DBA;"> Sign Up </a> First</span></div>
+                      
 
                     </div>
                 </div>

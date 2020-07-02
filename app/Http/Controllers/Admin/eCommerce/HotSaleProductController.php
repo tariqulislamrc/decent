@@ -38,6 +38,9 @@ class HotSaleProductController extends Controller
                 ->editColumn('category', function ($model) {
                     return $model->category->name;
                 })
+                ->editColumn('code', function ($model) {
+                    return $model->name.'_'.$model->article;
+                })
                 ->editColumn('price', function ($model) {
                     $find_price =  Variation::where('product_id', $model->id)->get();
                     if(count($find_price) > 0) {
@@ -55,7 +58,7 @@ class HotSaleProductController extends Controller
 
                     return '৳'. $per_product_price;
                 })
-                ->rawColumns(['category', 'price', 'photo'])->make(true);
+                ->rawColumns(['category', 'price', 'photo','code'])->make(true);
         }
     }
 

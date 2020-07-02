@@ -27,6 +27,6 @@ class WorkOrder extends Model
 
     public function transaction()
     {
-        return $this->belongsTo('App\models\Production\Transaction');
+        return $this->belongsTo('App\models\Production\Transaction','work_order_id','id');
     }
 }

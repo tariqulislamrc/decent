@@ -22,6 +22,11 @@ class Transaction extends Model
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
+    public function work_order()
+    {
+        return $this->belongsTo(WorkOrder::class, 'work_order_id', 'id');
+    }
+
     public function purchase()
     {
         return $this->hasMany(Purchase::class, 'transaction_id', 'id');

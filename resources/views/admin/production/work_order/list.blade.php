@@ -22,6 +22,7 @@
                         <tr>
                             <th>{{_lang('Date')}}</th>
                             <th>{{_lang('Ref')}}</th>
+                            <th>{{_lang('WorkOrder')}}</th>
                             <th>{{_lang('Payment Status')}}</th>
                             <th>{{_lang('Total Amount')}}</th>
                             <th>{{_lang('Total Paid')}}</th>
@@ -120,6 +121,9 @@
                 }, {
                     data: 'reference_no',
                     name: 'reference_no'
+                },{
+                    data: 'work_order',
+                    name: 'work_order'
                 }, {
                     data: 'payment_status',
                     name: 'payment_status'

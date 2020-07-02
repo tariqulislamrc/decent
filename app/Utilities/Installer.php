@@ -209,7 +209,7 @@ class Installer
         // Create the user
         $user = User::create([
             'name' => $name,
-            'user_type'=>'Super Admin',
+            'user_type'=>'Employee',
             'surname'=>'Mr',
             'first_name'=>'Md',
             'last_name'=>'Admin',

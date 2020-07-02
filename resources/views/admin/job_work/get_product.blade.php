@@ -21,7 +21,7 @@
                         <td>{{ variation_value($product->variation_value_id)}}</td>
                         <td>{{ variation_value($product->variation_value_id_2)}}</td>
                         <td>
-                            <input type="text" class="form-control qty" name="qty[]">
+                            <input type="text" class="form-control input_number qty" name="qty[]">
                         </td>
                     </tr>
                     @endforeach
@@ -33,32 +33,32 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="sub_total">{{ _lang('Sub Total') }} </label>
-                <input type="text" class="form-control sub_total" name="sub_total" id="sub_total">
+                <input type="text" class="form-control input_number sub_total" name="sub_total" id="sub_total">
                 <input type="hidden" name="hidden_qty" id="hidden_qty">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="shipping_charges">{{ _lang('Shipping Charge') }} </label>
-                <input type="text" name="shipping_charges" class="form-control" id="shipping_charges">
+                <input type="text" name="shipping_charges" class="form-control input_number" id="shipping_charges">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="net_total">{{ _lang('Net Total') }} </label>
-                <input type="text" name="net_total" class="form-control" id="net_total" readonly>
+                <input type="text" name="net_total" class="form-control input_number" id="net_total" readonly>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="paid">{{ _lang('Paid') }} </label>
-                <input type="text" class="form-control paid" name="paid" id="paid">
+                <input type="text" class="form-control input_number paid" name="paid" id="paid">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="due">{{ _lang('Due') }} </label>
-                <input type="text" class="form-control due" name="due" id="due" readonly>
+                <input type="text" class="form-control input_number due" name="due" id="due" readonly>
             </div>
         </div>
         <div class="col-md-4">

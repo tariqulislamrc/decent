@@ -207,7 +207,7 @@ class CartController extends Controller
         $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
-        $invoice_no = $code_prefix . $uniqu_id;
+        $invoice_no = rand(1, 100000000);
 
         $payment = new Transaction();
         $payment->client_id = $client->id;
@@ -231,7 +231,7 @@ class CartController extends Controller
         $payment->brand_id= get_option('default_brand');
         $payment->payment_status = 'due';
 
-        $payment->reference_no = rand(1, 100000000);
+        $payment->reference_no = $invoice_no;
 
         if($request->checkbox == 'on'){
             $payment->shipping_status = 'On';

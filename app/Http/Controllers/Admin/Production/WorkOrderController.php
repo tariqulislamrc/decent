@@ -130,7 +130,7 @@ class WorkOrderController extends Controller
             'date' => 'required|max:255',
             'delivery_date' => 'max:255',
         ]);
-
+     if (isset($request->product_id)) {
         $model = new WorkOrder;
         $model->prefix = $request->prefix;
         $model->code = $request->code;
@@ -244,6 +244,12 @@ class WorkOrderController extends Controller
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
+
+         }
+    else
+    {
+      throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to WorkOrder')]);
+    }
     }
 
     // pay_form
@@ -375,7 +381,7 @@ class WorkOrderController extends Controller
             'date' => 'required|max:255',
             'delivery_date' => 'max:255',
         ]);
-
+      if (isset($request->product_id)) {
         $model = WorkOrder::findOrFail($id);
         $model->prefix = $request->prefix;
         $model->code = $request->code;
@@ -496,6 +502,11 @@ class WorkOrderController extends Controller
         activity()->log('updated a Work order By - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
     }
+    else
+    {
+      throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to WorkOrder')]);
+    }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -512,12 +523,16 @@ class WorkOrderController extends Controller
         $count2 = ProductFlow::where('work_order_id', $id)->count();
         if ($count1 == 0 && $count2==0) {
             $model = WorkOrder::findOrFail($id);
+
             //workorder product
             if($model->workOrderProduct) {
                 foreach($model->workOrderProduct as $value) {
                     $value->delete();
                 }
                 // $model->workOrderProduct->delete();
+           // workorder product
+            if($model->workOrderProduct) {
+                $model->workOrderProduct->delete();
             }
             if (isset($model->transaction)) {
                 if($model->transaction->payment) {
@@ -529,6 +544,7 @@ class WorkOrderController extends Controller
                         $item->delete();
                     }
                 }
+
                 $model->transaction->delete();
             }
             $model->delete();
@@ -650,11 +666,17 @@ class WorkOrderController extends Controller
             $documents = Transaction::where('transaction_type', 'work_order')->orderBy('id', 'desc')->get();
             return DataTables::of($documents)
             ->addIndexColumn()
+              ->editColumn('work_order', function ($document) {
+                // return $document->work_order->prefix.'-'.$document->work_order->code;
+                return '';
+            })
             ->editColumn('payment_status', function ($document) {
-                if ($document->type == 'sample') {
-                    return '<span class="badge badge-warning">Sample Work Order</span>';
-                } else {
-                    return $document->payment_status == 1 ? '<span class="badge badge-success">Paid</span>' : '<span class="badge badge-danger">Due</span>';
+                if ($document->payment_status == 'due') {
+                    return '<span class="badge badge-warning">Due</span>';
+                } elseif($document->payment_status == 'paid') {
+                    return'<span class="badge badge-success">Paid</span>';
+                }else{
+                    return  '<span class="badge badge-danger">Due</span>';
                 }
             })
             ->editColumn('action', function ($document) {
@@ -662,7 +684,7 @@ class WorkOrderController extends Controller
             })
             // ->addColumn('action', function ($model) {
             //     return view('admin.production.work_order.action', compact('model'));
-            ->rawColumns(['action', 'payment_status'])->make(true);
+            ->rawColumns(['action', 'payment_status','work_order'])->make(true);
         }
     }
 

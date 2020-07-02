@@ -12,10 +12,10 @@
     </td>
 
     <td>
-    	<input type="text" autocomplete="off" name="quantity[]" class="form-control qty" id="qty_{{$row}}" value="1">
+    	<input type="text" autocomplete="off" name="quantity[]" class="form-control input_number qty" id="qty_{{$row}}" value="1">
     </td>
     <td>
-    	<input type="text" autocomplete="off" name="price[]" class="form-control price" value="{{$variation->default_sell_price}}">
+    	<input type="text" autocomplete="off" name="price[]" class="form-control input_number price" value="{{$variation->default_sell_price}}">
     </td>
     <td>
         <input type="hidden" name="sub_total[]" class="sub_total" value="{{1*$variation->default_sell_price}}">
