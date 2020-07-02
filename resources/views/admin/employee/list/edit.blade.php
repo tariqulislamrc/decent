@@ -185,8 +185,7 @@
                     <form action="{{route('admin.employee-list.Image_Upload',$model->id)}}" method="POST" id="imageUpload" enctype="multipart/form-data" >
                         <div class="form-group">
                             <label for="photo">{{_lang('Upload Your Photo')}}</label>
-                            <input required type="file" name="photo" id="photo" class="dropify"
-                            data-default-file="{{isset($model)?asset('storage/employee/'.$model->photo):''}}"/>
+                            <input required type="file" name="photo" id="photo" class="dropify" data-default-file="{{isset($model) && $model->photo != null ?asset('storage/employee/'.$model->photo):''}}"/>
                         </div>
                         @if(isset($model) && isset($model->photo))
                             <input type="hidden" name="oldimage" value="{{$model->photo}}">
@@ -194,8 +193,8 @@
     
                         <div class="form-group col-md-12" align="center">
                             <input type="hidden" name="id" value="{{$model->id}}">
-                            <button type="submit" class="badge badge-primary btn"  id="submit_photo">{{_lang('Save Photo')}}<i class="icon-arrow-right14 position-right"></i></button>
-                            <button type="button" class="btn btn-link" id="submiting_photo" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
+                            <button type="submit" class="btn btn-primary btn-sm"  id="submit_photo">{{_lang('Create')}}<i class="fa ml-2 fa-plus-circle" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-success btn-sm " id="submiting_photo" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
                         </div>
                     </form>
                 </div>

@@ -35,12 +35,13 @@
               <div class="col-xs-12">
                 <div class="txt">
                   <h2>{{ isset($model) && $model != null ? $model->header : 'Contact Us for Whole Sale'}}</h2>
+                  
+                  <p>{!! isset($model) && $model != null ? $model->description : '' !!}</p>
                   <div>
                     @if (isset($model))
-                    <img style="max-height: 400px;" src="{{ asset('storage/catelog/'.$model->catelog) }}" alt="Wholesale Catelog">
+                    <img src="{{ asset('storage/catelog/'.$model->catelog) }}" alt="Wholesale Catelog">
                     @endif
                   </div>
-                  <p>{!! isset($model) && $model != null ? $model->description : '' !!}</p>
                 </div>
               </div>
             </div>

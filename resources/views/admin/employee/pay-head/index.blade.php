@@ -57,4 +57,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/employee/pay_head.js') }}"></script>
 @endpush
-

@@ -1,7 +1,17 @@
 @extends('eCommerce.layouts.app')
 @push('css')
+    <title>{{ $model->product->name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
+    <meta property="og:title" content="{{ $model->product->name != '' ? $model->product->name : 'Blog Title' }}">
+    <meta property="og:description" content="{{ $model->product->name != '' ? $model->product->name : 'Blog Description' }} ">
+    <meta property="og:image" content="{{$model->image  ?asset('storage/product/'.$model->image): asset('img/product.jpg') }}">
+    <meta property="og:url" content="{{ route('product-details',$model->slug) }}">
+    
+    <meta name="twitter:title" content="{{ $model->product->name != '' ? $model->product->name : 'Blog Title' }} ">
+    <meta name="twitter:description" content=" {{ $model->product->name != '' ? $model->product->name : 'Blog Description' }} .">
+    
+    <meta property="twitter:image" content="{{$model->image  ?asset('storage/offer/'.$model->image): asset('img/product.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
     <style>
         /* styles unrelated to zoom */
 
@@ -92,10 +102,10 @@
                         <div class="detial-holder">
 
                             <!-- Breadcrumbs of the Page -->
-                            {{-- <ul class="list-unstyled breadcrumbs">
-                                <li><a href="#">Chairs <i class="fa fa-angle-right"></i></a></li>
-                                <li>Products</li>
-                            </ul> --}}
+                            <ul class="list-unstyled breadcrumbs">
+                                <li>Products <i class="fa fa-angle-right"></i></li>
+                                <li>{{ $product->name }}</li>
+                            </ul>
                             <!-- Breadcrumbs of the Page end -->
 
                             <h2 class="text-uppercase">{{$model->heading}}</h2>
@@ -122,11 +132,11 @@
                                         $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $product->id)->first();
                                     @endphp
                                     @if ($check)
-                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                        <i class="fa fa-heart" aria-hidden="true"></i> WISHLISTED
                                     @else
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        <i class="fa fa-heart-o" aria-hidden="true"></i> ADD TO WISHLIST
                                     @endif
-                                    ADD TO WISHLIST</a></li>
+                                    </a></li>
                             </ul>
                             @php
                                 $variation = '';
@@ -327,7 +337,7 @@ $variation_name = '';
 		var ip = '{{getIp()}}';
 		var url = $(this).data('url');
 
-		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+		$(this).html('<i class="fa fa-heart" aria-hidden="true"></i> WISHLISTED');
 
 		$.ajax({
             type: 'GET',

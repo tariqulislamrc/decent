@@ -98,8 +98,7 @@
 									<div class="box">
 										<div class="b1">
 											<div class="b2">
-
-                                                <a href="{{route('offer-product',$product->product_slug)}}"> <img src="{{$product->photo && $product->photo != '' ?asset('storage/product/'.$product->photo): asset('img/product.jpg') }}" alt="image description"> </a>
+                                                <img src="{{$product->photo && $product->photo != '' ?asset('storage/product/'.$product->photo): asset('img/product.jpg') }}" alt="image description">
 
                                                 <span class="caption">
                                                     <span class="off">
@@ -120,9 +119,10 @@
                                                     <input type="hidden" name="price" value="{{ $item->price_with_dis }}" id="product_price">
                                                     <input type="hidden"  name="qty" value="1" id="qty">
                                                     <ul class="links">
+                                                        
                                                         <li>
-                                                            <button type="submit"><i class="icon-handbag"></i><span>Add to Cart</span></button>
-                                                        </li>
+                                                            <a class="submit-shpecial-product" href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+                                                        
                                                     </ul>
                                                 </form>
 
@@ -131,7 +131,7 @@
 									</div>
                                     <div class="txt">
 
-                                        <strong class="title"><a href="{{route('offer-product',$product->product_slug)}}">{{$product->name}} | {{$variation->name}}</a></strong>
+                                        <strong class="title">{{$product->name}} | {{$variation->name}}</strong>
                                         <span class="price">৳<span>{{ number_format($item->price_with_dis, 2) }}</span></span>
 
                                     </div>
@@ -148,5 +148,93 @@
 @push('scripts')
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('backend/js/parsley.min.js')}}"></script>
-<script src="{{asset('js/eCommerce/offer_product.js')}}"></script>
+{{-- <script src="{{asset('js/eCommerce/offer_product.js')}}"></script> --}}
+<script>
+    $(document).on('click', '.heart', function() {
+        var id = $(this).data('id');
+        var ip = '{{getIp()}}';
+        var url = $(this).data('url');
+        
+        $(this).html('<i class="fa fa-heart" aria-hidden="true"></i>');
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: {
+                id: id, ip: ip
+            },
+            beforeSend: function() {
+                $(this).html(' <i class="fa fa-spinner fa-spin fa-fw"></i>');
+            }, 
+            success: function (data) {
+                if(data.status == 'success') {
+                    toastr.success(data.message);
+                }
+                if(data.status == 'warning') {
+                    toastr.warning(data.message);
+                }
+            }
+        });
+    })
+            $('#content_form').parsley();
+
+    $('.submit-shpecial-product').click(function() {
+        event.preventDefault();
+
+            $('#submit').hide();
+            $('#submiting').show();
+            $(".ajax_error").remove();
+            var submit_url = $('#content_form').attr('action');
+            //Start Ajax
+            var formData = new FormData($("#content_form")[0]);
+            $.ajax({
+                url: submit_url,
+                type: 'POST',
+                data: formData,
+                contentType: false, // The content type used when sending data to the server.
+                cache: false, // To unable request pages to be cached
+                processData: false,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.status == 'danger') {
+                        toastr.error(data.message);
+                    } else {
+                        toastr.success(data.message);
+                        $('#cart_total').text(data.bdt + ' ' + data.cart_total);
+                        if (data.goto) {
+                            setTimeout(function () {
+                                window.location.href = data.goto;
+                            }, 500);
+                        }
+                    }
+                },
+                error: function (data) {
+                    var jsonValue = $.parseJSON(data.responseText);
+                    const errors = jsonValue.errors;
+                    if (errors) {
+                        var i = 0;
+                        $.each(errors, function (key, value) {
+                            const first_item = Object.keys(errors)[i]
+                            const message = errors[first_item][0];
+                            if ($('#' + first_item).length > 0) {
+                                $('#' + first_item).parsley().removeError('required', {
+                                    updateClass: true
+                                });
+                                $('#' + first_item).parsley().addError('required', {
+                                    message: value,
+                                    updateClass: true
+                                });
+                            }
+                            // $('#' + first_item).after('<div class="ajax_error" style="color:red">' + value + '</div');
+                            toastr.error(value);
+                            i++;
+                        });
+                    } else {
+                        toastr.warning(jsonValue.message);
+        
+                    }
+                }
+            });
+    });
+</script>
 @endpush

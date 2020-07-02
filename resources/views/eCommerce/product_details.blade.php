@@ -97,8 +97,9 @@
                         <div class="detial-holder">
                             <!-- Breadcrumbs of the Page -->
                             <ul class="list-unstyled breadcrumbs">
-                                <li><a href="#">{{ $model->name }} <i class="fa fa-angle-right"></i></a></li>
-                                <li>Products</li>
+                                
+                                <li>Products <i class="fa fa-angle-right"> </i></li>
+                                <li>{{ $model->name }}</li>
                             </ul>
                             <!-- Breadcrumbs of the Page end -->
                             <h2 class="text-uppercase">{{$model->name}}</h2>
@@ -123,11 +124,11 @@
                                         $check = App\models\eCommerce\Wishlist::where('ip', getIp())->where('product_id', $model->id)->first();
                                     @endphp
                                     @if ($check)
-                                        <i class="fa fa-heart" ></i>
+                                        <i class="fa fa-heart" ></i> WISHLISTED
                                     @else
-                                        <i id='icon' class="fa fa-heart-o" ></i>
+                                        <i id='icon' class="fa fa-heart-o" ></i>  ADD TO WISHLIST
                                     @endif
-                                    ADD TO WISHLIST</a>
+                                   </a>
                                 </li>
                             </ul>
                             <div class="txt-wrap">
@@ -333,8 +334,7 @@
             },
             success: function (data) {
                 if(data.status == 'success') {
-                    $("#icon").removeClass("fa-heart-o");
-                    $("#icon").addClass(" fa-heart");
+                    $('.heart').html('<i class="fa fa-heart" aria-hidden="true"></i> WISHLISTED');
                     toastr.success(data.message);
                 }
 				if(data.status == 'warning') {

@@ -3,6 +3,7 @@
 use App\models\Client;
 use App\models\employee\EmployeeAttendanceType;
 use App\models\employee\EmployeeCategory;
+use App\models\employee\PayHead;
 use App\models\Production\Brand;
 use App\models\Production\VariationTemplate;
 use Illuminate\Database\Seeder;
@@ -105,6 +106,14 @@ class GeneralSettingSeeder extends Seeder
         Setting::create([
             'name'      =>  'default_brand',
             'value'     =>  '1',
+        ]);
+
+        // Create a Basic Payhead
+        PayHead::create([
+            'name'     =>   'Basic',
+            'alias'    =>   'BASIC',
+            'type'     =>   'Earning',
+            'is_active'=>   '1',
         ]);
     }
 }

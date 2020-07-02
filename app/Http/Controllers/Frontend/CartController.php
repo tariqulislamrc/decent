@@ -102,7 +102,7 @@ class CartController extends Controller
         $models = Cart::getContent();
         $total = Cart::getTotal();
         $sub_total = Cart::getSubTotal();
-        $bdt = get_option('currency');
+        $bdt = get_option('currency') != '' ? get_option('currency') : 'BDT';
 
         return response()->json(['view' => View::make('eCommerce.update-qty', compact('models'))->render(), 'total' => $total, 'bdt' => $bdt, 'sub_total' => $sub_total]);
 
@@ -138,10 +138,21 @@ class CartController extends Controller
 
     public function store_cart(Request $request){
 
+
+    
+            if(Cart::getTotal() == 0) {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Your Cart is Empty'), 'goto' => url('/')]);
+            }
+            
         if (auth('client')->check() == true) {
             $models = Cart::getContent();
             Session::put('total', $request->total_hidden);
             Session::put('coupon', $request->coupon_amt);
+            
+        //     if(Cart::getTotal() == 0) {
+        //     return redirect('/')->with('msg' , 'Sorry. Your Cart is Empty.');
+        // }
+    
 
             return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Welcome To Checkout Page'), 'goto' => route('shopping-checkout')]);
         } else {
@@ -153,6 +164,8 @@ class CartController extends Controller
     public function checkout(Request $request)
     {
         $banner = PageBanner::where('page_name', 'Checkout')->first();
+        
+        
 
         if (auth('client')->check() == true) {
             $user = auth('client')->user('clients_id');

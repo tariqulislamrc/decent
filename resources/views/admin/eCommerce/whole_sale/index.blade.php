@@ -31,16 +31,18 @@
                             value="{{isset($model)?$model->header:''}}">
                     </div>
                 </div>
-                <div class="col-md-12 form-group">
-                    <label for="catelog">Image Catelog</label>
-                    <input type="file"  name="catelog" id="catelog" class="form-control dropify" data-default-file="{{ isset($model) ? asset('storage/catelog/'.$model->catelog) : ''}}" >
-                </div>
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="name">{{_lang('description')}}</label>
                         <textarea name="description" class='form-control' id="summernote"
                             required>{{isset($model)?$model->description:''}}</textarea>
                     </div>
+                </div>
+                <div class="col-md-12 form-group">
+                    <label for="catelog">Image Catelog</label>
+                    <input type="file"  name="catelog" id="catelog" class="form-control dropify" data-default-file="{{ isset($model) ? asset('storage/catelog/'.$model->catelog) : ''}}" >
+                    <span class="text-danger">Please Insert image in the size of (595 X 841) pixel </span>
                 </div>
             </div>
             <div class="row">

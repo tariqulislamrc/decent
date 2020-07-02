@@ -57,6 +57,7 @@
         <section class="mt-team-sec">
           <div class="container">
             <div class="row">
+              @if (count($our_team))
               <div class="col-xs-12">
                 <h3>OUR TEAM</h3>
                 <div class="holder">
@@ -80,12 +81,14 @@
 
                 </div>
               </div>
+              @endif
             </div>
           </div>
         </section>
         <!-- Mt About Section of the Page -->
         <!-- Mt Workspace Section of the Page -->
         <section class="mt-workspace-sec wow fadeInUp" data-wow-delay="0.4s">
+          @if (count($our_workspace) > 0)
           <div class="container">
             <div class="row">
               <div class="col-xs-12">
@@ -95,7 +98,6 @@
           </div>
           <!-- Work Slider of the Page -->
           <ul class="list-unstyled work-slider">
-           @if (count($our_workspace) > 0)
             @foreach ($our_workspace as $our_workspace_item)
             <li>
               <div class="img-holder">
@@ -114,10 +116,8 @@
               </div>
             </li>
             @endforeach
-            @else
-                  <li class="text-danger text-center">No Workspace Information Available</li>
-          @endif
           </ul>
+          @endif
           <!-- Work Slider of the Page end -->
         </section>
         <!-- Mt Workspace Section of the Page -->

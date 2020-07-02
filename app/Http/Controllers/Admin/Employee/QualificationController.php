@@ -11,17 +11,8 @@ class QualificationController extends Controller
     // qua_info
     public function qua_info(Request $request) {
         $id = $request->model_id;
-        $models = EmployeeQualification::where('employee_id', $id)->get();
+        $models = EmployeeQualification::where('employee_id', $id)->orderBy('id', 'desc')->get();
         return view('admin.employee.list.ajax.qualification_info', compact('models', 'id'));
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -50,11 +41,11 @@ class QualificationController extends Controller
         // fetching all data from form and validate
 
         request()->validate([
-            'standard'                          =>      'required',
-            'institute_name'                    =>      'required',
-            'board_name'                        =>      'required',
+            'standard'                          =>      'required|min:1|max:50',
+            'institute_name'                    =>      'required|min:1|max:50',
+            'board_name'                        =>      'required|min:1|max:50',
             'start_period'                      =>      'required',
-            'result'                            =>      'required',
+            'result'                            =>      'required|min:1|max:50',
         ]);
 
         $employee_id = $request->employee_id;
@@ -71,8 +62,8 @@ class QualificationController extends Controller
         $model->save();
 
         // make activity log & return
-         activity()->log('Created a Employee Qualification ' );
-         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'load' => true]);
+        activity()->log('Created a Employee Qualification ' );
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'load' => true]);
  
     }
 
@@ -115,13 +106,12 @@ class QualificationController extends Controller
     public function update(Request $request, $id)
     {
         // fetching all data from form and validate
-
         request()->validate([
-            'standard'                          =>      'required',
-            'institute_name'                    =>      'required',
-            'board_name'                        =>      'required',
+            'standard'                          =>      'required|min:1|max:50',
+            'institute_name'                    =>      'required|min:1|max:50',
+            'board_name'                        =>      'required|min:1|max:50',
             'start_period'                      =>      'required',
-            'result'                            =>      'required',
+            'result'                            =>      'required|min:1|max:50',
         ]);
 
         $employee_id = $request->employee_id;
@@ -138,8 +128,8 @@ class QualificationController extends Controller
         $model->save();
 
         // make activity log & return
-         activity()->log('Updated a Employee Qualification ' );
-         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'load' => true]);
+        activity()->log('Updated a Employee Qualification ' );
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Created'), 'load' => true]);
  
     }
 

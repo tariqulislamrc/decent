@@ -2,19 +2,19 @@
     {{-- standard --}}
     <div class="col-md-6 form-group">
         <label for="standard">{{_lang('Standard')}} <span class="text-danger">*</span></label>
-        <input type="text" name="standard" id="standard" placeholder="Enter Standart" class="form-control" value="{{$model->standard}}" required>
+        <input autocomplete="off" type="text" name="standard" id="standard" placeholder="Enter Standart" class="form-control" value="{{$model->standard}}" required>
     </div>
 
     {{-- institute_name --}}
     <div class="col-md-6 form-group">
         <label for="institute_name">{{_lang('Institute Name')}} <span class="text-danger">*</span></label>
-        <input type="text" name="institute_name" id="institute_name" placeholder="Enter Institute Name" class="form-control" value="{{$model->institute_name}}" required>
+        <input autocomplete="off" type="text" name="institute_name" id="institute_name" placeholder="Enter Institute Name" class="form-control" value="{{$model->institute_name}}" required>
     </div>
 
     {{-- board_name --}}
     <div class="col-md-6 form-group">
         <label for="board_name">{{_lang('Board Name')}} <span class="text-danger">*</span></label>
-        <input type="text" name="board_name" id="board_name" placeholder="Enter Borad Name" class="form-control" value="{{$model->board_name}}" required>
+        <input autocomplete="off" type="text" name="board_name" id="board_name" placeholder="Enter Borad Name" class="form-control" value="{{$model->board_name}}" required>
     </div>
 
     {{-- start_period --}}
@@ -32,7 +32,7 @@
     {{-- result --}}
     <div class="col-md-6 form-group">
         <label for="result">{{_lang('Result')}} <span class="text-danger">*</span></label>
-        <input type="text" name="result" id="result" placeholder="Enter Result" class="form-control" value="{{$model->result}}" required>
+        <input autocomplete="off" type="text" name="result" id="result" placeholder="Enter Result" class="form-control" value="{{$model->result}}" required>
     </div>
 
     {{-- Description --}}
@@ -41,10 +41,4 @@
         <textarea name="description" id="description" class="form-control" placeholder="Enter Description" cols="30" rows="2">{{$model->description}}</textarea>
     </div>
 </div>
-
-<div class="form-group col-md-12" align="right">
-    <input type="hidden" name="employee_id" value="{{$employee_id}}">
-    <button type="submit" class="btn btn-primary"  id="submit">{{_lang('Save')}}<i class="icon-arrow-right14 position-right"></i></button>
-    <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}} <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-</div>
+<input type="hidden" name="employee_id" value="{{$employee_id}}">

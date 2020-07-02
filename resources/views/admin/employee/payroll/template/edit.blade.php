@@ -28,15 +28,13 @@
                     <div class="row">
                         {{-- Name --}}
                         <div class="col-md-6 form-group">
-                            <label for="name">{{_lang('Name')}} <span class="text-danger">*</span>
-                            </label>
-                        <input type="text" name="name" id="name" value="{{$model->name}}" class="form-control" placeholder="Type Template Name" required>
+                            <label for="name">{{_lang('Name')}} <span class="text-danger">*</span> </label>
+                            <input type="text" name="name" id="name" value="{{$model->name}}" class="form-control" placeholder="Type Template Name" required>
                         </div>
 
                         {{-- Active Status --}}
                         <div class="col-md-6 form-group">
-                            <label for="name">{{_lang('Is Active ?')}} <span class="text-danger">*</span>
-                            </label>
+                            <label for="is_active">{{_lang('Is Active ?')}} <span class="text-danger">*</span> </label>
                             <select data-parsley-errors-container="#parsley_error_active_status_create_for_templating" data-placeholder="Select Active Status" name="is_active" class="form-control select" id="is_active" required>
                                 <option {{$model->is_active == 1?'selected':''}} value="1">Active</option>
                                 <option {{$model->is_active == 0?'selected':''}} value="0">Inactive</option>
@@ -46,12 +44,10 @@
 
                         {{--Description --}}
                         <div class="col-md-12 form-group">
-                            <label for="name">{{_lang('Description')}}
-                            </label>
-                            <textarea name="description" class="form-control" id=""placeholder="Enter Description">{{$model->description}}</textarea>
+                            <label for="description">{{_lang('Description')}}</label>
+                            <textarea name="description" class="form-control" id="description"placeholder="Enter Description">{{$model->description}}</textarea>
                         </div>
                     </div>
-
 
                     <div class="list-group">
                         @foreach ($model->details as $item)
@@ -89,8 +85,7 @@
                                 {{-- Computation Formula --}}
                                 <div class="col-12 col-sm-5" id="computation_{{$item->id}}" style="{{$item->computation?'display:block':'display:none'}}">
                                     <div class="form-group">
-                                        <input type="number" value="{{$item->computation}}" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->payhead->id}}]"
-                                            placeholder="Computation Formula" class="pay_head form-control">
+                                        <input type="number" value="{{$item->computation}}" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->payhead->id}}]" placeholder="Computation Formula" class="pay_head form-control">
                                     </div>
                                 </div>
     
@@ -101,21 +96,19 @@
                                         class="attendance form-control select">
                                         <option value="">Select Attendance Type</option>
                                         @foreach ($type as $model)
-                                        <option {{$item->employee_attendance_type_id == $model->id?'selected':''}} value="{{$model->id}}">{{$model->name}}</option>
+                                            <option {{$item->employee_attendance_type_id == $model->id?'selected':''}} value="{{$model->id}}">{{$model->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    <div class="form-group col-md-12" align="right">
-                        {{-- <input type="hidden" name="type[]" value=" "> --}}
-                        <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
-                                class="icon-arrow-right14 position-right"></i></button>
-                        <button type="button" class="btn btn-link" id="submiting"
-                            style="display: none;">{{_lang('Processing')}}
-                            <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                    </div>
+                    @can('employee_payroll_template.update')
+                        <div class="form-group col-md-12" align="right">
+                            <button type="submit" class="btn btn-primary btn-sm" id="submit">{{_lang('Save')}}<i class="fa ml-2 fa-crosshairs" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-success btn-sm " id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
+                        </div>
+                    @endcan
                 </form>
             </div>
         </div>
@@ -131,7 +124,6 @@
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-<script src="{{ asset('js/employee/payroll-template.js') }}"></script>
 <script src="{{asset('backend/js/jquery.sortable.js')}} "></script>
 <script>
 
@@ -162,6 +154,14 @@
         $('.select').select2({
             width: '100%'
         });
+    });
+
+    $('.select').select2({
+        width: '100%'
+    });
+
+    $('.custom-select').select2({
+        width:'100%'
     });
 </script>
 @endpush

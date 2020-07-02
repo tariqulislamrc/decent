@@ -7,24 +7,20 @@
             @csrf
             <div class="row">
                 {{-- Employee Pay Head Name --}}
-                <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Pay Head Name')}} <span class="text-danger">*</span>
-                    </label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Pay Head Name"
-                        required>
+                <div class="col-md-6 form-group">
+                    <label for="name">{{_lang('Pay Head Name')}} <span class="text-danger">*</span> </label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Employee Pay Head Name" autocomplete="off" required>
                 </div>
         
                 {{-- Alias --}}
-                <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Alias')}} <span class="text-danger">*</span>
-                    </label>
-                    <input type="text" name="alias" id="alias" class="form-control" placeholder="Enter Alias" required>
+                <div class="col-md-6 form-group">
+                    <label for="alias">{{_lang('Alias')}} <span class="text-danger">*</span> </label>
+                    <input type="text" autocomplete="off" name="alias" id="alias" class="form-control" placeholder="Enter Alias" required>
                 </div>
         
                 {{-- Type --}}
-                <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Type')}} <span class="text-danger">*</span>
-                    </label>
+                <div class="col-md-6 form-group">
+                    <label for="type">{{_lang('Type')}} <span class="text-danger">*</span> </label>
                     <select data-parsley-errors-container="#parsley_error_employee_payhead_create_type_select" name="type" class="form-control select" data-placeholder="Select Employee Pay Head Type" id="type" required>
                         <option value="">Select Employee Pay Head Type.</option>
                         <option value="Earning">Earning</option>
@@ -34,9 +30,8 @@
                 </div>
         
                 {{-- Active Status --}}
-                <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Is Active ?')}} <span class="text-danger">*</span>
-                    </label>
+                <div class="col-md-6 form-group">
+                    <label for="is_active">{{_lang('Is Active ?')}} <span class="text-danger">*</span> </label>
                     <select data-parsley-errors-container="#parsley_error_employee_payhead_active_status_for_creating_pay_head" name="is_active" class="form-control select" id="is_active" data-placeholder="Select Active Status" required>
                         <option value="">Select Active Status</option>
                         <option selected value="1">Active</option>
@@ -47,17 +42,15 @@
         
                 {{-- Pay Head Description --}}
                 <div class="col-md-12 form-group">
-                    <label for="name">{{_lang('Description')}}
-                    </label>
-                    <textarea name="description" class="form-control" id="" placeholder="Enter Pay Head Description"></textarea>
+                    <label for="description">{{_lang('Description')}}</label>
+                    <textarea name="description" class="form-control" id="description" placeholder="Enter Pay Head Description"></textarea>
                 </div>
         
                 @can('employee_payhead.create')
                     <div class="form-group col-md-12" align="right">
-                        {{-- <input type="hidden" name="type[]" value=" "> --}}
-                        <button type="submit" class="btn btn-primary" id="submit">{{_lang('Create')}}<i class="icon-arrow-right14 position-right"></i></button>
-                        <button type="button" class="btn btn-link" id="submiting" style="display: none;">{{_lang('Processing')}}<img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm"  id="submit">{{_lang('Create')}}<i class="fa ml-2 fa-plus-circle" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-success btn-sm " id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
                     </div>
                 @endcan
             </div>

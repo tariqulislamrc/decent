@@ -1,12 +1,3 @@
-
-var _componentDatePicker = function () {
-    $(".take_date").datepicker({
-        dropWidth: 200,
-        dropPrimaryColor: "#1abc9c",
-        dropBorder: "1px solid #1abc9c"
-    });
-}
-
 var _componentSelect2Normal = function() {
 
     $('.select').select2({width:'100%'});

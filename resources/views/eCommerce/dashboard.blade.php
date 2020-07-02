@@ -118,7 +118,7 @@
                 <button class="tablinks" onclick="openCity(event, 'address_book')">Address Book</button>
                 <button class="tablinks" onclick="openCity(event, 'password_manager')">Password Manager</button>
                 <button class="tablinks" onclick="openCity(event, 'my_cancel_orders')">My Cancel Order</button>
-                <button class="tablinks" ><a class='h4' href="{{route('shopping-cart-show')}}">Cart</a> </button>
+                <a class='h4' href="{{route('shopping-cart-show')}}"><button class="tablinks" >Cart </button></a>
                 
             </div>
 

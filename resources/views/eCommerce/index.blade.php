@@ -40,7 +40,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                         @if (count($banner3) > 0)
                             @foreach ($banner3 as $item)
                                 <div class="banner-12 right white wow fadeInUp" data-wow-delay="0.4s">
-                                    <img style="height: 275px;" src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
+                                    <img style="height: 275px; width: 415px;" src="{{$item->cover_image && $item->cover_image != '' ? asset('storage/eCommerce/special_offer/'. $item->cover_image) : 'http://placehold.it/765x580'}}" alt="Special Image {{$loop->index + 1}}">
                                     <div class="holder">
                                         <h2><span>{{$item->name}}</span><strong>{{$item->sub_heading}}</strong>
                                         </h2>
@@ -151,6 +151,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                                             $find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
                                             if(count($find_price) > 0) {
                                                 $total_product_variation = count($find_price);
+
                                                 $price = 0;
                                                 foreach($find_price as $row) {
                                                     $default_price = $row['default_sell_price'];
@@ -165,12 +166,6 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                                             <div class="mt-product2 large bg-grey">
                                                 <div class="box">
                                                     <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
-                                                    <ul class="mt-stars">
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star-o"></i></li>
-                                                    </ul>
                                                     <ul class="links">
                                                         <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
                                                         <li>
@@ -201,16 +196,25 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                         <div id="tab2">
                             <div class="tabs-sliderlg">
                             @foreach ($latest_product as $item)
+                                @php
+                                    $find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
+                                    if(count($find_price) > 0) {
+                                        $total_product_variation = count($find_price);
+
+                                        $price = 0;
+                                        foreach($find_price as $row) {
+                                            $default_price = $row['default_sell_price'];
+                                            $price = $price + $default_price;
+                                        }
+                                
+                                        $per_product_price = round($price / $total_product_variation) ;
+                                
+                                    }
+                                @endphp
                                 <div class="slide">
                                     <div class="mt-product2 large bg-grey">
                                         <div class="box">
                                             <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
-                                            <ul class="mt-stars">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                            </ul>
                                             <ul class="links">
                                                 <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
                                                 <li>
@@ -239,17 +243,26 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
                         </div>
                         <div id="tab3">
                             <div class="tabs-sliderlg">
-                            @foreach ($featur_product as $item)
+                            @foreach ($best_sellars as $item)
+                                @php
+                                    $find_price =  App\models\Production\Variation::where('product_id', $item->id)->get();
+                                    if(count($find_price) > 0) {
+                                        $total_product_variation = count($find_price);
+
+                                        $price = 0;
+                                        foreach($find_price as $row) {
+                                            $default_price = $row['default_sell_price'];
+                                            $price = $price + $default_price;
+                                        }
+                                
+                                        $per_product_price = round($price / $total_product_variation) ;
+                                
+                                    }
+                                @endphp
                                 <div class="slide">
                                     <div class="mt-product2 large bg-grey">
                                         <div class="box">
                                             <img alt="{{isset($item->homePage->tab_slider_image_alt)?$item->homePage->tab_slider_image_alt:''}}" src="{{$item->photo ? asset('storage/product/'.$item->photo) : asset('img/product.jpg') }}">
-                                            <ul class="mt-stars">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                            </ul>
                                             <ul class="links">
                                                 <li><a href="{{route('product-details',$item->product_slug)}}"><i class="icon-handbag"></i></a></li>
                                                 <li>
@@ -283,7 +296,7 @@ $banner_slide = App\EcommerceOffer::where('size', '765 X 580')->with('product')-
 
                 <div class="mt-producttabs style6 wow fadeInUp" data-wow-delay="0.4s">
                     <div class="mt-heading2">
-                        <h2 class="head">RECENTLY UPLOADED PRODUCTS</h2>
+                        <h2 class="head">RECENT PRODUCTS</h2>
                         <p>FIND YOUR PERFECT SHOE FROM HERE</p>
                     </div>
                     <div class="tabs-slider row">

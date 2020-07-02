@@ -32,7 +32,7 @@
                     </tr>
         
                     <tr>
-                        <td>{{_lang('Result ')}}</td>
+                        <td>{{_lang('Result')}}</td>
                         <td>{{$model->result}} </td>
                     </tr>
         
@@ -56,8 +56,7 @@
             </table>
         </div>
         <div class="form-group col-md-12" align="right">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
         </div>
-        
     </div>
 </div>

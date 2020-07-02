@@ -315,15 +315,15 @@
                                 <label for="change_status">{{_lang('Change Order Status')}} </label>
                                 <select data-parsley-errors-container="#change_order_status" data-url="{{route('admin.eCommerce.order.change_status')}}" name="status" id="status" class="form-control select" required data-placeholder="Select Status">
                                     <option value="">Select Status</option>
-                                    <option value="pending">{{_lang('Pending')}}</option>
-                                    <option value="confirm">{{_lang('Confirm')}}</option>
-                                    <option value="progressing">{{_lang('In Progressing')}}</option>
-                                    <option value="shipment">{{_lang('In Shipment')}}</option>
+                                    <option {{ $model->ecommerce_status == 'pending' ? 'selected' : ''}} value="pending">{{_lang('Pending')}}</option>
+                                    <option {{ $model->ecommerce_status == 'confirm' ? 'selected' : ''}} value="confirm">{{_lang('Confirm')}}</option>
+                                    <option {{ $model->ecommerce_status == 'progressing' ? 'selected' : ''}} value="progressing">{{_lang('In Progressing')}}</option>
+                                    <option {{ $model->ecommerce_status == 'shipment' ? 'selected' : ''}} value="shipment">{{_lang('In Shipment')}}</option>
                                     <option value="success">{{_lang('Success')}}</option>
-                                    <option value="cancel">{{_lang('Cancel')}}</option>
-                                    <option value="cancel">{{_lang('On Hold')}}</option>
-                                    <option value="cancel">{{_lang('Payment Done')}}</option>
-                                    <option value="cancel">{{_lang('Return')}}</option>
+                                    <option {{ $model->ecommerce_status == 'cancel' ? 'selected' : ''}} value="cancel">{{_lang('Cancel')}}</option>
+                                    <option value="on_hold">{{_lang('On Hold')}}</option>
+                                    <option value="payment_done">{{_lang('Payment Done')}}</option>
+                                    <option value="return">{{_lang('Return')}}</option>
                                 </select>
                                 <span id="change_order_status"></span>
                             </div>

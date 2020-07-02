@@ -132,7 +132,7 @@
                     </tr>
                     <tr>
                         <th width="50%">{{_lang('Payment')}}</th>
-                        <td> 
+                        <td>
                             @if ($model->payment_status == 'cash_on_delivery')
                                 {{_lang('Cash Or Delivery')}}
                             @endif
@@ -173,7 +173,7 @@
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <th width="50%">{{_lang('Name')}}</th>
-                                <td> 
+                                <td>
                                     <div class="name_show">{{get_client_name($model->client_id)}}</div>
                                     <div style="display:none;" class="name_hide"> <input required type="text" name="client_name" class="form-control" value="{{get_client_name($model->client_id)}}"> </div>    
                                 </td>
@@ -220,7 +220,7 @@
                                             {{_lang('In Shipment')}}
                                         @elseif( $model->ecommerce_status == 'success')
                                             {{_lang('Success')}}
-                                        @else 
+                                        @else
                                             {{_lang('Cancel')}}
                                         @endif
                                     </span>
@@ -238,11 +238,11 @@
                                 </td>
                             </tr>
                         </table>
-                    @else 
+                    @else
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <th width="50%">{{_lang('Name')}}</th>
-                                <td> 
+                                <td>
                                     <div class="name_show">{{$find_shiping_address->client_name}}</div>
                                     <div style="display:none;" class="name_hide"> <input required type="text" name="client_name" class="form-control" value="{{$find_shiping_address->client_name}}"> </div>    
                                 </td>
@@ -289,7 +289,7 @@
                                             {{_lang('In Shipment')}}
                                         @elseif( $model->ecommerce_status == 'success')
                                             {{_lang('Success')}}
-                                        @else 
+                                        @else
                                             {{_lang('Cancel')}}
                                         @endif
                                     </span>
@@ -313,12 +313,12 @@
                                     <div style="display:none;" class="button_hide">
                                         <div class="row">
                                             <div class="col-md-6 mt-2">
-                                                <button class="btn btn-primary btn-block " type="submit" id="submit">Save</button> 
+                                                <button class="btn btn-primary btn-block " type="submit" id="submit">Save</button>
                                                 <button type="button" class="btn btn-primary btn-blick" disabled  id="submiting" style="display: none;">{{_lang('Saving')}} <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></button>
 
                                             </div>
                                             <div class="col-md-6 mt-2">
-                                                <button class="btn btn-danger btn-block" type="button" id="cancel">Cancel </button> 
+                                                <button class="btn btn-danger btn-block" type="button" id="cancel">Cancel </button>
                                             </div>
                                         </div>
                                     </div>
@@ -359,7 +359,7 @@
                                     <td>{{round($item->total)}} </td>
                                 </tr>
                             @endforeach
-                        @else 
+                        @else
                             <td colspan="8">{{_lang('No Product Found!!!')}} </td>
                         @endif
                     </tbody>
@@ -369,7 +369,7 @@
             {{-- Get An Invoice --}}
             <div class="col-md-12">
                 <label for="">{{_lang('Generate An Invoice')}} </label>
-                <a href="{{route('admin.eCommerce.order.pdf',$model->reference_no)}}" target="blank"><button type="button" class="btn btn-primary btn-block text-center">{{_lang('Print Invoice')}}</button></a>
+                <button id="content_managment" data-url="{{route('admin.eCommerce.order.pdf',$model->reference_no)}}" type="button" class="btn btn-primary btn-block text-center">{{_lang('Print Invoice')}}</button>
             </div>
         </div>
     </div>
@@ -381,6 +381,36 @@
 
 {{-- Script Section --}}
 @push('scripts')
-  
-@endpush
+  <script>
+      var _componentRemoteModalLoad = function () {
+        $(document).on('click', '#content_managment', function (e) {
+            e.preventDefault();
+            //open modal
+            $('#modal_remote').modal('toggle');
+            // it will get action url
+            var url = $(this).data('url');
+            // leave it blank before ajax call
+            $('.modal-body').html('');
+            // load ajax loader
+            $('#modal-loader').show();
+            $.ajax({
+                    url: url,
+                    type: 'Get',
+                    dataType: 'html'
+                })
+                .done(function (data) {
+                    $('.modal-body').html(data).fadeIn(); // load response
+                    $('#modal-loader').hide();
+                    $('#branch_no').focus();
+                    _modalFormValidation();
+                })
+                .fail(function (data) {
+                    $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
+                    $('#modal-loader').hide();
+                });
+        });
+    };
 
+_componentRemoteModalLoad();
+  </script>
+@endpush

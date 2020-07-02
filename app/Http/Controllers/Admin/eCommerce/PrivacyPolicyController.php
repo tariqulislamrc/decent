@@ -43,9 +43,18 @@ class PrivacyPolicyController extends Controller{
             'description' => 'required',
         ]);
         
+
          if($request->row_id){
             $nodels = WholeSale::findOrFail($request->row_id);
             if($request->hasFile('catelog')) {
+                $data = getimagesize($request->file('catelog'));
+                $width = $data[0];
+                $height = $data[0];
+
+                if($width > 415 && $height > 225) {
+                    return response()->json(['success' => true, 'status' => 'danger', 'message' => 'Offer Image Width and height is wrong']);
+                }
+
                 $storagepath = $request->file('catelog')->store('public/catelog');
                 $fileName = basename($storagepath);
                 
@@ -59,6 +68,11 @@ class PrivacyPolicyController extends Controller{
             $model->header = $request->header;
             $model->description = $request->description;
             if($request->hasFile('catelog')) {
+                $width = $data[0];
+                $height = $data[0];
+                if($width > 595 && $height > 841) {
+                    return response()->json(['success' => true, 'status' => 'danger', 'message' => 'Offer Image Width and height is wrong']);
+                }
                 $storagepath = $request->file('catelog')->store('public/catelog');
                 $fileName = basename($storagepath);
                 

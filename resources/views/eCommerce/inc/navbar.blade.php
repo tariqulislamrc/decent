@@ -24,6 +24,7 @@
                             <li><a id="logout" style="cursor:pointer;" data-url='{{ route('admin.logout') }}'>LogOut</a></li>
                         @else
                             <li><a href="{{route('login')}}">Sign In</a></li>
+                            <li><a href="{{route('register')}}">Sign Up</a></li>
                         @endif
                         {{-- <li><a href="{{route('shopping-checkout')}}">Checkout</a></li> --}}
                         <li><a href="{{route('wishlist')}}">Wishlist</a></li>

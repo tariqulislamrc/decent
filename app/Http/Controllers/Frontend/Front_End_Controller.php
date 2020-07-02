@@ -46,6 +46,8 @@ class Front_End_Controller extends Controller{
 
 
         $products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->get();
+        
+        $best_sellars = Product::whereIn('id', $product_id)->orderByRaw('RAND()')->get();
 
 
         $general_products = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
@@ -63,7 +65,7 @@ class Front_End_Controller extends Controller{
         $hot_sale   = Product::where('hot_sale_status','1')->orderBy('id','desc')->take(3)->get();
         $latest_product   = Product::orderBy('id','desc')->take(3)->get();
         $top_rated = Product::whereIn('id', $product_id)->orderBy('avarage_retting', 'DESC')->take(3)->get();
-        return view('eCommerce.index',compact('top_rated','general_products', 'seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product'));
+        return view('eCommerce.index',compact('top_rated','general_products', 'seo','slider','banner_image_one','banner_image_two','banner_fream', 'products','banner_fream_two','featur_product','latest_product','hot_sale','footer_featur_product', 'best_sellars'));
 
     }
 
@@ -195,8 +197,7 @@ class Front_End_Controller extends Controller{
 
     public function get_price(Request $request){
         $price = Variation::findOrFail($request->id);
-        $qty = VariationBrandDetails::where('variation_id', $request->id)->first();
-
+        $qty = EcommerceProduct::where('variation_id', $request->id)->first();
         $qty = $qty->quantity;
         return response()->json(['price' => $price, 'qty' => $qty]);
     }

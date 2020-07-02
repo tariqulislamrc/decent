@@ -1,9 +1,7 @@
 <div class="row p-4">
     <div class="col-md-12">
         <div align="right">
-            @can('designation.create')
-                <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Employee Leave Type" type="button" id="content_managment" data-url="{{ route('admin.designation.add',$id) }}"><i class="fa fa-plus mr-2" aria-hidden="true"></i>{{_lang('Add New designaiton')}} </button>
-            @endcan
+            <button class="btn btn-info btn-sm" data-placement="bottom" title="Create New Employee Leave Type" type="button" id="content_managment" data-url="{{ route('admin.designation.add',$id) }}"><i class="fa fa-plus mr-2" aria-hidden="true"></i>{{_lang('Add New designaiton')}} </button>
         </div>
         <br>
         <div class="row">
@@ -38,21 +36,13 @@
                             <td align="center">
                                 <div class="btn-group">
                                     @if ($model->date_end == '')
-                                        @can('designation.create')
-                                            <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.designation.delete_designation',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>
-                                        @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Delete {{ $model->designation->name }}" id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.designation.delete_designation',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>
 
-                                        @can('designation.delete')
-                                            <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.designation.edit_designation',$model->id) }}" ><i class="fa fa-edit"></i></button>
-                                        @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="Update {{ $model->designation->name }}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.designation.edit_designation',$model->id) }}" ><i class="fa fa-edit"></i></button>
 
-                                        @can('designation.show')
-                                            <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.designation.show_designation',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
-                                        @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="View {{ $model->designation->name }}" class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.designation.show_designation',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
                                     @else
-                                        @can('designation.view')
-                                            <button title="View Designation." id="content_managment"data-url="{{ route('admin.designation.show_designation',$model->id) }}"class="btn btn-success btn-sm has-tooltip" data-original-title="null"><i class="fa fa-arrow-circle-right"></i></button>
-                                        @endcan
+                                        <button data-toggle="tooltip" data-placement="bottom" title="View {{ $model->designation->name }}" title="View Designation." id="content_managment"data-url="{{ route('admin.designation.show_designation',$model->id) }}"class="btn btn-success btn-sm has-tooltip" data-original-title="null"><i class="fa fa-arrow-circle-right"></i></button>
                                     @endif
                                 </div>
                             </td>
@@ -65,5 +55,4 @@
         </div>
     </div>
 </div>
-
 <script src="{{ asset('js/employee/edit_designation.js') }}"></script>

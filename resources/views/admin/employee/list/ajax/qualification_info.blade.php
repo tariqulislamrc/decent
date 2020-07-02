@@ -37,17 +37,11 @@
                                 <td>{{$model->result}} </td>
                                 <td align="center">
                                     <div class="btn-group">
-                                        @can('qualification.delete')
-                                            <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.employee-qua.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"data-placement="bottom"><i class="fa fa-trash"></i></button>
-                                        @endcan
+                                            <button data-toggle="tooltip" data-placement="bottom" title="Delete {{ $model->standard }}" id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.employee-qua.destroy',$model->id) }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null"data-placement="bottom"><i class="fa fa-trash"></i></button>
                                         
-                                        @can('qualification.update')
-                                            <button class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-qua.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
-                                        @endcan
+                                            <button data-toggle="tooltip" data-placement="bottom" title="Update {{ $model->standard }}" class="btn btn-info btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-qua.edit',$model->id) }}" ><i class="fa fa-edit"></i></button>
     
-                                        @can('qualification.view')
-                                            <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-qua.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
-                                        @endcan 
+                                            <button data-toggle="tooltip" data-placement="bottom" title="View {{ $model->standard }}" class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{ route('admin.employee-qua.show',$model->id) }}" ><i class="fa fa-arrow-circle-right"></i></button>
                                     </div>
                                 </td>
                             </tr>

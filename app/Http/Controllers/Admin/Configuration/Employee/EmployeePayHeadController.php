@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 use App\models\employee\PayHead;
+use App\models\employee\PayrollTemplateDetail;
 
 class EmployeePayHeadController extends Controller
 {
@@ -16,6 +17,10 @@ class EmployeePayHeadController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.employee.pay-head.index');
     }
 
@@ -29,12 +34,15 @@ class EmployeePayHeadController extends Controller
                 ->editColumn('is_active',function($model){
                     return $model->is_active == 1? '<span class="badge badge-success">Active</span>':'<span class="badge badge-danger">Inactive</span>';
                 })
+                ->editColumn('description', function($model) {
+                    return str_limit($model->description, 30);
+                })
                 ->editColumn('type',function($model){
                     return $model->type == 'Earning' ? '<span class="badge badge-success">Earning</span>' : '<span class="badge badge-danger">Deduction</span>';
                 })
                 ->addColumn('action', function ($model) {
                     return view('admin.employee.pay-head.action', compact('model'));
-                })->rawColumns(['action', 'type', 'is_active'])->make(true);
+                })->rawColumns(['action', 'type', 'is_active', 'description'])->make(true);
         }
     }
 
@@ -45,7 +53,11 @@ class EmployeePayHeadController extends Controller
      */
     public function create()
     {
-       return view('admin.employee.pay-head.create');
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('admin.employee.pay-head.create');
     }
 
     /**
@@ -56,9 +68,13 @@ class EmployeePayHeadController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name' => 'required|unique:pay_heads|max:255',
-            'alias' => 'required',
+            'name' => 'required|min:3|unique:pay_heads|max:50',
+            'alias' => 'required|min:1|max:10',
             'type' => 'required',
             'is_active' => 'required',
         ]);
@@ -67,7 +83,7 @@ class EmployeePayHeadController extends Controller
 
         $model->name = $request->name;
 
-        $model->alias = $request->alias;
+        $model->alias = strtoupper($request->alias);
 
         $model->type = $request->type;
 
@@ -84,17 +100,6 @@ class EmployeePayHeadController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -102,6 +107,10 @@ class EmployeePayHeadController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // find the data
         $model = PayHead::where('id', $id)->firstOrFail();
 
@@ -117,9 +126,13 @@ class EmployeePayHeadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-      {
+    {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
-            'name' => 'required|max:255',
+            'name' => "required|min:1|max:50|unique:pay_heads,name,{$id},id,deleted_at,NULL",
             'alias' => 'required',
             'type' => 'required',
             'is_active' => 'required',
@@ -129,7 +142,7 @@ class EmployeePayHeadController extends Controller
 
         $model->name = $request->name;
 
-        $model->alias = $request->alias;
+        $model->alias = strtoupper($request->alias);
 
         $model->type = $request->type;
 
@@ -153,6 +166,16 @@ class EmployeePayHeadController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('workorder.update')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Check the Payroll Contains in the Payroll Template
+        $check = PayrollTemplateDetail::where('pay_head_id', $id)->first();
+        if($check) {
+            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry! You Can\'t Delete The Payhead. Payroll Template Contains this Payhead.')]);
+        }
+
         $type = PayHead::findOrFail($id);
 
         $name = $type->name;

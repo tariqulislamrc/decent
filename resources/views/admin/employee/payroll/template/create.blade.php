@@ -27,15 +27,13 @@
                     <div class="row">
                         {{-- Name --}}
                         <div class="col-md-6 form-group">
-                            <label for="name">{{_lang('Name')}} <span class="text-danger">*</span>
-                            </label>
+                            <label for="name">{{_lang('Name')}} <span class="text-danger">*</span> </label>
                             <input autocomplete="off" type="text" name="name" id="name" class="form-control" placeholder="Type Template Name" required>
                         </div>
 
                         {{-- Active Status --}}
                         <div class="col-md-6 form-group">
-                            <label for="name">{{_lang('Is Active ?')}} <span class="text-danger">*</span>
-                            </label>
+                            <label for="is_active">{{_lang('Is Active ?')}} <span class="text-danger">*</span> </label>
                             <select data-parsley-errors-container="#parsley_error_active_status_create_for_templating" data-placeholder="Select Active Status" name="is_active" class="form-control select" id="is_active" required>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
@@ -45,9 +43,8 @@
 
                         {{--Description --}}
                         <div class="col-md-12 form-group">
-                            <label for="name">{{_lang('Description')}}
-                            </label>
-                            <textarea name="description" class="form-control" id=""placeholder="Enter Description"></textarea>
+                            <label for="description">{{_lang('Description')}} </label>
+                            <textarea name="description" class="form-control" id="description" placeholder="Enter Description"></textarea>
                         </div>
                     </div>
                     @if (count($models))
@@ -60,8 +57,8 @@
                                                 class="{{$item->type== 'Earning'?'text-success':'text-danger'}}">{{$item->name}} <i>({{$item->alias}})</i> </span>
                                         </div>
                                         <div class="col-12 col-sm-4">
-                                            <div  class="form-group"><select required id="{{$item->id}}"
-                                                    name="pay_head_category[{{$item->id}}]" class="pay_head_category custom-select col-12">
+                                            <div class="form-group">
+                                                <select required id="{{$item->id}}" name="pay_head_category[{{$item->id}}]" class="pay_head_category custom-select col-12">
                                                     <option value="">Select One</option>
                                                     <option value="not_applicable">
                                                         Not Applicable
@@ -75,22 +72,14 @@
                                                     <option value="user_defined">
                                                         User Defined
                                                     </option>
-                                                    {{-- <option value="computation">
-                                                        Computation
-                                                    </option> --}}
-                                                    {{-- <option value="production">
-                                                        On Production
-                                                    </option> --}}
                                                 </select>
-                                                <!---->
                                             </div>
                                         </div>
             
                                         {{-- Computation Formula --}}
                                         <div class="col-12 col-sm-5" id="computation_{{$item->id}}" style="display:none">
                                             <div class="form-group">
-                                                <input type="text" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->id}}]"
-                                                    placeholder="Computation Formula" class="pay_head form-control">
+                                                <input type="text" id="pay_head_{{$item->id}}" name="pay_head_computation[{{$item->id}}]" placeholder="Computation Formula" class="pay_head form-control">
                                             </div>
                                         </div>
             
@@ -110,14 +99,12 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="form-group col-md-12" align="right">
-                            {{-- <input type="hidden" name="type[]" value=" "> --}}
-                            <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
-                                    class="icon-arrow-right14 position-right"></i></button>
-                            <button type="button" class="btn btn-link" id="submiting"
-                                style="display: none;">{{_lang('Processing')}}
-                                <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
-                        </div>
+                        @can('employee_payroll_template.create')
+                            <div class="form-group col-md-12" align="right">
+                                <button type="submit" class="btn btn-primary btn-sm"  id="submit">{{_lang('Create')}}<i class="fa ml-2 fa-plus-circle" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-success btn-sm " id="submiting" style="display: none;"><i class="fa fa-spinner fa-spin fa-fw"></i>{{_lang('Loading...')}} </button>
+                            </div>
+                        @endcan
                     @else
                         <div class="border border-danger p-2 m-2 text-center">
                             You Didn't add any payhead yet. If you want to add employee payroll template, you must add pay head first. Go to the Employee Pay Head or <a href="{{route('admin.employee-pay-head.index')}} ">Click On this link</a>
@@ -138,7 +125,7 @@
 <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
 {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
 <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-<script src="{{ asset('js/employee/payroll-template.js') }}"></script>
+{{-- <script src="{{ asset('js/employee/payroll-template.js') }}"></script> --}}
 <script src="{{asset('backend/js/jquery.sortable.js')}} "></script>
 <script>
     $(function() {
@@ -171,10 +158,14 @@
             $('#pay_head_' + id).attr('required',false);
             $('#attendance_' + id).attr('required',false);
         }
-        $('.select').select2({
-            width: '100%'
-        });
+    });
 
+    $('.select').select2({
+        width: '100%'
+    });
+
+    $('.custom-select').select2({
+        width:'100%'
     });
 </script>
 @endpush
