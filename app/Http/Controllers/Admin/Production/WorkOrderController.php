@@ -130,7 +130,7 @@ class WorkOrderController extends Controller
             'date' => 'required|max:255',
             'delivery_date' => 'max:255',
         ]);
-
+     if (isset($request->product_id)) {
         $model = new WorkOrder;
         $model->prefix = $request->prefix;
         $model->code = $request->code;
@@ -244,6 +244,11 @@ class WorkOrderController extends Controller
         // Activity Log
         activity()->log('Created a Work order By - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
+         }
+    else
+    {
+      throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to WorkOrder')]);
+    }
     }
 
     // pay_form
@@ -375,7 +380,7 @@ class WorkOrderController extends Controller
             'date' => 'required|max:255',
             'delivery_date' => 'max:255',
         ]);
-
+      if (isset($request->product_id)) {
         $model = WorkOrder::findOrFail($id);
         $model->prefix = $request->prefix;
         $model->code = $request->code;
@@ -496,6 +501,11 @@ class WorkOrderController extends Controller
         activity()->log('updated a Work order By - ' . Auth::user()->id);
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly'), 'goto' => url('/admin/production-work-order')]);
     }
+    else
+    {
+      throw ValidationException::withMessages(['message' => _lang('Please Select atlest one item to WorkOrder')]);
+    }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -512,23 +522,16 @@ class WorkOrderController extends Controller
         $count2 = ProductFlow::where('work_order_id', $id)->count();
         if ($count1 == 0 && $count2==0) {
             $model = WorkOrder::findOrFail($id);
-            //workorder product
+           // workorder product
             if($model->workOrderProduct) {
-                foreach($model->workOrderProduct as $value) {
-                    $value->delete();
-                }
-                // $model->workOrderProduct->delete();
+                $model->workOrderProduct->delete();
             }
             if (isset($model->transaction)) {
                 if($model->transaction->payment) {
                     $model->transaction->payment->delete();
                 }
-                $account_transaction = AccountTransaction::where('transaction_id',$model->transaction->id)->get();
-                if($account_transaction) {
-                    foreach($account_transaction as $item) {
-                        $item->delete();
-                    }
-                }
+                $account_transaction = AccountTransaction::where('transaction_id',$model->transaction->id)->delete();
+
                 $model->transaction->delete();
             }
             $model->delete();
@@ -651,7 +654,8 @@ class WorkOrderController extends Controller
             return DataTables::of($documents)
             ->addIndexColumn()
               ->editColumn('work_order', function ($document) {
-                return $document->work_order->prefix.'-'.$document->work_order->code;
+                // return $document->work_order->prefix.'-'.$document->work_order->code;
+                return '';
             })
             ->editColumn('payment_status', function ($document) {
                 if ($document->payment_status == 'due') {

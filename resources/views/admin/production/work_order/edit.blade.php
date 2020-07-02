@@ -238,7 +238,7 @@
 {{-- <script src="{{ asset('js/production/work_order.js') }}"></script> --}}
 <script>
     $('.select').select2();
-
+   _formValidation();
     $('#select_product').change(function() {
         var product_id = $(this).val();
         get_purchase_entry_row(product_id);
