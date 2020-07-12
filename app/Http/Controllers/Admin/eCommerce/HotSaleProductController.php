@@ -18,11 +18,14 @@ class HotSaleProductController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.hotsale.index');
     }
 
-     //datatable
-     public function datatable(Request $request){
+    //datatable
+    public function datatable(Request $request){
         if ($request->ajax()) {
             $document = Product::where('hot_sale_status',1)->get();
             return DataTables::of($document)
@@ -69,6 +72,9 @@ class HotSaleProductController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product_id = [];
         $product = EcommerceProduct::all();
         
@@ -88,6 +94,9 @@ class HotSaleProductController extends Controller
      */
     public function status(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $id = $request->id;
 
         $check = Product::findOrFail($id);

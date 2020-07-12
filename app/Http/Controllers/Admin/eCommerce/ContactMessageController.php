@@ -17,6 +17,9 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.contact_message.index');
     }
     public function datatable(Request $request){
@@ -44,6 +47,9 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
        return view('admin.eCommerce.contact_message.create');
     }
 
@@ -54,7 +60,10 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-       $data = $request->validate([
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $data = $request->validate([
             'email' => 'required',
             'subject' => '',
             'description' => 'required',
@@ -86,6 +95,9 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function show($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ContactUs::findOrFail($id);
         return view('admin.eCommerce.contact_message.show',compact('model'));
     }
@@ -97,6 +109,9 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ContactUs::findOrFail($id);
         return view('admin.eCommerce.contact_message.replay',compact('model'));
     }
@@ -120,6 +135,9 @@ class ContactMessageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = ContactUs::findOrFail($id);
         $name = $type->name;
         $type->delete();

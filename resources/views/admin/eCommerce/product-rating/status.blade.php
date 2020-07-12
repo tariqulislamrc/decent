@@ -7,9 +7,6 @@
             @csrf
             @method('PATCH')
             <div class="row">
-
-                
-
                 {{-- Rating --}}
                 <div class="col-md-6 form-group">
                     <label for="rating">Rating</label>
@@ -36,7 +33,6 @@
                     <textarea name="comment" id="comment" cols="30" rows="2" class="form-control">{{$model->comment}}</textarea>
                 </div>
                      
-                @can('product_rating.update')
                     <div class="form-group col-md-12" align="right">
                         {{-- <input type="hidden" name="type[]" value=" "> --}}
                         <button type="submit" class="btn btn-primary" id="submit">{{_lang('Save')}}<i
@@ -45,7 +41,6 @@
                             <img src="{{ asset('ajaxloader.gif') }}" width="80px"></button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                @endcan
             </div>
         </form>        
     </div>

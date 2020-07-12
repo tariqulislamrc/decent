@@ -17,6 +17,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.shipping_charge.index');
     }
 
@@ -39,6 +42,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.shipping_charge.create');
     }
 
@@ -49,6 +55,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $data = $request->validate([
             'shipping_area' => 'required|unique:shipping_charges|max:255',
             'shipping_charge' => 'required',
@@ -78,6 +87,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ShippingCharge::findOrFail($id);
         return view('admin.eCommerce.shipping_charge.edit',compact('model'));
     }
@@ -90,6 +102,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ShippingCharge::findOrFail($id);
         $data = $request->validate([
             'shipping_area' => ['required',Rule::unique('shipping_charges')->ignore($model->id)],
@@ -108,6 +123,9 @@ class ShippingChargeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ShippingCharge::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Shipping Charges Deleted Successfuly')]);

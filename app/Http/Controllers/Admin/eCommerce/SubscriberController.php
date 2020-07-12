@@ -10,6 +10,9 @@ use Yajra\DataTables\DataTables;
 class SubscriberController extends Controller
 {
     public function index() {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.subscriber.index');
     }
 
@@ -34,6 +37,9 @@ class SubscriberController extends Controller
 
     // edit
     public function edit($id) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Subscriber::findOrFail($id);
         return view('admin.eCommerce.subscriber.edit', compact('model'));
     }
@@ -41,6 +47,9 @@ class SubscriberController extends Controller
     // update
     public function update(Request $request, $id) {
 
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'news_letter_email' => 'required|email',
             'status' => 'required'
@@ -56,6 +65,9 @@ class SubscriberController extends Controller
 
     // destroy
     public function destroy($id) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Subscriber::findOrFail($id);
         $model->delete();
 

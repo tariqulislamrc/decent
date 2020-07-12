@@ -19,9 +19,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('our_workspace.create')
                         <a data-placement="bottom" title="Create New workspace" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.our-workspace.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
-                    @endcan
                 </h3>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.our-workspace.datatable') }}">

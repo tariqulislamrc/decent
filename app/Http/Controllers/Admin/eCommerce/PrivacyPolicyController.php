@@ -8,12 +8,20 @@ use App\models\eCommerce\PrivacyPolicy;
 use App\WholeSale;
 
 class PrivacyPolicyController extends Controller{
+    
     public function index(){
-       $model =  PrivacyPolicy::first();
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $model =  PrivacyPolicy::first();
         return view('admin.eCommerce.privacy_policy.index',compact('model'));
     }
+
     public function store(Request $request){
-       //dd($request->all());
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -32,12 +40,19 @@ class PrivacyPolicyController extends Controller{
 
     // whole_sale_index
     public function whole_sale_index() {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = WholeSale::first();
         return view('admin.eCommerce.whole_sale.index', compact('model'));
     }
 
     // whole_sale_store
     public function whole_sale_store(Request $request) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $data = $request->validate([
             'header' => 'required',
             'description' => 'required',

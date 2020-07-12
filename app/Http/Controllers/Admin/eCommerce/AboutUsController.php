@@ -10,13 +10,18 @@ use Illuminate\Support\Facades\Storage;
 class AboutUsController extends Controller{
     
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = AboutUs::first();
         return view('admin.eCommerce.about.index',compact('model'));
     }
 
-     public function store(Request $request){
-    //    dd($request->all());
-       $data = $request->validate([
+    public function store(Request $request){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $data = $request->validate([
             'name' => 'required',
             'header_image' => 'mimes:jpeg,png,jpg,gif|max:2048',
             'header_image_alt' => '',

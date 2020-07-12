@@ -17,6 +17,9 @@ class PageBannerController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.page-banner.index');
     }
 
@@ -43,6 +46,9 @@ class PageBannerController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.page-banner.create');
     }
 
@@ -54,6 +60,9 @@ class PageBannerController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'page_name' => 'required',
             'image' => 'max:2000',
@@ -95,6 +104,9 @@ class PageBannerController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = PageBanner::findOrFail($id);
         return view('admin.eCommerce.page-banner.edit', compact('model'));
     }
@@ -108,6 +120,10 @@ class PageBannerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
             'page_name' => 'required',
             'image' => 'max:2000',
@@ -145,6 +161,9 @@ class PageBannerController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = PageBanner::findOrFail($id);
         $type->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'load' => true]);

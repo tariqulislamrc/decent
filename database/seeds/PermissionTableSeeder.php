@@ -316,10 +316,10 @@ public function run() {
 			['name' => 'sms_marketing.update'],
 			['name' => 'sms_marketing.delete'],
 
-			['name' => 'Ecommerce.view'],
-			['name' => 'Ecommerce.create'],
-			['name' => 'Ecommerce.update'],
-			['name' => 'Ecommerce.delete'],
+			['name' => 'ecommerce.view'],
+			// ['name' => 'ecommerce.create'],
+			// ['name' => 'ecommerce.update'],
+			// ['name' => 'ecommerce.delete'],
 
 			['name' => 'expense.view'],
 			['name' => 'expense.create'],
@@ -328,6 +328,7 @@ public function run() {
 
 			['name' => 'report.store_department'],
 			['name' => 'report.ecommerce'],
+			['name' => 'report.employee'],
 			['name' => 'report.expense'],
 			['name' => 'report.selling'],
 			['name' => 'report.purchase'],

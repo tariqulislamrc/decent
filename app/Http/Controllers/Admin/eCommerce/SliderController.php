@@ -17,6 +17,9 @@ class SliderController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.slider.index');
     }
 
@@ -46,6 +49,9 @@ class SliderController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product = Product::all();
         return view('admin.eCommerce.slider.create',compact('product'));
     }
@@ -57,7 +63,10 @@ class SliderController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-       $data = $request->validate([
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $data = $request->validate([
             'product_id' => 'required',
             'title' => 'required',
             'title_heading' => 'required',
@@ -97,6 +106,9 @@ class SliderController extends Controller{
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Slider::findOrFail($id);
         $product = Product::all();
         return view('admin.eCommerce.slider.edit',compact('model','product'));
@@ -110,6 +122,9 @@ class SliderController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Slider::findOrFail($id);
         $data = $request->validate([
             'product_id' => 'required',
@@ -141,6 +156,9 @@ class SliderController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Slider::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Slider Delete Successfuly'), 'goto' => route('admin.eCommerce.slider.index')]);

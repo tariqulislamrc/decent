@@ -20,6 +20,9 @@ class SpecialCategoryController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.special-category.index');
     }
 
@@ -68,6 +71,9 @@ class SpecialCategoryController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $categories = Category::where('status', 1)->get();
         return view('admin.eCommerce.special-category.create', compact('categories'));
     }
@@ -80,6 +86,9 @@ class SpecialCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'category_id' => 'required',
             'status' => 'required',
@@ -138,6 +147,9 @@ class SpecialCategoryController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = SpecialCategory::findOrFail($id);
         $categories = Category::where('status', 1)->get();
         return view('admin.eCommerce.special-category.edit', compact('model', 'categories'));
@@ -152,6 +164,10 @@ class SpecialCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
             'category_id' => 'required',
             'status' => 'required',
@@ -209,6 +225,10 @@ class SpecialCategoryController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $model = SpecialCategory::findOrFail($id);
         $model->delete();
 

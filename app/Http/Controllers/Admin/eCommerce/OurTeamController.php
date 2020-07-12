@@ -17,11 +17,14 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.our_team.index');
     }
 
 
-     public function datatable(Request $request){
+    public function datatable(Request $request){
        if ($request->ajax()) {
             $document = OurTeam::where('team_name', '!=', config('system.default_role.admin'))->get();
             return DataTables::of($document)
@@ -48,6 +51,9 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.our_team.create');
     }
 
@@ -58,7 +64,9 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $data = $request->validate([
             'team_name' => 'required|unique:our_teams|max:255',
             'team_designation' => 'required|unique:our_teams|max:255',
@@ -107,6 +115,9 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = OurTeam::findOrFail($id);
         return view('admin.eCommerce.our_team.edit',compact('model'));
     }
@@ -119,6 +130,9 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = OurTeam::findOrFail($id);
         $data = $request->validate([
             'team_name' => ['required',Rule::unique('our_teams')->ignore($model->id)],
@@ -163,6 +177,9 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = OurTeam::findOrFail($id);
         Storage::delete(['public/eCommerce/about/'.$model->image_one, 'public/eCommerce/about/'.$model->image_two]);
         $model->delete();

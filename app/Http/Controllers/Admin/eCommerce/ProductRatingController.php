@@ -11,6 +11,10 @@ class ProductRatingController extends Controller
 {
     public function rating_index(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('admin.eCommerce.product-rating.index');
     }
     public function datatable(Request $request)
@@ -39,12 +43,18 @@ class ProductRatingController extends Controller
 
     public function status($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ProductRating::findOrFail($id);
         return view('admin.eCommerce.product-rating.status', compact('model'));
     }
 
     public function status_change(Request $request, $id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = ProductRating::findOrFail($id);
         $model->rating = $request->rating;
         $model->status = $request->status;
@@ -56,6 +66,9 @@ class ProductRatingController extends Controller
 
     public function destroy($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $type = ProductRating::findOrFail($id);
         $type->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully'), 'load' => true]);

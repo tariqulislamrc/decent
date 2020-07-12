@@ -18,7 +18,9 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.blog.post.index');
     }
 
@@ -59,7 +61,7 @@ class BlogPostController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('blog_post.create')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $models = BlogCategory::where('status', 'Active')->get();
@@ -92,9 +94,10 @@ class BlogPostController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('blog_post.create')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
+
         $request->validate([
             'category' => 'required',
             'title' => 'required',
@@ -146,7 +149,7 @@ class BlogPostController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('blog_post.update')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $cate = BlogCategory::where('status', 'Active')->get();
@@ -163,7 +166,7 @@ class BlogPostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('blog_post.update')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -213,7 +216,7 @@ class BlogPostController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('blog_post.delete')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $type = BlogPost::findOrFail($id);

@@ -17,6 +17,9 @@ class BlogCategoryController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.blog.category.index');
     }
 
@@ -50,7 +53,7 @@ class BlogCategoryController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('blog_category.create')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.blog.category.create');
@@ -82,7 +85,7 @@ class BlogCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('blog_category.create')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -121,7 +124,7 @@ class BlogCategoryController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('blog_category.update')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = BlogCategory::findOrFail($id);
@@ -137,7 +140,7 @@ class BlogCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('blog_category.update')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -162,9 +165,10 @@ class BlogCategoryController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('blog_category.delete')) {
+        if (!auth()->user()->can('ecommerce.view')) {
             abort(403, 'Unauthorized action.');
         }
+        
         $type = BlogCategory::findOrFail($id);
         $type->delete();
 

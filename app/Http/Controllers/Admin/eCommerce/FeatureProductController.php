@@ -18,6 +18,9 @@ class FeatureProductController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.feature.index');
     }
 
@@ -70,6 +73,9 @@ class FeatureProductController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product_id = [];
         $product = EcommerceProduct::all();
         
@@ -89,6 +95,9 @@ class FeatureProductController extends Controller
      */
     public function status(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $id = $request->id;
 
         $check = Product::findOrFail($id);

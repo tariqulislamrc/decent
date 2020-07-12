@@ -1,6 +1,3 @@
-@can('employee_departmeent.update')
-    <button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{route('admin.eCommerce.special-offer.show',$model->id)}}" ><i class="fa fa-eye"></i></button>
-@endcan
-@can('employee_departmeent.delete')
-    <button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.eCommerce.special-offer.destroy',$model->id)  }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>
-@endcan
+<button class="btn btn-success btn-sm has-tooltip" data-original-title="null" id="content_managment" data-url="{{route('admin.eCommerce.special-offer.show',$model->id)}}" ><i class="fa fa-eye"></i></button>
+
+<button id="delete_item" data-id ="{{$model->id}}" data-url="{{route('admin.eCommerce.special-offer.destroy',$model->id)  }}" class="btn btn-danger btn-sm has-tooltip" data-original-title="null" data-placement="bottom"><i class="fa fa-trash"></i></button>

@@ -9,12 +9,20 @@ use Illuminate\Support\Facades\Storage;
 
 class TeramsConditionsController extends Controller{
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = TeramsCondition::first();
         return view('admin.eCommerce.terams_condition.index',compact('model'));
     }
 
      public function store(Request $request){
-       $data = $request->validate([
+       
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        $data = $request->validate([
             'name' => 'required',
             'header_image' => 'mimes:jpeg,png,jpg,gif|max:2048',
             'header_image_alt' => '',

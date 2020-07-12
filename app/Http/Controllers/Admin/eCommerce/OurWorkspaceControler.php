@@ -15,6 +15,9 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.our_workspace.index');
     }
 
@@ -52,6 +55,9 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.our_workspace.create');
     }
 
@@ -62,6 +68,10 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $data = $request->validate([
             'image_one' => 'required|max:2048',
@@ -129,6 +139,10 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = OurWorkspace::findOrFail($id);
         return view('admin.eCommerce.our_workspace.edit',compact('model'));
     }
@@ -141,6 +155,10 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $model = OurWorkspace::findOrFail($id);
         //dd($request->all());
         $data = $request->validate([
@@ -209,6 +227,10 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $model = OurWorkspace::findOrFail($id);
         Storage::delete(['public/eCommerce/about/'.$model->image_one, 'public/eCommerce/about/'.$model->image_two, 'public/eCommerce/about/'.$model->image_three, 'public/eCommerce/about/'.$model->image_four]);
         $model->delete();

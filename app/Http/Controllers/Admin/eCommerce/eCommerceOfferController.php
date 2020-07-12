@@ -19,7 +19,9 @@ class eCommerceOfferController extends Controller
      */
     public function index()
     {
-        
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.offer.index');
     }
 
@@ -49,6 +51,9 @@ class eCommerceOfferController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $products = Product::all();
         return view('admin.eCommerce.offer.create', compact('products'));
     }
@@ -99,6 +104,9 @@ class eCommerceOfferController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'size'  =>      'required',
             'product_id'  =>      'required',
@@ -157,6 +165,9 @@ class eCommerceOfferController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = EcommerceOffer::findOrFail($id);
         $products = Product::all();
         return view('admin.eCommerce.offer.edit', compact('products', 'model'));
@@ -171,6 +182,9 @@ class eCommerceOfferController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'size'  =>      'required',
             'product_id'  =>      'required',
@@ -221,6 +235,10 @@ class eCommerceOfferController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $model = EcommerceOffer::findOrFail($id);
 
         if ($model->photo) {

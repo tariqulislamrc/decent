@@ -9,12 +9,17 @@ use App\models\eCommerce\Seo;
 class SeoController extends Controller
 {
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Seo::first();
         return view('admin.eCommerce.seo.index',compact('model'));
     }
 
      public function store(Request $request){
-    //    dd($request->all());
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
        $data = $request->validate([
             'meta_title' => 'required',
             'meta_author' => 'required',

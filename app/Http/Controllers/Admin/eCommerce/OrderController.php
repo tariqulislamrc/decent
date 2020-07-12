@@ -28,12 +28,18 @@ class OrderController extends Controller
 
     // eCommerce Order List index page
     public function index() {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $models = Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->get();
         return view('admin.eCommerce.order.index', compact('models'));
     }
 
     // show 
     public function show ($id) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Transaction::findOrFail($id);
 
         $products = TransactionSellLine::where('transaction_id', $model->id)->get();
@@ -42,6 +48,9 @@ class OrderController extends Controller
 
     // change_status
     public function change_status(Request $request) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $id = $request->id;
         $val = $request->val;
         $model = Transaction::where('id', $id)->first();
@@ -88,6 +97,9 @@ class OrderController extends Controller
 
     // show_update_page
     public function show_update_page($id) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Transaction::findOrFail($id);
 
         $sell_products = TransactionSellLine::where('transaction_id', $model->id)->get();
@@ -127,6 +139,9 @@ class OrderController extends Controller
 
     // edit_the_transaction
     public function edit_the_transaction(Request $request, $id) {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         // dd($request->all());
         if($request->product_id == null) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Sorry. Please Select Product First')]);
@@ -245,6 +260,9 @@ class OrderController extends Controller
     // get_curier_print
     public function get_curier_print(Request $request) {
         $data = [];
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         
         for($i = 0; $i < count($request->check); $i++) {
             $id = $request->check[$i];

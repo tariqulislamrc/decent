@@ -16,6 +16,9 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.home_page.index');
     }
 
@@ -63,6 +66,9 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product = Product::all();
         return view('admin.eCommerce.home_page.create',compact('product'));
     }
@@ -74,6 +80,9 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $data = $request->validate([
             'product_id' => 'required|max:255',
             'banner_image_one_check' => '',
@@ -168,6 +177,9 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $product = Product::all();
         $model = HomePage::findOrFail($id);
         return view('admin.eCommerce.home_page.edit',compact('product','model'));
@@ -181,6 +193,10 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+
          $model = HomePage::findOrFail($id);
          $data = $request->validate([
             'product_id' => 'required|max:255',
@@ -284,6 +300,9 @@ class HomePageController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = HomePage::findOrFail($id);
         Storage::delete(['public/eCommerce/home_page/'.$model->banner_image_one, 'public/eCommerce/home_page/'.$model->banner_image_two, 'public/eCommerce/home_page/'.$model->banner_frame_one, 'public/eCommerce/home_page/'.$model->banner_frame_two,'public/eCommerce/home_page/'.$model->tab_slider_image,'public/eCommerce/home_page/'.$model->sale_category_image]);
         $model->delete();

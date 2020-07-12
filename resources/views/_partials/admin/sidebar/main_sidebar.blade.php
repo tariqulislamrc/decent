@@ -8,8 +8,8 @@
     </a>
 </li>
 
+@can('ecommerce.view')
 @if(Request::is('admin/eCommerce*'))
-
     {{-- Ecommerce Dashboard --}}
     <li data-placement="bottom" title="Go to eCommerce Dashboard">
         <a class="app-menu__item {{ Request::is('admin/eCommerce') ? ' active' : '' }}" href="{{ route('admin.eCommerce.index') }}">
@@ -231,23 +231,34 @@
         </a>
     </li>
 @endif
+@endcan
 
 @if (!Request::is('admin/eCommerce*'))
 @if (!Request::is('admin/report*'))
-{{-- Ecommerce Dashboard --}}
-    <li data-placement="bottom" title="Go to eCommerce Dashboard">
-        <a class="app-menu__item {{ Request::is('admin/eCommerce') ? ' active' : '' }}" href="{{ route('admin.eCommerce.index') }}">
-            <i class="app-menu__icon fa fa-etsy"></i>
-            <span class="app-menu__label">
-                {{_lang('Ecommerce Dashboard')}}
-            </span>
-        </a>
-    </li>
     
-    <li><a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}"
-    href="{{ route('admin.report.index') }}"><i class="app-menu__icon fa fa-registered"></i><span
-        class="app-menu__label">{{_lang('Report')}}</span></a>
-</li>
+    @can('ecommerce.view')
+        {{-- Ecommerce Dashboard --}}
+        <li data-placement="bottom" title="Go to eCommerce Dashboard">
+            <a class="app-menu__item {{ Request::is('admin/eCommerce') ? ' active' : '' }}" href="{{ route('admin.eCommerce.index') }}">
+                <i class="app-menu__icon fa fa-etsy"></i>
+                <span class="app-menu__label">
+                    {{_lang('Ecommerce Dashboard')}}
+                </span>
+            </a>
+        </li>
+    @endcan
+    
+    @can('report.view')
+        <li data-placement="bottom" title="Go to Report Dashboard">
+            <a class="app-menu__item {{ Request::is('admin/report') ? ' active' : '' }}" href="{{ route('admin.report.index') }}">
+                <i class="app-menu__icon fa fa-registered"></i>
+                <span class="app-menu__label">
+                    {{_lang('Report')}}
+                </span>
+            </a>
+        </li>
+    @endcan
+
 @can('client.view')
 {{-- Database Backup --}}
 <li><a class="app-menu__item {{ Request::is('admin/client*') ? ' active' : '' }}"
@@ -335,9 +346,6 @@
 </ul>
 </li>
 @endcan
-
-
-
 
 @can('email_marketing.view')
 

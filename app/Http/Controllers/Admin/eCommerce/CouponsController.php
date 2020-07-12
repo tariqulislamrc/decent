@@ -16,12 +16,15 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.coupons.index');
     }
 
 
     public function datatable(Request $request){
-       if ($request->ajax()) {
+        if ($request->ajax()) {
             $document = Coupon::where('coupons_code', '!=', config('system.default_role.admin'))->get();
             return DataTables::of($document)
                 ->addIndexColumn()
@@ -39,6 +42,9 @@ class CouponsController extends Controller{
      */
     public function create()
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         return view('admin.eCommerce.coupons.create');
     }
 
@@ -49,7 +55,10 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-       $data = $request->validate([
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        $data = $request->validate([
             'coupons_code' => 'required|unique:coupons|max:255',
             'discount_type' => 'required',
             'discount_amount' => 'required|numeric',
@@ -80,6 +89,9 @@ class CouponsController extends Controller{
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Coupon::findOrFail($id);
         return view('admin.eCommerce.coupons.edit',compact('model'));
     }
@@ -92,6 +104,9 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Coupon::findOrFail($id);
         $data = $request->validate([
             'coupons_code' => ['required',Rule::unique('coupons')->ignore($model->id)],
@@ -111,6 +126,9 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
         $model = Coupon::findOrFail($id);
         $model->delete();
         return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Coupons Delete Successfuly'), 'goto' => route('admin.eCommerce.coupons.index')]);
