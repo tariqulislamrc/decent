@@ -230,11 +230,15 @@ class TransactionPaymentController extends Controller
             
             $payment_line->method = 'cash';
             $payment_line->payment_date = Carbon::now()->toDateString();
-                   
+            if ($due_payment_type == 'Purchase') {
+              $type ='Debit';
+            }else{
+                $type='Credit';
+            }       
 
             if ($payment_line->amount > 0) {
                 return view('admin.client.pay_due_modal')
-                        ->with(compact('contact_details', 'payment_line', 'due_payment_type', 'ob_due', 'amount_formated'));
+                        ->with(compact('contact_details', 'payment_line', 'due_payment_type', 'ob_due', 'amount_formated','type'));
             }
         }
     }
@@ -258,7 +262,7 @@ class TransactionPaymentController extends Controller
             $inputs = $request->only(['amount', 'method', 'note','payment_date','transaction_no']);
             $inputs['created_by'] = auth()->user()->id;
             $inputs['client_id'] = $client_id;
-            $inputs['type'] = 'Credit';
+            $inputs['type'] = $request->type;
             $due_payment_type = $request->input('due_payment_type');
             
 
