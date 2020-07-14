@@ -150,6 +150,16 @@
         </a>
     </li>
 
+    {{-- Qurier --}}
+    <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
+        <a class="app-menu__item {{Request::is('admin/eCommerce/qurier/*') ? 'active':''}}" href="{{ route('admin.eCommerce.qurier.index') }}">
+            <i class="app-menu__icon fa fa-shield"></i>
+            <span class="app-menu__label">
+                {{_lang('Qurier')}}
+            </span>
+        </a>
+    </li>
+
     {{--Seo --}}
     <li data-placement="bottom" title="Ecommerce Seo Section">
         <a class="app-menu__item {{Request::is('admin/c/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}">

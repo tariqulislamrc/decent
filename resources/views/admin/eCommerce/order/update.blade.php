@@ -295,6 +295,17 @@
                                 </tfoot>
                             </table>
                         </div>
+
+                        {{-- Qurier --}}
+                        <div class="col-md-12 form-group">
+                            <label for="qurier_id">Select Qurier Service</label>
+                            <select name="qurier_id" id="qurier_id" class="form-control select" data-placeholder="Select Qurier Service">
+                                <option value="">Select Qurier Service</option>
+                                @foreach ($quriers as $qurier)
+                                    <option {{ $qurier->id == $model->qurier_id ? 'selected' : '' }} value="{{ $qurier->id }}">{{ $qurier->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
     
                         {{-- Order Note --}}
                         <div class="col-md-12 form-group">

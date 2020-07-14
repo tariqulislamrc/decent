@@ -3,6 +3,7 @@
         <tr>
             <th>{{_lang('#')}}</th>
             <th>{{_lang('ID')}}</th>
+            <th>{{_lang('Qurier')}}</th>
             <th>{{_lang('Payment Type')}}</th>
             <th>{{_lang('Track Code')}}</th>
             <th>{{_lang('Subtotal')}}</th>
@@ -20,6 +21,7 @@
 
                 <td><input type="checkbox" name="check[]" value="{{ $model->id }}" class="form-control check"></td>
                 <td>{{$loop->index + 1}}</td>
+                <td>{{ $model->qurier_id != null && $model->qurier ? $model->qurier->name : '' }} </td>
                 <td>{{$model->payment_status}}</td>
                 <td>{{$model->reference_no}}</td>
                 <td>{{get_option('currency') ? 'BDT' : get_option('currenct') }} {{$model->sub_total}}</td>

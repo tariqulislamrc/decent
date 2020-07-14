@@ -521,6 +521,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		Route::get('/', 'eCommerceController@index')->name('index');
 
+		Route::get('qurier/datatable', 'QurierController@datatable')->name('qurier.datatable');
+		Route::resource('qurier', 'QurierController');
+
 		// subscribers
 		Route::get('subscribers', 'SubscriberController@index')->name('subscribers.index');
 		Route::get('subscribers/datatable', 'SubscriberController@datatable')->name('subscribers.datatable');

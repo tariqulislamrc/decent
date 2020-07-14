@@ -4,6 +4,7 @@ namespace App\models\Production;
 
 use App\models\employee\Employee;
 use App\models\User;
+use App\Qurier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -11,6 +12,10 @@ class Transaction extends Model
 {
     use SoftDeletes;
      protected $guarded = ['id'];
+
+    public function qurier() {
+        return $this->belongsTo(Qurier::class, 'qurier_id', 'id');
+    }
 
     public function employee()
     {

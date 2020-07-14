@@ -15,6 +15,7 @@ use App\models\Production\Product;
 use App\models\Production\Transaction;
 use App\models\Production\TransactionPayment;
 use App\models\Production\VariationBrandDetails;
+use App\Qurier;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -102,6 +103,8 @@ class OrderController extends Controller
         }
         $model = Transaction::findOrFail($id);
 
+        $quriers = Qurier::where('status', 1)->get();
+
         $sell_products = TransactionSellLine::where('transaction_id', $model->id)->get();
 
         $product_id = [];
@@ -133,8 +136,7 @@ class OrderController extends Controller
             $coupon_type = 'None';
         }
 
-        return view('admin.eCommerce.order.update', compact('model', 'sell_products', 'products', 'coupon_amount', 'coupon_type'));
-
+        return view('admin.eCommerce.order.update', compact('model', 'sell_products', 'products', 'coupon_amount', 'quriers', 'coupon_type'));
     }
 
     // edit_the_transaction
@@ -149,6 +151,7 @@ class OrderController extends Controller
 
         // find the Transaction Row
         $model = Transaction::findOrFail($id);
+        $model->qurier_id = $request->qurier_id;
 
         // if status is payment done then no option for change status
         if($model->ecommerce_status == 'payment_done'  && $request->status != 'return') {

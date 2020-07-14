@@ -123,6 +123,10 @@
                 <h6 class="text-center">{{_lang('Order Details')}}</h6>
                 <table class="table table-bordered table-striped">
                     <tr>
+                        <th width="50%">{{_lang('Qurier')}}</th>
+                        <td>{{ $model->qurier_id != null && $model->qurier ? $model->qurier->name : '' }}</td>
+                    </tr>
+                    <tr>
                         <th width="50%">{{_lang('Name')}}</th>
                         <td>{{get_client_name($model->client_id)}}</td>
                     </tr>
