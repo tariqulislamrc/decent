@@ -79,6 +79,7 @@
 			<input type="hidden" name="client_id" value="{{ $contact_details->client_id }}">
 			<input type="hidden" name="due_payment_type" value="{{ $due_payment_type }}">
 			<input type="hidden" name="hidden_amount" value="{{ $payment_line->amount }}">
+			<input type="hidden" name="type" value="{{ $type }}">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">

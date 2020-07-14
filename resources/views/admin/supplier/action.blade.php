@@ -10,6 +10,11 @@
 		@can('client.view')
 		<a class="dropdown-item cursour" href="{{route('admin.supplier_show',$model->id)}}"><i class="fa fa-eye-slash"></i>{{ _lang('View') }}</a>
 		@endcan
+		@can('transaction_payment.create')
+		@if(($model->total_invoice + $model->opening_balance - $model->invoice_received - $model->opening_balance_paid)>0)
+         <a class="dropdown-item cursour" id="content_managment" data-url="{{route('admin.client_pay_due',[$model->id,'type'=>'Purchase'])}}"><i class="fa fa-money"></i>{{ _lang('Pay Due') }}</a>
+		@endif
+		@endcan
 		@can('email_marketing.create')
 		<a class="dropdown-item cursour" id="content_managment" data-url="{{route('admin.client.mail',$model->id)}}"><i class="fa fa-envelope" aria-hidden="true"></i>{{ _lang('Send Mail') }}</a>
 		@endcan

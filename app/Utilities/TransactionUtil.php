@@ -324,6 +324,7 @@ class TransactionUtil
                     $array = [
                             'transaction_id' => $transaction->id,
                             'method' => $parent_payment->method,
+                            'type'=>$parent_payment->type,
                             'transaction_no' => $parent_payment->transaction_no,
                             'payment_date' => $parent_payment->payment_date,
                             'created_by' => $parent_payment->created_by,
@@ -333,11 +334,11 @@ class TransactionUtil
                             'updated_at' => $now
                         ];
 
-                      if ($transaction->transaction_type=='sale_return') {
-                            $array['type'] = 'Debit';
-                        }else{
-                            $array['type'] = 'Credit'; 
-                        }
+                      // if ($transaction->transaction_type=='sale_return') {
+                      //       $array['type'] = 'Debit';
+                      //   }else{
+                      //       $array['type'] = 'Credit'; 
+                      //   }
 
                     if ($due <= $total_amount) {
                         $array['amount'] = $due;
