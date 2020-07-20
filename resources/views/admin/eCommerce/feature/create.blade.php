@@ -66,6 +66,14 @@
                 },
                 success: function (data) {
                     toastr.success(data.message);
+                    
+                    
+                    if (data.load) {
+                        setTimeout(function () {
+
+                            window.location.href = "";
+                        }, 1000);
+                    }
                 }
             });
         });

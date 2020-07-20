@@ -37,17 +37,6 @@
                   <h2>{{ isset($model) && $model != null ? $model->name : 'About Us Page'}}</h2>
                   <p>{!! isset($model) && $model != null ? $model->description : '' !!}</p>
                 </div>
-                <div class="mt-follow-holder">
-                  <span class="title">Follow Us</span>
-                  <!-- Social Network of the Page -->
-                  <ul class="list-unstyled social-network">
-                    <li><a target="_blank" href="{{get_option('twiter')}}"><i class="fa fa-twitter"></i></a></li>
-                    <li><a target="_blank" href="{{get_option('fb')}}"><i class="fa fa-facebook"></i></a></li>
-                    <li><a target="_blank" href="{{get_option('youtube')}}"><i class="fa fa-youtube"></i></a></li>
-                    <li><a target="_blank" href="{{get_option('linkedin')}}"><i class="fa fa-linkedin"></i></a></li>
-                  </ul>
-                  <!-- Social Network of the Page end -->
-                </div>
               </div>
             </div>
           </div>
@@ -66,13 +55,10 @@
 
                   <div class="col wow fadeInLeft" data-wow-delay="0.4s">
                     <div class="img-holder">
-                      <a href="#">
                         <img style="max-height:295px;" src="{{asset('storage/eCommerce/about/'.$our_team_item->image_one)}}" alt="{{$our_team_item->image_one_alt}}">
-                        
-                      </a>
                     </div>
                     <div class="mt-txt">
-                      <h4><a href="#">{{$our_team_item->team_name}}</a></h4>
+                      <h4>{{$our_team_item->team_name}}</h4>
                       <span class="sub-title">{{$our_team_item->team_designation}}</span>
                     </div>
                   </div>

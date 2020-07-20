@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\EcommerceInvoiceNumber;
 use App\Http\Controllers\Controller;
 use App\Utilities\TransactionUtil;
 use App\models\Client;
@@ -207,7 +208,20 @@ class CartController extends Controller
         $code_digits = get_option('digits_invoice_code', 4);
         $uniqu_id = generate_id('purchase', false);
         $uniqu_id = numer_padding($uniqu_id, $code_digits);
-        $invoice_no = rand(1, 100000000);
+
+        // find the invoice number
+        $invoice = EcommerceInvoiceNumber::first();
+        if($invoice) {
+            $invoice_no = $invoice->number;
+            $new = $invoice + 1;
+            $invoice->number = $new;
+            $invoice->save();
+        } else {
+            $invoice = new EcommerceInvoiceNumber;
+            $invoice->number = 000001;
+            $invoice->save();
+        }
+        // $invoice_no = rand(1, 100000);
 
         $payment = new Transaction();
         $payment->client_id = $client->id;

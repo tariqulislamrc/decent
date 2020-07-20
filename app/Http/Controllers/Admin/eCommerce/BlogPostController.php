@@ -127,7 +127,9 @@ class BlogPostController extends Controller
         $model->save();
 
         activity()->log('Created a Blog Post - ' . Auth::user()->id);
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
+        return response()->json(['success' => true, 'load' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
+
+        // return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
     }
 
     /**

@@ -37,7 +37,7 @@
 
 </style>
 
-<link rel="stylesheet" href="{{asset('frontend')}}/css/example.css" />
+{{-- <link rel="stylesheet" href="{{asset('frontend')}}/css/example.css" /> --}}
  <link rel="stylesheet" href="https://i-like-robots.github.io/EasyZoom/css/pygments.css" />
  <link rel="stylesheet" href="https://i-like-robots.github.io/EasyZoom/css/easyzoom.css" />
    

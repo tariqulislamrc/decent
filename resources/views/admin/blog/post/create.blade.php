@@ -100,12 +100,12 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/eCommerce/blog-post.js') }}"></script>
+    <!--<script src="{{ asset('js/eCommerce/blog-post.js') }}"></script>-->
         <script>
-
+    _formValidation();
     $('.select').select2();
         $(document).ready(function () {
-             _componentDatePicker();
+             _componentDatefPicker();
             $('.summernote').summernote({
                 toolbar: [
                     ['style', ['style']],
@@ -214,4 +214,3 @@
         _ImageUpload();
 </script>
 @endpush
-

@@ -111,6 +111,6 @@ class FeatureProductController extends Controller
         $check->feature_product_status = $status;
         $check->save();
 
-        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Feature Product Status is Successfully Changed')]);
+        return response()->json(['success' => true, 'load' => true, 'status' => 'success', 'message' => _lang('Feature Product Status is Successfully Changed')]);
     }
 }
