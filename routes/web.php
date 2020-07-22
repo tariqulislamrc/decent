@@ -48,6 +48,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('blog','Frontend\BlogController@index')->name('blog');
 	Route::get('post-details/{id}', 'Frontend\BlogController@post_details')->name('post-details');
 	Route::get('category-details/{id}', 'Frontend\BlogController@category_details')->name('category-details');
+	Route::post('submit-blog-comment', 'Frontend\BlogController@submit_blog_comment')->name('submit-blog-comment');
 
 	Route::get('whole-sale', 'Frontend\Front_End_Controller@whole_sale')->name('whole-sale');
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
@@ -508,16 +509,23 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 	});
 
 
-		// Blog Section::::::::::::::::
-		Route::get('blog-category/datatable', 'eCommerce\BlogCategoryController@datatable')->name('blog-category.datatable');
-		Route::resource('blog-category', 'eCommerce\BlogCategoryController');
-
-
-		Route::get('blog-post/datatable', 'eCommerce\BlogPostController@datatable')->name('blog-post.datatable');
-		Route::resource('blog-post', 'eCommerce\BlogPostController');
 
 	//eCommerce Marketing::::::::::::::::
 	Route::group(['as' => 'eCommerce.','prefix' => 'eCommerce','namespace' => 'eCommerce'], function () {
+
+				// Blog Section::::::::::::::::
+				Route::get('blog-category/datatable', 'BlogCategoryController@datatable')->name('blog-category.datatable');
+				Route::resource('blog-category', 'BlogCategoryController');
+		
+		
+				Route::get('blog-post/datatable', 'BlogPostController@datatable')->name('blog-post.datatable');
+				Route::get('blog-post.comment/datatable', 'BlogPostController@comment_datatable')->name('blog-post.comment.datatable');
+				Route::get('blog-post/comment', 'BlogPostController@comment')->name('blog-post.comment');
+				Route::get('blog-post/comment/show/{id}', 'BlogPostController@comment_show')->name('blog-post.comment.show');
+				Route::patch('blog-post/comment/update/{id}', 'BlogPostController@comment_update')->name('blog-post.comment.update');
+				Route::delete('blog-post/comment/destroy/{id}', 'BlogPostController@comment_delete')->name('blog-post.comment.destroy');
+				Route::resource('blog-post', 'BlogPostController');
+		
 
 		Route::get('/', 'eCommerceController@index')->name('index');
 

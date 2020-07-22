@@ -3,7 +3,7 @@
         <h6>{{_lang('Add New Blog Category')}}</h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.blog-category.store')}}" method="post" id="content_form">
+        <form action="{{route('admin.eCommerce.blog-category.store')}}" method="post" id="content_form">
             @csrf
                 <div class="row">
                     {{-- Blog Category Name --}}

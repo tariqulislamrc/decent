@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\eCommerce;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\models\eCommerce\BlogCategory;
+use App\models\eCommerce\BlogComment;
 use App\models\eCommerce\BlogPost;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
@@ -130,6 +131,78 @@ class BlogPostController extends Controller
         return response()->json(['success' => true, 'load' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
 
         // return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data created Successfuly')]);
+    }
+
+    // comment
+    public function comment() {
+        if (!auth()->user()->can('ecommerce.view')) {
+            abort(403, 'Unauthorized action.');
+        }
+        return view('admin.blog.comment.index');
+    }
+
+    // comment_datatable
+    public function comment_datatable(Request $request) {
+        if ($request->ajax()) {
+            $document = BlogComment::all();
+            return DataTables::of($document)
+                ->addIndexColumn()
+                ->editColumn('blog', function ($model) {
+                    if($model->blog) {
+                        return str_limit($model->blog->title, 25);
+                    } else {
+                        return 'No Blog Found';
+                    }
+                })
+                ->editColumn('date', function ($model) {
+                    return formatDate($model->date);    
+                })
+                ->editColumn('status', function ($model) {
+                    if ($model->status == '1') {
+                        return '<span class="badge badge-primary">Active</span>';
+                    } else {
+                        return '<span class="badge badge-warning">Inactive</span>';
+                    }
+                })
+                ->addColumn('action', function ($model) {
+                    return view('admin.blog.comment.action', compact('model'));
+                })->rawColumns(['blog', 'date','status', 'action'])->make(true);
+        }
+    }
+
+    // comment_show
+    public function comment_show($id) {
+        $model = BlogComment::findOrFail($id);
+        return view('admin.blog.comment.show', compact('model'));
+    }
+
+    // comment_update
+    public function comment_update(Request $request, $id) {
+        $request->validate([
+            'name' => 'required|min:3|max:50',
+            'email' => 'email|required|min:3|max:50',
+            'phone' => 'numeric|required',
+            'message' => 'required|min:3',
+        ]);
+
+        $model = BlogComment::findOrFail($id);
+        $model->name = $request->name;
+        $model->email = $request->email;
+        $model->phone = $request->phone;
+        $model->message = $request->message;
+        $model->status = $request->status;
+        $model->save();
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Updated Successfully!')]);
+
+    }
+
+    // comment_delete
+    public function comment_delete($id) {
+        $model = BlogComment::findOrFail($id);
+        $model->delete();
+
+        return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data Deleted Successfully!')]);
     }
 
     /**
