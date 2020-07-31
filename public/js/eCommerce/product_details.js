@@ -16,7 +16,7 @@
             })
             .done(function (data) {
                 $('#product_price').val(data.price.default_sell_price);
-                $('#price').html('BDT ' + data.price.default_sell_price);
+                $('#price').html('BDT ' + data.price.price);
                 if (data.qty) {
 
                     $('#qty').html('( ' + data.qty + ' pieces available )');

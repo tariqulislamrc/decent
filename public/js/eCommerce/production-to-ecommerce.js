@@ -76,7 +76,7 @@ var DatatableSelect = function () {
                 targets: [4]
             }],
 
-            order: [0, 'asc'],
+            order: [0, 'desc'],
             processing: true,
             serverSide: true,
 
@@ -95,6 +95,9 @@ var DatatableSelect = function () {
                 }, {
                     data: 'quantity',
                     name: 'quantity'
+                }, {
+                    data: 'price',
+                    name: 'price'
                 }, {
                     data: 'date',
                     name: 'date'

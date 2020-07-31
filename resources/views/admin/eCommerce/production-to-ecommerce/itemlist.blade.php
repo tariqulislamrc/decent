@@ -11,7 +11,7 @@
 	</td>
 	<td>
 		{{ $data->qty_available }}
-		<input type="hidden" name="avaiable_qty[]" value="{{ $data->quantity }}">
+		<input type="hidden" name="avaiable_qty[]" value="{{ $data->qty_available }}">
 	</td>
 	<td>
 		<input type="number" name="stock_qty[]" class="form-control stock_qty" value="0" placeholder="Enter Stock Transfer Quantity" required>
@@ -19,5 +19,9 @@
             <input type="hidden" name="ecom_id[]" value="{{ $data->e_pid }}">
         @endif 
 	</td>
+	@if ($action == 'create')
+    	<td>
+    	    <input type="text" name="price[]" class="form-control input_number">
+    	</td>
+	@endif
 </tr>
-
