@@ -17,7 +17,7 @@
 	</div>
 	<div class="card-body">
 			<div class="row">
-				<div class="col-md-6 form-group">
+				<div class="col-md-4 form-group">
 					<label for="client_id">{{_lang('Customer')}}</label>
                   <select name="client_id" id="client_id" class="form-control select">
                   	<option value="All">All Customer</option>
@@ -27,7 +27,16 @@
                   </select>
 				</div>
 
-				<div class="col-md-6 form-group">
+        <div class="col-md-4 form-group">
+          <label for="sale_type">Sale Type</label>
+          <select name="sale_type" id="sale_type" class="form-control select">
+                <option value="All">All</option>
+               <option value="wholesale">Wholesale</option>
+               <option value="retail">Retail sales</option>
+          </select>
+        </div>
+
+				<div class="col-md-4 form-group">
 					<label for="user_id">{{_lang('Sold By')}}</label>
                   <select name="user_id" id="user_id" class="form-control select">
                   	<option value="All">All User</option>

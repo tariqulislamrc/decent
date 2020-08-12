@@ -51,6 +51,7 @@ class CreateVariationsTable extends Migration
             $table->float('default_purchase_price', 20, 4)->default(0);
             $table->float('profit_percent', 20, 4)->default(0);
             $table->float('default_sell_price', 20, 4)->default(0);
+            $table->float('retail_sell_price', 20, 4)->default(0);
             $table->boolean('hidden')->default(0);
             $table->longText('tek_marks')->nullable();
 

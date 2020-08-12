@@ -57,9 +57,9 @@
                             <div class="input-group-append">
                                  <span class="input-group-text"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
                              </div>
-                           <select name="sale_type" class="form-control">
-                               <option value="retail">Retail sales</option>
+                           <select name="sale_type" id="sale_type" class="form-control select">
                                <option value="wholesale">Wholesale</option>
+                               <option value="retail">Retail sales</option>
                            </select>
                          </div>
                       </div>
@@ -159,7 +159,8 @@
 	    //Show product list.
     get_product_suggestion_list(
         $('select#category_id').val(),
-        $('select#brand_id').val()
+        $('select#brand_id').val(),
+        $('select#sale_type').val(),
     );
 
 	$('div#product_list_body').on('scroll', function() {
@@ -169,24 +170,29 @@
         $('#suggestion_page').val(page);
         var category_id = $('select#category_id').val();
         var sub_category_id = $('select#sub_category_id').val();
+        var sale_type = $('select#sale_type').val();
 
-        get_product_suggestion_list(category_id, sub_category_id);
+        get_product_suggestion_list(category_id, sub_category_id,sale_type);
     }
 });
 
-	$('select#category_id, select#sub_category_id').on('change', function(e) {
+	$('select#category_id, select#sub_category_id, select#sale_type').on('change', function(e) {
         $('input#suggestion_page').val(1);
             get_product_suggestion_list(
                 $('select#category_id').val(),
                 $('select#sub_category_id').val(),
+                $('select#sale_type').val(),
                 null
             );
 
     });
 
+$('select#sale_type').on('change',function(){
+   $('#item').html('');
+   calculate();
+});
 
-
- function get_product_suggestion_list(category_id, sub_category_id, url = null,term=null) {
+ function get_product_suggestion_list(category_id, sub_category_id,sale_type, url = null,term=null) {
 
     if($('div#product_list_body').length == 0) {
         return false;
@@ -210,6 +216,7 @@
         data: {
             category_id: category_id,
             sub_category_id: sub_category_id,
+            sale_type: sale_type,
             page: page,
             term:term
         },
@@ -226,6 +233,7 @@ $(document).delegate(".add_product", "click", function(e) {
     var variation_id = $(this).data('variation_id');
     var url = $(this).data('url');
     var quantity = parseInt($(this).data('qty'));
+    var sale_type = $('#sale_type').val();
     $.ajax({
         type: 'GET',
         url: url,
@@ -234,13 +242,13 @@ $(document).delegate(".add_product", "click", function(e) {
         },
         dateType: 'json',
         success: function(data) {
-            item1(data.product, variation_id, quantity);
+            item1(data.product, variation_id, quantity,sale_type);
 
         }
     });
 });
 //add row function
-function item1(item, variation_id, quantity) {
+function item1(item, variation_id, quantity,sale_type) {
     var tr = $("#item").parent().parent();
     var a = tr.find('.code');
     if (a.length == 0) {
@@ -252,6 +260,7 @@ function item1(item, variation_id, quantity) {
                 variation_id: variation_id,
                 row: row,
                 quantity: quantity,
+                sale_type: sale_type,
             },
             dateType: 'html',
             success: function(data) {
@@ -285,6 +294,7 @@ function item1(item, variation_id, quantity) {
                     variation_id: variation_id,
                     row: row,
                     quantity: quantity,
+                    sale_type: sale_type,
                 },
                 dateType: 'html',
                 success: function(data) {
@@ -311,6 +321,7 @@ $("#item").on('click', '.btn_remove', function() {
                     '/admin/products/list',
                     {
                         brand_id: $('input#brand_id').val(),
+                        sale_type: $('select#sale_type').val(),
                         term: request.term,
                     },
                     response
@@ -340,7 +351,7 @@ $("#item").on('click', '.btn_remove', function() {
                     console.log(ui);
                 if ( ui.item.qty > 0) {
                     $(this).val(null);
-                     item1(ui.item, ui.item.variation_id, 1);
+                     item1(ui.item, ui.item.variation_id, 1,$('select#sale_type').val());
                 } else {
                     toastr.error('Out of Stock');
                 }

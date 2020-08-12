@@ -43,6 +43,13 @@
                     <input type="text" name="reference_no" id="reference_no" class="form-control" value="{{ !empty($sale->return_parent->reference_no) ? $sale->return_parent->reference_no : null }}" readonly>
                 </div>
             </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="sale_type">Sale Type</label>
+                    <input type="text" name="sale_type" id="sale_type" class="form-control" value="{{ $sale->sale_type }}" readonly>
+                </div>
+            </div>
             <div class="clearfix"></div>
             <hr>
             <div class="col-sm-12">

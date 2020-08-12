@@ -200,6 +200,7 @@ class SaleReturnController extends Controller
                         ->findOrFail($request->input('transaction_id'));
 
             $return_quantities = $request->input('returns');
+            $sale_type = $request->input('sale_type');
             $return_total = 0;
 
             foreach ($sale->sell_lines as $sale_line) {
@@ -217,7 +218,8 @@ class SaleReturnController extends Controller
                         $sale_line->variation_id,
                         $sale_line->brand_id,
                         $return_quantity,
-                        $old_return_qty
+                        $old_return_qty,
+                        $sale_type
                     );
                 }
              }

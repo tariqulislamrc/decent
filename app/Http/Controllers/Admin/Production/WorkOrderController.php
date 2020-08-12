@@ -554,6 +554,7 @@ class WorkOrderController extends Controller
             // throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
         }
     }
+}
 
     public function item(Request $request)
     {

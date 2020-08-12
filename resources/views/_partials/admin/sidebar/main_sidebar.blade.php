@@ -626,11 +626,20 @@
 
 {{-- Product --}}
 @can('production_product.view')
-<li data-placement="bottom" title="Department"><a
+<li data-placement="bottom" title="Product"><a
         class="app-menu__item {{ Request::is('admin/final/product-list*') ? ' active' : '' }}"
         href="{{ route('admin.product_list') }}"><i class="app-menu__icon fa fa-calendar" aria-hidden="true"></i><span
             class="app-menu__label">{{_lang('Product List')}}</span></a></li>
 @endcan
+
+@can('production_product.view')
+<li data-placement="bottom" title="Stock"><a
+        class="app-menu__item {{ Request::is('admin/product_stock*') ? ' active' : '' }}"
+        href="{{ route('admin.product_stock.index') }}"><i class="app-menu__icon fa fa-stack-exchange" aria-hidden="true"></i><span
+            class="app-menu__label">{{_lang('Product Stock')}}</span></a></li>
+@endcan
+
+
 
 
 @can('production_department.view')

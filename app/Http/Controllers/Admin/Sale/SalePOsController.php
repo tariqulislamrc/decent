@@ -200,7 +200,8 @@ class SalePOsController extends Controller
                                 $value['product_id'],
                                 $value['variation_id'],
                                 get_option('default_brand'),
-                                $decrease_qty
+                                $decrease_qty,
+                                $request->sale_type
                             );
         }
 
@@ -444,6 +445,7 @@ class SalePOsController extends Controller
     {
         $row =$request->row;
         $quantity =$request->quantity;
+        $sale_type =$request->sale_type;
         $data = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
             ->join('product_variations AS pv', 'variations.product_variation_id', '=', 'pv.id')
             ->leftjoin('variation_brand_details AS vbd', 'variations.id', '=', 'vbd.variation_id')
@@ -452,7 +454,9 @@ class SalePOsController extends Controller
                     'p.name as product_name',
                     'p.category_id',
                     'vbd.qty_available',
+                    'vbd.retail_qty',
                     'variations.default_sell_price as selling_price',
+                    'variations.retail_sell_price as retail_price',
                     'variations.id as variation_id',
                     'vbd.brand_id as brand_id',
                     'variations.sub_sku as sku',
@@ -470,7 +474,7 @@ class SalePOsController extends Controller
         }
 
 
-        return view('admin.salePos.partials.product_row',compact('data','quantity','row'));
+        return view('admin.salePos.partials.product_row',compact('data','quantity','row','sale_type'));
     }
 
 
