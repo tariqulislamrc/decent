@@ -36,6 +36,7 @@ class CreateVariationBrandDetailsTable extends Migration
                 ->references('id')->onDelete('cascade');
 
             $table->float('qty_available', 20, 4)->default(0);
+            $table->float('retail_qty', 20, 4)->default(0);
 
             $table->timestamps();
         });

@@ -34,6 +34,7 @@ class SalesReportController extends Controller
             abort(403, 'Unauthorized action.');
         }
     	$client_id =$request->client_id;
+        $sale_type =$request->sale_type;
         $user_id =$request->user_id;
         $sDate =$request->sDate;
         $eDate =$request->eDate;
@@ -46,6 +47,12 @@ class SalesReportController extends Controller
         else{           	
            $q =$q->where('client_id',$client_id);
         }
+        // if ($sale_type=='All') {
+        //     $q=$q;
+        // }
+        // else{
+        //     $q= $q->where('sale_type',$sale_type);     
+        // }
         if ($user_id=='All') {
             $q=$q;
         }

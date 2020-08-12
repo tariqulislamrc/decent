@@ -555,6 +555,7 @@ class WorkOrderController extends Controller
             }
         }
     }
+}
 
     public function item(Request $request)
     {

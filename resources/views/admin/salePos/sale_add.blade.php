@@ -35,9 +35,9 @@
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
                                         </div>
-                                        <select name="sale_type" class="form-control">
-                                            <option value="retail">Retail sales</option>
+                                        <select name="sale_type" id="sale_type" class="form-control select">
                                             <option value="wholesale">Wholesale</option>
+                                            <option value="retail">Retail sales</option>
                                         </select>
                                     </div>
                                 </div>
@@ -208,6 +208,7 @@
 @push('scripts')
 <script>
     $('.account_id').select2();
+    $('.select').select2();
         //get customer
     $('#customer_id').select2({
         ajax: {
@@ -272,6 +273,11 @@
     });
     _remortFormValidation();
 
+
+$('select#sale_type').on('change',function(){
+   $('#item').html('');
+   calculate();
+});
         //Add Product
     $('#search_product')
         .autocomplete({
@@ -280,6 +286,7 @@
                     '/admin/products/list',
                     {
                         brand_id: $('input#brand_id').val(),
+                        sale_type: $('select#sale_type').val(),
                         term: request.term,
                     },
                     response
@@ -308,7 +315,7 @@
             select: function(event, ui) {
                 if ( ui.item.qty > 0) {
                     $(this).val(null);
-                     item1(ui.item, ui.item.variation_id, 1);
+                     item1(ui.item, ui.item.variation_id, 1,$('select#sale_type').val());
                 } else {
                     toastr.error('Out of Stock');
                 }
@@ -347,7 +354,7 @@
     };
 
     //add row function
-function item1(item, variation_id, quantity) {
+function item1(item, variation_id, quantity,sale_type) {
     var tr = $("#item").parent().parent();
     var a = tr.find('.code');
     if (a.length == 0) {
@@ -359,6 +366,7 @@ function item1(item, variation_id, quantity) {
                 variation_id: variation_id,
                 row: row,
                 quantity: quantity,
+                sale_type: sale_type,
             },
             dateType: 'html',
             success: function(data) {
@@ -392,6 +400,7 @@ function item1(item, variation_id, quantity) {
                     variation_id: variation_id,
                     row: row,
                     quantity: quantity,
+                    sale_type: sale_type,
                 },
                 dateType: 'html',
                 success: function(data) {

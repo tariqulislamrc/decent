@@ -416,6 +416,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
 		//::::::::Product list
 		Route::get('final/product-list','Production\ProductController@finalproduct_list')->name('product_list');
+		Route::get('retail_stock','ProductStockController@retail_stock');
+		Route::get('product_stock/wholesale','ProductStockController@whole_stock')->name('whole_stock');
+		Route::get('wholsale_stock','ProductStockController@wholsale_stock');
+		Route::post('wholsale_stock_post','ProductStockController@wholsale_stock_post')->name('wholsale_stock_post');
+		Route::resource('product_stock','ProductStockController');
 
 		//  ::::::::::::::::::::::::::::: Member Setting :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		Route::get('setting/member-setting', 'Configuration\Member\MemberSettingDashboardController@index')->name('member-setting');

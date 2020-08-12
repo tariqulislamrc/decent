@@ -5,7 +5,8 @@
 				<th>{{ _lang('Product') }}</th>
 				<th>{{ _lang('Variation') }}</th>
 				<th>{{ _lang('Purchase Price') }}</th>
-				<th>{{ _lang('Sale Price') }}</th>
+				<th>{{ _lang('WholeSale Price') }}</th>
+				<th>{{ _lang('Retail Price') }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -15,10 +16,13 @@
 				<td>{{ $element->name }}</td>
 				<td>
 					<input type="hidden" name="variation_id[] " value="{{ $element->id }}" />
-					<input type="text" name="default_purchase_price[]" class="form-control" value="{{ $element->default_purchase_price }}" />
+					<input type="text" name="default_purchase_price[]" class="form-control input_number" value="{{ $element->default_purchase_price }}" />
 				</td>
 				<td>
-					<input type="text" name="default_sell_price[]" class="form-control"  value="{{ $element->default_sell_price }}" />
+					<input type="text" name="default_sell_price[]" class="form-control input_number"  value="{{ $element->default_sell_price }}" />
+				</td>
+				<td>
+					<input type="text" name="retail_sell_price[]" class="form-control input_number" value="{{ $element->retail_sell_price }}">
 				</td>
 			</tr>
 			@endforeach

@@ -556,6 +556,7 @@ class ProductController extends Controller
         if ($request->ajax()) {
             $brand_id = $request->get('brand_id')?:get_option('default_brand');
             $term = $request->get('term');
+            $sale_type = $request->get('sale_type');
 
             $check_qty = false;
 
@@ -598,7 +599,8 @@ class ProductController extends Controller
                     $query->where('VBD.brand_id', $brand_id);
                     
                 });
-           $products = $products->select(
+            if ($sale_type=='wholesale') {
+             $products = $products->select(
                 'products.id as product_id',
                 'products.name',
                 'variations.id as variation_id',
@@ -608,9 +610,25 @@ class ProductController extends Controller
                 'variations.sub_sku as sku',
                 'VBD.brand_id as brand_id',
                 'products.photo as image'
-            );
-            $result = $products->orderBy('VBD.qty_available', 'desc')
+              );
+              $result = $products->orderBy('VBD.qty_available', 'desc')
                         ->get();
+             }else{
+                $products = $products->select(
+                'products.id as product_id',
+                'products.name',
+                'variations.id as variation_id',
+                'variations.name as variation',
+                'vbd.retail_qty as qty',
+                'variations.retail_sell_price as selling_price',
+                'variations.sub_sku as sku',
+                'VBD.brand_id as brand_id',
+                'products.photo as image'
+               );
+               $result = $products->orderBy('VBD.qty_available', 'desc')
+                        ->get();
+             } 
+       
             return json_encode($result);
 
    }
@@ -839,6 +857,7 @@ public function post_product_status(Request $request)
         $variation=Variation::find($request->variation_id[$i]);
         $variation->default_purchase_price =$request->default_purchase_price[$i];
         $variation->default_sell_price =$request->default_sell_price[$i];
+        $variation->retail_sell_price =$request->retail_sell_price[$i];
         $variation->save();
     }
     $model->status=$request->status;

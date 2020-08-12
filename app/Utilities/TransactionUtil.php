@@ -62,7 +62,7 @@ class TransactionUtil
   }
 
 
-     public function decreaseProductQuantity($product_id, $variation_id, $brand_id, $new_quantity, $old_quantity = 0)
+     public function decreaseProductQuantity($product_id, $variation_id, $brand_id, $new_quantity,$sale_type=null, $old_quantity = 0)
     {
         $qty_difference = $new_quantity - $old_quantity;
 
@@ -70,10 +70,17 @@ class TransactionUtil
 
         //Check if stock is enabled or not.
             //Decrement Quantity in variations location table
+        if ($sale_type=='wholesale') {
             VariationBrandDetails::where('variation_id', $variation_id)
                 ->where('product_id', $product_id)
                 ->where('brand_id', $brand_id)
                 ->decrement('qty_available', $qty_difference);
+        }else{
+            VariationBrandDetails::where('variation_id', $variation_id)
+                ->where('product_id', $product_id)
+                ->where('brand_id', $brand_id)
+                ->decrement('retail_qty', $qty_difference);
+        }
 
             
             // Variation::where('id', $variation_id)
@@ -164,7 +171,7 @@ class TransactionUtil
      *
      * @return boolean
      */
-    public function updateProductQuantity($product_id, $variation_id,$brand_id, $new_quantity, $old_quantity = 0, $number_format = null, $uf_data = true)
+    public function updateProductQuantity($product_id, $variation_id,$brand_id, $new_quantity, $old_quantity = 0,$sale_type=null, $number_format = null, $uf_data = true)
     {
 
         $qty_difference = $new_quantity - $old_quantity;
@@ -189,11 +196,18 @@ class TransactionUtil
                 $variation_brand_d->product_id = $product_id;
                 $variation_brand_d->brand_id = $brand_id;
                 $variation_brand_d->product_variation_id = $variation->product_variation_id;
-                $variation_brand_d->qty_available = 0;
+                if ($sale_type=='wholesale') {
+                  $variation_brand_d->qty_available = 0;
+                }else{
+                  $variation_brand_d->retail_qty = 0;  
+                }
             }
-
-            $variation_brand_d->qty_available +=$qty_difference;
-            $variation_brand_d->save();
+            if ($sale_type=='wholesale') {
+                $variation_brand_d->qty_available +=$qty_difference;
+            }else{
+                $variation_brand_d->retail_qty +=$qty_difference;
+            }
+             $variation_brand_d->save();
 
             //TODO: Add quantity in products table
             // Product::where('id', $product_id)
