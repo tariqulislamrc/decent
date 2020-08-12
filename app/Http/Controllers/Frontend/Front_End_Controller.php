@@ -196,8 +196,9 @@ class Front_End_Controller extends Controller{
 
 
     public function get_price(Request $request){
-        $price = Variation::findOrFail($request->id);
+        // $price = Variation::findOrFail($request->id);
         $qty = EcommerceProduct::where('variation_id', $request->id)->first();
+        $price = EcommerceProduct::where('variation_id', $request->id)->first();
         $qty = $qty->quantity;
         return response()->json(['price' => $price, 'qty' => $qty]);
     }

@@ -16,12 +16,10 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('blog_category.create')
-                        <button data-placement="bottom" title="Create New Blog Categories" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.blog-category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
-                    @endcan
+                        <button data-placement="bottom" title="Create New Blog Categories" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.blog-category.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                 </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.blog-category.datatable') }}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.blog-category.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
@@ -51,4 +49,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/blog-category.js') }}"></script>
 @endpush
-

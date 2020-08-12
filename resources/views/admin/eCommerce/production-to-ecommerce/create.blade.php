@@ -32,6 +32,7 @@
                             <th>Product Name</th>
                             <th>Avaiable Quantity</th>
                             <th>Pass Quantity</th>
+                            <th>Price (1 Unit)</th>
                         </tr>
                     </thead>
                     <tbody id="item">
@@ -132,6 +133,7 @@ function item1(item, variation_id, quantity) {
     if (a.length == 0) {
         var row = parseInt($("#row").val());
         var page = 'ecommerce';
+        var action = 'create';
         $.ajax({
             type: 'GET',
             url: "/admin/sale/pos/scannerappend1",
@@ -140,6 +142,7 @@ function item1(item, variation_id, quantity) {
                 row: row,
                 quantity: quantity,
                 page: page,
+                action: action,
             },
             dateType: 'html',
             success: function(data) {
@@ -165,6 +168,7 @@ function item1(item, variation_id, quantity) {
         if (found) {
             var row = parseInt($("#row").val());
             var page = 'ecommerce';
+            var action = 'create';
             $.ajax({
                 type: 'GET',
                 url: "/admin/sale/pos/scannerappend1",
@@ -173,6 +177,7 @@ function item1(item, variation_id, quantity) {
                     row: row,
                     quantity: quantity,
                     page: page,
+                    action: action,
                 },
                 dateType: 'html',
                 success: function(data) {

@@ -1,5 +1,4 @@
 @extends('layouts.app', ['title' => _lang('Ecommerce Stock '), 'modal' => 'lg'])
-{{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
         <div>
@@ -9,7 +8,6 @@
     </div>
 @stop
 
-{{-- Main Section --}}
 @section('content')
 <!-- Basic initialization -->
     <div class="row">
@@ -29,6 +27,7 @@
                                 <th>{{_lang('Product')}}</th>
                                 <th>{{_lang('Variation')}}</th>
                                 <th>{{_lang('Quantity')}}</th>
+                                <th>{{_lang('Price')}}</th>
                                 <th>{{_lang('Date')}}</th>
                             </tr>
                         </thead>
@@ -52,4 +51,3 @@
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
     <script src="{{ asset('js/eCommerce/production-to-ecommerce.js') }}"></script>
 @endpush
-

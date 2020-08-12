@@ -39,6 +39,39 @@
             </span>
         </a>
     </li>
+
+    <li class="treeview {{ (Request::is('admin/eCommerce/blog*')) ? ' is-expanded' : '' }}">
+        <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-rss-square"
+                aria-hidden="true"></i>
+            <span class="app-menu__label">{{_lang('Blog')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
+        </a>
+        <ul class="treeview-menu">
+    
+            <li data-placement="bottom" title="Ecommerce Offer Section">
+                <a class="treeview-item {{Request::is('admin/eCommerce/blog-category') ? 'active':''}}"
+                    href="{{ route('admin.eCommerce.blog-category.index') }}">
+                    <i class="icon fa fa-circle-o"></i>
+                    {{_lang('Blog Category')}}
+                </a>
+            </li>
+    
+            <li data-placement="bottom" title="Ecommerce Offer Section">
+                <a class="treeview-item {{Request::is('admin/eCommerce/blog-post') ? 'active':''}}"
+                    href="{{ route('admin.eCommerce.blog-post.index') }}">
+                    <i class="icon fa fa-circle-o"></i>
+                    {{_lang('Blog Post')}}
+                </a>
+            </li>
+
+            <li data-placement="bottom" title="Ecommerce Offer Section">
+                <a class="treeview-item {{Request::is('admin/eCommerce/blog-post/comment') ? 'active':''}}"
+                    href="{{ route('admin.eCommerce.blog-post.comment') }}">
+                    <i class="icon fa fa-circle-o"></i>
+                    {{_lang('Blog Comment')}}
+                </a>
+            </li>
+        </ul>
+    </li>
     
     {{--Contact Message --}}
     <li data-placement="bottom" title="Ecommerce Contact Message Section">
@@ -802,35 +835,6 @@
     </ul>
 </li>
 @endcan
-
-@can('blog.view')
-{{-- Account Section--}}
-<li class="treeview {{ (Request::is('admin/blog*')) ? ' is-expanded' : '' }}">
-    <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-rss-square"
-            aria-hidden="true"></i>
-        <span class="app-menu__label">{{_lang('Blog')}}</span><i class="treeview-indicator fa fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu">
-
-        <li data-placement="bottom" title="Ecommerce Offer Section">
-            <a class="treeview-item {{Request::is('admin/blog-category') ? 'active':''}}"
-                href="{{ route('admin.blog-category.index') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Blog Category')}}
-            </a>
-        </li>
-
-        <li data-placement="bottom" title="Ecommerce Offer Section">
-            <a class="treeview-item {{Request::is('admin/blog-post') ? 'active':''}}"
-                href="{{ route('admin.blog-post.index') }}">
-                <i class="icon fa fa-circle-o"></i>
-                {{_lang('Blog Post')}}
-            </a>
-        </li>
-    </ul>
-</li>
-@endcan
-
 
 @role('Super Admin')
 <li class="treeview {{ Request::is('super-admin*') ? ' is-expanded' : '' }}">

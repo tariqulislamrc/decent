@@ -9,7 +9,7 @@
 
 // Setup module
 // ------------------------------
-
+var emran = "";
 var DatatableSelect = function () {
 
 
@@ -38,6 +38,7 @@ var DatatableSelect = function () {
                 search: '<span>Filter:</span> _INPUT_',
                 searchPlaceholder: 'Type to filter...',
                 lengthMenu: '<span>Show:</span> _MENU_',
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> ',
                 paginate: {
                     'first': 'First',
                     'last': 'Last',
@@ -47,7 +48,7 @@ var DatatableSelect = function () {
             }
         });
 
-        $('.content_managment_table').DataTable({
+        emran = $('.content_managment_table').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -73,7 +74,7 @@ var DatatableSelect = function () {
             }],
             columnDefs: [{
                 orderable: false,
-                targets: [4]
+                targets: [6]
             }],
 
             order: [0, 'desc'],
@@ -87,22 +88,29 @@ var DatatableSelect = function () {
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 }, {
-                    data: 'product',
-                    name: 'product'
+                    data: 'blog',
+                    name: 'blog'
                 }, {
-                    data: 'variation',
-                    name: 'variation'
+                    data: 'name',
+                    name: 'name'
                 }, {
-                    data: 'quantity',
-                    name: 'quantity'
+                    data: 'email',
+                    name: 'email'
                 }, {
-                    data: 'price',
-                    name: 'price'
+                    data: 'phone',
+                    name: 'phone'
                 }, {
                     data: 'date',
                     name: 'date'
+                }, {
+                    data: 'status',
+                    name: 'status'
+                }, {
+                    data: 'action',
+                    name: 'action'
                 }
             ]
+
         });
 
 
@@ -120,15 +128,16 @@ var DatatableSelect = function () {
             // load ajax loader
             $('#modal-loader').show();
             $.ajax({
-                url: url,
-                type: 'Get',
-                dataType: 'html'
-            })
+                    url: url,
+                    type: 'Get',
+                    dataType: 'html'
+                })
                 .done(function (data) {
                     $('.modal-body').html(data).fadeIn(); // load response
                     $('#modal-loader').hide();
                     $('#branch_no').focus();
                     _modalFormValidation();
+                    _componentDatePicker();
                 })
                 .fail(function (data) {
                     $('.modal-body').html('<span style="color:red; font-weight: bold;"> Something Went Wrong. Please Try again later.......</span>');
@@ -136,6 +145,7 @@ var DatatableSelect = function () {
                 });
         });
     };
+
 
 
     //
@@ -147,7 +157,7 @@ var DatatableSelect = function () {
             _componentDatatableSelect();
             _componentRemoteModalLoad();
             _componentSelect2Normal();
-            _componentDatefPicker();
+            _componentDatePicker();
             _formValidation();
         }
     }

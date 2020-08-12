@@ -38,10 +38,13 @@ class ProductionToEcommerceController extends Controller
                 ->editColumn('variation', function ($model) {
                     return $model->variation ? $model->variation->name : 'No Variation Found';
                 })
+                ->editColumn('price', function ($model) {
+                    return $model->price;
+                })
                 ->editColumn('date', function ($model) {
                     return formatDate($model->created_at);
                 })
-                ->rawColumns(['product', 'variation', 'date'])->make(true);
+                ->rawColumns(['product', 'variation', 'price', 'date'])->make(true);
          }
      }
 
@@ -83,6 +86,7 @@ class ProductionToEcommerceController extends Controller
             'product' => 'required',
             'avaiable_qty' => 'required',
             'stock_qty' => 'required',
+            'price' => 'required|numeric',
         ]);
 
         for ($i = 0; $i < count($request->product_id); $i++) {
@@ -92,6 +96,7 @@ class ProductionToEcommerceController extends Controller
             $product = $request->product[$i];
             $avaiable_qty = $request->avaiable_qty[$i];
             $stock_qty = $request->stock_qty[$i];
+            $price = $request->price[$i];
 
             // check the stock transfer qty is not greater then avaiable qty
             if($avaiable_qty < $stock_qty) {
@@ -116,6 +121,7 @@ class ProductionToEcommerceController extends Controller
             $model->product_variation_id = $product_variation_id;
             $model->variation_id = $variation_id;
             $model->quantity = $stock_qty;
+            $model->price = $price;
             $model->save();
 
         };
@@ -191,6 +197,7 @@ class ProductionToEcommerceController extends Controller
         }
         // dd($request->all());
         $row =$request->row;
+        $action = '';
         $quantity =$request->quantity;
         $data = EcommerceProduct::join('products AS p', 'product_id', '=', 'p.id')
             ->join('variations AS pv', 'pv.id', '=', 'variation_id')
@@ -209,7 +216,7 @@ class ProductionToEcommerceController extends Controller
                 )
             ->first();
 
-            return view('admin.eCommerce.production-to-ecommerce.itemlist',compact('data','quantity','row'));
+            return view('admin.eCommerce.production-to-ecommerce.itemlist',compact('data','quantity','row', 'action'));
     }
 
     // store_reverse

@@ -19,5 +19,9 @@
             <input type="hidden" name="ecom_id[]" value="{{ $data->e_pid }}">
         @endif 
 	</td>
+	@if ($action == 'create')
+    	<td>
+    	    <input type="text" name="price[]" class="form-control input_number">
+    	</td>
+	@endif
 </tr>
-

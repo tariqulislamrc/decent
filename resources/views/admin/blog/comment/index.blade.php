@@ -1,10 +1,10 @@
-@extends('layouts.app', ['title' => _lang('Blog Posts'), 'modal' => 'lg'])
+@extends('layouts.app', ['title' => _lang('Blog Posts Comment'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
     <div class="app-title">
         <div>
-            <h1 data-placement="bottom" title="Posts for Blog."><i class="fa fa-universal-access mr-4"></i> {{_lang('Blog Posts')}}</h1>
-            <p>{{_lang('Create Post for Blog. Here you can Add, Edit & Delete The Blog Posts')}}</p>
+            <h1 data-placement="bottom" title="Posts for Blog Comment."><i class="fa fa-universal-access mr-4"></i> {{_lang('Blog Posts Comment')}}</h1>
+            <p>{{_lang('Create Post for Blog Comment. Here you can Add, Edit & Delete The Blog Posts')}}</p>
         </div>
     </div>
 @stop
@@ -15,17 +15,15 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">
-                    <a data-placement="bottom" title="Create New Blog Posts" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.blog-post.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</a>
-                </h3>
                 <div class="tile-body">
-                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.blog-post.datatable') }}">
+                    <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.blog-post.comment.datatable') }}">
                         <thead>
                             <tr>
                                 <th>{{_lang('id')}}</th>
-                                <th>{{_lang('Category')}}</th>
-                                <th>{{_lang('Title')}}</th>
-                                <th>{{_lang('Image')}}</th>
+                                <th>{{_lang('Blog')}}</th>
+                                <th>{{_lang('Name')}}</th>
+                                <th>{{_lang('Email')}}</th>
+                                <th>{{_lang('Phone')}}</th>
                                 <th>{{_lang('Date')}}</th>
                                 <th>{{_lang('Status')}}</th>
                                 <th>{{_lang('action')}}</th>
@@ -49,7 +47,7 @@
     <script src="{{ asset('backend/js/plugins/select.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/plugins/buttons.min.js') }}"></script> --}}
     <script src="{{ asset('backend/js/plugins/responsive.min.js') }}"></script>
-    <script src="{{ asset('js/eCommerce/blog-post.js') }}"></script>
+    <script src="{{ asset('js/eCommerce/blog-post-comment.js') }}"></script>
 
 @endpush
 

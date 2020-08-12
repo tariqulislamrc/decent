@@ -3,7 +3,7 @@
         <h6>{{_lang('Edit Blog Post - ')}} <span class="badge badge-primary">{{$model->name}}</span></h6>
     </div>
     <div class="card-body">
-        <form action="{{route('admin.blog-post.update', $model->id)}}" method="post" id="content_form">
+        <form action="{{route('admin.eCommerce.blog-post.update', $model->id)}}" method="post" id="content_form">
             @csrf
             @method('PATCH')
             <div class="row">
