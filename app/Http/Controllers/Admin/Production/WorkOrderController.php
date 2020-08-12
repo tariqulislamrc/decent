@@ -176,13 +176,13 @@ class WorkOrderController extends Controller
             $tx = new Transaction;
             $tx->sell_note = $request->sell_note;
             $tx->stuff_note = $request->stuff_note;
-    
+
             $ym = Carbon::now()->format('Y/m');
-    
+
             $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() + 1 : 1;
-            
+
             $ref_no = $ym.'/Wo-'.ref($row);
-    
+
             $tx->due = $request->due;
             $tx->paid = $request->paid;
             $tx->net_total = $request->total_payable_amount;
@@ -199,7 +199,7 @@ class WorkOrderController extends Controller
             $tx->invoice_no = '';
             $tx->reference_no = $ref_no;
             $tx->save();
-    
+
             $tp = new TransactionPayment;
             $tp->transaction_id = $tx->id;
             $tp->method = $request->method;
@@ -221,7 +221,7 @@ class WorkOrderController extends Controller
             $work_order_delivery->work_order_id = $model->id;
             $work_order_delivery->status = 'due';
             $work_order_delivery->save();
-            
+
             $count = count($request->product_id);
             for ($i = 0; $i < $count; $i++) {
                 $line_purchase = new WorkOrderProduct;
@@ -316,7 +316,7 @@ class WorkOrderController extends Controller
          // Activity Log
          activity()->log('Pay a Work order By - ' . Auth::user()->id);
          return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Payment successful'), 'goto' => url('/admin/production-work-order')]);
-        
+
     }
 
     /**
@@ -396,7 +396,7 @@ class WorkOrderController extends Controller
 
 
         if($request->type != 'sample') {
-        
+
         // if paid amount is greater then the payable amount
             if($request->paid > $request->total_payable_amount) {
                 return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Paid Amount is Greater then the Payable Amount')]);
@@ -432,13 +432,13 @@ class WorkOrderController extends Controller
             $tx = new Transaction;
             $tx->sell_note = $request->sell_note;
             $tx->stuff_note = $request->stuff_note;
-    
+
             $ym = Carbon::now()->format('Y/m');
-    
+
             $row = Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'work_order')->withTrashed()->get()->count() + 1 : 1;
-            
+
             $ref_no = $ym.'/Wo-'.ref($row);
-    
+
             $tx->due = $request->due;
             $tx->paid = $request->paid;
             $tx->net_total = $request->total_payable_amount;
@@ -455,7 +455,7 @@ class WorkOrderController extends Controller
             $tx->invoice_no = '';
             $tx->reference_no = $ref_no;
             $tx->save();
-    
+
             $tp = new TransactionPayment;
             $tp->transaction_id = $tx->id;
             $tp->method = $request->method;
@@ -525,33 +525,34 @@ class WorkOrderController extends Controller
             $model = WorkOrder::findOrFail($id);
 
             //workorder product
-            if($model->workOrderProduct) {
-                foreach($model->workOrderProduct as $value) {
+            if ($model->workOrderProduct) {
+                foreach ($model->workOrderProduct as $value) {
                     $value->delete();
                 }
                 // $model->workOrderProduct->delete();
-           // workorder product
-            if($model->workOrderProduct) {
-                $model->workOrderProduct->delete();
-            }
-            if (isset($model->transaction)) {
-                if($model->transaction->payment) {
-                    $model->transaction->payment->delete();
+                // workorder product
+                if ($model->workOrderProduct) {
+                    $model->workOrderProduct->delete();
                 }
-                $account_transaction = AccountTransaction::where('transaction_id',$model->transaction->id)->get();
-                if($account_transaction) {
-                    foreach($account_transaction as $item) {
-                        $item->delete();
+                if (isset($model->transaction)) {
+                    if ($model->transaction->payment) {
+                        $model->transaction->payment->delete();
                     }
-                }
+                    $account_transaction = AccountTransaction::where('transaction_id', $model->transaction->id)->get();
+                    if ($account_transaction) {
+                        foreach ($account_transaction as $item) {
+                            $item->delete();
+                        }
+                    }
 
-                $model->transaction->delete();
+                    $model->transaction->delete();
+                }
+                $model->delete();
+                return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted')]);
+            } else {
+                return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This workorder is already use in store/final Product')]);
+                // throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']);
             }
-            $model->delete();
-            return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Data deleted')]);
-        }else{
-            return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('This workorder is already use in store/final Product')]);
-            // throw ValidationException::withMessages(['message' =>'This workorder is already use in store/final Product']); 
         }
     }
 
@@ -773,8 +774,8 @@ class WorkOrderController extends Controller
                 'Quantity'=> WorkOrderDeliveryItem::where('work_order_deliveries_id', $work_order_deliveries_id)->where('product_id', $product_id)->where('variation_id', $variation_id)->sum('quantity')
             ];
         }
-    
-        // return 
+
+        // return
         return view('admin.production.work_order.delivery.index', compact('work_order', 'ready_products', 'delivery_products', 'work_order_products', 'delivery', 'delivery_array'));
     }
 
@@ -784,7 +785,7 @@ class WorkOrderController extends Controller
         $request->validate([
             'date' => 'required',
         ]);
-        
+
         if(!isset($request->product_id)) {
             return response()->json(['success' => true, 'status' => 'danger', 'message' => _lang('Select At Least 1 Item for Delivery')]);
         }
@@ -853,5 +854,5 @@ class WorkOrderController extends Controller
         $html = view('admin.production.work_order.delivery.print_today', compact('work_order_delivery', 'work_order', 'date'))->render();
 
         return response()->json(['success' => true, 'html' => $html, 'message' => _lang('Delivery Completed Successfully!.')]);
-    }   
+    }
 }
