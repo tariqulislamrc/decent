@@ -1,7 +1,3 @@
-Gmail   Rasel Emran <alamranice47ru@gmail.com>
-Edit.blade.php
-MD SOUAT SADI KHAN SADIK <sadik.cse15@gmail.com>    Thu, Jul 2, 2020 at 5:25 PM
-To: alamranice47ru@gmail.com
 @extends('layouts.app', ['title' => _lang('Production Work Order edit'), 'modal' => 'lg'])
 {{-- Header Section --}}
 @section('page.header')
@@ -128,13 +124,13 @@ To: alamranice47ru@gmail.com
                                     </td>
                                     <td>
                                         {{$produc_titem->product->name}} {{ \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first() ? \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first()->name : '' }}
-                                
+
                                         <input type="hidden" name="product_id[]" class="product_id" value="{{$produc_titem->product_id}}" data-variation="{{$produc_titem->variation_id}}">
                                         <input type="hidden" name="variation_id[]" class="variation_id" value="{{$produc_titem->variation_id}}">
                                         <input type="hidden" class="form-controll code" value="{{$produc_titem->product_id}}">
                                         {{-- <input type="hidden" class="form-control code" id="code_{{$row}}" data-id="{{$row}}" value="{{$product->id}}"> --}}
                                     </td>
-                                
+
                                     <td>
                                         <input type="text" autocomplete="off"  name="quantity[]" class="form-control qty" value="{{ $produc_titem->qty }}">
                                     </td>
@@ -146,7 +142,7 @@ To: alamranice47ru@gmail.com
                                         <input type="hidden" name="sub_total[]" class="sub_total" value="{{$produc_titem->sub_total}}">
                                         <span  class="sub_total_text">{{number_format(1*$produc_titem->sub_total, 2)}}</span>
                                     </td>
-                                    
+
                                 </tr>
                                 {{-- <td>
                                     {{$produc_titem->product->name}} {{ \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first() ? \App\models\Production\Variation::where('id', $produc_titem->variation_id)->first()->name : '' }}
@@ -246,7 +242,7 @@ To: alamranice47ru@gmail.com
                             </div>
                         </div>
                     </div>
-                @else 
+                @else
                     <div class="col-md-12 production_show" style="display: none;">
                         <div class="card">
                             <div class="card-body">
@@ -352,7 +348,7 @@ To: alamranice47ru@gmail.com
                     </div>
                 @endif
 
-                
+
 
             </div>
         </div>
@@ -436,7 +432,7 @@ To: alamranice47ru@gmail.com
             shipping_charges = parseInt(shipping_charges);
         }
 
-        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges);
 
         var paid = $('#paid').val();
         if(paid == '') {
@@ -465,7 +461,7 @@ To: alamranice47ru@gmail.com
     {
         var total = 0;
         $('.update_invoice_table tbody tr').each(function(i, element) {
-            
+
             var html = $(this).html();
             if(html!='')
             {
@@ -473,10 +469,10 @@ To: alamranice47ru@gmail.com
                 if(net_total.length > 0){
                     total += parseInt(net_total.val());
                 }
-            
+
             }
         });
-        
+
         return total;
     }
 
@@ -581,14 +577,14 @@ To: alamranice47ru@gmail.com
             shipping_charges = parseInt(shipping_charges);
         }
 
-        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges);
 
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
 
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
-        
+
     });
 
     // discount_type
@@ -639,7 +635,7 @@ To: alamranice47ru@gmail.com
             shipping_charges = parseInt(shipping_charges);
         }
 
-        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges);
 
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
@@ -679,7 +675,7 @@ To: alamranice47ru@gmail.com
             sub_total = parseInt(sub_total);
         }
 
-        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges);
 
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));
@@ -716,7 +712,7 @@ To: alamranice47ru@gmail.com
             shipping_charges = parseInt(shipping_charges);
         }
 
-        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges); 
+        var total_payable = parseFloat(sub_total) - parseFloat(discount) + parseInt(tax) + parseInt(shipping_charges);
 
         $('.total_payable_amount').html(total_payable.toFixed(2));
         $('#total_payable_amount').val(total_payable.toFixed(2));

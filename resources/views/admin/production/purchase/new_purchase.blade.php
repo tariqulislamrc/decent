@@ -89,7 +89,7 @@ padding: 0.2rem 0.5rem;
                         @foreach ($suppliers as $element)
                             <option value="{{ $element->id }}">{{ $element->name }}</option>
                         @endforeach
-                    </select> 
+                    </select>
          </div>
 
         <div class="col-md-6 mx-auto">
@@ -100,19 +100,19 @@ padding: 0.2rem 0.5rem;
                         @foreach ($workorders as $order)
                                 <option value="{{ $order->id }}">{{ $order->prefix}}-{{  $order->code }}</option>
                             @endforeach
-                    </select> 
+                    </select>
          </div>
      </div>
         <div class="row mt-2">
             <div class="col-md-6 mx-auto text-center">
-                
+
                 <button type="button" class="btn btn-primary btn-sm w-100" id="check_it">Get Material</button>
                 <button type="button" class="btn btn-sm btn-info w-100" id="checking" style="display: none;">
                 <i class="fa fa-spinner fa-spin fa-fw"></i>Checking...</button>
             </div>
         </div>
     </div>
-    </div>    
+    </div>
     <div class="card mt-3">
         <div class="card-body">
             <div class="table-responsive">
@@ -188,7 +188,7 @@ padding: 0.2rem 0.5rem;
                             <b>Purchase Total: </b><span class="display_currency net_total" data-currency_symbol="true">৳ 0.00</span>
                         </td>
                     </tr>
-                    
+
                     <tr>
                         <td colspan="">
                             <div class="form-group">
@@ -365,11 +365,12 @@ $(document).on('click', '#check_it', function () {
           $('#checking').hide();
           $('#data').html(data);
           $("#client_id").val();
+        calculate();
     })
   }
 });
 
-    // invoice calculation 
+    // invoice calculation
     $("#data").delegate('#unit_price, #qty,#waste', 'keyup blur', function () {
         var tr = $(this).parent().parent();
         var quantity = tr.find("#qty").val();
@@ -390,7 +391,7 @@ $(document).on('click', '#check_it', function () {
 $("#data").on('click', '.remmove', function () {
     $(this).closest('tr').remove();
   calculate();
-  
+
 })
 
 
@@ -426,7 +427,7 @@ $("#data").on('click', '.remmove', function () {
         var change_amount =calculate_balance_due(net_total);
         $('.change_return_span').text(change_amount);
         $('#due').val(change_amount);
-         
+
     }
 
 
@@ -465,9 +466,9 @@ function pos_order_tax(price_total, discount) {
 
 function shipping()
 {
-  var shipping_charges =parseFloat($('#shipping_charges').val()); 
+  var shipping_charges =parseFloat($('#shipping_charges').val());
   return isNaN(shipping_charges) ? 0 : shipping_charges;;
-   
+
 }
 
 function __calculate_amount(calculation_type, calculation_amount, amount) {
@@ -495,7 +496,6 @@ function calculate_balance_due(total) {
     var total_change =total-paid;
     return total_change;
 }
-
 
 
 

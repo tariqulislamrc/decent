@@ -1,4 +1,11 @@
 @foreach ($model as $item)
+    @php
+   if($wop_qty){
+     $qty = $wop_qty->where('raw_material_id', $item->raw_material_id)->sum('qty');
+} else{
+    $qty = 1;
+}
+    @endphp
 	   <tr>
 	<td>
     <input type="hidden" name="raw_material[]" value="{{$item->raw_material_id}}" class="pid">
@@ -6,7 +13,7 @@
 	</td>
 	<td>
         <input type="text" class="form-control input_number qty" id="qty" name="qty[]"
-            value="">
+            value="{{ $qty }}">
     </td>
 	<td>
         <input type="hidden" class="form-control" name="unit_id[]" value="{{ $item->raw->unit->id }}">
@@ -20,7 +27,7 @@
     </td>
     <td>
         <input type="text" class="form-control input_number price" id="price" readonly name="price[]"
-            value="">
+            value="{{ $item->raw->price * $qty }}">
     </td>
 	<td>
 		<button type="button" name="remove" class="btn btn-danger btn-sm remmove"><i class="fa fa-trash" aria-hidden="true"></i></button>

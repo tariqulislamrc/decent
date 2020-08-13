@@ -148,7 +148,7 @@ class PurchaseController extends Controller
         $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
 
         $ref_no = $ym.'/P-'.ref($row);
-        $inves_account =InvestmentAccount::all(); 
+        $inves_account =InvestmentAccount::all();
         return view('admin.production.purchase.create', compact('models', 'workorders','type','ref_no','inves_account'));
     }
 
@@ -166,9 +166,9 @@ class PurchaseController extends Controller
         $row = Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() > 0 ? Transaction::where('transaction_type', 'Purchase')->withTrashed()->get()->count() + 1 : 1;
 
         $ref_no = $ym.'/P-'.ref($row);
-        $inves_account =InvestmentAccount::all(); 
+        $inves_account =InvestmentAccount::all();
         $suppliers =Client::where('type','supplier')->get();
-        return view('admin.production.purchase.new_purchase', compact('models', 'workorders','ref_no','inves_account','suppliers'));  
+        return view('admin.production.purchase.new_purchase', compact('models', 'workorders','ref_no','inves_account','suppliers'));
     }
 
 
@@ -177,12 +177,13 @@ class PurchaseController extends Controller
 
         if ($request->work_order_id) {
               $wop =WopMaterial::where('wo_id',$request->work_order_id)->pluck('raw_material_id');
-
+              $wop_qty = WopMaterial::where('wo_id',$request->work_order_id)->get();
               $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->whereIn('raw_material_id',$wop)->get();
-              return view('admin.production.purchase.client_material',compact('model'));
+              return view('admin.production.purchase.client_material',compact('model', 'wop_qty'));
           }else{
+            $wop_qty = Null;
               $model =SupplierMaterial::with('raw')->where('client_id',$request->client_id)->get();
-              return view('admin.production.purchase.client_material',compact('model')); 
+              return view('admin.production.purchase.client_material',compact('model', 'wop_qty'));
         }
 
     }
@@ -276,20 +277,20 @@ class PurchaseController extends Controller
                 $order_qty=$request->qty[$i];
             }else{
                $qty =0;
-               $order_qty=$request->qty[$i]; 
+               $order_qty=$request->qty[$i];
             }
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
             $purchase->raw_material_id = $request->raw_material[$i];
-            $purchase->product_id = $request->product_id[$i];
+//            $purchase->product_id = $request->product_id[$i];
             $purchase->qty = $qty;
             $purchase->order_qty = $order_qty;
             $purchase->return_qty = 0;
             $purchase->price = $request->unit_price[$i];
             $purchase->unit_id = $request->unit_id[$i];
             $purchase->line_total = $request->price[$i];
-            $purchase->waste = $request->waste[$i];
-            $purchase->uses = $request->uses[$i];
+//            $purchase->waste = $request->waste[$i];
+//            $purchase->uses = $request->uses[$i];
             $purchase->created_by = auth()->user()->id;
             $purchase->save();
             if ($request->status=='Received') {
@@ -368,7 +369,7 @@ class PurchaseController extends Controller
             return view('admin.production.purchase.received',compact('model'));
         }elseif ($request->isMethod('Put')) {
             $model=Transaction::findOrFail($id);
-             for ($i=0; $i <count($request->qty) ; $i++) { 
+             for ($i=0; $i <count($request->qty) ; $i++) {
                 if ($request->qty[$i]>0) {
                     $pur =Purchase::findOrFail($request->purchase_id[$i]);
                     $pur->qty=$request->qty[$i];
@@ -406,7 +407,7 @@ class PurchaseController extends Controller
     public function payment($id)
     {
         $model = Transaction::findOrFail($id);
-        $inves_account =InvestmentAccount::all(); 
+        $inves_account =InvestmentAccount::all();
         return view('admin.production.purchase.payment', compact('model','inves_account'));
     }
 
@@ -440,7 +441,7 @@ class PurchaseController extends Controller
         $payment->investment_account_id =$request->investment_account_id;
         $payment->created_by = auth()->user()->id;
         $payment->save();
-     
+
     if ($request->investment_account_id) {
            $acc_transaction =new AccountTransaction;
            $acc_transaction->investment_account_id =$request->investment_account_id;
@@ -524,7 +525,7 @@ class PurchaseController extends Controller
                 $order_qty=$request->qty[$i];
             }else{
                $qty =0;
-               $order_qty=$request->qty[$i]; 
+               $order_qty=$request->qty[$i];
             }
             $purchase = new Purchase;
             $purchase->transaction_id = $id;
@@ -542,7 +543,7 @@ class PurchaseController extends Controller
             $purchase->save();
            if ($request->status=='Received') {
             $raw = RawMaterial::findOrFail($request->raw_material[$i]);
-            $stock = $raw->stock;  
+            $stock = $raw->stock;
             $old_qty = ($raw->stock-$request->old_qty[$i]?$request->old_qty[$i]:0);
             $new_stock = $old_qty + $request->qty[$i];
             $raw->stock = $new_stock;

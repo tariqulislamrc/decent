@@ -28,7 +28,7 @@ class ClientController extends Controller
     {
         $this->transactionUtil = $transactionUtil;
     }
-    
+
     public function index()
     {
       if (!auth()->user()->can('client.create')) {
@@ -48,7 +48,7 @@ class ClientController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
                         )
-              
+
                     ->groupBy('clients.id');
                     $document->where('clients.type','customer');
                     if (!empty($request->sub_type)) {
@@ -61,13 +61,18 @@ class ClientController extends Controller
                 ->addIndexColumn()
                  ->editColumn(
                 'landmark',
-                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
-                
-                  )
+                     'landmark', function ($model) {
+                     $html = '';
+                     $html .= $model->landmark ? $model->landmark . ', ' : '';
+                     $html .= $model->state ? $model->state . ', ' : '';
+                     $html .= $model->country ? $model->country : '';
+                     return $html;
+
+                 })
                 ->addColumn(
                 'due',
                 '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
-                  
+
                 )
                ->addColumn(
                 'return_due',
@@ -76,7 +81,7 @@ class ClientController extends Controller
                 ->addColumn(
                 'sub_type',
                 '<span class="badge btn-danger">{{$sub_type}}</span>'
-                  
+
                 )
                 ->addColumn('action', function ($model) {
                     return view('admin.client.action', compact('model'));
@@ -96,7 +101,7 @@ class ClientController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', net_total, 0)) as opening_balance"),
                         DB::raw("SUM(IF(t.transaction_type = 'opening_balance', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as opening_balance_paid")
                         )
-              
+
                     ->groupBy('clients.id');
                     $document->where('clients.type','supplier');
                     if (!empty($request->sub_type)) {
@@ -108,14 +113,17 @@ class ClientController extends Controller
             return DataTables::of($document)
                 ->addIndexColumn()
                  ->editColumn(
-                'landmark',
-                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
-                
-                  )
+                'landmark', function ($model){
+                    $html = '';
+                    $html .=  $model->landmark ? $model->landmark . ', ' : '';
+                    $html .=  $model->state ? $model->state . ', ' : '';
+                    $html .=  $model->country ? $model->country : '';
+                    return $html;
+                 })
                 ->addColumn(
                 'due',
                 '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
-                  
+
                 )
                ->addColumn(
                 'return_due',
@@ -124,7 +132,7 @@ class ClientController extends Controller
                 ->addColumn(
                 'sub_type',
                 '<span class="badge btn-danger">{{$sub_type}}</span>'
-                  
+
                 )
                 ->addColumn('action', function ($model) {
                     return view('admin.supplier.action', compact('model'));
@@ -143,7 +151,7 @@ class ClientController extends Controller
                         DB::raw("SUM(IF(t.transaction_type = 'eCommerce', net_total, 0)) as total_invoice"),
                         DB::raw("SUM(IF(t.transaction_type = 'eCommerce', (SELECT SUM(IF(is_return = 1,-1*amount,amount)) FROM transaction_payments WHERE transaction_payments.transaction_id=t.id), 0)) as invoice_received")
                         )
-              
+
                     ->groupBy('clients.id');
                     $document->where('clients.client_type','ecommerce');
                     if (!auth()->user()->hasRole('Super Admin')) {
@@ -153,13 +161,17 @@ class ClientController extends Controller
                 ->addIndexColumn()
                  ->editColumn(
                 'landmark',
-                '{{implode(array_filter([$landmark, $state, $country]), ", ")}}'
-                
-                  )
+                     'landmark', function ($model) {
+                     $html = '';
+                     $html .= $model->landmark ? $model->landmark . ', ' : '';
+                     $html .= $model->state ? $model->state . ', ' : '';
+                     $html .= $model->country ? $model->country : '';
+                     return $html;
+                 })
                     ->addColumn(
                 'due',
                 '<span class="display_currency contact_due" data-orig-value="{{$total_invoice - $invoice_received}}" data-currency_symbol=true data-highlight=true>{{($total_invoice - $invoice_received)}}</span>'
-                  
+
                 )
                 ->addColumn('action', function ($model) {
                     return view('admin.eCommerce.customer.action', compact('model'));
@@ -354,7 +366,7 @@ class ClientController extends Controller
            $model =Client::find($id);
             $ob_transaction =  Transaction::where('client_id', $id)
                                             ->where('transaction_type', 'opening_balance')
-                                            ->first();                          
+                                            ->first();
             $opening_balance = !empty($ob_transaction->net_total) ? $ob_transaction->net_total : 0;
 
             //Deduct paid amount from opening balance.
@@ -399,7 +411,7 @@ class ClientController extends Controller
 
         $ob_transaction =  Transaction::where('client_id', $id)
                                         ->where('transaction_type', 'opening_balance')
-                                        ->first();  
+                                        ->first();
 
       if (!empty($ob_transaction)) {
                 $amount =$request->input('net_total');
@@ -407,7 +419,7 @@ class ClientController extends Controller
                 if (!empty($opening_balance_paid)) {
                     $amount += $opening_balance_paid;
                 }
-                
+
                 $ob_transaction->net_total = $amount;
                 $ob_transaction->due = $amount;
                 $ob_transaction->save();
@@ -425,7 +437,7 @@ class ClientController extends Controller
                 }
             }
 
-         
+
      return response()->json(['success' => true, 'status' => 'success', 'message' => _lang('Information Updated')]);
     }
 
@@ -442,7 +454,7 @@ class ClientController extends Controller
         }
      $count = Transaction::where('client_id', $id)
                          ->count();
-    if ($count == 0) {                  
+    if ($count == 0) {
        $model= Client::find($id);
         $model->delete();
         if ($model) {

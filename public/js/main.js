@@ -103,7 +103,7 @@ var _formValidation = function () {
                     toastr.error(data.message);
                 } else {
                     toastr.success(data.message);
-                    
+
                     $('#content_form')[0].reset();
                     if (data.goto) {
                         setTimeout(function () {
@@ -419,11 +419,11 @@ var _modalFormValidation = function () {
                     toastr.success(data.message);
 
                     if(data.chage_order_status) {
-                        
+
                     } else {
                         $('#modal_remote').modal('toggle');
                     }
-                    
+
                     if (data.goto) {
                         setTimeout(function () {
 
@@ -1110,7 +1110,7 @@ function myFunction(url) {
     window.open(url, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=auto,left=auto,width=700,height=400");
 }
     $(document).on('click', '.btn_modal', function(e) {
-            
+
             e.preventDefault();
             //open modal
             $('#modal_remote').modal('toggle');
@@ -1140,3 +1140,6 @@ function myFunction(url) {
                 });
         });
 
+function  _componentDatePicker (){
+    return;
+}

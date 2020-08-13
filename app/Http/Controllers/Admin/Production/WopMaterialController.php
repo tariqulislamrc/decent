@@ -221,17 +221,20 @@ class WopMaterialController extends Controller
                 $product_id_array[] = $item->product_id;
             }
         }
-        
+
         $product_materials = ProductMaterial::whereIn('product_id', $product_id_array)->groupBy('material_id')->get();
         if($product_materials) {
             foreach ($product_materials as $product_material) {
                 $product_id = $product_material->product_id;
                 $material_id = $product_material->material_id;
+                $work_order_id = $request->id;
+                $workorder_product_qty = WorkOrderProduct::where('workorder_id', $work_order_id)->where('product_id', $product_id)->sum('qty');
+
 
                 $price = $product_material->material->price;
-                $qty = ProductMaterial::where('material_id', $material_id)->sum('qty');
+                $qty = ProductMaterial::where('material_id', $material_id)->sum('qty') * $workorder_product_qty;
                 $total = $price * $qty;
-                
+
                 $data[] = [
                     'material_id' => $product_material->material_id,
                     'material_name' => $product_material->material->name,

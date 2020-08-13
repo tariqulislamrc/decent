@@ -468,7 +468,7 @@ class SalePOsController extends Controller
         if($page != 'ecommerce') {
             $page == '';
         }
-        
+
         $action = $request->action;
         if($action != 'create') {
             $action == '';
@@ -477,7 +477,7 @@ class SalePOsController extends Controller
         if($page == 'ecommerce') {
             return view('admin.eCommerce.production-to-ecommerce.itemlist',compact('data','quantity','row', 'action'));
         }
-
+    
 
         return view('admin.salePos.partials.product_row',compact('data','quantity','row','sale_type'));
     }
