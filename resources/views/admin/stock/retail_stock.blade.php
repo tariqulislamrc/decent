@@ -1,7 +1,7 @@
 <tr>
 	<td>
 		<i style="cursor:pointer;" class="fa text-danger fa-trash btn_remove" aria-hidden="true"></i>
-	</td> 
+	</td>
 	<td>
 		{{ $data->product_name }} {{ $data->vari_name }}
 		<input type="hidden" name="variation_id[]" class="form-control" value="{{ $data->variation_id }}">

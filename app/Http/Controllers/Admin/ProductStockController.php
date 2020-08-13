@@ -55,7 +55,7 @@ class ProductStockController extends Controller
             $query->orWhere('articel', 'like', '%' . $term . '%');
             $query->orWhere('prefix', 'like', '%' . $term . '%');
             $query->orWhere('sub_sku', 'like', '%' . $term . '%');
-           
+
         });
         }
         if (!empty($brand_id)) {
@@ -93,7 +93,7 @@ class ProductStockController extends Controller
                 })
                 ->editColumn('f_sku', function ($document) {
                     return $document->sku;
-                  
+
                 })
                  ->editColumn('f_qty', function ($document) {
                      return $document->qty;
@@ -103,12 +103,12 @@ class ProductStockController extends Controller
                     return $document->selling_price;
 
                 })
-              
-               ->rawColumns(['product_name','f_sku','f_qty','selling_price'])->make(true);            
+
+               ->rawColumns(['product_name','f_sku','f_qty','selling_price'])->make(true);
          }
          $brands=Brand::pluck('name', 'id');
          $categories=Category::pluck('name', 'id');
-         return view('admin.stock.index',compact('brands','categories')); 
+         return view('admin.stock.index',compact('brands','categories'));
     }
 
     /**
@@ -118,7 +118,7 @@ class ProductStockController extends Controller
      */
     public function create()
     {
-      
+
         return view('admin.stock.create');
     }
 
@@ -132,7 +132,7 @@ class ProductStockController extends Controller
     {
 
         if(!is_array($request->product_id)) {
-            return response()->json(['status'=>true, 'status' => 'danger', 'message' => "Please Select Product First" ]); 
+            return response()->json(['status'=>true, 'status' => 'danger', 'message' => "Please Select Product First" ]);
         }
 
         $request->validate([
@@ -155,7 +155,7 @@ class ProductStockController extends Controller
             // check the stock transfer qty is not greater then avaiable qty
             if($avaiable_qty < $stock_qty) {
                 $data = $product . ' - '. $variation. ' Pass quantity is greater then available quantity!';
-                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]); 
+                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]);
             }
 
             // update main variation quantity
@@ -166,13 +166,13 @@ class ProductStockController extends Controller
                 $query->save();
             } else {
                 $data = $product . ' - '. $variation. ' is not a valid Product';
-                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]); 
+                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]);
             }
 
 
         };
 
-        return response()->json(['status'=>true, 'status' => 'success', 'message' => 'Stock is Successfully Uploaded!','goto' => route('admin.product_stock.index') ]); 
+        return response()->json(['status'=>true, 'status' => 'success', 'message' => 'Stock is Successfully Uploaded!','goto' => route('admin.product_stock.index') ]);
     }
 
 
@@ -185,7 +185,7 @@ class ProductStockController extends Controller
     public function wholsale_stock_post(Request $request)
     {
        if(!is_array($request->product_id)) {
-            return response()->json(['status'=>true, 'status' => 'danger', 'message' => "Please Select Product First" ]); 
+            return response()->json(['status'=>true, 'status' => 'danger', 'message' => "Please Select Product First" ]);
         }
 
         $request->validate([
@@ -208,7 +208,7 @@ class ProductStockController extends Controller
             // check the stock transfer qty is not greater then avaiable qty
             if($avaiable_qty < $stock_qty) {
                 $data = $product . ' - '. $variation. ' Pass quantity is greater then available quantity!';
-                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]); 
+                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]);
             }
 
             // update main variation quantity
@@ -219,13 +219,13 @@ class ProductStockController extends Controller
                 $query->save();
             } else {
                 $data = $product . ' - '. $variation. ' is not a valid Product';
-                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]); 
+                return response()->json(['status'=>true, 'status' => 'danger', 'message' => $data ]);
             }
 
 
         };
 
-        return response()->json(['status'=>true, 'status' => 'success', 'message' => 'Stock is Successfully Uploaded!','goto' => route('admin.product_stock.index') ]); 
+        return response()->json(['status'=>true, 'status' => 'success', 'message' => 'Stock is Successfully Uploaded!','goto' => route('admin.product_stock.index') ]);
     }
 
     /**
@@ -294,6 +294,7 @@ class ProductStockController extends Controller
                     'variations.name as vari_name'
                 )
             ->first();
+        
 
         return view('admin.stock.retail_stock',compact('data','quantity','row'));
     }
