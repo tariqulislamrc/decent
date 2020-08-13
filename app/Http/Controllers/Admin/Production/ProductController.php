@@ -599,7 +599,7 @@ class ProductController extends Controller
                     $query->where('VBD.brand_id', $brand_id);
                     
                 });
-            if ($sale_type=='wholesale') {
+            if ($sale_type=='wholesale' || $sale_type==null) {
              $products = $products->select(
                 'products.id as product_id',
                 'products.name',
