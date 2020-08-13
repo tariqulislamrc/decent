@@ -151,7 +151,7 @@ function item1(item, variation_id, quantity) {
         var found = true;
         $(".code").each(function() {
             if ($(this).val() == item.sku) {
-                   toastr.error('Product Already Exixt');
+                   toastr.error('Product Already Added');
                     found = false;
                     return false;
 
