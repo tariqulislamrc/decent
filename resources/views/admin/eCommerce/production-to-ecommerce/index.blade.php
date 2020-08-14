@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                        <a data-placement="bottom" title="Create New Ecommerce Product" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.production-to-ecommerce.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Transfer Stock')}}</a>
+                    <a data-placement="bottom" title="Create New Ecommerce Product" type="button" class="btn btn-info" href ="{{ route('admin.eCommerce.production-to-ecommerce.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Transfer Stock')}}</a>
                     
                     <a data-placement="bottom" title="" type="button" class="btn float-right btn-info" href ="{{ route('admin.eCommerce.production-to-ecommerce.reverse') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('Exchange')}}</a>
 

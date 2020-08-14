@@ -90,7 +90,9 @@
                                             <a target="_blank" href="{{ route('admin.eCommerce.order.show',$model->id) }}">
                                                 <button type="button" class="btn btn-success btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-eye"></i></button>
                                             </a>
-                                            <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+                                            @can('ecommerce_order.update')
+                                                <a href="{{ route('admin.eCommerce.update_invoice', $model->id) }}" target="_blank"><button type="button" class="btn btn-info btn-sm has-tooltip" data-original-title="null" ><i class="fa fa-pencil"></i></button> </a>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

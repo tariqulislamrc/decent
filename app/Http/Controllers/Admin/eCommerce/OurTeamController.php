@@ -17,7 +17,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.our_team.index');
@@ -51,7 +51,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.create')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.our_team.create');
@@ -64,7 +64,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.create')) {
             abort(403, 'Unauthorized action.');
         }
         $data = $request->validate([
@@ -115,7 +115,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = OurTeam::findOrFail($id);
@@ -130,7 +130,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = OurTeam::findOrFail($id);
@@ -177,7 +177,7 @@ class OurTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_team.delete')) {
             abort(403, 'Unauthorized action.');
         }
         $model = OurTeam::findOrFail($id);

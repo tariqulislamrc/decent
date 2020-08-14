@@ -19,9 +19,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">
-                    <button data-placement="bottom" title="Create New Slider" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.feature-product.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
-                </h3>
+                @can('ecommerce_featured_product.create')
+                    <h3 class="tile-title">
+                        <button data-placement="bottom" title="Create New Slider" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.feature-product.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                    </h3>
+                @endcan
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.feature-product.datatable') }}">
                         <thead>

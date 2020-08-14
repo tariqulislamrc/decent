@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class AboutUsController extends Controller{
     
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_about_us.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = AboutUs::first();
@@ -18,7 +18,7 @@ class AboutUsController extends Controller{
     }
 
     public function store(Request $request){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_about_us.view')) {
             abort(403, 'Unauthorized action.');
         }
         $data = $request->validate([

@@ -19,7 +19,7 @@ class eCommerceOfferController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.offer.index');
@@ -51,7 +51,7 @@ class eCommerceOfferController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.create')) {
             abort(403, 'Unauthorized action.');
         }
         $products = Product::all();
@@ -104,7 +104,7 @@ class eCommerceOfferController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.create')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -165,7 +165,7 @@ class eCommerceOfferController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = EcommerceOffer::findOrFail($id);
@@ -182,7 +182,7 @@ class eCommerceOfferController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.update')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -235,7 +235,7 @@ class eCommerceOfferController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_offer.delete')) {
             abort(403, 'Unauthorized action.');
         }
         

@@ -22,7 +22,7 @@ class SpecialOfferController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_offer.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.special-offer.index');
@@ -62,7 +62,7 @@ class SpecialOfferController extends Controller
     public function create(Request $request)
     {
 
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_offer.create')) {
             abort(403, 'Unauthorized action.');
         }
     $brand_id = get_option('default_brand');       
@@ -129,10 +129,6 @@ class SpecialOfferController extends Controller
 
     // add_to_special_offer_row
     public function add_to_special_offer_row(Request $request) {
-        
-        if (!auth()->user()->can('ecommerce.view')) {
-            abort(403, 'Unauthorized action.');
-        }
 
         $row = $request->row;
         $product_info = $request->product_id;
@@ -182,7 +178,7 @@ class SpecialOfferController extends Controller
     {
         // dd($request->all());
 
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_offer.create')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -264,7 +260,7 @@ class SpecialOfferController extends Controller
      */
     public function show($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_offer.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = SpecialOffer::findOrFail($id);
@@ -305,7 +301,7 @@ class SpecialOfferController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_offer.delete')) {
             abort(403, 'Unauthorized action.');
         }
         $model = SpecialOffer::findOrFail($id);

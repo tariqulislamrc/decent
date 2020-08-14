@@ -29,7 +29,7 @@ class OrderController extends Controller
 
     // eCommerce Order List index page
     public function index() {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.view')) {
             abort(403, 'Unauthorized action.');
         }
         $models = Transaction::where('ecommerce_status', 'pending')->orderBy('id', 'desc')->get();
@@ -38,7 +38,7 @@ class OrderController extends Controller
 
     // show 
     public function show ($id) {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Transaction::findOrFail($id);
@@ -49,7 +49,7 @@ class OrderController extends Controller
 
     // change_status
     public function change_status(Request $request) {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.update')) {
             abort(403, 'Unauthorized action.');
         }
         $id = $request->id;
@@ -98,7 +98,7 @@ class OrderController extends Controller
 
     // show_update_page
     public function show_update_page($id) {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Transaction::findOrFail($id);
@@ -141,7 +141,7 @@ class OrderController extends Controller
 
     // edit_the_transaction
     public function edit_the_transaction(Request $request, $id) {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.update')) {
             abort(403, 'Unauthorized action.');
         }
         // dd($request->all());
@@ -263,7 +263,7 @@ class OrderController extends Controller
     // get_curier_print
     public function get_curier_print(Request $request) {
         $data = [];
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_order.view')) {
             abort(403, 'Unauthorized action.');
         }
         

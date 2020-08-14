@@ -50,6 +50,7 @@ Route::group(['middleware' => ['install']], function () {
 	Route::get('category-details/{id}', 'Frontend\BlogController@category_details')->name('category-details');
 	Route::post('submit-blog-comment', 'Frontend\BlogController@submit_blog_comment')->name('submit-blog-comment');
 
+	Route::get('view-special-offer-product', 'Frontend\Front_End_Controller@view_special_offer_product')->name('view-special-offer-product');
 	Route::get('whole-sale', 'Frontend\Front_End_Controller@whole_sale')->name('whole-sale');
 	Route::get('contact','Frontend\Front_End_Controller@contactUs')->name('contact');
 	Route::post('contactus','Frontend\Front_End_Controller@contact')->name('contactus');

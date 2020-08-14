@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TeramsConditionsController extends Controller{
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_terms_and_condition.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = TeramsCondition::first();
@@ -18,7 +18,7 @@ class TeramsConditionsController extends Controller{
 
      public function store(Request $request){
        
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_terms_and_condition.view')) {
             abort(403, 'Unauthorized action.');
         }
         

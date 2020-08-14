@@ -34,6 +34,29 @@ use Illuminate\Support\Facades\Redirect;
 
 class Front_End_Controller extends Controller{
 
+    public function view_special_offer_product(Request $request) {
+        $id = $request->id;
+        
+        // find the offer price
+        $price_without_dis = 0;
+        $price_with_dis = 0;
+        $offer_price = SpecialOfferItem::where('product_id', $id)->first();
+        $price_without_dis = $offer_price->price_without_dis;
+        $price_with_dis = $offer_price->price_with_dis;
+        // find the product
+        $model = Product::with('photo_details', 'variation')->where('id',$id)->firstOrFail();
+        // find the product Rating
+        $product_rating = ProductRating::where('product_id',$model->id)->where('status', 1)->get();
+        $avarage = $product_rating->sum('rating');
+        $total_row = $product_rating->count();
+        if ($total_row>0) {
+            $avarage_rating = ($avarage / $total_row);
+        }else{
+            $avarage_rating = 0;
+        }
+        return view('eCommerce.offer_product_details', compact('model','product_rating','avarage_rating','total_row', 'price_without_dis', 'price_with_dis'));
+    }
+
     public function index(){
 
         $product_id = [];
