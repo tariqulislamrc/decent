@@ -20,7 +20,7 @@ class SpecialCategoryController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.special-category.index');
@@ -71,7 +71,7 @@ class SpecialCategoryController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.create')) {
             abort(403, 'Unauthorized action.');
         }
         $categories = Category::where('status', 1)->get();
@@ -86,7 +86,7 @@ class SpecialCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.create')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -147,7 +147,7 @@ class SpecialCategoryController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = SpecialCategory::findOrFail($id);
@@ -164,7 +164,7 @@ class SpecialCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.update')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -225,7 +225,7 @@ class SpecialCategoryController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_special_category.delete')) {
             abort(403, 'Unauthorized action.');
         }
         

@@ -16,7 +16,7 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.coupons.index');
@@ -42,7 +42,7 @@ class CouponsController extends Controller{
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.create')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.coupons.create');
@@ -55,7 +55,7 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.create')) {
             abort(403, 'Unauthorized action.');
         }
         $data = $request->validate([
@@ -89,7 +89,7 @@ class CouponsController extends Controller{
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.edit')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Coupon::findOrFail($id);
@@ -104,7 +104,7 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Coupon::findOrFail($id);
@@ -126,7 +126,7 @@ class CouponsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_coupon.delete')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Coupon::findOrFail($id);

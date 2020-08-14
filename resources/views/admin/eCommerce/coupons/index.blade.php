@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">
-                    @can('product_coupons.create')
+                    @can('ecommerce_coupon.create')
                         <button data-placement="bottom" title="Create New Product Coupons" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.coupons.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
                     @endcan
                 </h3>

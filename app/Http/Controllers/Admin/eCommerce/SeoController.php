@@ -9,7 +9,7 @@ use App\models\eCommerce\Seo;
 class SeoController extends Controller
 {
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_seo.view')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Seo::first();
@@ -17,7 +17,7 @@ class SeoController extends Controller
     }
 
      public function store(Request $request){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_seo.view')) {
             abort(403, 'Unauthorized action.');
         }
        $data = $request->validate([

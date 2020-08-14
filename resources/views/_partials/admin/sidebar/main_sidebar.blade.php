@@ -21,24 +21,28 @@
     </li>
 
     {{--About us --}}
-    <li data-placement="bottom" title="Go to eCommerce About Us Page Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}">
-            <i class="app-menu__icon fa fa-telegram"></i>
-            <span class="app-menu__label">
-                {{_lang('About Us')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_about_us.view')
+        <li data-placement="bottom" title="Go to eCommerce About Us Page Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/about-us/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.about-us.index') }}">
+                <i class="app-menu__icon fa fa-telegram"></i>
+                <span class="app-menu__label">
+                    {{_lang('About Us')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{-- Page Banner --}}
-    <li data-placement="bottom" title="Ecommerce Page Banner Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}">
-            <i class="app-menu__icon fa fa-picture-o"></i> 
-            <span class="app-menu__label">
-                {{_lang('Banner')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_page_banner.view')
+        <li data-placement="bottom" title="Ecommerce Page Banner Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/page-banner*') ? 'active':''}}" href="{{ route('admin.eCommerce.page-banner.index') }}">
+                <i class="app-menu__icon fa fa-picture-o"></i> 
+                <span class="app-menu__label">
+                    {{_lang('Banner')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     <li class="treeview {{ (Request::is('admin/eCommerce/blog*')) ? ' is-expanded' : '' }}">
         <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-rss-square"
@@ -74,205 +78,244 @@
     </li>
     
     {{--Contact Message --}}
-    <li data-placement="bottom" title="Ecommerce Contact Message Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}">
-            <i class="app-menu__icon fa fa-envelope-open-o"></i>
-            <span class="app-menu__label">
-                {{_lang('Contact Message')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommercce_contact_message.view')
+        <li data-placement="bottom" title="Ecommerce Contact Message Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/contact-msg*') ? 'active':''}}" href="{{ route('admin.eCommerce.contact-msg.index') }}">
+                <i class="app-menu__icon fa fa-envelope-open-o"></i>
+                <span class="app-menu__label">
+                    {{_lang('Contact Message')}}
+                </span>
+            </a>
+        </li>
+    @endcan
     
     {{-- Coupon --}}
-    <li data-placement="bottom" title="Ecommerce Coupon Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}">
-            <i class="app-menu__icon fa fa-ravelry"></i>
-            <span class="app-menu__label">
-                {{_lang('Coupons')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_coupon.view')
+        <li data-placement="bottom" title="Ecommerce Coupon Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/coupons*') ? 'active':''}}" href="{{ route('admin.eCommerce.coupons.index') }}">
+                <i class="app-menu__icon fa fa-ravelry"></i>
+                <span class="app-menu__label">
+                    {{_lang('Coupons')}}
+                </span>
+            </a>
+        </li>
+    @endcan
     
     {{-- Customer --}}
-    <li data-placement="bottom" title="Ecommerce Customer Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}">
-            <i class="app-menu__icon fa fa-users"></i>
-            <span class="app-menu__label">
-                {{_lang('Customer')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_customer.view')
+        <li data-placement="bottom" title="Ecommerce Customer Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/customer*') ? 'active':''}}" href="{{ route('admin.eCommerce.e_customer') }}">
+                <i class="app-menu__icon fa fa-users"></i>
+                <span class="app-menu__label">
+                    {{_lang('Customer')}}
+                </span>
+            </a>
+        </li>
+    @endcan
     
     {{-- Featured Product  --}}
-    <li data-placement="bottom" title="Ecommerce Featured Product Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.feature-product.index') }}">
-            <i class="app-menu__icon fa fa-meetup"></i>
-            <span class="app-menu__label">
-                {{_lang('Feature Product')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_featured_product.view')
+        <li data-placement="bottom" title="Ecommerce Featured Product Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/feature-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.feature-product.index') }}">
+                <i class="app-menu__icon fa fa-meetup"></i>
+                <span class="app-menu__label">
+                    {{_lang('Feature Product')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{-- Hot sale Product  --}}
-    <li data-placement="bottom" title="Ecommerce Hot Sale Product Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.hotsale-product.index') }}">
-            <i class="app-menu__icon fa fa-free-code-camp"></i>
-            <span class="app-menu__label">
-                {{_lang('Hot Sale Product')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_hot_sale_product.view')
+        <li data-placement="bottom" title="Ecommerce Hot Sale Product Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/hotsale-product*') ? 'active':''}}" href="{{ route('admin.eCommerce.hotsale-product.index') }}">
+                <i class="app-menu__icon fa fa-free-code-camp"></i>
+                <span class="app-menu__label">
+                    {{_lang('Hot Sale Product')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{-- Offer --}}
-    <li data-placement="bottom" title="Ecommerce Offer Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}">
-            <i class="app-menu__icon fa fa-superpowers"></i>
-            <span class="app-menu__label">
-                {{_lang('Offer')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_offer.view')
+        <li data-placement="bottom" title="Ecommerce Offer Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/eCommerce-Offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.eCommerce-offer.index') }}">
+                <i class="app-menu__icon fa fa-superpowers"></i>
+                <span class="app-menu__label">
+                    {{_lang('Offer')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{--Ecommerce Orders --}}
-    <li data-placement="bottom" title="Ecommerce Orders Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}">
-            <i class="app-menu__icon fa fa-handshake-o"></i>
-            <span class="app-menu__label">
-                {{_lang('Orders')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_order.view')
+        <li data-placement="bottom" title="Ecommerce Orders Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/orders*') ? 'active':''}}" href="{{ route('admin.eCommerce.order.index') }}">
+                <i class="app-menu__icon fa fa-handshake-o"></i>
+                <span class="app-menu__label">
+                    {{_lang('Orders')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{--Our Team--}}
-    <li data-placement="bottom" title="Ecommerce Our Team Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-team.index') }}">
-            <i class="app-menu__icon fa fa-users"></i>
-            <span class="app-menu__label">
-                {{_lang('Our Team')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_our_team.view')
+        <li data-placement="bottom" title="Ecommerce Our Team Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/our-team*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-team.index') }}">
+                <i class="app-menu__icon fa fa-users"></i>
+                <span class="app-menu__label">
+                    {{_lang('Our Team')}}
+                </span>
+            </a>
+        </li>
+    @endcan
         
     {{--Our workspace--}}
-    <li data-placement="bottom" title="Ecommerce Our workspace Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-workspace.index') }}">
-            <i class="app-menu__icon fa fa-space-shuttle"></i>
-            <span class="app-menu__label">
-                {{_lang('Our Workspace')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_our_workspace.view')
+        <li data-placement="bottom" title="Ecommerce Our workspace Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/our-workspace*') ? 'active':''}}" href="{{ route('admin.eCommerce.our-workspace.index') }}">
+                <i class="app-menu__icon fa fa-space-shuttle"></i>
+                <span class="app-menu__label">
+                    {{_lang('Our Workspace')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{--Product Rating --}}
-    <li data-placement="bottom" title="Ecommerce Product Rating Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}" href="{{ route('admin.eCommerce.product-rating.index') }}">
-            <i class="app-menu__icon fa fa-star"></i>
-            <span class="app-menu__label">
-                {{_lang('Product Rating')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_product_rating.view')
+        <li data-placement="bottom" title="Ecommerce Product Rating Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/product-rating*') ? 'active':''}}" href="{{ route('admin.eCommerce.product-rating.index') }}">
+                <i class="app-menu__icon fa fa-star"></i>
+                <span class="app-menu__label">
+                    {{_lang('Product Rating')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{--Privacy Policy--}}
-    <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}">
-            <i class="app-menu__icon fa fa-shield"></i>
-            <span class="app-menu__label">
-                {{_lang('Privacy Policy')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_privecy_policy.view')
+        <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/privacy-policy/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.privacy-policy.index') }}">
+                <i class="app-menu__icon fa fa-shield"></i>
+                <span class="app-menu__label">
+                    {{_lang('Privacy Policy')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{-- Qurier --}}
-    <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/qurier/*') ? 'active':''}}" href="{{ route('admin.eCommerce.qurier.index') }}">
-            <i class="app-menu__icon fa fa-shield"></i>
-            <span class="app-menu__label">
-                {{_lang('Qurier')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_qurier.view')
+        <li data-placement="bottom" title="Ecommerce Privacy Policy Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/qurier/*') ? 'active':''}}" href="{{ route('admin.eCommerce.qurier.index') }}">
+                <i class="app-menu__icon fa fa-shield"></i>
+                <span class="app-menu__label">
+                    {{_lang('Qurier')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{--Seo --}}
-    <li data-placement="bottom" title="Ecommerce Seo Section">
-        <a class="app-menu__item {{Request::is('admin/c/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}">
-            <i class="app-menu__icon fa fa-globe"></i>
-            <span class="app-menu__label">
-                {{_lang('SEO')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_seo.view')
+        <li data-placement="bottom" title="Ecommerce Seo Section">
+            <a class="app-menu__item {{Request::is('admin/c/seo/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.seo.index') }}">
+                <i class="app-menu__icon fa fa-globe"></i>
+                <span class="app-menu__label">
+                    {{_lang('SEO')}}
+                </span>
+            </a>
+        </li>
+    @endcan 
     
     {{-- Shipping Charge --}}
-    <li data-placement="bottom" title="Ecommerce Shipping Charge Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}" href="{{ route('admin.eCommerce.shipping-charge.index') }}">
-            <i class="app-menu__icon fa fa-truck"></i>
-            <span class="app-menu__label">
-                {{_lang('Shipping Charge')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_shiping_charge.view')
+        <li data-placement="bottom" title="Ecommerce Shipping Charge Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/shipping-charge*') ? 'active':''}}" href="{{ route('admin.eCommerce.shipping-charge.index') }}">
+                <i class="app-menu__icon fa fa-truck"></i>
+                <span class="app-menu__label">
+                    {{_lang('Shipping Charge')}}
+                </span>
+            </a>
+        </li>
+    @endcan
     
     {{-- Special Category  --}}
-    <li data-placement="bottom" title="Ecommerce Special Category Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-category.index') }}">
-            <i class="app-menu__icon fa fa-envira"></i>
-            <span class="app-menu__label">
-                {{_lang('Special Category')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_special_category.view')
+        <li data-placement="bottom" title="Ecommerce Special Category Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/special-category*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-category.index') }}">
+                <i class="app-menu__icon fa fa-envira"></i>
+                <span class="app-menu__label">
+                    {{_lang('Special Category')}}
+                </span>
+            </a>
+        </li>
+    @endcan
                 
     {{-- Special Offer  --}}
-    <li data-placement="bottom" title="Ecommerce Special Offer Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-offer.index') }}">
-            <i class="app-menu__icon fa fa-deviantart"></i>
-            <span class="app-menu__label">
-                {{_lang('Special Offer')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_special_offer.view')
+        <li data-placement="bottom" title="Ecommerce Special Offer Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/special-offer*') ? 'active':''}}" href="{{ route('admin.eCommerce.special-offer.index') }}">
+                <i class="app-menu__icon fa fa-deviantart"></i>
+                <span class="app-menu__label">
+                    {{_lang('Special Offer')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
-        
     {{-- Stock transfer --}}
-    <li data-placement="bottom" title="Ecommerce Stock transfer Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}">
-            <i  class="app-menu__icon fa fa-gg-circle"></i>
-            <span class="app-menu__label">
-                {{_lang('Stock')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_stock.view')
+        <li data-placement="bottom" title="Ecommerce Stock transfer Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/production-to-ecommerce*') ? 'active':''}}" href="{{ route('admin.eCommerce.production-to-ecommerce.index') }}">
+                <i  class="app-menu__icon fa fa-gg-circle"></i>
+                <span class="app-menu__label">
+                    {{_lang('Stock')}}
+                </span>
+            </a>
+        </li>
+    @endcan 
 
     {{-- Subscribers --}}
-    <li data-placement="bottom" title="Ecommerce Subscribers Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/subscribers*') ? 'active':''}}" href="{{ route('admin.eCommerce.subscribers.index') }}">
-            <i  class="app-menu__icon fa fa-envelope"></i>
-            <span class="app-menu__label">
-                {{_lang('Subscribers')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_subscribers.view')
+        <li data-placement="bottom" title="Ecommerce Subscribers Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/subscribers*') ? 'active':''}}" href="{{ route('admin.eCommerce.subscribers.index') }}">
+                <i  class="app-menu__icon fa fa-envelope"></i>
+                <span class="app-menu__label">
+                    {{_lang('Subscribers')}}
+                </span>
+            </a>
+        </li>
+    @endcan 
     
     {{--Term and Condition --}}
-    <li data-placement="bottom" title="Ecommerce Term and Condition Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}">
-            <i class="app-menu__icon fa fa-terminal"></i>
-            <span class="app-menu__label">
-                {{_lang('Terms & Conditions')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_terms_and_condition.view')
+        <li data-placement="bottom" title="Ecommerce Term and Condition Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/terams-conditions/index*') ? 'active':''}}" href="{{ route('admin.eCommerce.terams-conditions.index') }}">
+                <i class="app-menu__icon fa fa-terminal"></i>
+                <span class="app-menu__label">
+                    {{_lang('Terms & Conditions')}}
+                </span>
+            </a>
+        </li>
+    @endcan
 
     {{-- Whole Sale  --}}
-    <li data-placement="bottom" title="Ecommerce Whole Sale Section">
-        <a class="app-menu__item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}" href="{{ route('admin.eCommerce.whole-sale') }}">
-            <i class="app-menu__icon fa fa-address-book"></i>
-            <span class="app-menu__label">
-                {{_lang('Whole Sale Page')}}
-            </span>
-        </a>
-    </li>
+    @can('ecommerce_whole_sale.view') 
+        <li data-placement="bottom" title="Ecommerce Whole Sale Section">
+            <a class="app-menu__item {{Request::is('admin/eCommerce/whole-sale*') ? 'active':''}}" href="{{ route('admin.eCommerce.whole-sale') }}">
+                <i class="app-menu__icon fa fa-address-book"></i>
+                <span class="app-menu__label">
+                    {{_lang('Whole Sale Page')}}
+                </span>
+            </a>
+        </li>
+    @endcan 
 @endif
 @endcan
 

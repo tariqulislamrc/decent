@@ -18,7 +18,7 @@ class HotSaleProductController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_hot_sale_product.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.hotsale.index');
@@ -72,7 +72,7 @@ class HotSaleProductController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_hot_sale_product.create')) {
             abort(403, 'Unauthorized action.');
         }
         $product_id = [];
@@ -94,7 +94,7 @@ class HotSaleProductController extends Controller
      */
     public function status(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_hot_sale_product.create')) {
             abort(403, 'Unauthorized action.');
         }
         $id = $request->id;

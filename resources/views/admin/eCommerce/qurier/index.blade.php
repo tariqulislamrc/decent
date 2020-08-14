@@ -16,9 +16,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">
-                    <button data-placement="bottom" title="Create New Ecommerce Qurier Option" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.qurier.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
-                </h3>
+                @can('ecommerce_qurier.create')
+                    <h3 class="tile-title">
+                        <button data-placement="bottom" title="Create New Ecommerce Qurier Option" type="button" class="btn btn-info" id="content_managment" data-url ="{{ route('admin.eCommerce.qurier.create') }}"><i class="fa fa-plus-square mr-2" aria-hidden="true"></i></i>{{_lang('create')}}</button>
+                    </h3>
+                @endcan 
                 <div class="tile-body">
                     <table class="table table-hover table-bordered content_managment_table" data-url="{{ route('admin.eCommerce.qurier.datatable') }}">
                         <thead>

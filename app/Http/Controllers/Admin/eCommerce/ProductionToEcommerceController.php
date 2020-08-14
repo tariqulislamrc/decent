@@ -19,7 +19,7 @@ class ProductionToEcommerceController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -55,7 +55,7 @@ class ProductionToEcommerceController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -71,7 +71,7 @@ class ProductionToEcommerceController extends Controller
     public function store(Request $request)
     {
 
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -132,7 +132,7 @@ class ProductionToEcommerceController extends Controller
 
     // reverse_show
     public function reverse_show() {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -141,7 +141,7 @@ class ProductionToEcommerceController extends Controller
 
     public function product_list(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -192,7 +192,7 @@ class ProductionToEcommerceController extends Controller
     public function scannerappend1(Request $request)
     {
 
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
         // dd($request->all());
@@ -221,7 +221,7 @@ class ProductionToEcommerceController extends Controller
 
     // store_reverse
     public function store_reverse(Request $request) {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_stock.view')) {
             abort(403, 'Unauthorized action.');
         }
         if(!is_array($request->product_id)) {

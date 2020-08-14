@@ -15,7 +15,7 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.our_workspace.index');
@@ -55,7 +55,7 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.create')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.our_workspace.create');
@@ -69,7 +69,7 @@ class OurWorkspaceControler extends Controller{
      */
     public function store(Request $request){
 
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -139,7 +139,7 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.update')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -155,7 +155,7 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.update')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -227,7 +227,7 @@ class OurWorkspaceControler extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_our_workspace.delete')) {
             abort(403, 'Unauthorized action.');
         }
         

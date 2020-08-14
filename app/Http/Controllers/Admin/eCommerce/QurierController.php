@@ -16,7 +16,7 @@ class QurierController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -46,7 +46,7 @@ class QurierController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -62,7 +62,7 @@ class QurierController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -91,7 +91,7 @@ class QurierController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = Qurier::findOrFail($id);
@@ -107,7 +107,7 @@ class QurierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.update')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -136,7 +136,7 @@ class QurierController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_qurier.delete')) {
             abort(403, 'Unauthorized action.');
         }
 

@@ -11,7 +11,7 @@ class ProductRatingController extends Controller
 {
     public function rating_index(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_product_rating.view')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -43,7 +43,7 @@ class ProductRatingController extends Controller
 
     public function status($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_product_rating.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = ProductRating::findOrFail($id);
@@ -52,7 +52,7 @@ class ProductRatingController extends Controller
 
     public function status_change(Request $request, $id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_product_rating.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = ProductRating::findOrFail($id);
@@ -66,7 +66,7 @@ class ProductRatingController extends Controller
 
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_product_rating.delete')) {
             abort(403, 'Unauthorized action.');
         }
         $type = ProductRating::findOrFail($id);

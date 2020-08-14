@@ -17,7 +17,7 @@ class PageBannerController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.view')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.page-banner.index');
@@ -46,7 +46,7 @@ class PageBannerController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.create')) {
             abort(403, 'Unauthorized action.');
         }
         return view('admin.eCommerce.page-banner.create');
@@ -60,7 +60,7 @@ class PageBannerController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.create')) {
             abort(403, 'Unauthorized action.');
         }
         $request->validate([
@@ -104,7 +104,7 @@ class PageBannerController extends Controller
      */
     public function edit($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.update')) {
             abort(403, 'Unauthorized action.');
         }
         $model = PageBanner::findOrFail($id);
@@ -120,7 +120,7 @@ class PageBannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.update')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -161,7 +161,7 @@ class PageBannerController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->can('ecommerce.view')) {
+        if (!auth()->user()->can('ecommerce_page_banner.delete')) {
             abort(403, 'Unauthorized action.');
         }
         $type = PageBanner::findOrFail($id);

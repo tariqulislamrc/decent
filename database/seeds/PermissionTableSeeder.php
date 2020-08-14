@@ -74,9 +74,6 @@ public function run() {
 			['name' => 'role.update'],
 			['name' => 'role.delete'],
 
-			// Employee Permission
-			['name' => 'employee.view'],
-
 			// Employee Department Permission
 			['name' => 'employee_departmeent.view'],
 			['name' => 'employee_departmeent.create'],
@@ -316,11 +313,6 @@ public function run() {
 			['name' => 'sms_marketing.update'],
 			['name' => 'sms_marketing.delete'],
 
-			['name' => 'ecommerce.view'],
-			// ['name' => 'ecommerce.create'],
-			// ['name' => 'ecommerce.update'],
-			// ['name' => 'ecommerce.delete'],
-
 			['name' => 'expense.view'],
 			['name' => 'expense.create'],
 			['name' => 'expense.update'],
@@ -379,6 +371,90 @@ public function run() {
 			['name' => 'view_account.balance'],
 
 			['name' => 'view_expense.amount'],
+
+			// Ecommerce Section Start
+
+			['name' => 'ecommerce.view'],
+
+			['name' => 'ecommerce_about_us.view'],
+
+			['name' => 'ecommerce_page_banner.view'],
+			['name' => 'ecommerce_page_banner.create'],
+			['name' => 'ecommerce_page_banner.update'],
+			['name' => 'ecommerce_page_banner.delete'],
+
+			['name' => 'ecommercce_contact_message.view'],
+
+			['name' => 'ecommerce_coupon.view'],
+			['name' => 'ecommerce_coupon.create'],
+			['name' => 'ecommerce_coupon.update'],
+			['name' => 'ecommerce_coupon.delete'],
+
+			['name' => 'ecommerce_customer.view'],
+			['name' => 'ecommerce_customer.delete'],
+
+			['name' => 'ecommerce_featured_product.view'],
+			['name' => 'ecommerce_featured_product.create'],
+
+			['name' => 'ecommerce_hot_sale_product.view'],
+			['name' => 'ecommerce_hot_sale_product.create'],
+
+			['name' => 'ecommerce_offer.view'],
+			['name' => 'ecommerce_offer.create'],
+			['name' => 'ecommerce_offer.update'],
+			['name' => 'ecommerce_offer.delete'],
+
+			['name' => 'ecommerce_order.view'],
+			['name' => 'ecommerce_order.update'],
+
+			['name' => 'ecommerce_our_team.view'],
+			['name' => 'ecommerce_our_team.create'],
+			['name' => 'ecommerce_our_team.update'],
+			['name' => 'ecommerce_our_team.delete'],
+
+			['name' => 'ecommerce_our_workspace.view'],
+			['name' => 'ecommerce_our_workspace.create'],
+			['name' => 'ecommerce_our_workspace.update'],
+			['name' => 'ecommerce_our_workspace.delete'],
+
+			['name' => 'ecommerce_product_rating.view'],
+			['name' => 'ecommerce_product_rating.update'],
+			['name' => 'ecommerce_product_rating.delete'],
+
+			['name' => 'ecommerce_privecy_policy.view'],
+
+			['name' => 'ecommerce_qurier.view'],
+			['name' => 'ecommerce_qurier.create'],
+			['name' => 'ecommerce_qurier.update'],
+			['name' => 'ecommerce_qurier.delete'],
+
+			['name' => 'ecommerce_seo.view'],
+
+			['name' => 'ecommerce_shiping_charge.view'],
+			['name' => 'ecommerce_shiping_charge.create'],
+			['name' => 'ecommerce_shiping_charge.update'],
+			['name' => 'ecommerce_shiping_charge.delete'],
+
+			['name' => 'ecommerce_special_category.view'],
+			['name' => 'ecommerce_special_category.create'],
+			['name' => 'ecommerce_special_category.update'],
+			['name' => 'ecommerce_special_category.delete'],
+
+			['name' => 'ecommerce_special_offer.view'],
+			['name' => 'ecommerce_special_offer.create'],
+			['name' => 'ecommerce_special_offer.delete'],
+
+			['name' => 'ecommerce_stock.view'],
+
+			['name' => 'ecommerce_subscribers.view'],
+			['name' => 'ecommerce_subscribers.update'],
+			['name' => 'ecommerce_subscribers.delete'],
+
+			['bane' => 'ecommerce_subscribers.view'],
+
+			['name' => 'ecommerce_terms_and_condition.view'],
+
+			['name' => 'ecommerce_whole_sale.view'],
 
 		];
 

@@ -122,6 +122,7 @@
                                                         
                                                         <li>
                                                             <a class="submit-shpecial-product" href=""><i class="icon-handbag"></i><span>Add to Cart</span></a></li>
+                                                        <li><a href="#popup{{$item->id}}" class="lightbox" tabindex="0"><i class="icomoon icon-eye"></i></a></li>
                                                         
                                                     </ul>
                                                 </form>
@@ -144,6 +145,43 @@
 			</div>
 		</div>
 	</main>
+
+	<div class="popup-holder">
+	    @foreach ($items as $item)
+	        @php
+                $product = App\models\Production\Product::where('id', $item->product_id)->firstOrFail();
+            @endphp
+		    <div id="popup{{$item->id}}" class="lightbox">
+			<section class="mt-product-detial">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+						    
+							<div class="slider">
+								<div class="product-slider">
+									<img style="margin-top:20px;" src="{{$product->photo && $product->photo != '' ?asset('storage/product/'.$product->photo): asset('img/product.jpg') }}" alt="image description">
+								</div>
+							</div>
+							<div class="detial-holder">
+								<ul class="list-unstyled breadcrumbs">
+                                    <li>Products <i class="fa fa-angle-right"> </i></li>
+                                    <li>{{ $product->name }}</li>
+                                </ul>
+								<h2>{{ $product->name }}</h2>
+								<div class="text-holder">
+									<span class="price">BDT {{ number_format($item->price_with_dis, 2) }} <del>{{ number_format($item->price_without_dis, 2) }}</del></span>
+								</div>
+								<div class="txt-wrap">
+									{!! $product->product_description !!}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		@endforeach
+	</div>
 @endpush
 @push('scripts')
 <script src="{{asset('js/main.js')}}"></script>
